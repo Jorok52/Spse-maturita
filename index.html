@@ -791,7 +791,7 @@ main{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.btn.mic.rec{animation:none}}
 
 /* ---- ústní zkoušení: výběr + časovač + AI chat ---- */
-.ochoice{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ochoice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ochoice-b.call{background:linear-gradient(160deg,rgba(208,162,75,.12),transparent 60%),var(--mask-2)}
 .callpanel{position:sticky;bottom:0;display:grid;grid-template-columns:auto 1fr;gap:12px 18px;align-items:center;background:var(--chip-2);border:1px solid var(--copper-dim);border-radius:12px;padding:16px 18px;margin-top:8px;box-shadow:0 -10px 30px rgba(0,0,0,.35)}
 .callpanel .row{grid-column:1/-1;margin:0}
@@ -1897,17 +1897,14 @@ function runOral(n, drawn){
       '<div class="section"><h3>Zadání otázky</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+galleryHTML(n, 'Obrázky, které můžeš u zkoušení popsat')+
       '<div class="section"><h3>Jak chceš zkoušet?</h3><div class="ochoice">'+
         '<button class="ochoice-b" id="go"><b>Sám</b><span>Dostaneš '+t.open.length+' podotázek. Odpovíš nahlas nebo do poznámek, odkryješ klíčové body a poctivě odškrtáš, co jsi řekl.</span><em>bez AI · Enter</em></button>'+
-        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídáš psaním nebo tlačítkem Mluvit.</span><em id="aist">AI zdarma</em></button>'+
-        '<button class="ochoice-b ai call" id="gocall"><b>Hovor se zkoušejícím</b><span>Jako u maturity: zkoušející ti otázky říká nahlas, ty odpovídáš nahlas a on pozná, kdy jsi domluvil. Nejlíp v Edge nebo Chrome se sluchátky.</span><em id="callst0">AI zdarma · mikrofon</em></button></div>'+
+        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídáš psaním nebo tlačítkem Mluvit.</span><em id="aist">AI zdarma</em></button>'+'</div>'+
       '<label class="otoggle"><input type="checkbox" id="timed"'+(timed?' checked':'')+'><span>Časový limit 15 minut, jako u maturity</span></label></div></div>';
     document.getElementById('back').onclick = () => drawn ? go('') : renderTopic(n);
     const tb = document.getElementById('timed'); tb.onchange = () => { timed = tb.checked; lsSet('oral-timed', timed); };
     document.getElementById('go').onclick = startSolo; bindGallery();
     document.getElementById('goai').onclick = () => { onKey = null; runAIExam(n, {timed, drawn}); };
-    document.getElementById('gocall').onclick = () => { onKey = null; runAIExam(n, {timed, drawn, call:true}); };
     AI.ready.then(() => {
       const b = document.getElementById('goai'); if(b && (!AI.mode)){ b.disabled = true; const e = document.getElementById('aist'); if(e) e.textContent = 'AI tady není dostupná'; }
-      const c = document.getElementById('gocall'); if(c && (!AI.mode || !canCall())){ c.disabled = true; const e = document.getElementById('callst0'); if(e) e.textContent = !AI.mode ? 'AI tady není dostupná' : 'tady nejde mikrofon'; }
     });
     onKey = e => { if(e.key === 'Enter' && e.target.tagName !== 'INPUT'){ e.preventDefault(); startSolo(); } };
   }
@@ -2837,7 +2834,7 @@ async function voiceRecord(ta, btn, n){   // desktopová aplikace, Firefox: nahr
   voiceSetBtn(cur(), 'rec'); const b0 = cur(); if(b0) b0.textContent = 'Zapínám mikrofon…';
   c.level = v => { const b = cur(); if(b) b.style.setProperty('--lvl', Math.min(1, v).toFixed(2)); };
   try{
-    const txt = await listenVAD(n, m => { const b = cur(); if(b){ b.textContent = m === 'Mluvíš…' ? 'Mluvíš… (skončí samo po pauze)' : m; if(m === 'Přepisuju…'){ b.disabled = true; b.classList.remove('rec'); } } }, c);
+    const txt = await listenVAD(n, m => { const b = cur(); if(b){ b.textContent = /^Mluvíš/.test(m) ? 'Mluvíš… (skončí samo po pauze)' : /^Až domluvíš|^Poslouchám/.test(m) ? 'Poslouchám… klikni, až domluvíš' : m; if(m === 'Přepisuju…'){ b.disabled = true; b.classList.remove('rec'); } } }, c);
     if(txt) voiceAppend(ta, txt); else if(!c.aborted) toast('Nic jsem neslyšel – zkus mluvit blíž k mikrofonu');
   }catch(e){ toast(e && e.message ? e.message : 'Mikrofon nejde'); }
   VOICE.rec = null; const b = cur(); if(b){ b.style.removeProperty('--lvl'); voiceSetBtn(b, 'idle'); }
@@ -2874,34 +2871,42 @@ function voicesReady(){ return new Promise(res => { if(!('speechSynthesis' in wi
 function sayable(md){
   return String(md || '').replace(/^[ \t*_]*ZNÁMKA.*$/gmi, '').replace(/\*\*(Hodnocení|Otázka|Silné stránky|Doplnit):?\*\*:?/gi, '$1: ').replace(/[*_`#>]/g, '').replace(/^\s*(?:[-•]|\d+[.)])\s*/gm, '').replace(/\s*\n+\s*/g, '. ').replace(/([.:!?])\s*\.\s*/g, '$1 ').replace(/\s{2,}/g, ' ').trim();
 }
-async function listenVAD(n, live, ctlr){   // nahrávání s detekcí ticha → Whisper
+async function listenVAD(n, live, ctlr){   // nahrávání → Whisper; konec po pauze (pokud jde měřit hlasitost), jinak tlačítkem
+  let wantStop = false, stop = () => { wantStop = true; };
+  ctlr.send = () => stop(); ctlr.cancel = () => { ctlr.aborted = true; stop(); };   // funguje hned od začátku
   let to; const stream = await Promise.race([
     navigator.mediaDevices.getUserMedia({audio:{channelCount:1, echoCancellation:true, noiseSuppression:true, autoGainControl:true}}),
-    new Promise((_, rej) => { to = setTimeout(() => rej({message:'Mikrofon se nespustil. Zkontroluj, že je připojený a povolený.'}), 6000); })
+    new Promise((_, rej) => { to = setTimeout(() => rej({message:'Mikrofon se nespustil. Zkontroluj, že je připojený a povolený.'}), 8000); })
   ]).finally(() => clearTimeout(to));
   if(ctlr.aborted){ stream.getTracks().forEach(t => t.stop()); return ''; }
-  const ac = audioCtx(); if(ac.state === 'suspended') await ac.resume().catch(() => {});
-  const src = ac.createMediaStreamSource(stream), an = ac.createAnalyser();
-  an.fftSize = 1024; src.connect(an); const buf = new Float32Array(an.fftSize);
   const mime = ['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/webm','audio/mp4'].find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
   const rec = new MediaRecorder(stream, Object.assign({audioBitsPerSecond:64000}, mime ? {mimeType:mime} : {})), chunks = [];
   rec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
-  const t0 = Date.now(); let noise = 1, speaking = false, lastVoice = 0, voiced = 0, iv = null;
   const stopped = new Promise(res => { rec.onstop = res; });
-  const stop = () => { if(rec.state !== 'inactive') rec.stop(); };
-  ctlr.send = () => { if(!speaking){ ctlr.aborted = true; } stop(); }; ctlr.cancel = () => { ctlr.aborted = true; stop(); };
-  rec.start(250); if(live) live('Poslouchám…');
-  iv = setInterval(() => {
-    an.getFloatTimeDomainData(buf); let sum = 0; for(let i = 0; i < buf.length; i++) sum += buf[i]*buf[i]; const rms = Math.sqrt(sum / buf.length), now = Date.now();
+  stop = () => { if(rec.state !== 'inactive') rec.stop(); };
+  rec.start(250);
+  if(wantStop){ stop(); }
+  // měření hlasitosti – jen když zvukový modul opravdu běží (nikdy na něj nečekáme)
+  let ac = null, src = null, an = null;
+  try{ ac = audioCtx(); if(ac && ac.state !== 'running') ac.resume().catch(() => {}); src = ac.createMediaStreamSource(stream); an = ac.createAnalyser(); an.fftSize = 1024; src.connect(an); }catch(e){ an = null; }
+  const buf = new Float32Array(1024), t0 = Date.now(); let noise = 1, speaking = false, lastVoice = 0, voiced = 0, vadOK = false, warned = false;
+  if(live) live('Poslouchám…');
+  const iv = setInterval(() => {
+    const now = Date.now();
+    if(now - t0 > 90000) return stop();
+    if(!an || ac.state !== 'running'){ if(!warned && now - t0 > 1500){ warned = true; if(live) live('Až domluvíš, klikni na „Domluvil jsem“'); } return; }
+    an.getFloatTimeDomainData(buf); let sum = 0; for(let i = 0; i < buf.length; i++) sum += buf[i]*buf[i]; const rms = Math.sqrt(sum / buf.length);
+    if(rms > 0) vadOK = true;
     if(now - t0 < 600){ noise = Math.min(noise, rms); return; }   // nejtišší chvíle = hluk místnosti
+    if(!vadOK){ if(!warned && now - t0 > 2500){ warned = true; if(live) live('Až domluvíš, klikni na „Domluvil jsem“'); } return; }
     const thr = Math.min(0.045, Math.max(0.01, noise * 3));
     if(ctlr.level) ctlr.level(rms / (thr * 3));
-    if(rms > thr){ if(!speaking){ speaking = true; if(live) live('Mluvíš…'); } lastVoice = now; voiced += 100; }
+    if(rms > thr){ if(!speaking){ speaking = true; if(live) live('Mluvíš… (až domluvíš, chvíli počkej)'); } lastVoice = now; voiced += 100; }
     if(speaking && voiced > 600 && now - lastVoice > (ctlr.silence || 2000)) stop();
-    if(now - t0 > 90000) stop();
   }, 100);
-  await stopped; clearInterval(iv); stream.getTracks().forEach(t => t.stop()); try{ src.disconnect(); }catch(e){}
-  if(ctlr.aborted || !speaking) return '';
+  await stopped; clearInterval(iv); stream.getTracks().forEach(t => t.stop()); try{ if(src) src.disconnect(); }catch(e){}
+  if(ctlr.aborted) return '';
+  if(vadOK && !speaking && Date.now() - t0 < 4000) return '';   // měření běželo a nic neslyšelo
   if(live) live('Přepisuju…');
   return sttUpload(new Blob(chunks, {type: rec.mimeType || mime || 'audio/webm'}), n);
 }
