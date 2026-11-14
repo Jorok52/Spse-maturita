@@ -785,6 +785,10 @@ main{position:relative;z-index:2}
 .fold[open] > summary::before{transform:rotate(90deg)}
 .fold > .outline,.fold > .section{margin-top:12px}
 .fold .section h3{display:none}
+
+.btn.mic.rec{border-color:var(--bad);color:#fff;background:rgba(255,97,80,.18);animation:micpulse 1.2s ease-in-out infinite}
+@keyframes micpulse{50%{box-shadow:0 0 0 6px rgba(255,97,80,.18)}}
+@media (prefers-reduced-motion:reduce){.btn.mic.rec{animation:none}}
 </style>
 
 <canvas id="fx-pcb" aria-hidden="true"></canvas><canvas id="fx-pulse" aria-hidden="true"></canvas><div id="fx-light" aria-hidden="true"></div><div id="fx-vig" aria-hidden="true"></div>
@@ -1549,7 +1553,6 @@ function renderTopic(n){
   modes += '<button class="mode ai" data-m="ai"><b>AI zkoušející</b><span>Zkouší tě jako komise: ptá se, hodnotí odpovědi a na konci dá známku.</span><em>ústní · AI</em></button>';
   const labs = LABS[n] || [];
   const labHTML = labs.map((l,i) => '<button class="mode lab'+(l.cre?' cre':'')+'" data-l="'+i+'"><b>'+esc(l.name)+'</b><span>'+esc(l.desc)+'</span>'+(l.cre||l.x ? '<em>'+(l.cre?'kreativní dílna ':'')+(l.x?'<span class="xtag">mimo PDF</span>':'')+'</em>' : '')+'</button>').join('');
-  modes += '<button class="mode ai" data-m="creative"><b>Vysvětli mi to jinak</b><span>AI napíše příběh, rap, přirovnání nebo mnemotechniku k podotázce.</span><em>kreativní · AI</em></button>';
   if(n === 11) modes += '<button class="mode" data-m="subnet"><b>Subnetting trenažér</b><span>Náhodné IP a prefixy: adresa sítě, broadcast, hosti, maska, wildcard.</span><em>nekonečně příkladů</em></button>';
   view.innerHTML =
     '<div class="bench wide"><button class="back" id="back">← Zpět na desku</button>'+
@@ -1905,6 +1908,7 @@ function runDraw(){
   spin();
 }
 
+window.MD_PROXY = {"url":"https://iiimsdxmkudopthteduw.supabase.co","key":"sb_publishable_R18F4Vos6PNA99mY9vVOow_TM_FaUVG","fn":"clever-worker"};
 /* ================= LABORATOŘ (v2) ================= */
 const LABS = {};
 function lab(n, name, desc, run){ (LABS[n] = LABS[n] || []).push({name, desc, run}); }
@@ -2680,13 +2684,83 @@ lab(20, 'Zapojení IDE a USB', 'Barvy konektorů a vodičů.', bucketLab(20, 'Za
 const AI = {mode:null, sample:null, dict:null, tts:null, needKey:false, ready:null};
 AI.ready = (async () => {
   try{
-    if(window.maturitaAI){ const s = await window.maturitaAI.status(); if(s && s.available){ AI.mode = 'electron'; AI.needKey = !s.hasKey; } return; }
+    const proxy = window.MD_PROXY && window.MD_PROXY.url && window.MD_PROXY.key;
+    if(window.maturitaAI){ const s = await window.maturitaAI.status(); if(s && s.available && (s.hasKey || !proxy)){ AI.mode = 'electron'; AI.needKey = !s.hasKey; return; } }
     if(window.claude && window.claude.use){
       const [sm, dc, ts] = await Promise.all([window.claude.use('sample'), window.claude.use('dictation').catch(() => null), window.claude.use('tts').catch(() => null)]);
       if(sm){ AI.sample = sm; AI.mode = 'artifact'; } AI.dict = dc; AI.tts = ts;
+      return;
     }
+    if(proxy) AI.mode = 'proxy';   // AI zdarma přes Supabase funkci (Groq)
   }catch(e){}
 })();
+function aiPlayerId(){
+  try{ let id = JSON.parse(localStorage.getItem('md3-lb-id') || 'null') || localStorage.getItem('md-ai-id');
+    if(!id){ id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); localStorage.setItem('md-ai-id', id); }
+    return String(id).replace(/[^\w-]/g, '').slice(0, 64); }catch(e){ return 'anon-' + Math.random().toString(36).slice(2, 12); }
+}
+function canVoice(){ return !!(AI.dict || (AI.mode === 'proxy' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)); }
+const VOICE = {rec:null, stream:null, timer:null};
+async function voiceToggle(ta, btn, onDone){
+  if(AI.dict) return false;   // v artefaktu se použije vestavěné diktování
+  if(VOICE.rec){ VOICE.rec.stop(); return true; }
+  let stream;
+  try{ stream = await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ toast('Mikrofon není povolený'); return true; }
+  const mime = ['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/webm','audio/mp4'].find(m => window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+  const rec = new MediaRecorder(stream, mime ? {mimeType:mime} : undefined), chunks = [];
+  VOICE.rec = rec; VOICE.stream = stream;
+  rec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = async () => {
+    clearTimeout(VOICE.timer); stream.getTracks().forEach(t => t.stop()); VOICE.rec = null;
+    if(btn){ btn.classList.remove('rec'); btn.textContent = 'Přepisuju…'; btn.disabled = true; }
+    try{
+      const blob = new Blob(chunks, {type: rec.mimeType || mime || 'audio/webm'});
+      if(blob.size < 1500) throw {message:'nahrávka je moc krátká'};
+      const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1] || ''); fr.onerror = rej; fr.readAsDataURL(blob); });
+      const P = window.MD_PROXY, h = {apikey:P.key, 'Content-Type':'application/json'}; if(/^eyJ/.test(P.key)) h.Authorization = 'Bearer ' + P.key;
+      const r = await fetch(P.url.replace(/\/$/, '') + '/functions/v1/' + (P.fn || 'ai-zkousejici'), {method:'POST', headers:h, body:JSON.stringify({kind:'stt', audio:b64, mime:blob.type, player:aiPlayerId()})});
+      const j = await r.json().catch(() => null);
+      if(!r.ok) throw {message:(j && j.message) || ('chyba ' + r.status)};
+      const txt = (j && j.text || '').trim();
+      if(ta && !ta.isConnected && ta.id) ta = document.getElementById(ta.id) || ta;
+      if(txt && ta){ ta.value = (ta.value ? ta.value.replace(/\s*$/, ' ') : '') + txt; ta.focus(); }
+      else if(!txt) toast('Nic jsem nezachytil, zkus mluvit blíž k mikrofonu');
+    }catch(e){ toast('Přepis se nepovedl: ' + (e && e.message || 'chyba')); }
+    if(btn){ btn.disabled = false; btn.textContent = 'Mluvit'; }
+    if(onDone) onDone();
+  };
+  rec.start(); if(btn){ btn.classList.add('rec'); btn.textContent = 'Poslouchám… klikni pro konec'; }
+  VOICE.timer = setTimeout(() => { if(VOICE.rec === rec) rec.stop(); }, 90000);
+  return true;
+}
+async function aiProxyAsk(system, turns, onText, signal){
+  const P = window.MD_PROXY, url = P.url.replace(/\/$/, '') + '/functions/v1/' + (P.fn || 'ai-zkousejici');
+  const h = {apikey:P.key, 'Content-Type':'application/json'}; if(/^eyJ/.test(P.key)) h.Authorization = 'Bearer ' + P.key;
+  let r;
+  for(let attempt = 0; ; attempt++){
+    try{ r = await fetch(url, {method:'POST', headers:h, signal, body:JSON.stringify({system, messages:turns, player:aiPlayerId()})}); }
+    catch(e){ if(e && e.name === 'AbortError') throw {code:'cancelled'}; throw {code:'upstream_error', message:'bez připojení k internetu'}; }
+    if(r.ok) break;
+    let j = null; try{ j = await r.json(); }catch(e){}
+    const busy = (j && j.code === 'busy') || (r.status === 429 && j && /přetížen/.test(j.message || ''));
+    if(busy && attempt < 3){ onText('AI je chvilku přetížená, zkouším to znovu…'); await new Promise(res => setTimeout(res, 7000 * (attempt + 1))); if(signal && signal.aborted) throw {code:'cancelled'}; continue; }
+    throw {code:busy ? 'rate_limited' : ((j && j.code) || (r.status === 429 ? 'rate_limited' : 'upstream_error')), message:(j && j.message) || ('chyba ' + r.status)};
+  }
+  const rd = r.body.getReader(), dec = new TextDecoder(); let buf = '', text = '';
+  for(;;){
+    const {done, value} = await rd.read(); if(done) break;
+    buf += dec.decode(value, {stream:true});
+    let i; while((i = buf.indexOf('\n')) >= 0){
+      const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+      if(!line.startsWith('data:')) continue;
+      const d = line.slice(5).trim(); if(d === '[DONE]') continue;
+      try{ const j = JSON.parse(d); const c = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content; if(c){ text += c; onText(text); } if(j.error) throw {code:'upstream_error', message:j.error.message || 'chyba AI'}; }catch(e){ if(e && e.code) throw e; }
+    }
+  }
+  if(!text) throw {code:'upstream_error', message:'AI vrátila prázdnou odpověď'};
+  return text;
+}
 function rawExcerpt(n, text, max){
   const raw = RAW[n] || ''; if(!raw) return '';
   if(raw.length <= max) return raw;
@@ -2698,6 +2772,7 @@ function rawExcerpt(n, text, max){
 }
 function aiErrText(e){
   const c = e && e.code;
+  if(c === 'rate_limited' && e.message) return e.message;
   return ({not_granted:'Použití AI bylo zamítnuto.', rate_limited:'Moc dotazů najednou nebo vyčerpaný limit. Zkus to za chvíli.', no_key:'Chybí API klíč.', auth:'API klíč nefunguje. Zkontroluj ho v nastavení.', refused:'AI na tohle neodpoví. Zkus otázku přeformulovat.', sampling_disabled:'AI není pro tento účet dostupná.', session_expired:'Přihlas se znovu.'}[c]) || ('AI teď neodpovídá'+(e && e.message ? ': '+e.message : '')+'. Zkus to znovu.');
 }
 async function aiAsk(system, turns, onText, signal){
@@ -2710,10 +2785,11 @@ async function aiAsk(system, turns, onText, signal){
     const r = await AI.sample([{role:'user', content:system}, ...turns], {cache:false, signal, onText:({text}) => onText(text)});
     return r.text;
   }
+  if(AI.mode === 'proxy') return aiProxyAsk(system, turns, onText, signal);
   throw {code:'unavailable', message:'AI není dostupná'};
 }
 function aiUnavailableHTML(){
-  return '<div class="aibox"><b>AI tady není dostupná.</b><p class="muted small">AI funguje v Claude artefaktu (na tvůj Claude účet) a v desktopové aplikaci s vlastním API klíčem Anthropic. V samostatném HTML souboru ji spustit nejde.</p></div>';
+  return '<div class="aibox"><b>AI tady není dostupná.</b><p class="muted small">AI zkoušející běží zdarma přes server hry. Pokud se tohle zobrazuje, server ještě není nastavený (Supabase funkce ai-zkousejici). Jinak AI funguje v Claude artefaktu nebo v desktopové aplikaci s vlastním API klíčem Anthropic.</p></div>';
 }
 function keyFormHTML(){
   return '<div class="aibox"><b>Nastav API klíč</b><p class="muted small">Desktopová aplikace volá Claude přes tvůj API klíč z console.anthropic.com. Klíč se uloží jen v tomto počítači (šifrovaně, pokud to systém umí). Každý dotaz se platí z tvého API účtu.</p>'+
@@ -2738,7 +2814,7 @@ function aiExplainButton(cur, host){
       const t = cur.n ? T[cur.n] : null;
       const sys = 'Jsi trpělivý učitel IT na střední průmyslové škole a pomáháš studentovi s přípravou k maturitě. Odpovídej česky, stručně (nejvýše 120 slov), věcně a srozumitelně, bez nadpisů. Drž se studentových podkladů; když podklady něco neříkají, řekni to.';
       const msg = 'Téma: '+(t ? t.n+'. '+t.t : '')+'\nOtázka: '+cur.text+'\nSprávná odpověď: '+cur.ans+'\nŠpatné možnosti: '+cur.opts.filter(o => o !== cur.ans).join(' | ')+
-        '\n\nVýtah z podkladů studenta:\n"""\n'+rawExcerpt(cur.n, cur.text+' '+cur.ans, 3500)+'\n"""\n\nVysvětli, proč je správná odpověď správná a čím se liší od ostatních možností. Přidej jednu pomůcku, jak si to zapamatovat.';
+        '\n\nVýtah z podkladů studenta:\n"""\n'+rawExcerpt(cur.n, cur.text+' '+cur.ans, AI.mode === 'proxy' ? 2000 : 3500)+'\n"""\n\nVysvětli, proč je správná odpověď správná a čím se liší od ostatních možností. Přidej jednu pomůcku, jak si to zapamatovat.';
       try{ await aiAsk(sys, [{role:'user', content:msg}], txt => { box.textContent = txt; }); }
       catch(e){ box.textContent = aiErrText(e); }
     };
@@ -2750,7 +2826,7 @@ function runAIExam(n){
   const t = T[n]; let turns = [], busy = false, ctl = null, speak = false, asked = 0;
   const sys = 'Jsi zkoušející u ústní maturitní zkoušky z IT (hardware, operační systémy, sítě) na střední průmyslové škole elektrotechnické. Zkoušíš otázku č. '+n+': '+t.t+'.\n\n'+
     'Osnova otázky:\n- '+t.outline.join('\n- ')+'\n\nKlíčové body, které by měl student znát:\n'+t.open.map(o => '* '+o.q+': '+o.k.join('; ')).join('\n')+
-    (RAW[n] ? '\n\nVýtah ze studentových podkladů (fakta ber odsud):\n"""\n'+rawExcerpt(n, t.outline.join(' '), 14000)+'\n"""' : '')+
+    (RAW[n] ? '\n\nVýtah ze studentových podkladů (fakta ber odsud):\n"""\n'+rawExcerpt(n, t.outline.join(' '), AI.mode === 'proxy' ? 4500 : 14000)+'\n"""' : '')+
     '\n\nPravidla:\n- Mluv česky, jako vlídný, ale důsledný zkoušející. Buď stručný: nejvýš 90 slov na odpověď.\n- Vždy polož jen jednu otázku. Postupně projdi osnovu od začátku, ptej se i doplňujícími otázkami („a proč?“, „uveď příklad“), jako komise.\n'+
     '- Po každé odpovědi studenta nejdřív krátce zhodnoť: co bylo správně, co chybí nebo je špatně (oprav to podle podkladů). Pak polož další otázku.\n- Odpověď na svou otázku předem neprozrazuj.\n'+
     '- Když student napíše „KONEC“, nebo už jsi položil asi 7 otázek, ukonči zkoušení: dej známku 1–5 podle maturitní stupnice, napiš 2–3 silné stránky a 2–3 věci, které má doplnit. Na úplný konec napiš řádek ve tvaru ZNÁMKA: X.';
@@ -2767,7 +2843,7 @@ function runAIExam(n){
     shell('<div class="chat" id="chat">'+bubbles()+(pending != null ? '<div class="msgb ai" id="pend">'+esc(pending || 'Zkoušející přemýšlí…')+'</div>' : '')+'</div>'+
       '<label class="muted small mono" for="ans">Tvoje odpověď</label><textarea class="notes" id="ans" placeholder="Odpověz vlastními slovy…"'+(busy?' disabled':'')+'></textarea>'+
       '<div class="row" style="margin-top:10px"><button class="btn" id="send"'+(busy?' disabled':'')+'>Odeslat<span class="kbd">Ctrl+Enter</span></button>'+
-      (AI.dict ? '<button class="btn ghost" id="mic"'+(busy?' disabled':'')+'>Diktovat</button>' : '')+
+      (canVoice() ? '<button class="btn ghost mic" id="mic"'+(busy?' disabled':'')+'>Mluvit</button>' : '')+
       (AI.tts ? '<button class="btn ghost" id="spk" aria-pressed="'+speak+'">'+(speak?'Předčítání zap':'Předčítání vyp')+'</button>' : '')+
       '<button class="btn ghost" id="end"'+(busy?' disabled':'')+'>Ukončit a ohodnotit</button>'+(busy?'<button class="btn red" id="stop">Zastavit</button>':'')+'</div>');
     const chat = $('#chat'); chat.scrollTop = chat.scrollHeight;
@@ -2778,14 +2854,14 @@ function runAIExam(n){
     $('#end').onclick = () => { ta.value = 'KONEC'; send(); };
     if($('#stop')) $('#stop').onclick = () => { if(ctl) ctl.abort(); };
     if($('#spk')) $('#spk').onclick = () => { speak = !speak; if(!speak && AI.tts) try{ AI.tts.stop(); }catch(e){} render(); };
-    if($('#mic')) $('#mic').onclick = () => dictate(ta);
+    if($('#mic')) $('#mic').onclick = () => { if(AI.dict) dictate(ta); else voiceToggle(ta, $('#mic')); };
   }
   function dictate(ta){
     const d = AI.dict; const b = $('#mic'); let base = ta.value ? ta.value + ' ' : '';
     try{
       d.onPartial(({text}) => { ta.value = base + text; });
       d.onFinal(({text}) => { base = base + text + ' '; ta.value = base; });
-      d.onState(({state}) => { if(b) b.textContent = state === 'listening' ? 'Poslouchám… (klikni pro stop)' : 'Diktovat'; });
+      d.onState(({state}) => { if(b) b.textContent = state === 'listening' ? 'Poslouchám… (klikni pro stop)' : 'Mluvit'; });
       if(b.textContent.startsWith('Poslouchám')){ d.stop(); return; }
       d.start().catch(e => { if(e && e.code === 'not_granted'){ AI.dict = null; render(); } });
     }catch(e){}
@@ -3343,7 +3419,7 @@ function runCreativeAI(n){
 })();
 
 /* ================= ŽEBŘÍČEK TŘÍDY (Supabase, bez účtů) ================= */
-const LBC = {"url":"https://iiimsdxmkudopthteduw.supabase.co","key":"sb_publishable_R18F4Vos6PNA99mY9vVOow_TM_FaUVG"};   // {url, key} – doplní build z leaderboard.json
+const LBC = {"url":"https://iiimsdxmkudopthteduw.supabase.co","key":"sb_publishable_R18F4Vos6PNA99mY9vVOow_TM_FaUVG","aiFn":"clever-worker"};   // {url, key} – doplní build z leaderboard.json
 const LB = {on: !!(LBC && LBC.url && LBC.key), me: lsGet('lb-me', null), last: null, busy: false, remoteXp: lsGet('lb-rxp', 0), noState: false};
 function lbId(){
   let id = lsGet('lb-id', null);
