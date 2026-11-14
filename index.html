@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="14.11.2026 20:16">
+<meta name="md-version" content="14.11.2026 20:18">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -871,7 +871,7 @@ main{position:relative;z-index:2}
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">14.11.2026 20:16</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">14.11.2026 20:18</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -1624,7 +1624,7 @@ function renderTopic(n){
     '<button class="mode" data-m="cards"><b>Kartičky</b><span>Otázka, otočit, ohodnotit se. Častěji se vrací to, co neumíš.</span><em>mezerník = otočit</em></button>'+
     '<button class="mode" data-m="match"><b>Spojovačka</b><span>Spoj 6 pojmů s jejich významem co nejrychleji.</span><em>rekord '+(S.match[n]? S.match[n]+' s':'–')+'</em></button>'+
     '<button class="mode" data-m="oral"><b>Ústní zkouška</b><span>Odpovíš nahlas, odkryješ klíčové body a odškrtáš, co jsi řekl. Limit 15 minut.</span><em>'+oralDone+'/'+t.open.length+' na 75 %+</em></button>'+
-    '<button class="mode ai" data-m="ai"><b>Zkoušení s AI</b><span>AI se ptá jako komise, opravuje podle tvého PDF a dá známku. Můžeš odpovídat hlasem.</span><em>AI zdarma · 15 min</em></button>';
+    '<button class="mode ai" data-m="ai"><b>Zkoušení s AI</b><span>AI se ptá jako komise, opravuje podle tvého PDF a dá známku.</span><em>AI zdarma · 15 min</em></button>';
   const labs = LABS[n] || [];
   const labHTML = labs.map((l,i) => '<button class="mode lab'+(l.cre?' cre':'')+'" data-l="'+i+'"><b>'+esc(l.name)+'</b><span>'+esc(l.desc)+'</span>'+(l.cre||l.x ? '<em>'+(l.cre?'kreativní dílna ':'')+(l.x?'<span class="xtag">mimo PDF</span>':'')+'</em>' : '')+'</button>').join('');
   if(n === 11) modes += '<button class="mode" data-m="subnet"><b>Subnetting trenažér</b><span>Náhodné IP a prefixy: adresa sítě, broadcast, hosti, maska, wildcard.</span><em>nekonečně příkladů</em></button>';
@@ -1906,7 +1906,7 @@ function runOral(n, drawn){
       '<div class="section"><h3>Zadání otázky</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+galleryHTML(n, 'Obrázky, které můžeš u zkoušení popsat')+
       '<div class="section"><h3>Jak chceš zkoušet?</h3><div class="ochoice">'+
         '<button class="ochoice-b" id="go"><b>Sám</b><span>Dostaneš '+t.open.length+' podotázek. Odpovíš nahlas nebo do poznámek, odkryješ klíčové body a poctivě odškrtáš, co jsi řekl.</span><em>bez AI · Enter</em></button>'+
-        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídáš psaním nebo tlačítkem Mluvit.</span><em id="aist">AI zdarma</em></button>'+'</div>'+
+        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídáš psaním.</span><em id="aist">AI zdarma</em></button>'+'</div>'+
       '<label class="otoggle"><input type="checkbox" id="timed"'+(timed?' checked':'')+'><span>Časový limit 15 minut, jako u maturity</span></label></div></div>';
     document.getElementById('back').onclick = () => drawn ? go('') : renderTopic(n);
     const tb = document.getElementById('timed'); tb.onchange = () => { timed = tb.checked; lsSet('oral-timed', timed); };
@@ -3126,9 +3126,8 @@ function runAIExam(n, opts){
           '<div class="row"><button class="btn" id="again">Zkoušet znovu</button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>'
         : call.on ? '<div class="callpanel" id="callp" data-st="'+call.state+'"><div class="callorb"><i></i><i></i><i></i></div><div class="callinfo"><b id="callst">'+esc(call.label)+'</b><span id="calllive"></span></div>'+
           '<div class="row"><button class="btn" id="csend">Domluvil jsem</button><button class="btn ghost" id="cskip">Přeskočit čtení</button><button class="btn ghost" id="ctype">Psát místo mluvení</button><span class="spacer"></span><button class="btn red" id="chang">Zavěsit a ohodnotit</button></div></div>'
-        : '<div class="composer"><textarea class="notes" id="ans" placeholder="'+(canVoice() ? 'Odpověz vlastními slovy, nebo klikni na Mluvit…' : 'Odpověz vlastními slovy…')+'"'+(busy?' disabled':'')+'></textarea>'+
+        : '<div class="composer"><textarea class="notes" id="ans" placeholder="Odpověz vlastními slovy…"'+(busy?' disabled':'')+'></textarea>'+
           '<div class="row"><button class="btn" id="send"'+(busy?' disabled':'')+'>Odeslat<span class="kbd">Ctrl+Enter</span></button>'+
-          (canVoice() ? '<button class="btn ghost mic" id="mic"'+(busy?' disabled':'')+'>Mluvit</button>' : '')+
           (AI.tts ? '<button class="btn ghost" id="spk" aria-pressed="'+speak+'">'+(speak?'Předčítání zap':'Předčítání vyp')+'</button>' : '')+
           '<span class="spacer"></span>'+(busy ? '<button class="btn red" id="stop">Zastavit</button>' : '<button class="btn ghost" id="end">Ukončit a ohodnotit</button>')+'</div></div>'));
     if(timer && timer.left){ const b = document.getElementById('otimer'); if(b){ const l = timer.left(); b.textContent = String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0'); } }
