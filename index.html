@@ -1,4 +1,4 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Maturitní deska 3</title>
+<title>Maturitní deska 3</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -704,6 +704,71 @@ main{position:relative;z-index:2}
   .fxbar{margin-left:auto}
 }
 
+/* ---- úrovně kvízu ---- */
+.lvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:16px}
+.lvcard{display:flex;align-items:center;gap:14px;background:var(--mask-2);border:1px solid var(--copper-dim);border-radius:var(--r);padding:12px 14px;text-align:left;cursor:pointer;color:var(--silk);font:inherit;transition:border-color .15s,transform .15s var(--ease)}
+.lvcard:hover:not(:disabled){border-color:var(--copper);transform:translateY(-2px)}
+.lvcard.pass{border-color:color-mix(in srgb,var(--ok) 55%,transparent)}
+.lvcard.locked{opacity:.45;cursor:not-allowed;border-style:dashed}
+.lvno{flex:none;width:40px;height:40px;display:grid;place-items:center;background:var(--chip);border:1px solid var(--copper-dim);border-radius:4px;font:600 18px/1 var(--font-mono);color:var(--copper);box-shadow:inset 0 0 0 3px var(--chip-2)}
+.lvcard.pass .lvno{color:var(--ok);border-color:var(--ok)}
+.lvtxt{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.lvtxt b{font:600 15px/1.1 var(--font-display)}
+.lvtxt span{font-size:12.5px;color:var(--silk-dim)}
+.lvstars{display:flex;gap:4px;flex:none}
+.lvstars i{width:9px;height:9px;border-radius:50%;background:var(--led-off);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.lvstars i.on{background:var(--led-on);box-shadow:0 0 8px var(--led-on)}
+/* ---- profil ---- */
+.phead{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:16px;align-items:stretch;margin-top:8px}
+.pchip{position:relative;background:var(--chip-2);border:1px solid var(--copper-dim);border-radius:6px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+.pchip .notch{position:absolute;top:-1px;left:50%;width:26px;height:10px;margin-left:-13px;background:var(--chip);border:1px solid var(--copper-dim);border-top:0;border-radius:0 0 13px 13px}
+.pchip b{font:600 24px/1.1 var(--font-display);overflow-wrap:anywhere}
+.pchip span{color:var(--copper);font:500 13px/1.3 var(--font-mono)}
+.pchip em{font-style:normal;font-size:12.5px;color:var(--silk-dim);margin-top:2px}
+.xpbar.big{width:100%;height:8px;margin-top:10px}
+.ptiles{margin:0;grid-template-columns:repeat(auto-fit,minmax(105px,1fr))}
+.top .stats{gap:12px}
+.pcols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+.pcols h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.prow{width:100%;display:grid;grid-template-columns:42px minmax(0,1fr) 90px 44px;gap:10px;align-items:center;background:var(--mask-2);border:1px solid transparent;border-radius:4px;padding:8px 10px;color:var(--silk);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s}
+.plist.all .prow{grid-template-columns:42px minmax(0,1fr) 120px 44px 110px}
+.prow:hover{border-color:var(--copper)}
+.prow .ref{font:600 12px/1 var(--font-mono);color:var(--copper)}
+.prow .pt{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar{height:6px;background:var(--led-off);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--copper),var(--led-on))}
+.prow .pv{font:500 12.5px/1 var(--font-mono);text-align:right;color:var(--silk)}
+.prow .pv.sm{color:var(--silk-dim);font-size:11.5px}
+.pcols .prow .pv.sm{display:none}
+.act28{display:grid;grid-template-columns:repeat(28,1fr);gap:4px;max-width:640px}
+.act28 span{aspect-ratio:1;border-radius:2px;background:var(--led-off);position:relative}
+.act28 span::after{content:"";position:absolute;inset:0;border-radius:2px;background:var(--led-on);opacity:var(--a);box-shadow:0 0 6px rgba(97,227,140,calc(var(--a)*.6))}
+.small{font-size:12.5px}
+/* ---- materiály / datasheety ---- */
+.dslist{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px}
+.ds{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--mask-2);border:1px solid var(--copper-dim);border-left:4px solid var(--copper);border-radius:4px;padding:10px 14px}
+.dsref{font:600 15px/1 var(--font-mono);color:var(--chip);background:var(--copper);border-radius:3px;padding:7px 0;text-align:center;letter-spacing:.04em}
+.dst{display:flex;flex-direction:column;gap:3px;min-width:0}
+.dst b{font:600 15px/1.2 var(--font-display)}
+.dst span{font-size:12.5px;color:var(--silk-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dsact{display:flex;gap:8px}
+.dsact .btn{padding:7px 14px;text-decoration:none}
+.dshead{display:flex;gap:16px;align-items:center;flex-wrap:wrap;border-bottom:1px dashed var(--copper-dim);padding:10px 0 16px;margin-top:6px}
+.dshead .dsref{width:62px;font-size:17px;padding:10px 0}
+.dshead > div{flex:1;min-width:200px}
+.dshead h1{font-size:26px;margin:0}
+.dstext{max-width:72ch;color:var(--silk);font-size:15px;line-height:1.6}
+.dstext h3{font:600 16px/1.3 var(--font-display);color:var(--copper);margin:22px 0 6px;padding-left:10px;border-left:3px solid var(--copper)}
+.dstext p{margin:0 0 10px}
+@media (max-width:640px){
+  .phead,.pcols{grid-template-columns:1fr}
+  .plist.all .prow{grid-template-columns:42px minmax(0,1fr) 44px}
+  .plist.all .prow .pbar,.plist.all .prow .pv.sm{display:none}
+  .ds{grid-template-columns:48px minmax(0,1fr)}
+  .dsact{grid-column:1/-1}
+  .act28{gap:2px}
+}
 </style>
 
 <canvas id="fx-pcb" aria-hidden="true"></canvas><canvas id="fx-pulse" aria-hidden="true"></canvas><div id="fx-light" aria-hidden="true"></div><div id="fx-vig" aria-hidden="true"></div>
@@ -1308,7 +1373,7 @@ const RANKS = ['Tranzistor','Hradlo','Klopný obvod','Registr','Sčítačka','AL
 
 /* ---------------- state ---------------- */
 const KEY = 'maturita-deska-v1';
-function def(){ return {xp:0, box:{}, seen:{}, oral:{}, best:{survival:0}, match:{}, days:[], mute:false}; }
+function def(){ return {xp:0, box:{}, seen:{}, oral:{}, best:{survival:0}, match:{}, days:[], mute:false, ans:{}, daily:{}, lvlq:{}}; }
 function load(){ try{ const r = localStorage.getItem(KEY); if(r){ const o = JSON.parse(r); return Object.assign(def(), o); } }catch(e){} return def(); }
 let S = load();
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -1336,6 +1401,8 @@ function addXP(n){
 function record(id, ok){
   S.seen[id] = 1;
   S.box[id] = ok ? Math.min((S.box[id]||0)+1, 5) : 0;
+  const a = S.ans[id] || (S.ans[id] = [0,0]); a[ok ? 0 : 1]++;
+  const d = today(), dd = S.daily[d] || (S.daily[d] = [0,0]); dd[ok ? 0 : 1]++;
   markDay(); save();
 }
 function qM(id){ return Math.min(S.box[id]||0, 4)/4; }
@@ -1361,7 +1428,7 @@ function pickWeighted(items, k, wf){
   }
   return out;
 }
-const weight = q => S.seen[q.id] ? (6 - (S.box[q.id]||0)) : 4.5;
+const weight = q => S.seen[q.id] ? [7,4,3,2,1.5,1][Math.min(S.box[q.id]||0, 5)] : 9;
 function mcq(q){ const opts = shuffle([q.a, ...q.w]); return {id:q.id, n:q.n, text:q.q, opts, correct:opts.indexOf(q.a), ans:q.a, x:q.x}; }
 function ref(n){ return 'U'+String(n).padStart(2,'0'); }
 function pct(x){ return Math.round(x*100)+' %'; }
@@ -1396,7 +1463,10 @@ function renderStats(){
     '<div class="stat"><b>'+S.xp+'</b> XP</div>'+
     '<div class="stat">série <b>'+streak()+'</b> '+(streak()===1?'den':(streak()>=2&&streak()<=4?'dny':'dní'))+'</div>'+
     '<div class="stat"><b>'+masteredCount()+'</b>/'+ALLQ.length+' zvládnuto</div>'+
+    '<button class="iconbtn" id="nav-prof">profil</button><button class="iconbtn" id="nav-mat">materiály</button>'+
     '<button class="iconbtn" id="mute" aria-pressed="'+(!S.mute)+'">'+(S.mute?'zvuk vyp':'zvuk zap')+'</button>';
+  document.getElementById('nav-prof').onclick = () => runProfile();
+  document.getElementById('nav-mat').onclick = () => runMaterials();
   document.getElementById('mute').onclick = () => { S.mute = !S.mute; save(); renderStats(); FX.refresh(); if(!S.mute) beep('ok'); };
 }
 document.getElementById('home').onclick = () => go('');
@@ -1456,7 +1526,7 @@ function renderTopic(n){
   const done = QBY[n].filter(q => (S.box[q.id]||0) >= 3).length;
   const oralDone = t.open.filter((_,i) => (S.oral[n+'-'+i]||0) >= .75).length;
   let modes =
-    '<button class="mode" data-m="quiz"><b>Kvíz</b><span>10 otázek, 3 pojistky. Série správných odpovědí násobí XP.</span><em>klávesy 1–4</em></button>'+
+    '<button class="mode" data-m="quiz"><b>Kvíz po úrovních</b><span>'+Math.ceil(QBY[n].length/10)+' úrovní po 10 otázkách, další se odemkne od 7/10. Plus chytrý mix a celé téma.</span><em>'+lvlSummary(n)+'</em></button>'+
     '<button class="mode" data-m="cards"><b>Kartičky</b><span>Otázka, otočit, ohodnotit se. Častěji se vrací to, co neumíš.</span><em>mezerník = otočit</em></button>'+
     '<button class="mode" data-m="match"><b>Spojovačka</b><span>Spoj 6 pojmů s jejich významem co nejrychleji.</span><em>rekord '+(S.match[n]? S.match[n]+' s':'–')+'</em></button>'+
     '<button class="mode" data-m="oral"><b>Ústní zkouška</b><span>Odpověz nahlas, pak si odškrtej, co jsi řekl z klíčových bodů.</span><em>'+oralDone+'/'+t.open.length+' na 75 %+</em></button>';
@@ -1483,7 +1553,7 @@ function renderTopic(n){
     const md = b.dataset.m;
     if(md === 'ai') runAIExam(n);
     if(md === 'creative') runCreativeAI(n);
-    if(md === 'quiz') runTopicQuiz(n);
+    if(md === 'quiz') runQuizLevels(n);
     if(md === 'cards') runCards(n);
     if(md === 'match') runMatch(n);
     if(md === 'oral') runOral(n);
@@ -1559,6 +1629,7 @@ function runQuiz(cfg){
     document.getElementById('again').onclick = cfg.again;
     document.getElementById('bk').onclick = cfg.back;
     onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); cfg.again(); } };
+    if(cfg.after) cfg.after(score);
     window.scrollTo(0,0);
   }
   next();
@@ -3256,26 +3327,31 @@ function runCreativeAI(n){
 
 /* ================= ŽEBŘÍČEK TŘÍDY (Supabase, bez účtů) ================= */
 const LBC = {"url":"https://iiimsdxmkudopthteduw.supabase.co","key":"sb_publishable_R18F4Vos6PNA99mY9vVOow_TM_FaUVG"};   // {url, key} – doplní build z leaderboard.json
-const LB = {on: !!(LBC && LBC.url && LBC.key), me: lsGet('lb-me', null), last: null, busy: false, remoteXp: lsGet('lb-rxp', 0)};
+const LB = {on: !!(LBC && LBC.url && LBC.key), me: lsGet('lb-me', null), last: null, busy: false, remoteXp: lsGet('lb-rxp', 0), noState: false};
 function lbId(){
   let id = lsGet('lb-id', null);
   if(!id){ id = (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2); lsSet('lb-id', id); }
   return id;
 }
 function lbRow(){ return {player_id: lbId(), nick: LB.me.nick, trida: LB.me.trida || null, xp: Math.max(S.xp, LB.remoteXp || 0), lvl: levelOf(S.xp), mastered: masteredCount(), survival: S.best.survival || 0, updated_at: new Date().toISOString()}; }
+function lbRowS(){ const r = lbRow(); if(!LB.noState){ const st = Object.assign({}, S); delete st.mute; r.state = st; } return r; }
 function lbHeaders(extra){ const h = {apikey:LBC.key, 'Content-Type':'application/json'}; if(/^eyJ/.test(LBC.key)) h.Authorization = 'Bearer ' + LBC.key; return Object.assign(h, extra || {}); }
 async function lbFetch(path, opt){
   const r = await fetch(LBC.url.replace(/\/$/, '') + '/rest/v1/' + path, Object.assign({headers:lbHeaders()}, opt || {}));
-  if(!r.ok) throw new Error('HTTP ' + r.status);
+  if(!r.ok){ let t = ''; try{ t = await r.text(); }catch(e){} const er = new Error('HTTP ' + r.status); er.status = r.status; er.body = t; throw er; }
   return r.status === 204 ? null : r.json().catch(() => null);
 }
 async function lbPush(){
   if(!LB.on || !LB.me || LB.busy) return;
-  const sig = Math.max(S.xp, LB.remoteXp || 0) + '|' + (S.best.survival||0) + '|' + LB.me.nick + '|' + LB.me.trida;
+  const sig = Math.max(S.xp, LB.remoteXp || 0) + '|' + (S.best.survival||0) + '|' + LB.me.nick + '|' + LB.me.trida + '|' + Object.keys(S.ans||{}).length + '|' + JSON.stringify(S.oral).length;
   if(sig === LB.last) return;
   LB.busy = true;
-  try{ await lbFetch('scores?on_conflict=player_id', {method:'POST', headers:lbHeaders({Prefer:'resolution=merge-duplicates,return=minimal'}), body:JSON.stringify(lbRow())}); LB.last = sig; }
-  catch(e){ /* offline – zkusí se příště */ }
+  const send = () => lbFetch('scores?on_conflict=player_id', {method:'POST', headers:lbHeaders({Prefer:'resolution=merge-duplicates,return=minimal'}), body:JSON.stringify(lbRowS())});
+  try{ await send(); LB.last = sig; }
+  catch(e){
+    if(!LB.noState && e.status >= 400 && e.status < 500 && /state/.test(e.body || '')){ LB.noState = true; try{ await send(); LB.last = sig; }catch(e2){} }
+    /* jinak offline – zkusí se příště */
+  }
   LB.busy = false;
 }
 setInterval(lbPush, 20000);
@@ -3283,16 +3359,18 @@ window.addEventListener('beforeunload', lbPush);
 
 function askCode(nick){
   view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět</button><h1 class="lbh">Pokračovat kódem hráče</h1>' +
-    '<p class="muted" style="max-width:62ch">Kód hráče najdeš v žebříčku na zařízení, kde už hraješ (pod tvým jménem). Vlož ho sem a budeš pokračovat se stejnou přezdívkou a body.</p>' +
+    '<p class="muted" style="max-width:62ch">Kód hráče najdeš v žebříčku na zařízení, kde už hraješ (pod tvým jménem). Vlož ho sem a budeš pokračovat se stejnou přezdívkou, body i profilem.</p>' +
     '<form id="cf" class="lbform"><label for="code">Kód hráče</label><input id="code" class="notes lbin mono" required autocomplete="off" spellcheck="false" placeholder="např. 3c6a3ac2-…"><div id="cmsg"></div><button class="btn" type="submit">Pokračovat</button></form></div>';
   $('#back').onclick = runLeaderboard;
   $('#cf').onsubmit = async e => {
     e.preventDefault(); const code = $('#code').value.trim();
     try{
-      const rows = await lbFetch('scores?select=player_id,nick,trida,xp&player_id=eq.' + encodeURIComponent(code) + '&limit=1');
+      const q = 'scores?player_id=eq.' + encodeURIComponent(code) + '&limit=1&select=player_id,nick,trida,xp';
+      let rows; try{ rows = await lbFetch(q + ',state'); }catch(e1){ if(e1.status === 400){ LB.noState = true; rows = await lbFetch(q); } else throw e1; }
       const r = rows && rows[0];
       if(!r){ $('#cmsg').innerHTML = '<p class="er">Takový kód v žebříčku není. Zkontroluj, že jsi ho zkopíroval celý.</p>'; return; }
       lsSet('lb-id', r.player_id); LB.me = {nick:r.nick, trida:r.trida || ''}; lsSet('lb-me', LB.me); LB.remoteXp = r.xp || 0; lsSet('lb-rxp', LB.remoteXp); LB.last = null;
+      if(r.state && typeof r.state === 'object' && (r.state.xp || 0) >= S.xp){ const mute = S.mute; S = Object.assign(def(), r.state, {mute}); save(); renderStats(); }
       toast('Vítej zpět, ' + r.nick); runLeaderboard();
     }catch(err){ $('#cmsg').innerHTML = '<p class="er">Nepodařilo se spojit s žebříčkem. Zkus to znovu.</p>'; }
   };
@@ -3309,7 +3387,7 @@ function runLeaderboard(){
     return;
   }
   if(!LB.me){
-    shell('<p class="muted" style="max-width:62ch">Zadej přezdívku, pod kterou tě uvidí ostatní. Nic dalšího se neposílá: jen XP, úroveň, počet zvládnutých otázek a rekord v přežití. Přezdívku zadáváš jen jednou.</p>' +
+    shell('<p class="muted" style="max-width:62ch">Zadej přezdívku, pod kterou tě uvidí ostatní. Ostatní uvidí jen přezdívku, XP, úroveň, počet zvládnutých otázek a rekord v přežití. Tvůj postup v otázkách se ukládá k profilu, abys ho mohl obnovit na jiném zařízení. Přezdívku zadáváš jen jednou.</p>' +
       '<form id="lbf" class="lbform"><label for="nick">Přezdívka</label><input id="nick" class="notes lbin" maxlength="24" required autocomplete="nickname" placeholder="např. Jarda">' +
       '<label for="trida">Třída (nepovinné)</label><input id="trida" class="notes lbin" maxlength="12" placeholder="např. 4.A"><div id="lbmsg"></div><button class="btn" type="submit" id="lbgo">Připojit se do žebříčku</button></form>' +
       '<p class="muted small" style="margin-top:18px">Už hraješ na jiném zařízení? <button class="linkbtn" id="havecode">Pokračuj kódem hráče</button></p>');
@@ -3387,10 +3465,145 @@ function runImageQuiz(){
   }, back:() => go(''), again:() => runImageQuiz()});
 }
 
-window.__md = {LABS, T, renderTopic, runAIExam};
+/* ================= v3: úrovně kvízu, profil hráče, materiály ================= */
+
+/* ---------- úrovně kvízu ---------- */
+function lvlCount(n){ return Math.ceil(QBY[n].length / 10); }
+function lvlBest(n, k){ return ((S.lvlq || {})[n] || {})[k]; }
+function lvlNeed(n, k){ return Math.ceil(Math.min(10, QBY[n].length - k*10) * 0.7); }
+function lvlOpen(n, k){ return k === 0 || (lvlBest(n, k-1) || 0) >= lvlNeed(n, k-1); }
+function lvlSummary(n){ let open = 0; for(let k = 0; k < lvlCount(n); k++) if(lvlOpen(n, k)) open = k+1; const done = Array.from({length:lvlCount(n)}, (_,k) => (lvlBest(n,k)||0) >= lvlNeed(n,k)).filter(Boolean).length; return 'splněno '+done+'/'+lvlCount(n)+' úrovní'; }
+function runQuizLevels(n){
+  onKey = null; const t = T[n], L = lvlCount(n);
+  let cards = '';
+  for(let k = 0; k < L; k++){
+    const size = Math.min(10, QBY[n].length - k*10), best = lvlBest(n, k), open = lvlOpen(n, k), need = lvlNeed(n, k);
+    const pass = (best||0) >= need, stars = best == null ? 0 : best >= size ? 3 : best >= need ? 2 : best > 0 ? 1 : 0;
+    cards += '<button class="lvcard'+(open?'':' locked')+(pass?' pass':'')+'" data-k="'+k+'"'+(open?'':' disabled')+'>'+
+      '<span class="lvno">'+(k+1)+'</span><span class="lvtxt"><b>Úroveň '+(k+1)+'</b><span>otázky '+(k*10+1)+'–'+(k*10+size)+(open ? (best != null ? ' · nejlépe '+best+'/'+size : ' · zatím nehráno') : ' · odemkne se za '+lvlNeed(n,k-1)+'/'+Math.min(10, QBY[n].length-(k-1)*10)+' v úrovni '+k)+'</span></span>'+
+      '<span class="lvstars" aria-label="'+stars+' ze 3">'+[0,1,2].map(i => '<i class="'+(i<stars?'on':'')+'"></i>').join('')+'</span></button>';
+  }
+  view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět na téma</button><h1 class="lbh">Kvíz po úrovních · '+n+'. '+esc(t.t)+'</h1>'+
+    '<p class="muted" style="max-width:62ch">Každá úroveň má pevných 10 otázek. Na další úroveň potřebuješ aspoň 7 správně. Úrovně tak projdou celé téma, nic se neopakuje dokola.</p>'+
+    '<div class="lvgrid">'+cards+'</div>'+
+    '<div class="section"><h3>Další varianty</h3><div class="modes">'+
+    '<button class="mode" data-v="mix"><b>Chytrý mix</b><span>10 otázek, častěji ty, které ještě neumíš nebo jsi neviděl. 3 pojistky.</span><em>opakování</em></button>'+
+    '<button class="mode" data-v="all"><b>Celé téma</b><span>Všech '+QBY[n].length+' otázek tématu v náhodném pořadí, bez pojistek.</span><em>generálka</em></button></div></div></div>';
+  $('#back').onclick = () => renderTopic(n);
+  $$('.lvcard').forEach(b => b.onclick = () => runLevel(n, +b.dataset.k));
+  $$('.mode[data-v]').forEach(b => b.onclick = () => b.dataset.v === 'mix' ? runTopicQuiz(n) : runWholeTopic(n));
+  window.scrollTo(0,0);
+}
+function runLevel(n, k){
+  const qs = shuffle(QBY[n].slice(k*10, k*10+10)).map(mcq), need = lvlNeed(n, k);
+  runQuiz({title:'Úroveň '+(k+1), total:qs.length, lives:null, record:true, next:i => qs[i],
+    onEnd:score => {
+      S.lvlq = S.lvlq || {}; const m = S.lvlq[n] || (S.lvlq[n] = {});
+      const was = m[k]; if(was == null || score > was) m[k] = score; save();
+      if(score >= need && (was == null || was < need) && k+1 < lvlCount(n)) toast('Odemčena úroveň '+(k+2));
+    },
+    extra:score => '<p class="muted">'+(score >= need ? (k+1 < lvlCount(n) ? 'Úroveň splněna. Můžeš pokračovat na úroveň '+(k+2)+'.' : 'Poslední úroveň splněna, celé téma máš projité.') : 'Na splnění potřebuješ '+need+' správně. Zkus to znovu.')+'</p>'+
+      (score >= need && k+1 < lvlCount(n) ? '<button class="btn" id="nextlv" style="margin-top:6px">Úroveň '+(k+2)+'</button>' : ''),
+    after:() => { const b = document.getElementById('nextlv'); if(b) b.onclick = () => runLevel(n, k+1); },
+    back:() => runQuizLevels(n), again:() => runLevel(n, k)});
+}
+function runWholeTopic(n){
+  const qs = shuffle(QBY[n]).map(mcq);
+  runQuiz({title:'Celé téma', total:qs.length, lives:null, record:true, next:i => qs[i], back:() => runQuizLevels(n), again:() => runWholeTopic(n)});
+}
+
+/* ---------- profil hráče ---------- */
+function topicStats(n){
+  let r = 0, w = 0; QBY[n].forEach(q => { const a = (S.ans||{})[q.id]; if(a){ r += a[0]; w += a[1]; } });
+  const o = T[n].open.length ? T[n].open.reduce((s,_,i) => s + (S.oral[n+'-'+i]||0), 0) / T[n].open.length : 0;
+  const seen = QBY[n].filter(q => S.seen[q.id]).length;
+  return {m: topicMastery(n), acc: r+w ? r/(r+w) : null, r, w, o, seen, tot: QBY[n].length};
+}
+function runProfile(){
+  onKey = null;
+  const L = levelOf(S.xp), lo = 50*(L-1)*L, hi = 50*L*(L+1), p = (S.xp-lo)/(hi-lo);
+  let R = 0, W = 0; Object.values(S.ans||{}).forEach(a => { R += a[0]; W += a[1]; });
+  const st = NUMS.map(n => Object.assign({n}, topicStats(n)));
+  const played = st.filter(x => x.seen > 0 || x.o > 0);
+  const strong = played.slice().sort((a,b) => b.m - a.m).slice(0, 3);
+  const weak = played.slice().sort((a,b) => a.m - b.m).filter(x => !strong.includes(x) || played.length < 2).slice(0, 3);
+  const untouched = st.filter(x => x.seen === 0 && x.o === 0);
+  const oralVals = Object.values(S.oral||{}); const oralAvg = oralVals.length ? oralVals.reduce((s,v) => s+v, 0)/oralVals.length : null;
+  const miss = ALLQ.filter(q => (S.ans||{})[q.id] && S.ans[q.id][1] > 0).sort((a,b) => (S.ans[b.id][1]-S.ans[b.id][0]) - (S.ans[a.id][1]-S.ans[a.id][0])).slice(0, 8);
+  // aktivita posledních 28 dní
+  const days = []; const d0 = new Date(); for(let i = 27; i >= 0; i--){ const d = new Date(d0); d.setDate(d.getDate()-i); const k = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); const v = (S.daily||{})[k]; days.push({k, n: v ? v[0]+v[1] : (S.days.includes(k) ? 1 : 0), d}); }
+  const maxD = Math.max(1, ...days.map(x => x.n));
+  const nick = (typeof LB !== 'undefined' && LB.me) ? LB.me.nick : null;
+  const pctS = x => x == null ? '—' : Math.round(x*100)+' %';
+  const row = x => '<li><button class="prow" data-n="'+x.n+'"><span class="ref">'+ref(x.n)+'</span><span class="pt">'+esc(T[x.n].t)+'</span><span class="pbar"><i style="width:'+(x.m*100).toFixed(1)+'%"></i></span><span class="pv">'+pct(x.m)+'</span><span class="pv sm">'+(x.acc==null?'—':Math.round(x.acc*100)+' % správně')+'</span></button></li>';
+  view.innerHTML = '<div class="bench wide prof">'+
+    '<button class="back" id="back">← Zpět na desku</button>'+
+    '<div class="phead"><div class="pchip"><span class="notch"></span><b>'+esc(nick || 'Ty')+'</b><span>'+esc(rankOf(L))+' · úroveň '+L+'</span><div class="xpbar big"><i style="width:'+(p*100).toFixed(1)+'%"></i></div><em>'+S.xp.toLocaleString('cs-CZ')+' XP · do další úrovně '+(hi-S.xp).toLocaleString('cs-CZ')+'</em></div>'+
+    '<div class="result ptiles"><div class="tile"><div class="v">'+masteredCount()+'</div><div class="l">zvládnutých otázek z '+ALLQ.length+'</div></div>'+
+    '<div class="tile"><div class="v">'+(R+W ? Math.round(R/(R+W)*100)+' %' : '—')+'</div><div class="l">úspěšnost ('+(R+W)+' odpovědí)</div></div>'+
+    '<div class="tile"><div class="v">'+streak()+'</div><div class="l">dní v řadě</div></div>'+
+    '<div class="tile"><div class="v">'+(S.best.survival||0)+'</div><div class="l">rekord v přežití</div></div>'+
+    '<div class="tile"><div class="v">'+pctS(oralAvg)+'</div><div class="l">ústní – pokrytí bodů</div></div></div></div>'+
+    (!played.length ? '<p class="muted" style="margin-top:18px">Zatím tu nic není. Zahraj si kvíz nebo ústní zkoušení a profil se začne plnit.</p>' :
+    '<div class="pcols"><div><h3>Tohle ti jde</h3><ul class="plist">'+(played.length < 2 ? '' : strong.map(row).join(''))+'</ul>'+(played.length < 2 ? '<p class="muted small">Zahraj si aspoň dvě témata a ukážu ti, co ti jde líp.</p>' : '')+'</div><div><h3>Na tom zapracuj</h3><ul class="plist">'+weak.map(row).join('')+'</ul>'+
+      (untouched.length ? '<p class="muted small">Ještě jsi nezačal: '+untouched.map(x => x.n+'.').join(' ')+'</p>' : '')+'</div></div>')+
+    '<div class="section"><h3>Aktivita za 4 týdny</h3><div class="act28">'+days.map(x => '<span title="'+x.k+': '+x.n+' odpovědí" style="--a:'+(x.n ? .25 + .75*x.n/maxD : 0)+'"></span>').join('')+'</div></div>'+
+    (miss.length ? '<div class="section"><h3>Nejčastější chyby</h3><div class="wronglist">'+miss.map(q => '<div><b>'+esc(q.q)+'</b><span>'+esc(q.a)+'</span> <em class="muted small">('+ref(q.n)+', chyb '+S.ans[q.id][1]+', správně '+S.ans[q.id][0]+')</em></div>').join('')+'</div>'+
+      '<div class="row" style="margin-top:12px"><button class="btn" id="fixmiss">Procvičit tyhle chyby</button></div></div>' : '')+
+    '<div class="section"><h3>Všechna témata</h3><ul class="plist all">'+st.map(row).join('')+'</ul></div>'+
+    '<p class="muted small" style="margin-top:16px">Profil se ukládá v tomhle prohlížeči'+(typeof LB !== 'undefined' && LB.on ? ' a s žebříčkem i online. Na jiném zařízení ho obnovíš kódem hráče v Žebříčku.' : '.')+'</p></div>';
+  $('#back').onclick = () => go('');
+  $$('.prow').forEach(b => b.onclick = () => go('t'+b.dataset.n));
+  const fm = $('#fixmiss'); if(fm) fm.onclick = () => { const qs = shuffle(miss).map(mcq); runQuiz({title:'Moje chyby', total:qs.length, lives:null, record:true, next:i => qs[i], back:() => runProfile(), again:() => runProfile()}); };
+  window.scrollTo(0,0);
+}
+
+/* ---------- materiály: datasheety ---------- */
+const IN_ARTIFACT = !!(window.claude && window.claude.use);
+function pdfName(n){ return 'materialy/' + String(n).padStart(2,'0') + '.pdf'; }
+function runMaterials(){
+  onKey = null;
+  view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět na desku</button><h1 class="lbh">Materiály</h1>'+
+    '<p class="muted" style="max-width:64ch">Tvoje podklady jako datasheety součástek na desce. Čti je přímo tady, nebo si otevři původní PDF.'+(IN_ARTIFACT ? ' PDF soubory jsou ve verzi na GitHubu a v aplikaci.' : '')+'</p>'+
+    '<ol class="dslist">'+NUMS.map(n => { const t = T[n], has = !!RAW[n];
+      return '<li class="ds"><span class="dsref">'+ref(n)+'</span><span class="dst"><b>'+esc(t.t)+'</b><span>'+(has ? t.outline.slice(0,3).map(esc).join(' · ') : 'Bez PDF – sestaveno podle oficiální osnovy')+'</span></span>'+
+        '<span class="dsact">'+(has ? '<button class="btn ghost rd" data-n="'+n+'">Číst</button>'+(IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">PDF</a>') : '<button class="btn ghost" data-t="'+n+'">Otevřít téma</button>')+'</span></li>'; }).join('')+'</ol></div>';
+  $('#back').onclick = () => go('');
+  $$('.rd').forEach(b => b.onclick = () => runReader(+b.dataset.n));
+  $$('[data-t]').forEach(b => b.onclick = () => go('t'+b.dataset.t));
+  window.scrollTo(0,0);
+}
+function rawToHTML(txt){
+  const lines = txt.split('\n').map(l => l.replace(/\f/g,'').trim()).filter(Boolean);
+  const out = []; let para = '';
+  const flush = () => { if(para){ out.push('<p>'+esc(para)+'</p>'); para = ''; } };
+  lines.forEach((l, i) => {
+    const next = lines[i+1] || '';
+    const isHead = l.length <= 60 && !/[.,;:)–-]$/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ0-9]/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !para;
+    if(isHead && l.split(' ').length <= 8){ flush(); out.push('<h3>'+esc(l)+'</h3>'); return; }
+    if(para && /^[a-záčďéěíňóřšťúůýž(]/.test(l)) para += ' ' + l;
+    else { flush(); para = l; }
+    if(/[.:]$/.test(l)) flush();
+  });
+  flush(); return out.join('');
+}
+function runReader(n){
+  onKey = null; const t = T[n];
+  view.innerHTML = '<div class="bench wide dsread"><button class="back" id="back">← Materiály</button>'+
+    '<div class="dshead"><span class="dsref">'+ref(n)+'</span><div><h1>'+esc(t.t)+'</h1><span class="muted small">Datasheet · maturitní otázka '+n+'</span></div>'+
+    (IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">Otevřít PDF</a>')+'</div>'+
+    '<div class="section"><h3>Osnova</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
+    galleryHTML(n, 'Obrázky')+
+    '<div class="section"><h3>Text podkladů</h3><div class="dstext">'+rawToHTML(RAW[n]||'')+'</div></div>'+
+    '<div class="row" style="margin-top:20px"><button class="btn" id="toq">Procvičit tohle téma</button></div></div>';
+  $('#back').onclick = () => runMaterials();
+  $('#toq').onclick = () => go('t'+n);
+  bindGallery(); window.scrollTo(0,0);
+}
+
+window.__md = {LABS, T, QBY, renderTopic, runAIExam, get S(){ return S; }};
 /* ---------------- boot ---------------- */
 renderStats();
 route();
 })();
 </script>
-</body></html>
