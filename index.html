@@ -791,7 +791,26 @@ main{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.btn.mic.rec{animation:none}}
 
 /* ---- ústní zkoušení: výběr + časovač + AI chat ---- */
-.ochoice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ochoice{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ochoice-b.call{background:linear-gradient(160deg,rgba(208,162,75,.12),transparent 60%),var(--mask-2)}
+.callpanel{position:sticky;bottom:0;display:grid;grid-template-columns:auto 1fr;gap:12px 18px;align-items:center;background:var(--chip-2);border:1px solid var(--copper-dim);border-radius:12px;padding:16px 18px;margin-top:8px;box-shadow:0 -10px 30px rgba(0,0,0,.35)}
+.callpanel .row{grid-column:1/-1;margin:0}
+.callpanel .spacer{flex:1}
+.callinfo b{display:block;font:600 17px/1.3 var(--font-display)}
+.callinfo span{display:block;font-size:14px;color:var(--silk-dim);margin-top:4px;min-height:1.2em}
+.callorb{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--mask);border:2px solid var(--copper-dim);transition:border-color .2s,box-shadow .2s}
+.callorb i{width:5px;height:12px;border-radius:3px;background:var(--copper);opacity:.5}
+.callpanel[data-st="speak"] .callorb{border-color:var(--copper);box-shadow:0 0 0 6px rgba(208,162,75,.15)}
+.callpanel[data-st="speak"] .callorb i{animation:eq .9s ease-in-out infinite;opacity:1}
+.callpanel[data-st="speak"] .callorb i:nth-child(2){animation-delay:.15s}.callpanel[data-st="speak"] .callorb i:nth-child(3){animation-delay:.3s}
+.callpanel[data-st="listen"] .callorb{border-color:var(--led-on);box-shadow:0 0 0 0 rgba(97,227,140,.5);animation:listenp 1.6s ease-out infinite}
+.callpanel[data-st="listen"] .callorb i{background:var(--led-on);opacity:1}
+.callpanel[data-st="think"] .callorb i{animation:typ 1.2s infinite;height:6px}
+.callpanel[data-st="think"] .callorb i:nth-child(2){animation-delay:.2s}.callpanel[data-st="think"] .callorb i:nth-child(3){animation-delay:.4s}
+.callpanel:not([data-st="listen"]) #csend,.callpanel:not([data-st="speak"]) #cskip{display:none}
+@keyframes eq{50%{height:28px}}
+@keyframes listenp{0%{box-shadow:0 0 0 0 rgba(97,227,140,.45)}100%{box-shadow:0 0 0 16px rgba(97,227,140,0)}}
+@media (prefers-reduced-motion:reduce){.callorb,.callorb i{animation:none!important}}
 .ochoice-b{display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--mask-2);border:1px solid var(--copper-dim);border-radius:8px;padding:16px 18px;color:var(--silk);font:inherit;cursor:pointer;transition:border-color .15s,transform .15s var(--ease)}
 .ochoice-b:hover:not(:disabled){border-color:var(--copper);transform:translateY(-2px)}
 .ochoice-b b{font:600 18px/1.2 var(--font-display)}
@@ -831,7 +850,10 @@ main{position:relative;z-index:2}
 .aixgrade .g{grid-row:span 2;font:700 56px/1 var(--font-display);color:var(--copper-hi);width:72px;text-align:center}
 .aixgrade b{display:block;font:600 20px/1.2 var(--font-display)}
 .aixgrade .row{grid-column:2}
+@media (max-width:900px){.ochoice{grid-template-columns:1fr}}
 @media (max-width:640px){.ochoice{grid-template-columns:1fr}.aix .msgb{max-width:100%}}
+.btn.mic{position:relative;overflow:hidden}
+.btn.mic::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:calc(var(--lvl,0)*100%);background:var(--led-on);transition:width .1s}
 </style>
 
 <canvas id="fx-pcb" aria-hidden="true"></canvas><canvas id="fx-pulse" aria-hidden="true"></canvas><div id="fx-light" aria-hidden="true"></div><div id="fx-vig" aria-hidden="true"></div>
@@ -1592,7 +1614,8 @@ function renderTopic(n){
     '<button class="mode" data-m="quiz"><b>Kvíz po úrovních</b><span>'+Math.ceil(QBY[n].length/10)+' úrovní po 10 otázkách, další se odemkne od 7/10. Plus chytrý mix a celé téma.</span><em>'+lvlSummary(n)+'</em></button>'+
     '<button class="mode" data-m="cards"><b>Kartičky</b><span>Otázka, otočit, ohodnotit se. Častěji se vrací to, co neumíš.</span><em>mezerník = otočit</em></button>'+
     '<button class="mode" data-m="match"><b>Spojovačka</b><span>Spoj 6 pojmů s jejich významem co nejrychleji.</span><em>rekord '+(S.match[n]? S.match[n]+' s':'–')+'</em></button>'+
-    '<button class="mode" data-m="oral"><b>Ústní zkouška</b><span>Sám, nebo se zkoušejícím AI. Volitelně s limitem 15 minut jako u maturity.</span><em>'+oralDone+'/'+t.open.length+' na 75 %+</em></button>';
+    '<button class="mode" data-m="oral"><b>Ústní zkouška</b><span>Odpovíš nahlas, odkryješ klíčové body a odškrtáš, co jsi řekl. Limit 15 minut.</span><em>'+oralDone+'/'+t.open.length+' na 75 %+</em></button>'+
+    '<button class="mode ai" data-m="ai"><b>Zkoušení s AI</b><span>AI se ptá jako komise, opravuje podle tvého PDF a dá známku. Můžeš odpovídat hlasem.</span><em>AI zdarma · 15 min</em></button>';
   const labs = LABS[n] || [];
   const labHTML = labs.map((l,i) => '<button class="mode lab'+(l.cre?' cre':'')+'" data-l="'+i+'"><b>'+esc(l.name)+'</b><span>'+esc(l.desc)+'</span>'+(l.cre||l.x ? '<em>'+(l.cre?'kreativní dílna ':'')+(l.x?'<span class="xtag">mimo PDF</span>':'')+'</em>' : '')+'</button>').join('');
   if(n === 11) modes += '<button class="mode" data-m="subnet"><b>Subnetting trenažér</b><span>Náhodné IP a prefixy: adresa sítě, broadcast, hosti, maska, wildcard.</span><em>nekonečně příkladů</em></button>';
@@ -1613,7 +1636,7 @@ function renderTopic(n){
   view.querySelectorAll('.mode.lab').forEach(b => b.onclick = () => { onKey = null; labs[+b.dataset.l].run(n); window.scrollTo(0,0); });
   view.querySelectorAll('.mode:not(.lab)').forEach(b => b.onclick = () => {
     const md = b.dataset.m;
-    if(md === 'ai') runAIExam(n);
+    if(md === 'ai') runAIExam(n, {timed:lsGet('oral-timed', true)});
     if(md === 'creative') runCreativeAI(n);
     if(md === 'quiz') runQuizLevels(n);
     if(md === 'cards') runCards(n);
@@ -1874,13 +1897,18 @@ function runOral(n, drawn){
       '<div class="section"><h3>Zadání otázky</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+galleryHTML(n, 'Obrázky, které můžeš u zkoušení popsat')+
       '<div class="section"><h3>Jak chceš zkoušet?</h3><div class="ochoice">'+
         '<button class="ochoice-b" id="go"><b>Sám</b><span>Dostaneš '+t.open.length+' podotázek. Odpovíš nahlas nebo do poznámek, odkryješ klíčové body a poctivě odškrtáš, co jsi řekl.</span><em>bez AI · Enter</em></button>'+
-        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídat můžeš i hlasem.</span><em id="aist">AI zdarma</em></button></div>'+
+        '<button class="ochoice-b ai" id="goai"><b>Se zkoušejícím AI</b><span>AI se ptá jako komise, doptává se, opravuje podle tvého PDF a na konci dá známku. Odpovídáš psaním nebo tlačítkem Mluvit.</span><em id="aist">AI zdarma</em></button>'+
+        '<button class="ochoice-b ai call" id="gocall"><b>Hovor se zkoušejícím</b><span>Jako u maturity: zkoušející ti otázky říká nahlas, ty odpovídáš nahlas a on pozná, kdy jsi domluvil. Nejlíp v Edge nebo Chrome se sluchátky.</span><em id="callst0">AI zdarma · mikrofon</em></button></div>'+
       '<label class="otoggle"><input type="checkbox" id="timed"'+(timed?' checked':'')+'><span>Časový limit 15 minut, jako u maturity</span></label></div></div>';
     document.getElementById('back').onclick = () => drawn ? go('') : renderTopic(n);
     const tb = document.getElementById('timed'); tb.onchange = () => { timed = tb.checked; lsSet('oral-timed', timed); };
     document.getElementById('go').onclick = startSolo; bindGallery();
     document.getElementById('goai').onclick = () => { onKey = null; runAIExam(n, {timed, drawn}); };
-    AI.ready.then(() => { const b = document.getElementById('goai'); if(b && (!AI.mode)){ b.disabled = true; const e = document.getElementById('aist'); if(e) e.textContent = 'AI tady není dostupná'; } });
+    document.getElementById('gocall').onclick = () => { onKey = null; runAIExam(n, {timed, drawn, call:true}); };
+    AI.ready.then(() => {
+      const b = document.getElementById('goai'); if(b && (!AI.mode)){ b.disabled = true; const e = document.getElementById('aist'); if(e) e.textContent = 'AI tady není dostupná'; }
+      const c = document.getElementById('gocall'); if(c && (!AI.mode || !canCall())){ c.disabled = true; const e = document.getElementById('callst0'); if(e) e.textContent = !AI.mode ? 'AI tady není dostupná' : 'tady nejde mikrofon'; }
+    });
     onKey = e => { if(e.key === 'Enter' && e.target.tagName !== 'INPUT'){ e.preventDefault(); startSolo(); } };
   }
   function startSolo(){
@@ -2756,6 +2784,12 @@ function aiPlayerId(){
 function speechAPI(){ const SR = window.SpeechRecognition || window.webkitSpeechRecognition; return (SR && !window.maturitaAI && !/Firefox/.test(navigator.userAgent)) ? SR : null; }
 function canVoice(){ return !!(AI.dict || speechAPI() || (AI.mode === 'proxy' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)); }
 const VOICE = {rec:null, stream:null, timer:null, sr:null, srFailed:false};
+function audioCtx(){   // sdílený AudioContext, probouzí se při kliknutí (jinak by prohlížeč „neslyšel“)
+  const AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
+  if(!VOICE.ac || VOICE.ac.state === 'closed') VOICE.ac = new AC();
+  if(VOICE.ac.state === 'suspended') VOICE.ac.resume().catch(() => {});
+  return VOICE.ac;
+}
 function voiceSetBtn(btn, state){ if(!btn) return; btn.classList.toggle('rec', state === 'rec'); btn.disabled = state === 'busy'; btn.textContent = state === 'rec' ? 'Poslouchám… klikni pro konec' : state === 'busy' ? 'Přepisuju…' : 'Mluvit'; }
 function voiceAppend(ta, txt){
   if(ta && !ta.isConnected && ta.id) ta = document.getElementById(ta.id) || ta;
@@ -2763,6 +2797,7 @@ function voiceAppend(ta, txt){
   ta.value = (ta.value ? ta.value.replace(/\s*$/, ' ') : '') + txt.trim(); ta.focus();
 }
 function voiceInput(ta, btn, n){
+  audioCtx();
   if(AI.dict){   // Claude artefakt: vestavěné diktování
     const d = AI.dict; let base = ta.value ? ta.value + ' ' : '';
     try{
@@ -2788,35 +2823,84 @@ function voiceInput(ta, btn, n){
   }
   voiceRecord(ta, btn, n);
 }
-async function voiceRecord(ta, btn, n){   // ostatní (desktopová aplikace, Firefox): nahrávka → Whisper na serveru
-  if(VOICE.rec){ VOICE.rec.stop(); return; }
+async function voiceRecord(ta, btn, n){   // desktopová aplikace, Firefox: nahrávka s detekcí ticha → Whisper
+  if(VOICE.rec){ if(VOICE.rec.send) VOICE.rec.send(); return; }
   if(!(AI.mode === 'proxy' && window.MD_PROXY)){ toast('Přepis řeči tady není dostupný'); return; }
-  let stream;
-  try{ stream = await navigator.mediaDevices.getUserMedia({audio:{channelCount:1, echoCancellation:true, noiseSuppression:true, autoGainControl:true}}); }
-  catch(e){ toast('Mikrofon není povolený'); return; }
+  const c = {}; VOICE.rec = c;
+  const cur = () => btn && btn.isConnected ? btn : document.getElementById('mic');
+  voiceSetBtn(cur(), 'rec'); const b0 = cur(); if(b0) b0.textContent = 'Zapínám mikrofon…';
+  c.level = v => { const b = cur(); if(b) b.style.setProperty('--lvl', Math.min(1, v).toFixed(2)); };
+  try{
+    const txt = await listenVAD(n, m => { const b = cur(); if(b){ b.textContent = m === 'Mluvíš…' ? 'Mluvíš… (skončí samo po pauze)' : m; if(m === 'Přepisuju…'){ b.disabled = true; b.classList.remove('rec'); } } }, c);
+    if(txt) voiceAppend(ta, txt); else if(!c.aborted) toast('Nic jsem neslyšel – zkus mluvit blíž k mikrofonu');
+  }catch(e){ toast(e && e.message ? e.message : 'Mikrofon nejde'); }
+  VOICE.rec = null; const b = cur(); if(b){ b.style.removeProperty('--lvl'); voiceSetBtn(b, 'idle'); }
+}
+async function sttUpload(blob, n){
+  if(blob.size < 1500) return '';
+  const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1] || ''); fr.onerror = rej; fr.readAsDataURL(blob); });
+  const P = window.MD_PROXY, h = {apikey:P.key, 'Content-Type':'application/json'}; if(/^eyJ/.test(P.key)) h.Authorization = 'Bearer ' + P.key;
+  const vocab = n && T[n] ? ('Maturita z IT, téma ' + T[n].t + '. ' + T[n].outline.join(', ') + '. ' + ((T[n].terms || []).map(x => x[0]).join(', '))).slice(0, 700) : '';
+  const r = await fetch(P.url.replace(/\/$/, '') + '/functions/v1/' + (P.fn || 'ai-zkousejici'), {method:'POST', headers:h, body:JSON.stringify({kind:'stt', audio:b64, mime:blob.type, prompt:vocab, player:aiPlayerId()})});
+  const j = await r.json().catch(() => null);
+  if(!r.ok) throw {message:(j && j.message) || ('chyba ' + r.status)};
+  const t = (j && j.text || '').trim();
+  if(/^(?:www\.|https?:)|titulky|amara\.org|děkuji za (?:pozornost|sledování)|odebírejte|^\W*$/i.test(t) && t.length < 60) return '';   // typické „halucinace“ Whisperu na tichu
+  return t;
+}
+/* ---- hovor: hlas zkoušejícího + poslouchání s detekcí konce řeči ---- */
+function canCall(){ return !!(speechAPI() || (AI.mode === 'proxy' && window.MD_PROXY && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && (window.AudioContext || window.webkitAudioContext))); }
+function czVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const vs = speechSynthesis.getVoices().filter(v => /^cs/i.test(v.lang));
+  return vs.find(v => /natural|online|neural/i.test(v.name)) || vs.find(v => /google/i.test(v.name)) || vs.find(v => /jakub|antonin|vlasta|zuzana/i.test(v.name)) || vs[0] || null;
+}
+function voicesReady(){ return new Promise(res => { if(!('speechSynthesis' in window)) return res(); if(speechSynthesis.getVoices().length) return res(); const t = setTimeout(res, 1500); speechSynthesis.onvoiceschanged = () => { clearTimeout(t); res(); }; }); }
+function sayable(md){
+  return String(md || '').replace(/^[ \t*_]*ZNÁMKA.*$/gmi, '').replace(/\*\*(Hodnocení|Otázka|Silné stránky|Doplnit):?\*\*:?/gi, '$1: ').replace(/[*_`#>]/g, '').replace(/^\s*(?:[-•]|\d+[.)])\s*/gm, '').replace(/\s*\n+\s*/g, '. ').replace(/([.:!?])\s*\.\s*/g, '$1 ').replace(/\s{2,}/g, ' ').trim();
+}
+async function listenVAD(n, live, ctlr){   // nahrávání s detekcí ticha → Whisper
+  let to; const stream = await Promise.race([
+    navigator.mediaDevices.getUserMedia({audio:{channelCount:1, echoCancellation:true, noiseSuppression:true, autoGainControl:true}}),
+    new Promise((_, rej) => { to = setTimeout(() => rej({message:'Mikrofon se nespustil. Zkontroluj, že je připojený a povolený.'}), 6000); })
+  ]).finally(() => clearTimeout(to));
+  if(ctlr.aborted){ stream.getTracks().forEach(t => t.stop()); return ''; }
+  const ac = audioCtx(); if(ac.state === 'suspended') await ac.resume().catch(() => {});
+  const src = ac.createMediaStreamSource(stream), an = ac.createAnalyser();
+  an.fftSize = 1024; src.connect(an); const buf = new Float32Array(an.fftSize);
   const mime = ['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/webm','audio/mp4'].find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
   const rec = new MediaRecorder(stream, Object.assign({audioBitsPerSecond:64000}, mime ? {mimeType:mime} : {})), chunks = [];
-  VOICE.rec = rec;
   rec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
-  rec.onstop = async () => {
-    clearTimeout(VOICE.timer); stream.getTracks().forEach(t => t.stop()); VOICE.rec = null;
-    const b = btn && btn.isConnected ? btn : document.getElementById('mic'); voiceSetBtn(b, 'busy');
-    try{
-      const blob = new Blob(chunks, {type: rec.mimeType || mime || 'audio/webm'});
-      if(blob.size < 1500) throw {message:'nahrávka je moc krátká'};
-      const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1] || ''); fr.onerror = rej; fr.readAsDataURL(blob); });
-      const P = window.MD_PROXY, h = {apikey:P.key, 'Content-Type':'application/json'}; if(/^eyJ/.test(P.key)) h.Authorization = 'Bearer ' + P.key;
-      const vocab = n && T[n] ? ('Maturita z IT, téma ' + T[n].t + '. ' + T[n].outline.join(', ') + '. ' + ((T[n].terms || []).map(x => x[0]).join(', '))).slice(0, 700) : '';
-      const r = await fetch(P.url.replace(/\/$/, '') + '/functions/v1/' + (P.fn || 'ai-zkousejici'), {method:'POST', headers:h, body:JSON.stringify({kind:'stt', audio:b64, mime:blob.type, prompt:vocab, player:aiPlayerId()})});
-      const j = await r.json().catch(() => null);
-      if(!r.ok) throw {message:(j && j.message) || ('chyba ' + r.status)};
-      const txt = (j && j.text || '').trim();
-      if(txt) voiceAppend(ta, txt); else toast('Nic jsem nezachytil, zkus mluvit blíž k mikrofonu');
-    }catch(e){ toast('Přepis se nepovedl: ' + (e && e.message || 'chyba')); }
-    voiceSetBtn(btn && btn.isConnected ? btn : document.getElementById('mic'), 'idle');
-  };
-  rec.start(); voiceSetBtn(btn, 'rec');
-  VOICE.timer = setTimeout(() => { if(VOICE.rec === rec) rec.stop(); }, 90000);
+  const t0 = Date.now(); let noise = 0, nN = 0, speaking = false, lastVoice = 0, voiced = 0, iv = null;
+  const stopped = new Promise(res => { rec.onstop = res; });
+  const stop = () => { if(rec.state !== 'inactive') rec.stop(); };
+  ctlr.send = () => { if(!speaking){ ctlr.aborted = true; } stop(); }; ctlr.cancel = () => { ctlr.aborted = true; stop(); };
+  rec.start(250); if(live) live('Poslouchám…');
+  iv = setInterval(() => {
+    an.getFloatTimeDomainData(buf); let sum = 0; for(let i = 0; i < buf.length; i++) sum += buf[i]*buf[i]; const rms = Math.sqrt(sum / buf.length), now = Date.now();
+    if(now - t0 < 500){ noise += rms; nN++; return; }
+    const thr = Math.max(0.012, (noise / Math.max(1, nN)) * 2.8);
+    if(ctlr.level) ctlr.level(rms / (thr * 3));
+    if(rms > thr){ if(!speaking){ speaking = true; if(live) live('Mluvíš…'); } lastVoice = now; voiced += 100; }
+    if(speaking && voiced > 600 && now - lastVoice > (ctlr.silence || 2000)) stop();
+    if(now - t0 > 90000) stop();
+  }, 100);
+  await stopped; clearInterval(iv); stream.getTracks().forEach(t => t.stop()); try{ src.disconnect(); }catch(e){}
+  if(ctlr.aborted || !speaking) return '';
+  if(live) live('Přepisuju…');
+  return sttUpload(new Blob(chunks, {type: rec.mimeType || mime || 'audio/webm'}), n);
+}
+function listenSR(live, ctlr){   // rozpoznávání řeči prohlížeče, konec = 2,2 s ticha
+  return new Promise(res => {
+    const SR = speechAPI(), sr = new SR(); sr.lang = 'cs-CZ'; sr.continuous = true; sr.interimResults = true;
+    let fin = '', interim = '', timer = null, done = false;
+    const finish = () => { if(done) return; done = true; clearTimeout(timer); try{ sr.stop(); }catch(e){} res(ctlr.aborted ? '' : (fin + ' ' + interim).trim()); };
+    ctlr.send = finish; ctlr.cancel = () => { ctlr.aborted = true; finish(); };
+    sr.onresult = e => { interim = ''; for(let i = e.resultIndex; i < e.results.length; i++){ const r = e.results[i]; if(r.isFinal) fin += r[0].transcript + ' '; else interim += r[0].transcript; } if(live) live((fin + interim).trim()); clearTimeout(timer); timer = setTimeout(finish, ctlr.silence || 2200); };
+    sr.onerror = e => { if(e.error === 'not-allowed' || e.error === 'service-not-allowed'){ toast('Mikrofon není povolený'); ctlr.aborted = true; finish(); } else if(e.error === 'network' || e.error === 'audio-capture'){ VOICE.srFailed = true; ctlr.fallback = true; finish(); } };
+    sr.onend = () => { if(done) return; if(fin || interim) return finish(); try{ sr.start(); }catch(e){ finish(); } };
+    try{ sr.start(); }catch(e){ VOICE.srFailed = true; ctlr.fallback = true; finish(); }
+  });
 }
 async function aiProxyAsk(system, turns, onText, signal){
   const P = window.MD_PROXY, url = P.url.replace(/\/$/, '') + '/functions/v1/' + (P.fn || 'ai-zkousejici');
@@ -2933,7 +3017,38 @@ function examTimer(sec, el, onEnd){
 }
 function runAIExam(n, opts){
   opts = opts || {};
+  if(opts.call) audioCtx();
   const t = T[n]; const MAXQ = 7; let turns = [], busy = false, ctl = null, speak = false, asked = 0, timer = null, timeUp = false, finished = false, grade = null;
+  const call = {on:!!opts.call, state:'think', label:'Připojuji zkoušejícího…', ctl:null, skip:null, voice:null};
+  const alive = () => !!document.getElementById('chat');
+  function setCall(st, label){ call.state = st; call.label = label; const p = document.getElementById('callp'); if(p) p.dataset.st = st; const l = document.getElementById('callst'); if(l) l.textContent = label; const v = document.getElementById('calllive'); if(v) v.textContent = ''; }
+  function live(txt){ const v = document.getElementById('calllive'); if(v) v.textContent = txt; }
+  function stopCall(){ if(call.ctl && call.ctl.cancel) call.ctl.cancel(); call.ctl = null; if(call.skip) call.skip(); try{ if('speechSynthesis' in window) speechSynthesis.cancel(); }catch(e){} }
+  function sayIt(md){
+    return new Promise(res => {
+      const txt = sayable(md); if(!txt || !call.voice) return res();
+      const parts = txt.match(/[^.!?]+[.!?]*/g) || [txt]; let i = 0, done = false;
+      const fin = () => { if(!done){ done = true; call.skip = null; res(); } };
+      call.skip = () => { i = parts.length; try{ speechSynthesis.cancel(); }catch(e){} fin(); };
+      const next = () => { if(i >= parts.length || !alive()) return fin(); const u = new SpeechSynthesisUtterance(parts[i++].trim()); u.lang = 'cs-CZ'; u.voice = call.voice; u.rate = 1.05; u.onend = next; u.onerror = next; speechSynthesis.speak(u); };
+      try{ speechSynthesis.cancel(); }catch(e){} next();
+    });
+  }
+  async function callTurn(txt){
+    if(!call.on || finished || !alive()) return;
+    if(txt){ setCall('speak', 'Zkoušející mluví…'); await sayIt(txt); }
+    if(!call.on || finished || busy || !alive()) return;
+    setCall('listen', 'Poslouchám – mluv. Až domluvíš, chvíli počkej.');
+    const c = {silence:2500}; call.ctl = c; let ans = '';
+    try{
+      if(speechAPI() && !VOICE.srFailed){ ans = await listenSR(live, c); if(c.fallback && !c.aborted && !ans){ ans = await listenVAD(n, live, c); } }
+      else ans = await listenVAD(n, live, c);
+    }catch(e){ toast('Mikrofon nejde: ' + (e && e.message || 'chyba')); call.on = false; if(alive()) render(); return; }
+    if(call.ctl === c) call.ctl = null;
+    if(c.aborted || !call.on || finished || !alive()) return;
+    if(!ans){ setCall('listen', 'Nic jsem neslyšel, zkus to znovu.'); return callTurn(''); }
+    turns.push({role:'user', content:ans}); ask();
+  }
   const base = 'Jsi zkoušející u ústní maturitní zkoušky z IT na střední průmyslové škole elektrotechnické. Zkoušíš otázku č. '+n+': '+t.t+'.\n\n'+
     'Osnova otázky:\n- '+t.outline.join('\n- ')+'\n\nKlíčové body ze studentových podkladů (body označené „mimo PDF“ v jeho podkladech nejsou):\n'+t.open.map(o => '* '+o.q+': '+o.k.join('; ')).join('\n');
   const rules = '\n\nPravidla:\n- Mluv česky, jako vlídný, ale důsledný zkoušející. Buď stručný: nejvýš 90 slov.\n'+
@@ -2948,12 +3063,12 @@ function runAIExam(n, opts){
     const ex = RAW[n] ? rawExcerpt(n, ctx + ' ' + t.outline.join(' '), AI.mode === 'proxy' ? 4500 : 14000) : '';
     return base + (ex ? '\n\nVýtah ze studentových podkladů k aktuální části zkoušení (fakta ber odsud):\n"""\n' + ex + '\n"""' : '') + rules;
   };
-  const backTo = () => { if(timer) timer.stop(); if(ctl) ctl.abort(); if(VOICE.rec) try{ VOICE.rec.stop(); }catch(e){} onKey = null; opts.drawn ? go('') : renderTopic(n); };
+  const backTo = () => { call.on = false; stopCall(); if(timer) timer.stop(); if(ctl) ctl.abort(); if(VOICE.rec && VOICE.rec.cancel) VOICE.rec.cancel(); onKey = null; opts.drawn ? go('') : renderTopic(n); };
   function shell(inner){
     view.innerHTML = '<div class="bench wide aix"><div class="aixhead"><button class="back" id="back">← Ukončit</button>'+
       '<div class="aixmeta">'+(opts.timed ? '<span class="otimer" id="otimer" title="Zbývající čas">15:00</span>' : '')+
       '<span class="aixq">otázka <b>'+Math.min(asked, MAXQ)+'</b>/'+MAXQ+'</span></div></div>'+
-      '<div class="eyebrow">Ústní zkouška s AI · '+ref(n)+'</div><h2 class="labh">'+n+'. '+esc(t.t)+'</h2>'+inner+'</div>';
+      '<div class="eyebrow">'+(opts.call ? 'Hovor se zkoušejícím' : 'Ústní zkouška s AI')+' · '+ref(n)+'</div><h2 class="labh">'+n+'. '+esc(t.t)+'</h2>'+inner+'</div>';
     $('#back').onclick = backTo;
   }
   async function start(){
@@ -2962,8 +3077,9 @@ function runAIExam(n, opts){
     if(AI.mode === 'electron' && AI.needKey){ shell(keyFormHTML()); bindKeyForm(start); return; }
     turns = [{role:'user', content:'Dobrý den, jsem připravený. Začněte prosím zkoušet.'}];
     if(opts.timed) timer = {stub:true};
+    if(call.on){ await voicesReady(); call.voice = czVoice(); if(!call.voice) toast('Nenašel jsem český hlas – otázky čti v chatu, poslouchat budu dál'); }
     render(); 
-    if(opts.timed) timer = examTimer(15*60, 'otimer', () => { timeUp = true; toast('Čas vypršel – zkoušející tě ohodnotí'); if(!busy && !finished){ turns.push({role:'user', content:'KONEC – čas na zkoušení vypršel.'}); ask(); } });
+    if(opts.timed) timer = examTimer(15*60, 'otimer', () => { timeUp = true; toast('Čas vypršel – zkoušející tě ohodnotí'); if(call.ctl && call.ctl.cancel) call.ctl.cancel(); if(call.skip) call.skip(); if(!busy && !finished){ turns.push({role:'user', content:'KONEC – čas na zkoušení vypršel.'}); ask(); } });
     await ask();
   }
   function bubbles(){
@@ -2976,6 +3092,8 @@ function runAIExam(n, opts){
     shell('<div class="chat" id="chat">'+bubbles()+(pending != null ? '<div class="msgb ai" id="pend"><span class="who">Zkoušející</span><div id="pendt">'+(pending ? mdLite(pending) : '<span class="typing"><i></i><i></i><i></i></span>')+'</div></div>' : '')+'</div>'+
       (finished ? '<div class="aixgrade"><div class="g">'+(grade || '–')+'</div><div><b>'+(grade ? ['','Výborně','Chvalitebně','Dobře','Dostatečně','Nedostatečně'][grade] : 'Hodnocení')+'</b><span class="muted small">'+(opts.timed && tl != null ? 'Čas: '+Math.floor((900-tl)/60)+' min '+((900-tl)%60)+' s · ' : '')+asked+' otázek</span></div>'+
           '<div class="row"><button class="btn" id="again">Zkoušet znovu</button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>'
+        : call.on ? '<div class="callpanel" id="callp" data-st="'+call.state+'"><div class="callorb"><i></i><i></i><i></i></div><div class="callinfo"><b id="callst">'+esc(call.label)+'</b><span id="calllive"></span></div>'+
+          '<div class="row"><button class="btn" id="csend">Domluvil jsem</button><button class="btn ghost" id="cskip">Přeskočit čtení</button><button class="btn ghost" id="ctype">Psát místo mluvení</button><span class="spacer"></span><button class="btn red" id="chang">Zavěsit a ohodnotit</button></div></div>'
         : '<div class="composer"><textarea class="notes" id="ans" placeholder="'+(canVoice() ? 'Odpověz vlastními slovy, nebo klikni na Mluvit…' : 'Odpověz vlastními slovy…')+'"'+(busy?' disabled':'')+'></textarea>'+
           '<div class="row"><button class="btn" id="send"'+(busy?' disabled':'')+'>Odeslat<span class="kbd">Ctrl+Enter</span></button>'+
           (canVoice() ? '<button class="btn ghost mic" id="mic"'+(busy?' disabled':'')+'>Mluvit</button>' : '')+
@@ -2984,6 +3102,13 @@ function runAIExam(n, opts){
     if(timer && timer.left){ const b = document.getElementById('otimer'); if(b){ const l = timer.left(); b.textContent = String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0'); } }
     const chat = $('#chat'); chat.scrollTop = chat.scrollHeight;
     if(finished){ $('#again').onclick = () => runAIExam(n, opts); $('#bk').onclick = backTo; return; }
+    if(call.on){
+      $('#csend').onclick = () => { if(call.ctl && call.ctl.send) call.ctl.send(); };
+      $('#cskip').onclick = () => { if(call.skip) call.skip(); };
+      $('#ctype').onclick = () => { call.on = false; stopCall(); render(); };
+      $('#chang').onclick = () => { stopCall(); if(busy) return; turns.push({role:'user', content:'KONEC'}); ask(); };
+      return;
+    }
     const ta = $('#ans');
     if(!busy) ta.focus({preventScroll:true});
     ta.onkeydown = e => { if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); send(); } };
@@ -2995,11 +3120,11 @@ function runAIExam(n, opts){
   }
   async function send(){
     const ta = $('#ans'); const v = ta.value.trim(); if(!v || busy) return;
-    if(VOICE.rec) try{ VOICE.rec.stop(); }catch(e){}
+    if(VOICE.rec && VOICE.rec.send) VOICE.rec.send();
     turns.push({role:'user', content:v}); await ask();
   }
   async function ask(){
-    busy = true; render('');
+    busy = true; if(call.on) setCall('think', 'Zkoušející přemýšlí…'); render('');
     ctl = new AbortController();
     try{
       const txt = await aiAsk(sysFor(), turns, s => { const p = document.getElementById('pendt'); if(p){ p.innerHTML = mdLite(s); const c = $('#chat'); c.scrollTop = c.scrollHeight; } }, ctl.signal);
@@ -3008,9 +3133,10 @@ function runAIExam(n, opts){
       if(speak && AI.tts) AI.tts.speak(txt.replace(/\*\*/g,'').slice(0,1900)).catch(() => {});
       const m = txt.replace(/[*_]/g, '').match(/ZNÁMKA\s*:?\s*([1-5])/i);
       busy = false;
-      if(m){ grade = +m[1]; finished = true; if(timer && timer.stop) timer.stop(); const xp = Math.max(10, (6-grade)*12); addXP(xp); toast('Známka '+grade+' · +'+xp+' XP'); render(); return; }
+      if(m){ grade = +m[1]; finished = true; if(timer && timer.stop) timer.stop(); const xp = Math.max(10, (6-grade)*12); addXP(xp); toast('Známka '+grade+' · +'+xp+' XP'); render(); if(call.on && call.voice) sayIt('Známka ' + grade + '. ' + txt); return; }
       if(timeUp && !finished){ turns.push({role:'user', content:'KONEC – čas na zkoušení vypršel.'}); return ask(); }
       render();
+      if(call.on) callTurn(txt);
     }catch(e){
       busy = false;
       if(e && e.code === 'cancelled'){ if(e.text) turns.push({role:'assistant', content:e.text}); else if(turns.length > 1) turns.pop(); if(document.getElementById('chat')) render(); return; }
@@ -3018,6 +3144,8 @@ function runAIExam(n, opts){
       let back = '';
       if(turns.length > 1 && turns[turns.length-1].role === 'user'){ back = turns.pop().content; }
       if(document.getElementById('chat')){ render(); const ta = $('#ans'); if(ta && back && back !== 'KONEC' && !/^KONEC –/.test(back)) ta.value = back; toast(aiErrText(e)); }
+      if(call.on && alive() && !finished){ setTimeout(() => callTurn(''), 1500); }
+      if(call.on && alive() && !finished){ setCall('listen', 'Něco se pokazilo, zopakuj prosím odpověď.'); setTimeout(() => callTurn(''), 1500); }
     }
   }
   start();
