@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="14.11.2026 23:29">
+<meta name="md-version" content="15.11.2026 13:01">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -448,6 +448,8 @@ main{position:relative;z-index:2}
 .iconbtn{background:rgba(255,255,255,.02);border-radius:6px;padding:6px 10px;transition:color .15s,border-color .15s,box-shadow .2s,background .2s}
 .iconbtn:hover{background:rgba(208,162,75,.08)}
 .iconbtn[aria-pressed="true"]{color:var(--silk);border-color:rgba(208,162,75,.8);box-shadow:0 0 12px rgba(208,162,75,.2)}
+#fx-music::before,#mute::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--led-off);margin-right:7px;vertical-align:1px}
+#fx-music,#mute,.top .stats .iconbtn{white-space:nowrap}
 .iconbtn[aria-pressed="true"]::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--led-on);box-shadow:0 0 6px var(--led-on);margin-right:7px;vertical-align:1px}
 .fxbar{display:flex;gap:8px}
 
@@ -874,7 +876,7 @@ main{position:relative;z-index:2}
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">14.11.2026 23:29</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">15.11.2026 13:01</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -1661,14 +1663,14 @@ function renderTopic(n){
 }
 
 /* ---------------- video vysvětlení ---------------- */
-const VIDEOS = {"1": 396};
+const VIDEOS = {"1": 619};
 const VIDEO_WEB = 'https://jorok52.github.io/Spse-maturita/';
-function videoHTML(n){
+function videoHTML(n, open){
   const d = VIDEOS[n]; if(!d) return '';
   const len = Math.floor(d/60) + ':' + String(Math.round(d%60)).padStart(2,'0');
   const file = 'videa/' + String(n).padStart(2,'0') + '.mp4';
   if(/^https?:/.test(location.protocol) && !(window.claude && window.claude.use))
-    return '<details class="fold vfold"><summary>Video vysvětlení <span class="h3n">'+len+'</span></summary><video class="vplayer" controls preload="none" playsinline src="'+file+'"></video><p class="muted small">Celá otázka podle tvého PDF, kapitolu po kapitole. Namluvil hlas Piper (open-source, čeština), hudba je složená a syntetizovaná kódem.</p></details>';
+    return '<details class="fold vfold"'+(open?' open':'')+'><summary>Video vysvětlení <span class="h3n">'+len+'</span></summary><video class="vplayer" controls preload="metadata" playsinline src="'+file+'"></video><p class="muted small">Vysvětlení celé otázky podle podkladů.</p></details>';
   return '<div class="fold vfold"><a class="btn ghost" href="'+VIDEO_WEB+file+'" target="_blank" rel="noopener">▶ Video vysvětlení ('+len+') – otevře se na webu</a></div>';
 }
 
@@ -3998,9 +4000,10 @@ function runMaterials(){
     '<p class="muted" style="max-width:64ch">Tvoje podklady jako datasheety součástek na desce. Čti je přímo tady, nebo si otevři původní PDF.'+(IN_ARTIFACT ? ' PDF soubory jsou ve verzi na GitHubu a v aplikaci.' : '')+'</p>'+
     '<ol class="dslist">'+NUMS.map(n => { const t = T[n], has = !!RAW[n];
       return '<li class="ds"><span class="dsref">'+ref(n)+'</span><span class="dst"><b>'+esc(t.t)+'</b><span>'+(has ? t.outline.slice(0,3).map(esc).join(' · ') : 'Bez PDF – sestaveno podle oficiální osnovy')+'</span></span>'+
-        '<span class="dsact">'+(has ? '<button class="btn ghost rd" data-n="'+n+'">Číst</button>'+(IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">PDF</a>') : '<button class="btn ghost" data-t="'+n+'">Otevřít téma</button>')+'</span></li>'; }).join('')+'</ol></div>';
+        '<span class="dsact">'+(VIDEOS[n] ? '<button class="btn ghost vd" data-n="'+n+'">Video</button>' : '')+(has ? '<button class="btn ghost rd" data-n="'+n+'">Číst</button>'+(IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">PDF</a>') : '<button class="btn ghost" data-t="'+n+'">Otevřít téma</button>')+'</span></li>'; }).join('')+'</ol></div>';
   $('#back').onclick = () => go('');
   $$('.rd').forEach(b => b.onclick = () => runReader(+b.dataset.n));
+  $$('.vd').forEach(b => b.onclick = () => runReader(+b.dataset.n, true));
   $$('[data-t]').forEach(b => b.onclick = () => go('t'+b.dataset.t));
   window.scrollTo(0,0);
 }
@@ -4018,11 +4021,12 @@ function rawToHTML(txt){
   });
   flush(); return out.join('');
 }
-function runReader(n){
+function runReader(n, vid){
   onKey = null; const t = T[n];
   view.innerHTML = '<div class="bench wide dsread"><button class="back" id="back">← Materiály</button>'+
     '<div class="dshead"><span class="dsref">'+ref(n)+'</span><div><h1>'+esc(t.t)+'</h1><span class="muted small">Datasheet · maturitní otázka '+n+'</span></div>'+
     (IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">Otevřít PDF</a>')+'</div>'+
+    videoHTML(n, true)+
     '<div class="section"><h3>Osnova</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
     galleryHTML(n, 'Obrázky')+
     '<div class="section"><h3>Text podkladů</h3><div class="dstext">'+rawToHTML(RAW[n]||'')+'</div></div>'+
@@ -4030,6 +4034,7 @@ function runReader(n){
   $('#back').onclick = () => runMaterials();
   $('#toq').onclick = () => go('t'+n);
   bindGallery(); window.scrollTo(0,0);
+  if(vid){ const v = view.querySelector('.vfold'); if(v) v.scrollIntoView({block:'start'}); }
 }
 
 /* ---- hlídání nové verze (GitHub Pages drží stránku v mezipaměti až 10 min) ---- */
