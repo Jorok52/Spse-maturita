@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="16.11.2026 11:19">
+<meta name="md-version" content="16.11.2026 11:57">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -396,7 +396,50 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .ptmenu button:hover:not(:disabled){background:rgba(208,162,75,.16)}
 .ptmenu button:disabled{opacity:.4;cursor:default}
 .ptmenu button i{font-style:normal;font-size:11px;color:var(--silk-dim)}
-.ptbar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pti{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn .pti{vertical-align:-4px;margin-right:8px}
+.ptinfo{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:12.5px/1.5 var(--font-mono);color:var(--silk-dim);margin:6px 0 0}
+.ptinfo .pti{color:var(--copper)}.ptinfo b{color:var(--silk);font-weight:600}
+.ptbar{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:12px}
+.ptgrp>span{display:block;font:600 10px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin:0 0 7px 2px}
+.ptgrp>div{display:flex;gap:6px;flex-wrap:wrap}
+.pttool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:66px;padding:9px 8px 7px;background:rgba(255,255,255,.03);border:1px solid var(--copper-dim);border-radius:8px;color:var(--silk);font:500 11.5px/1 var(--font-mono);cursor:pointer;transition:background .15s,border-color .15s,color .15s,box-shadow .2s}
+.pttool .pti{width:24px;height:24px;color:var(--copper)}
+.pttool:hover{border-color:var(--copper);background:rgba(208,162,75,.1)}
+.pttool[aria-pressed="true"]{color:#1a1206;background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#f3cd7e;box-shadow:0 0 14px rgba(208,162,75,.4)}
+.pttool[aria-pressed="true"] .pti{color:#1a1206}
+.pttool.danger{color:#ffc9c1;border-color:rgba(255,97,80,.6);background:rgba(255,97,80,.08)}
+.pttool.danger .pti{color:var(--bad)}
+.pttool.danger:hover{background:rgba(255,97,80,.18);border-color:var(--bad)}
+.pttool.danger[aria-pressed="true"]{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 0 16px rgba(255,97,80,.5)}
+.pttool.danger[aria-pressed="true"] .pti{color:#fff}
+.ptnet.t-del{border-color:var(--bad);box-shadow:0 0 0 1px rgba(255,97,80,.35)}
+.ptpop{position:absolute;z-index:5;width:262px;max-width:calc(100% - 4px);padding:10px 12px 12px;background:var(--chip);border:1px solid var(--copper);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.55)}
+.ptpop[hidden]{display:none}
+.pthead{display:flex;align-items:center;gap:8px}
+.pthead .pti{width:22px;height:22px;color:var(--copper)}
+.pthead b{font:600 15px/1.1 var(--font-display);color:var(--silk)}
+.pthead span{font:11px/1 var(--font-mono);color:var(--silk-dim)}
+.ptx{margin-left:auto;display:flex;background:none;border:0;border-radius:5px;padding:4px;color:var(--silk-dim);cursor:pointer}
+.ptx:hover{color:var(--silk);background:rgba(255,255,255,.07)}
+.ptsec{font:600 10px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin:12px 0 6px}
+.ptfld{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:8px;margin:5px 0;font:12px/1.2 var(--font-mono);color:var(--silk-dim)}
+.ptfld .oct.ip{width:100%;min-width:0}
+.ptports{width:100%;border-collapse:collapse;font:12px/1.35 var(--font-mono);margin-top:6px}
+.ptports td{padding:4px;border-top:1px solid rgba(255,255,255,.07);color:var(--silk-dim)}
+.ptports td:first-child{color:var(--silk);white-space:nowrap}
+.ptports td.ptok{color:var(--led-on)}.ptports td.ptbad{color:var(--bad)}
+.ptnote{font:12px/1.4 var(--font-mono);margin:8px 0 0}
+p.ptok{color:var(--led-on)}p.ptbad{color:var(--bad)}
+.ptacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ptacts button{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:6px;border:1px solid var(--copper-dim);background:rgba(255,255,255,.03);color:var(--silk);font:500 12px/1 var(--font-mono);cursor:pointer}
+.ptacts button:hover{border-color:var(--copper);background:rgba(208,162,75,.1)}
+.ptacts .pti{width:16px;height:16px;color:var(--copper)}
+.ptacts button.del{border-color:rgba(255,97,80,.65);color:#ffc9c1;background:rgba(255,97,80,.1)}
+.ptacts button.del .pti{color:var(--bad)}
+.ptacts button.del:hover{background:rgba(255,97,80,.22);border-color:var(--bad)}
+@media (max-width:520px){.pttool{min-width:56px;padding:8px 6px 6px}.ptbar{gap:10px 14px}}
+@media (max-width:820px){.top{transition:transform .25s var(--ease)}.top.hid{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px))}}
 .ptstat{font:12px/1.4 var(--font-mono);color:var(--silk-dim);min-height:17px;margin:6px 0 4px}
 @media (max-width:820px){.cpu{grid-template-columns:1fr}.memgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.regs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){.ledm{grid-template-columns:repeat(8,24px);gap:4px}.lm{width:24px;height:24px}}
@@ -896,7 +939,7 @@ main{position:relative;z-index:2}
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 11:19</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 11:57</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -1593,6 +1636,16 @@ document.getElementById('home').onclick = () => go('');
 const hback = document.getElementById('hback');
 hback.onclick = () => { const b = document.getElementById('back'); if(b) b.click(); else go(''); };
 new MutationObserver(() => { hback.hidden = !document.getElementById('back'); }).observe(view, {childList:true, subtree:true});
+/* na mobilu hlavička při scrollu dolů odjede a při scrollu nahoru se vrátí */
+(function(){
+  const top = document.querySelector('header.top'), mq = matchMedia('(max-width: 820px)'); let last = scrollY;
+  addEventListener('scroll', () => {
+    const y = scrollY, d = y - last;
+    if(!mq.matches || y < top.offsetHeight){ top.classList.remove('hid'); last = y; return; }
+    if(Math.abs(d) < 8) return;
+    top.classList.toggle('hid', d > 0); last = y;
+  }, {passive:true});
+})();
 
 /* ---------------- routing ---------------- */
 function go(h){ if(location.hash.replace('#','') === h) route(); else location.hash = h; }
@@ -3477,14 +3530,13 @@ lab(11, 'Maska v binárce', 'Naklikej masku ze zadaného prefixu bit po bitu.', 
   }
   render();
 });
-cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož router, switche a PC, propoj je správnými kabely do portů, nastav IP adresy a pingni.', n => {
+cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož router, switche a PC, propoj je správnými kabely, klikni na PC a nastav IP adresu. Pak pingni.', n => {
   const ip2n = s => { const p = String(s).trim().split('.'); if(p.length !== 4 || p.some(x => !/^\d{1,3}$/.test(x) || +x > 255)) return null; return ((+p[0]<<24)|(+p[1]<<16)|(+p[2]<<8)|(+p[3]))>>>0; };
   const n2ip = v => [v>>>24,(v>>>16)&255,(v>>>8)&255,v&255].join('.');
   const maskP = m => { const v = ip2n(m); if(v == null) return null; const b = v.toString(2).padStart(32,'0'); return /^1*0*$/.test(b) ? b.indexOf('0') < 0 ? 32 : b.indexOf('0') : null; };
   const PORTS = {rt:['Gi0/0','Gi0/1','Gi0/2'], sw:['Fa0/1','Fa0/2','Fa0/3','Fa0/4','Fa0/5','Fa0/6','Gi0/1','Gi0/2'], pc:['Fa0']};
   const KIND = {rt:'Router', sw:'Switch', pc:'PC'}, MAX = {rt:1, sw:4, pc:2};
-  const TOOLS = [['move','↖ Výběr'],['rt','Router 2911'],['sw','Switch 2960'],['pc','PC'],['straight','━ Přímý kabel'],['cross','╳ Křížený kabel'],['del','✕ Smazat']];
-  let W = 720, H = 330;
+    let W = 720, H = 330;
   const size = () => { [W, H] = innerWidth < 600 ? [400, 500] : [720, 330]; };
   let lvl = 0, scen, devs, links, cfg, log, tool = 'move', pend = null, sim = null, drag = null, uid = 0;
 
@@ -3606,35 +3658,87 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
       (sim.end ? '<text x="'+sim.x+'" y="'+(sim.y - 24)+'" text-anchor="middle" font-size="20" font-weight="700" fill="'+(sim.end === 'ok' ? 'var(--led-on)' : 'var(--bad)')+'">'+(sim.end === 'ok' ? '✓' : '✗')+'</text>' : '');
     svg.innerHTML = s;
   }
+  const IC = {
+    move:'<path d="M6 3l13 7.5-5.6 1.7L10.6 18z"/>',
+    rt:'<circle cx="12" cy="12" r="9"/><path d="M6.5 12h4M8.8 10l2 2-2 2M17.5 12h-4M15.2 10l-2 2 2 2M12 6.5v2.5M12 15v2.5"/>',
+    sw:'<rect x="2.5" y="6.5" width="19" height="11" rx="2"/><path d="M6 10.5h12M15.5 8.5l2.5 2-2.5 2M18 13.5H6M8.5 11.5l-2.5 2 2.5 2"/>',
+    pc:'<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M12 16v3M8 20h8"/>',
+    straight:'<path d="M6 12h12"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>',
+    cross:'<path d="M5 6l14 12M5 18L19 6" stroke-dasharray="3.2 2.4"/>',
+    del:'<path d="M4 7h16M10 3.5h4M6 7l1 13h10l1-13M10 11v5.5M14 11v5.5"/>',
+    clear:'<rect x="4" y="4" width="16" height="16" rx="2" stroke-dasharray="3 2.6"/><path d="M9 9l6 6M15 9l-6 6"/>',
+    x:'<path d="M6 6l12 12M18 6L6 18"/>',
+    swap:'<path d="M4 8.5h15M15.5 5l3.5 3.5-3.5 3.5M20 15.5H5M8.5 12L5 15.5 8.5 19"/>',
+    ping:'<rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3.5 7l8.5 6 8.5-6"/>'
+  };
+  const ico = k => '<svg class="pti" viewBox="0 0 24 24" aria-hidden="true">'+IC[k]+'</svg>';
+  const TOOLGRP = [['Zařízení', [['rt','Router'],['sw','Switch'],['pc','PC']]], ['Kabely', [['straight','Přímý'],['cross','Křížený']]], ['Úpravy', [['move','Výběr'],['del','Smazat']]]];
+  const MODEL = {rt:'Router 2911', sw:'Switch 2960', pc:'PC-PT'}, ACC = {rt:'router', sw:'switch', pc:'počítač'};
+  let pop = null;
+
   function status(){
     const el = $('#ptstat'); if(!el) return;
     el.textContent = tool in MAX ? 'Klikni na plochu, kam chceš '+KIND[tool].toLowerCase()+' umístit.' :
       tool === 'straight' || tool === 'cross' ? (pend ? 'Kabel z '+dev(pend.d).name+' '+pend.p+' – klikni na druhé zařízení (Esc zruší).' : (tool === 'cross' ? 'Křížený' : 'Přímý')+' kabel: klikni na první zařízení a vyber port.') :
-      tool === 'del' ? 'Klikni na zařízení nebo kabel, který chceš smazat.' : 'Zařízení můžeš přetahovat myší nebo prstem.';
+      tool === 'del' ? 'Mazání: klikni na zařízení nebo kabel, který chceš odstranit.' : 'Klikni na zařízení nebo kabel – otevře se jeho nastavení. Zařízení můžeš přetahovat.';
     $$('.ptbar [data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === tool));
   }
-  function drawCfg(){
-    const el = $('#ptcfg'); if(!el) return;
-    const pcs = devs.filter(d => d.type === 'pc').sort((a, b) => a.name.localeCompare(b.name));
-    const f = (nm, k, ph) => '<input class="oct ip" data-pc="'+nm+'" data-k="'+k+'" value="'+esc(cfg[nm][k])+'" placeholder="'+ph+'" autocomplete="off" spellcheck="false">';
-    el.innerHTML = '<div class="tblwrap"><table class="tbl vlsm"><tr><th>Zařízení</th><th>IP adresa</th><th>Maska</th><th>Výchozí brána</th></tr>'+
-      (devs.some(d => d.type === 'rt') ? '<tr><td>Router Gi0/0</td><td>'+scen.r1+'</td><td>/'+scen.p+'</td><td>—</td></tr><tr><td>Router Gi0/1</td><td>'+scen.r2+'</td><td>/'+scen.p+'</td><td>—</td></tr><tr><td>Router Gi0/2</td><td colspan="3" class="muted">bez IP adresy</td></tr>' : '')+
-      pcs.map(d => '<tr><td>'+esc(d.name)+'</td><td>'+f(d.name,'ip','IP')+'</td><td>'+f(d.name,'mask','255.255.255.0')+'</td><td>'+f(d.name,'gw','brána')+'</td></tr>').join('')+
-      (!pcs.length && !devs.some(d => d.type === 'rt') ? '<tr><td colspan="4" class="muted">Až do sítě přidáš router a počítače, nastavíš je tady.</td></tr>' : '')+'</table></div>';
-    el.querySelectorAll('input').forEach(inp => inp.oninput = () => { cfg[inp.dataset.pc][inp.dataset.k] = inp.value.trim(); if(inp.dataset.k === 'ip') drawNet(); });
-  }
-  const drawAll = () => { drawNet(); drawCfg(); status(); };
+  const drawAll = () => { drawNet(); status(); };
 
+  /* plovoucí okýnko u zařízení (menu portů i nastavení) */
+  function placeAt(m, x, y){
+    const svg = $('#ptnet'), wrap = $('.ptwrap'), r = svg.getBoundingClientRect(), wr = wrap.getBoundingClientRect(), sc = r.width / W, mw = m.offsetWidth;
+    const ox = r.left - wr.left, oy = r.top - wr.top, right = ox + (x + 36) * sc, left = ox + (x - 36) * sc - mw;
+    if(right + mw <= wr.width){ m.style.left = right + 'px'; m.style.top = Math.max(0, oy + (y - 30) * sc) + 'px'; }
+    else if(left >= 0){ m.style.left = left + 'px'; m.style.top = Math.max(0, oy + (y - 30) * sc) + 'px'; }
+    else { m.style.left = Math.max(0, (wr.width - mw) / 2) + 'px'; m.style.top = (oy + (y + 54) * sc) + 'px'; }
+  }
   function hideMenu(){ const m = $('#ptmenu'); if(m) m.hidden = true; }
+  function hidePop(){ pop = null; const m = $('#ptpop'); if(m) m.hidden = true; }
   function portMenu(d, cb){
-    const m = $('#ptmenu'), svg = $('#ptnet'), wrap = $('.ptwrap'), r = svg.getBoundingClientRect(), wr = wrap.getBoundingClientRect(), sc = r.width / W;
-    m.innerHTML = '<div class="pthd">'+esc(d.name)+' · port</div>'+PORTS[d.type].map(p => '<button data-p="'+p+'"'+(used(d, p) ? ' disabled' : '')+'>'+p+
+    hidePop();
+    const m = $('#ptmenu');
+    m.innerHTML = '<div class="pthd">'+esc(d.name)+' · vyber port</div>'+PORTS[d.type].map(p => '<button data-p="'+p+'"'+(used(d, p) ? ' disabled' : '')+'>'+p+
       (d.type === 'rt' ? '<i>'+(IF()[p] || 'bez IP')+'</i>' : used(d, p) ? '<i>obsazeno</i>' : '')+'</button>').join('');
-    m.hidden = false;
-    const left = r.left - wr.left + (d.x + 34) * sc, top = r.top - wr.top + (d.y - 30) * sc;
-    const mw = m.offsetWidth, alt = r.left - wr.left + (d.x - 34) * sc - mw;
-    m.style.left = (left + mw <= wr.width ? left : alt >= 0 ? alt : Math.max(0, wr.width - mw)) + 'px'; m.style.top = Math.max(0, top) + 'px';
+    m.hidden = false; placeAt(m, d.x, d.y);
     m.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); hideMenu(); beep('tick'); cb(b.dataset.p); });
+  }
+  const peer = (d, p) => { const l = links.find(l => (l.a.d === d.id && l.a.p === p) || (l.b.d === d.id && l.b.p === p)); if(!l) return null; const o = l.a.d === d.id ? l.b : l.a; return {l, txt:dev(o.d).name+' '+o.p}; };
+  function delDev(d){ devs = devs.filter(x => x !== d); links = links.filter(l => l.a.d !== d.id && l.b.d !== d.id); if(pend && !dev(pend.d)) pend = null; sim = null; hidePop(); beep('tick'); drawAll(); }
+  function delLink(l){ links = links.filter(x => x !== l); sim = null; hidePop(); beep('tick'); drawAll(); }
+  function devPop(d){
+    hideMenu(); pop = {d};
+    const m = $('#ptpop'), row = p => { const q = peer(d, p); return '<tr><td>'+p+'</td>'+(d.type === 'rt' ? '<td>'+(IF()[p] ? IF()[p]+'/'+scen.p : '<span class="muted">bez IP</span>')+'</td>' : '')+
+      '<td class="'+(q ? linkOk(q.l) ? 'ptok' : 'ptbad' : 'muted')+'">'+(q ? '● '+esc(q.txt) : 'volný')+'</td></tr>'; };
+    let body = '';
+    if(d.type === 'pc'){
+      const c = cfg[d.name];
+      body = '<div class="ptsec">IP konfigurace</div>'+[['ip','IP adresa','např. 192.168.1.10'],['mask','Maska','255.255.255.0'],['gw','Výchozí brána','IP routeru']].map(f =>
+        '<label class="ptfld"><span>'+f[1]+'</span><input type="text" class="oct ip" data-k="'+f[0]+'" value="'+esc(c[f[0]])+'" placeholder="'+f[2]+'" autocomplete="off" spellcheck="false" inputmode="decimal"></label>').join('')+
+        '<div class="ptsec">Port</div><table class="ptports">'+row('Fa0')+'</table>';
+    } else if(d.type === 'rt') body = '<div class="ptsec">Rozhraní</div><table class="ptports">'+PORTS.rt.map(row).join('')+'</table>';
+    else { const us = PORTS.sw.filter(p => used(d, p)); body = '<div class="ptsec">Zapojené porty</div><table class="ptports">'+(us.length ? us.map(row).join('') : '<tr><td class="muted">žádný kabel</td></tr>')+'</table><div class="muted ptnote">volných portů: '+(PORTS.sw.length - us.length)+' z '+PORTS.sw.length+'</div>'; }
+    m.innerHTML = '<div class="pthead">'+ico(d.type)+'<b>'+esc(d.name)+'</b><span>'+MODEL[d.type]+'</span><button class="ptx" data-act="x" aria-label="Zavřít">'+ico('x')+'</button></div>'+body+
+      '<div class="ptacts"><button class="del" data-act="del">'+ico('del')+'Smazat '+ACC[d.type]+'</button></div>';
+    m.hidden = false; placeAt(m, d.x, d.y);
+    m.querySelector('[data-act="x"]').onclick = hidePop;
+    m.querySelector('[data-act="del"]').onclick = () => delDev(d);
+    m.querySelectorAll('input').forEach(inp => {
+      inp.oninput = () => { cfg[d.name][inp.dataset.k] = inp.value.trim(); if(inp.dataset.k === 'ip') drawNet(); };
+      inp.onkeydown = e => { if(e.key === 'Enter' || e.key === 'Escape'){ e.preventDefault(); hidePop(); } };
+    });
+  }
+  function linkPop(l){
+    hideMenu(); pop = {l};
+    const m = $('#ptpop'), A = dev(l.a.d), B = dev(l.b.d), ok = linkOk(l);
+    m.innerHTML = '<div class="pthead">'+ico(l.cross ? 'cross' : 'straight')+'<b>'+(l.cross ? 'Křížený' : 'Přímý')+' kabel</b><button class="ptx" data-act="x" aria-label="Zavřít">'+ico('x')+'</button></div>'+
+      '<table class="ptports"><tr><td>'+esc(A.name)+'</td><td>'+l.a.p+'</td></tr><tr><td>'+esc(B.name)+'</td><td>'+l.b.p+'</td></tr></table>'+
+      '<p class="'+(ok ? 'ptok' : 'ptbad')+' ptnote">● '+(ok ? 'kontrolky svítí zeleně – kabel je správně' : 'svítí červeně: '+why(l))+'</p>'+
+      '<div class="ptacts"><button data-act="swap">'+ico('swap')+'Změnit na '+(l.cross ? 'přímý' : 'křížený')+'</button><button class="del" data-act="del">'+ico('del')+'Smazat kabel</button></div>';
+    m.hidden = false; placeAt(m, (A.x + B.x) / 2, (A.y + B.y) / 2);
+    m.querySelector('[data-act="x"]').onclick = hidePop;
+    m.querySelector('[data-act="del"]').onclick = () => delLink(l);
+    m.querySelector('[data-act="swap"]').onclick = () => { l.cross = !l.cross; sim = null; beep(linkOk(l) ? 'ok' : 'bad'); drawNet(); linkPop(l); };
   }
   function toSvg(e){ const svg = $('#ptnet'), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -3643,32 +3747,32 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
     const svg = $('#ptnet');
     svg.onpointerdown = e => {
       if(sim && sim.run) return;
-      const p = toSvg(e), g = e.target.closest('[data-dev]'), lk = e.target.closest('[data-link]'), d = g && dev(+g.dataset.dev);
-      hideMenu();
+      const p = toSvg(e), g = e.target.closest('[data-dev]'), lk = e.target.closest('[data-link]'), d = g && dev(+g.dataset.dev), l = !d && lk ? links[+lk.dataset.link] : null;
+      hideMenu(); hidePop();
       if(tool in MAX){
         if(devs.filter(x => x.type === tool).length >= MAX[tool]){ beep('bad'); toast('V tomhle úkolu stačí '+MAX[tool]+'× '+KIND[tool].toLowerCase()); return; }
         add(tool, clamp(p.x, 34, W - 34), clamp(p.y, 28, H - 54)); beep('tick'); tool = 'move'; sim = null; return drawAll();
       }
-      if(tool === 'del'){
-        if(d){ devs = devs.filter(x => x !== d); links = links.filter(l => l.a.d !== d.id && l.b.d !== d.id); }
-        else if(lk) links.splice(+lk.dataset.link, 1);
-        else return;
-        if(pend && !dev(pend.d)) pend = null;
-        beep('tick'); sim = null; return drawAll();
-      }
+      if(tool === 'del'){ if(d) delDev(d); else if(l) delLink(l); return; }
       if(tool === 'straight' || tool === 'cross'){
         if(!d){ pend = null; drawNet(); return status(); }
         if(pend && pend.d === d.id){ pend = null; drawNet(); return status(); }
         if(!PORTS[d.type].some(q => !used(d, q))){ beep('bad'); toast(d.name+' nemá volný port'); return; }
         if(!pend) portMenu(d, q => { pend = {d:d.id, p:q}; drawNet(); status(); });
-        else portMenu(d, q => { links.push({a:pend, b:{d:d.id, p:q}, cross:tool === 'cross'}); const l = links[links.length-1]; pend = null; sim = null; drawNet(); status();
-          if(!linkOk(l)){ beep('bad'); toast('Kabel svítí červeně – '+why(l)); } });
+        else portMenu(d, q => { links.push({a:pend, b:{d:d.id, p:q}, cross:tool === 'cross'}); const nl = links[links.length-1]; pend = null; sim = null; drawNet(); status();
+          if(!linkOk(nl)){ beep('bad'); toast('Kabel svítí červeně – '+why(nl)); } });
         return;
       }
-      if(d){ drag = {d, dx:p.x - d.x, dy:p.y - d.y}; try{ svg.setPointerCapture(e.pointerId); }catch(err){} }
+      if(d){ drag = {d, dx:p.x - d.x, dy:p.y - d.y, sx:p.x, sy:p.y, moved:false}; try{ svg.setPointerCapture(e.pointerId); }catch(err){} }
+      else if(l) linkPop(l);
     };
-    svg.onpointermove = e => { if(!drag) return; const p = toSvg(e); drag.d.x = clamp(p.x - drag.dx, 34, W - 34); drag.d.y = clamp(p.y - drag.dy, 28, H - 54); if(sim && !sim.run) sim = null; drawNet(); };
-    svg.onpointerup = svg.onpointercancel = () => { drag = null; };
+    svg.onpointermove = e => {
+      if(!drag) return; const p = toSvg(e);
+      if(!drag.moved && Math.hypot(p.x - drag.sx, p.y - drag.sy) < 6) return;
+      drag.moved = true; drag.d.x = clamp(p.x - drag.dx, 34, W - 34); drag.d.y = clamp(p.y - drag.dy, 28, H - 54); if(sim && !sim.run) sim = null; drawNet();
+    };
+    svg.onpointerup = () => { if(drag && !drag.moved) devPop(drag.d); drag = null; };
+    svg.onpointercancel = () => { drag = null; };
   }
 
   function animate(path, reach, done){
@@ -3688,22 +3792,24 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
   }
 
   function render(){
-    size(); devs.forEach(d => { d.x = clamp(d.x, 34, W - 34); d.y = clamp(d.y, 28, H - 54); });
+    size(); devs.forEach(d => { d.x = clamp(d.x, 34, W - 34); d.y = clamp(d.y, 28, H - 54); }); pop = null;
+    const btn = (t, lb) => '<button class="pttool'+(t === 'del' ? ' danger' : '')+'" data-t="'+t+'" aria-pressed="false" title="'+lb+'">'+ico(t)+'<span>'+lb+'</span></button>';
     labShell(11, 'Mini Packet Tracer · úroveň '+(lvl+1)+'/3',
       '<p><b>'+esc(scen.task)+'</b></p>'+
-      '<div class="ptwrap"><svg id="ptnet" class="ptnet" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Pracovní plocha sítě"></svg><div class="ptmenu" id="ptmenu" hidden></div></div>'+
-      '<div class="ptbar">'+TOOLS.map(t => '<button class="iconbtn" data-t="'+t[0]+'" aria-pressed="false">'+t[1]+'</button>').join('')+
-      (lvl < 2 ? '<button class="iconbtn" id="ptclr">Vyčistit plochu</button>' : '')+'</div><div class="ptstat" id="ptstat"></div>'+
-      '<div id="ptcfg"></div>'+
-      '<div class="row"><button class="btn" id="ping">ping PC2 z PC1</button></div>'+
+      '<p class="ptinfo">'+ico('rt')+'<span>Rozhraní routeru: <b>Gi0/0</b> '+scen.r1+'/'+scen.p+' · <b>Gi0/1</b> '+scen.r2+'/'+scen.p+' · <b>Gi0/2</b> bez IP</span></p>'+
+      '<div class="ptwrap"><svg id="ptnet" class="ptnet" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Pracovní plocha sítě"></svg><div class="ptmenu" id="ptmenu" hidden></div><div class="ptpop" id="ptpop" hidden></div></div>'+
+      '<div class="ptbar">'+TOOLGRP.map(g => '<div class="ptgrp"><span>'+g[0]+'</span><div>'+g[1].map(t => btn(t[0], t[1])).join('')+
+        (g[0] === 'Úpravy' && lvl < 2 ? '<button class="pttool" id="ptclr" title="Vyčistit plochu">'+ico('clear')+'<span>Vyčistit</span></button>' : '')+'</div></div>').join('')+'</div>'+
+      '<div class="ptstat" id="ptstat"></div>'+
+      '<div class="row"><button class="btn" id="ping">'+ico('ping')+'ping PC2 z PC1</button></div>'+
       '<pre class="code term-log" id="ptlog">'+esc(log.join('\n') || 'C:\\> _')+'</pre>',
-      'Přímý kabel: PC↔switch a switch↔router. Křížený: PC↔router, switch↔switch. PC patří do sítě toho rozhraní routeru, ke kterému vede jeho kabel. Brána = IP tohoto rozhraní.');
+      'Klikni na zařízení – otevře se jeho nastavení (IP adresa, porty, smazání). Přímý kabel: PC↔switch a switch↔router. Křížený: PC↔router, switch↔switch. Brána = IP rozhraní routeru, ke kterému PC vede kabel.');
     bindNet();
-    $$('.ptbar [data-t]').forEach(b => b.onclick = () => { tool = b.dataset.t; pend = null; hideMenu(); drawNet(); status(); });
-    if($('#ptclr')) $('#ptclr').onclick = () => { if(sim && sim.run) return; devs = []; links = []; pend = null; sim = null; hideMenu(); drawAll(); };
+    $$('.ptbar [data-t]').forEach(b => b.onclick = () => { tool = b.dataset.t; pend = null; hideMenu(); hidePop(); drawNet(); status(); });
+    if($('#ptclr')) $('#ptclr').onclick = () => { if(sim && sim.run) return; if(devs.length && !confirm('Smazat celou síť z plochy?')) return; devs = []; links = []; pend = null; sim = null; hideMenu(); hidePop(); drawAll(); };
     $('#ping').onclick = () => {
       if(sim && sim.run) return;
-      hideMenu(); pend = null; status();
+      hideMenu(); hidePop(); pend = null; status();
       const r = check(), ok = r.reach === 3;
       log = ['C:\\> ping '+((cfg.PC2 && cfg.PC2.ip) || '?')]; $('#ptlog').textContent = log.join('\n');
       const fin = () => {
@@ -3714,7 +3820,11 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
       };
       if(r.path.length) animate(r.path, r.reach, fin); else { sim = null; drawNet(); fin(); }
     };
-    onKey = e => { if(e.key === 'Escape'){ pend = null; tool = 'move'; hideMenu(); drawNet(); status(); } };
+    onKey = e => {
+      if(e.target && e.target.closest && e.target.closest('input')) return;
+      if(e.key === 'Escape'){ pend = null; tool = 'move'; hideMenu(); hidePop(); drawNet(); status(); }
+      else if((e.key === 'Delete' || e.key === 'Backspace') && pop){ e.preventDefault(); if(pop.d) delDev(pop.d); else if(pop.l) delLink(pop.l); }
+    };
     drawAll();
   }
   lvl = 0; build(); render();
