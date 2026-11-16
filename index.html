@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="16.11.2026 10:35">
+<meta name="md-version" content="16.11.2026 11:19">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -383,6 +383,21 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .psubar i{display:block;height:100%}
 .oct.ip{width:150px}
 .term-log{min-height:90px;white-space:pre-wrap}
+.ptwrap{position:relative;max-width:760px;margin:12px 0 4px}
+.ptnet{display:block;width:100%;height:auto;border:1px solid var(--copper-dim);border-radius:8px;touch-action:none;user-select:none;-webkit-user-select:none;
+  background-color:var(--chip-2);background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:24px 24px}
+.ptnet text{font-family:var(--font-mono);pointer-events:none}
+.ptnet [data-dev]{cursor:grab}.ptnet.t-straight [data-dev],.ptnet.t-cross [data-dev],.ptnet.t-del [data-dev],.ptnet.t-del [data-link]{cursor:pointer}
+.ptnet.t-rt,.ptnet.t-sw,.ptnet.t-pc{cursor:copy}
+.ptmenu{position:absolute;z-index:4;min-width:150px;display:flex;flex-direction:column;gap:2px;padding:6px;background:var(--chip);border:1px solid var(--copper);border-radius:8px;box-shadow:0 12px 28px rgba(0,0,0,.5)}
+.ptmenu[hidden]{display:none}
+.ptmenu .pthd{font:600 11px/1.2 var(--font-mono);color:var(--copper);padding:2px 8px 5px;letter-spacing:.04em}
+.ptmenu button{display:flex;justify-content:space-between;gap:12px;background:none;border:0;border-radius:4px;padding:6px 8px;text-align:left;font:13px/1.2 var(--font-mono);color:var(--silk);cursor:pointer}
+.ptmenu button:hover:not(:disabled){background:rgba(208,162,75,.16)}
+.ptmenu button:disabled{opacity:.4;cursor:default}
+.ptmenu button i{font-style:normal;font-size:11px;color:var(--silk-dim)}
+.ptbar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ptstat{font:12px/1.4 var(--font-mono);color:var(--silk-dim);min-height:17px;margin:6px 0 4px}
 @media (max-width:820px){.cpu{grid-template-columns:1fr}.memgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.regs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){.ledm{grid-template-columns:repeat(8,24px);gap:4px}.lm{width:24px;height:24px}}
 @media (max-width:820px){
@@ -881,7 +896,7 @@ main{position:relative;z-index:2}
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 10:35</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 11:19</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -3462,74 +3477,247 @@ lab(11, 'Maska v binárce', 'Naklikej masku ze zadaného prefixu bit po bitu.', 
   }
   render();
 });
-cre(11, 'Mini Packet Tracer', 'Nastav IP adresy, masky a brány počítačů tak, aby ping prošel přes router. Nebo najdi chybu v konfiguraci.', n => {
+cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož router, switche a PC, propoj je správnými kabely do portů, nastav IP adresy a pingni.', n => {
   const ip2n = s => { const p = String(s).trim().split('.'); if(p.length !== 4 || p.some(x => !/^\d{1,3}$/.test(x) || +x > 255)) return null; return ((+p[0]<<24)|(+p[1]<<16)|(+p[2]<<8)|(+p[3]))>>>0; };
   const n2ip = v => [v>>>24,(v>>>16)&255,(v>>>8)&255,v&255].join('.');
   const maskP = m => { const v = ip2n(m); if(v == null) return null; const b = v.toString(2).padStart(32,'0'); return /^1*0*$/.test(b) ? b.indexOf('0') < 0 ? 32 : b.indexOf('0') : null; };
-  let lvl = 0, scen, pcs, log = [], anim = null;
+  const PORTS = {rt:['Gi0/0','Gi0/1','Gi0/2'], sw:['Fa0/1','Fa0/2','Fa0/3','Fa0/4','Fa0/5','Fa0/6','Gi0/1','Gi0/2'], pc:['Fa0']};
+  const KIND = {rt:'Router', sw:'Switch', pc:'PC'}, MAX = {rt:1, sw:4, pc:2};
+  const TOOLS = [['move','↖ Výběr'],['rt','Router 2911'],['sw','Switch 2960'],['pc','PC'],['straight','━ Přímý kabel'],['cross','╳ Křížený kabel'],['del','✕ Smazat']];
+  let W = 720, H = 330;
+  const size = () => { [W, H] = innerWidth < 600 ? [400, 500] : [720, 330]; };
+  let lvl = 0, scen, devs, links, cfg, log, tool = 'move', pend = null, sim = null, drag = null, uid = 0;
+
+  const dev = id => devs.find(d => d.id === id);
+  const byName = nm => devs.find(d => d.name === nm);
+  const used = (d, p) => links.some(l => (l.a.d === d.id && l.a.p === p) || (l.b.d === d.id && l.b.p === p));
+  const isSw = t => t === 'sw';
+  const linkOk = l => { const A = dev(l.a.d).type, B = dev(l.b.d).type; return l.cross ? isSw(A) === isSw(B) : isSw(A) !== isSw(B); };
+  const lname = l => dev(l.a.d).name+' '+l.a.p+' ↔ '+dev(l.b.d).name+' '+l.b.p;
+  const why = l => l.cross ? 'mezi switchem a koncovým zařízením (PC, router) patří přímý kabel' : 'mezi '+(isSw(dev(l.a.d).type) ? 'dvěma switchi' : 'PC a routerem (stejný typ rozhraní)')+' patří křížený kabel';
+  const IF = () => ({'Gi0/0':scen.r1, 'Gi0/1':scen.r2});
+  function add(type, x, y){
+    let k = 1; while(byName(KIND[type]+k)) k++;
+    const d = {id:++uid, type, name:KIND[type]+k, x, y}; devs.push(d);
+    if(type === 'pc' && !cfg[d.name]) cfg[d.name] = {ip:'', mask:'', gw:''};
+    return d;
+  }
+  const link = (a, ap, b, bp, cross) => links.push({a:{d:a.id, p:ap}, b:{d:b.id, p:bp}, cross:!!cross});
+
   function build(){
     const X = ri(1,250), Y = ri(1,250);
-    if(lvl === 0) scen = {p:24, r1:'192.168.'+X+'.1', r2:'10.0.'+Y+'.1', task:'Nastav oba počítače tak, aby PC1 pingl PC2.'};
-    else if(lvl === 1){ const b = [64,128][ri(0,1)]; scen = {p:26, r1:'192.168.'+X+'.'+(b+1), r2:'172.16.'+Y+'.'+(b-63), task:'Sítě jsou /26. Spočítej rozsah a nastav počítače, aby ping prošel.'}; }
-    else scen = {p:24, r1:'192.168.'+X+'.1', r2:'10.0.'+Y+'.1', task:'Konfiguraci nastavil někdo před tebou a ping neprochází. Najdi a oprav chybu.'};
-    const net = (r, p) => { const v = ip2n(r), m = (0xFFFFFFFF << (32-p))>>>0; return (v & m)>>>0; };
-    if(lvl < 2) pcs = [{ip:'', mask:'', gw:''}, {ip:'', mask:'', gw:''}];
+    devs = []; links = []; cfg = {}; log = []; pend = null; sim = null; tool = 'move';
+    if(lvl === 0) scen = {p:24, r1:'192.168.'+X+'.1', r2:'10.0.'+Y+'.1', sw:true,
+      task:'Postav síť: PC1 a PC2 každé za svým switchem, oba switche zapoj do routeru. Pak nastav počítače, aby PC1 pingl PC2.'};
+    else if(lvl === 1){ const b = [64,128][ri(0,1)]; scen = {p:26, r1:'192.168.'+X+'.'+(b+1), r2:'172.16.'+Y+'.'+(b-63), direct:true,
+      task:'Sítě jsou /26. PC1 tentokrát zapoj do routeru napřímo, bez switche (pozor na typ kabelu), PC2 přes switch. Spočítej rozsahy a pingni.'}; }
     else {
-      const n1 = net(scen.r1, 24), n2 = net(scen.r2, 24); pcs = [{ip:n2ip(n1+10), mask:'255.255.255.0', gw:scen.r1}, {ip:n2ip(n2+20), mask:'255.255.255.0', gw:scen.r2}];
-      const bug = ri(0,3); const w = ri(0,1);
-      if(bug === 0) pcs[w].gw = n2ip(ip2n(w ? scen.r2 : scen.r1) + 1);
-      else if(bug === 1) pcs[w].mask = '255.0.0.0';
-      else if(bug === 2) pcs[w].ip = n2ip((w ? n1 : n2) + 30);
-      else pcs[w].ip = n2ip((w ? n2 : n1) + 255);
+      scen = {p:24, r1:'192.168.'+X+'.1', r2:'10.0.'+Y+'.1', task:'Síť postavil někdo před tebou a ping neprochází. Najdi a oprav chybu – v kabeláži, nebo v nastavení.'};
+      size(); const L = W < 600 ? [[70,80],[220,80],[330,240],[220,400],[70,400]] : [[70,150],[210,150],[360,150],[510,150],[650,150]];
+      const p1 = add('pc', ...L[0]), s1 = add('sw', ...L[1]), r = add('rt', ...L[2]), s2 = add('sw', ...L[3]), p2 = add('pc', ...L[4]);
+      const n1 = ip2n(scen.r1) & 0xFFFFFF00, n2 = ip2n(scen.r2) & 0xFFFFFF00;
+      cfg.PC1 = {ip:n2ip((n1+10)>>>0), mask:'255.255.255.0', gw:scen.r1}; cfg.PC2 = {ip:n2ip((n2+20)>>>0), mask:'255.255.255.0', gw:scen.r2};
+      const bug = ri(0,6), w = ri(0,1), pc = cfg['PC'+(w+1)];
+      link(p1, 'Fa0', s1, 'Fa0/1'); link(s1, 'Gi0/1', r, 'Gi0/0', bug === 6);
+      link(r, bug === 4 ? 'Gi0/2' : 'Gi0/1', s2, 'Gi0/1'); if(bug !== 5) link(s2, 'Fa0/1', p2, 'Fa0');
+      if(bug === 0) pc.gw = n2ip(ip2n(w ? scen.r2 : scen.r1) + 1);
+      else if(bug === 1) pc.mask = '255.0.0.0';
+      else if(bug === 2) pc.ip = n2ip(((w ? n1 : n2) + 30)>>>0);
+      else if(bug === 3) pc.ip = n2ip(((w ? n2 : n1) + 255)>>>0);
     }
-    log = []; anim = null;
+  }
+
+  /* ---- průchod sítí: z PC přes switche až k rozhraní routeru ---- */
+  function adj(id){ return links.filter(l => linkOk(l) && (l.a.d === id || l.b.d === id)).map(l => l.a.d === id ? {to:l.b.d, their:l.b.p} : {to:l.a.d, their:l.a.p}); }
+  function seg(pc){
+    const prev = new Map([[pc.id, null]]), q = [pc.id], ports = [];
+    while(q.length){ const c = q.shift(); for(const e of adj(c)){ const t = dev(e.to);
+      if(t.type === 'rt'){ ports.push({port:e.their, from:c, rt:t.id}); continue; }
+      if(prev.has(e.to)) continue; prev.set(e.to, c); if(t.type === 'sw') q.push(e.to); } }
+    const path = p => { const out = [p.rt]; let c = p.from; while(c != null){ out.push(c); c = prev.get(c); } return out.reverse(); };
+    return {ports, path};
   }
   function check(){
-    const out = [], R = [scen.r1, scen.r2], P = scen.p, M = (0xFFFFFFFF << (32-P))>>>0;
-    const cfg = pcs.map((c,i) => ({ip:ip2n(c.ip), mp:maskP(c.mask), gw:ip2n(c.gw), name:'PC'+(i+1)}));
-    let reach = 0;
-    for(let i = 0; i < 2; i++){
-      const c = cfg[i], r = ip2n(R[i]), rnet = (r & M)>>>0;
-      if(c.ip == null){ out.push('✗ '+c.name+': neplatná IP adresa'); return {out, reach}; }
-      if(c.mp == null){ out.push('✗ '+c.name+': neplatná maska (musí být souvislé jedničky)'); return {out, reach}; }
-      if(c.gw == null){ out.push('✗ '+c.name+': neplatná výchozí brána'); return {out, reach}; }
-      const cm = (0xFFFFFFFF << (32-c.mp))>>>0;
-      if(((c.ip & M)>>>0) !== rnet){ out.push('✗ '+c.name+': IP '+n2ip(c.ip)+' neleží v síti routeru '+n2ip(rnet)+'/'+P); return {out, reach}; }
-      if(c.ip === rnet || c.ip === ((rnet | ~M)>>>0)){ out.push('✗ '+c.name+': '+n2ip(c.ip)+' je adresa sítě nebo broadcast'); return {out, reach}; }
-      if(c.ip === r){ out.push('✗ '+c.name+': IP koliduje s rozhraním routeru'); return {out, reach}; }
-      if(c.mp !== P) { out.push('✗ '+c.name+': maska /'+c.mp+' neodpovídá síti /'+P+(c.mp < P ? ' – PC si myslí, že cíl je v jeho síti, a ARP nikdo nezodpoví' : '')); return {out, reach}; }
-      if(c.gw !== r){ out.push('✗ '+c.name+': brána '+n2ip(c.gw)+' není rozhraní routeru ('+R[i]+')'); return {out, reach}; }
-      out.push('✓ '+c.name+' nastaveno správně');
-      reach = i+1;
+    const out = [], fail = (m, reach, path) => { out.push('✗ '+m); return {out, reach:reach||0, path:path||[]}; };
+    const p1 = byName('PC1'), p2 = byName('PC2'), rt = devs.find(d => d.type === 'rt');
+    if(!p1 || !p2) return fail('v síti chybí '+(!p1 ? 'PC1' : 'PC2')+' – přidej ho z lišty pod plochou');
+    if(!rt) return fail('v síti chybí router');
+    const bad = links.find(l => !linkOk(l)); if(bad) return fail('kabel '+lname(bad)+' svítí červeně: '+why(bad));
+    const ifs = IF(), seen = [], paths = [];
+    for(const pc of [p1, p2]){
+      if(!links.some(l => l.a.d === pc.id || l.b.d === pc.id)) return fail(pc.name+' nemá zapojený kabel');
+      const s = seg(pc);
+      if(!s.ports.length) return fail(pc.name+' se po kabelech nedostane k routeru');
+      if(s.ports.length > 1) return fail('za '+pc.name+' jsou propojená dvě rozhraní routeru ('+s.ports.map(p => p.port).join(', ')+') – každé rozhraní potřebuje vlastní síť');
+      const port = s.ports[0].port, path = s.path(s.ports[0]);
+      if(!ifs[port]) return fail(pc.name+' vede do '+rt.name+' '+port+', které nemá IP adresu – použij Gi0/0 nebo Gi0/1');
+      if(scen.sw && path.length < 3) return fail('v tomhle úkolu má být '+pc.name+' připojené přes switch');
+      if(scen.direct && pc === p1 && path.length !== 2) return fail('v tomhle úkolu připoj PC1 do routeru napřímo, bez switche');
+      seen.push(port); paths.push(path);
     }
-    out.push('Odpověď od '+pcs[1].ip+': bajtů=32 čas<1ms TTL=127'); reach = 3;
-    return {out, reach};
+    if(seen[0] === seen[1]) return fail('PC1 i PC2 jsou za stejným rozhraním '+seen[0]+' – úkol chce každé PC v jiné síti za routerem');
+    const full = paths[0].concat(paths[1].slice().reverse().slice(1));
+    const P = scen.p, M = (0xFFFFFFFF << (32-P))>>>0;
+    for(let i = 0; i < 2; i++){
+      const nm = 'PC'+(i+1), c = cfg[nm], ip = ip2n(c.ip), mp = maskP(c.mask), gw = ip2n(c.gw), R = ifs[seen[i]], r = ip2n(R), rnet = (r & M)>>>0;
+      const f = m => fail(nm+': '+m, i, full);
+      if(ip == null) return f('neplatná IP adresa');
+      if(mp == null) return f('neplatná maska (musí být souvislé jedničky)');
+      if(gw == null) return f('neplatná výchozí brána');
+      if(((ip & M)>>>0) !== rnet) return f('IP '+n2ip(ip)+' neleží v síti rozhraní '+seen[i]+' ('+n2ip(rnet)+'/'+P+')');
+      if(ip === rnet || ip === ((rnet | ~M)>>>0)) return f(n2ip(ip)+' je adresa sítě nebo broadcast');
+      if(ip === r) return f('IP koliduje s rozhraním routeru');
+      if(mp !== P) return f('maska /'+mp+' neodpovídá síti /'+P+(mp < P ? ' – PC si myslí, že cíl je v jeho síti, a ARP nikdo nezodpoví' : ''));
+      if(gw !== r) return f('brána '+n2ip(gw)+' není rozhraní routeru, za kterým PC je ('+seen[i]+' = '+R+')');
+      out.push('✓ '+nm+' nastaveno správně');
+    }
+    out.push('Odpověď od '+cfg.PC2.ip+': bajtů=32 čas<1ms TTL=127');
+    return {out, reach:3, path:full};
   }
-  function svg(){
-    const st = anim == null ? -1 : anim;
-    const col = k => st >= k ? 'var(--led-on)' : 'var(--copper-dim)';
-    const dev = (x, y, t, s) => '<rect x="'+(x-34)+'" y="'+(y-18)+'" width="68" height="36" rx="6" fill="var(--chip-2)" stroke="var(--copper)"/><text x="'+x+'" y="'+(y+4)+'" text-anchor="middle" font-size="12" fill="var(--silk)">'+t+'</text><text x="'+x+'" y="'+(y+34)+'" text-anchor="middle" font-size="10" fill="var(--silk-dim)">'+s+'</text>';
-    return '<svg viewBox="0 0 640 120" class="chart" role="img" aria-label="Topologie">'+
-      '<line x1="60" y1="50" x2="170" y2="50" stroke="'+col(1)+'" stroke-width="3"/><line x1="170" y1="50" x2="320" y2="50" stroke="'+col(1)+'" stroke-width="3"/><line x1="320" y1="50" x2="470" y2="50" stroke="'+col(2)+'" stroke-width="3"/><line x1="470" y1="50" x2="580" y2="50" stroke="'+col(3)+'" stroke-width="3"/>'+
-      dev(60,50,'PC1',esc(pcs[0].ip||'?'))+dev(170,50,'Switch1','')+dev(320,50,'Router','Gi0/0 · Gi0/1')+dev(470,50,'Switch2','')+dev(580,50,'PC2',esc(pcs[1].ip||'?'))+'</svg>';
+
+  /* ---- kreslení ---- */
+  function icon(d){
+    const on = pend && pend.d === d.id, s = on ? 'var(--led-on)' : 'var(--copper)', st = ' fill="var(--chip)" stroke="'+s+'" stroke-width="1.8"', ln = ' fill="none" stroke="'+s+'" stroke-width="1.8" stroke-linecap="round"';
+    let g;
+    if(d.type === 'rt') g = '<circle r="21"'+st+'/><path d="M-11 -11L-4 -4M-4 -9V-4H-9M11 11L4 4M4 9V4H9M11 -11L4 -4M4 -9V-4H9M-11 11L-4 4M-4 9V4H-9"'+ln+'/>';
+    else if(d.type === 'sw') g = '<rect x="-27" y="-14" width="54" height="28" rx="4"'+st+'/><path d="M-17 -5H17M12 -9L17 -5L12 -1M17 5H-17M-12 1L-17 5L-12 9"'+ln+'/>';
+    else g = '<rect x="-17" y="-18" width="34" height="24" rx="2"'+st+'/><rect x="-13" y="-14" width="26" height="16" fill="#0d2a22"/><path d="M0 6V11M-8 12H8"'+ln+'/>';
+    const sub = d.type === 'pc' ? (cfg[d.name] && cfg[d.name].ip) || 'bez IP' : d.type === 'rt' ? '2911' : '2960';
+    return '<g data-dev="'+d.id+'" transform="translate('+d.x+' '+d.y+')"><rect x="-32" y="-26" width="64" height="76" fill="transparent"/>'+g+
+      '<text y="36" text-anchor="middle" font-size="12" fill="var(--silk)">'+esc(d.name)+'</text><text y="49" text-anchor="middle" font-size="10" fill="var(--silk-dim)">'+esc(sub)+'</text></g>';
   }
-  function render(){
-    const f = (i, k, ph) => '<input class="oct ip" id="'+k+i+'" value="'+esc(pcs[i][k])+'" placeholder="'+ph+'" autocomplete="off" spellcheck="false">';
-    labShell(11, 'Mini Packet Tracer · úroveň '+(lvl+1)+'/3',
-      '<p><b>'+esc(scen.task)+'</b></p>'+svg()+
-      '<div class="tblwrap"><table class="tbl vlsm"><tr><th>Zařízení</th><th>IP adresa</th><th>Maska</th><th>Výchozí brána</th></tr>'+
-      '<tr><td>Router Gi0/0</td><td>'+scen.r1+'</td><td>/'+scen.p+'</td><td>—</td></tr><tr><td>Router Gi0/1</td><td>'+scen.r2+'</td><td>/'+scen.p+'</td><td>—</td></tr>'+
-      [0,1].map(i => '<tr><td>PC'+(i+1)+'</td><td>'+f(i,'ip','IP')+'</td><td>'+f(i,'mask','255.255.255.0')+'</td><td>'+f(i,'gw','brána')+'</td></tr>').join('')+'</table></div>'+
-      '<div class="row"><button class="btn" id="ping">ping PC2 z PC1</button></div>'+
-      '<pre class="code term-log">'+esc(log.join('\n') || 'C:\\> _')+'</pre>', 'PC1 je v síti rozhraní Gi0/0, PC2 v síti Gi0/1. Brána = IP rozhraní routeru v jeho síti. Maska musí odpovídat prefixu.');
-    [0,1].forEach(i => ['ip','mask','gw'].forEach(k => { const el = $('#'+k+i); el.oninput = () => { pcs[i][k] = el.value.trim(); }; }));
-    $('#ping').onclick = () => {
-      const r = check(); log = ['C:\\> ping '+(pcs[1].ip||'?')].concat(r.out); anim = 0;
-      const ok = r.reach === 3; let k = 0; const tick = () => { anim = Math.min(k, r.reach); render(); if(k++ < 3) setTimeout(tick, 280); else if(ok){ beep('ok'); toast('Ping prošel!'); addXP(15); setTimeout(() => { lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3, 'úrovně']], 20, () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); }, 900); } else beep('bad'); };
-      tick();
+  function wire(l, i){
+    const A = dev(l.a.d), B = dev(l.b.d), dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1, ux = dx/L, uy = dy/L;
+    const ok = linkOk(l), lit = sim && sim.lit.has(l.a.d+'-'+l.b.d) || sim && sim.lit.has(l.b.d+'-'+l.a.d);
+    const at = (P, t) => [P.x + ux*t*(P === A ? 1 : -1), P.y + uy*t*(P === A ? 1 : -1)];
+    const lt = Math.min(30, L/2 - 4), tx = Math.min(52, L/2 - 4), a1 = at(A, lt), b1 = at(B, lt), a2 = at(A, tx), b2 = at(B, tx);
+    const col = lit ? 'var(--led-on)' : l.cross ? '#9cc3ff' : 'var(--copper)';
+    return '<g data-link="'+i+'"><line x1="'+A.x+'" y1="'+A.y+'" x2="'+B.x+'" y2="'+B.y+'" stroke="transparent" stroke-width="14"/>'+
+      '<line x1="'+A.x+'" y1="'+A.y+'" x2="'+B.x+'" y2="'+B.y+'" stroke="'+col+'" stroke-width="2.2"'+(l.cross ? ' stroke-dasharray="7 5"' : '')+'/>'+
+      [a1, b1].map(p => '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4.5" fill="'+(ok ? 'var(--led-on)' : 'var(--bad)')+'"/>').join('')+
+      [[a2, l.a.p], [b2, l.b.p]].map(q => '<text x="'+q[0][0].toFixed(1)+'" y="'+(q[0][1] - 7).toFixed(1)+'" text-anchor="middle" font-size="9.5" fill="var(--silk-dim)" paint-order="stroke" stroke="var(--chip-2)" stroke-width="3">'+q[1]+'</text>').join('')+'</g>';
+  }
+  function drawNet(){
+    const svg = $('#ptnet'); if(!svg) return;
+    svg.setAttribute('class', 'ptnet t-'+tool);
+    let s = links.map(wire).join('') + devs.map(icon).join('');
+    if(!devs.length) s += '<text x="'+W/2+'" y="'+H/2+'" text-anchor="middle" font-size="13" fill="var(--silk-dim)">Prázdná plocha – vyber zařízení v liště dole a klikni sem</text>';
+    if(sim) s += '<g id="ptenv" transform="translate('+sim.x+' '+sim.y+')"><rect x="-10" y="-17" width="20" height="13" rx="1.5" fill="#f3e3b5" stroke="#8a6c34"/><path d="M-10 -17L0 -9L10 -17" fill="none" stroke="#8a6c34"/></g>' +
+      (sim.end ? '<text x="'+sim.x+'" y="'+(sim.y - 24)+'" text-anchor="middle" font-size="20" font-weight="700" fill="'+(sim.end === 'ok' ? 'var(--led-on)' : 'var(--bad)')+'">'+(sim.end === 'ok' ? '✓' : '✗')+'</text>' : '');
+    svg.innerHTML = s;
+  }
+  function status(){
+    const el = $('#ptstat'); if(!el) return;
+    el.textContent = tool in MAX ? 'Klikni na plochu, kam chceš '+KIND[tool].toLowerCase()+' umístit.' :
+      tool === 'straight' || tool === 'cross' ? (pend ? 'Kabel z '+dev(pend.d).name+' '+pend.p+' – klikni na druhé zařízení (Esc zruší).' : (tool === 'cross' ? 'Křížený' : 'Přímý')+' kabel: klikni na první zařízení a vyber port.') :
+      tool === 'del' ? 'Klikni na zařízení nebo kabel, který chceš smazat.' : 'Zařízení můžeš přetahovat myší nebo prstem.';
+    $$('.ptbar [data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === tool));
+  }
+  function drawCfg(){
+    const el = $('#ptcfg'); if(!el) return;
+    const pcs = devs.filter(d => d.type === 'pc').sort((a, b) => a.name.localeCompare(b.name));
+    const f = (nm, k, ph) => '<input class="oct ip" data-pc="'+nm+'" data-k="'+k+'" value="'+esc(cfg[nm][k])+'" placeholder="'+ph+'" autocomplete="off" spellcheck="false">';
+    el.innerHTML = '<div class="tblwrap"><table class="tbl vlsm"><tr><th>Zařízení</th><th>IP adresa</th><th>Maska</th><th>Výchozí brána</th></tr>'+
+      (devs.some(d => d.type === 'rt') ? '<tr><td>Router Gi0/0</td><td>'+scen.r1+'</td><td>/'+scen.p+'</td><td>—</td></tr><tr><td>Router Gi0/1</td><td>'+scen.r2+'</td><td>/'+scen.p+'</td><td>—</td></tr><tr><td>Router Gi0/2</td><td colspan="3" class="muted">bez IP adresy</td></tr>' : '')+
+      pcs.map(d => '<tr><td>'+esc(d.name)+'</td><td>'+f(d.name,'ip','IP')+'</td><td>'+f(d.name,'mask','255.255.255.0')+'</td><td>'+f(d.name,'gw','brána')+'</td></tr>').join('')+
+      (!pcs.length && !devs.some(d => d.type === 'rt') ? '<tr><td colspan="4" class="muted">Až do sítě přidáš router a počítače, nastavíš je tady.</td></tr>' : '')+'</table></div>';
+    el.querySelectorAll('input').forEach(inp => inp.oninput = () => { cfg[inp.dataset.pc][inp.dataset.k] = inp.value.trim(); if(inp.dataset.k === 'ip') drawNet(); });
+  }
+  const drawAll = () => { drawNet(); drawCfg(); status(); };
+
+  function hideMenu(){ const m = $('#ptmenu'); if(m) m.hidden = true; }
+  function portMenu(d, cb){
+    const m = $('#ptmenu'), svg = $('#ptnet'), wrap = $('.ptwrap'), r = svg.getBoundingClientRect(), wr = wrap.getBoundingClientRect(), sc = r.width / W;
+    m.innerHTML = '<div class="pthd">'+esc(d.name)+' · port</div>'+PORTS[d.type].map(p => '<button data-p="'+p+'"'+(used(d, p) ? ' disabled' : '')+'>'+p+
+      (d.type === 'rt' ? '<i>'+(IF()[p] || 'bez IP')+'</i>' : used(d, p) ? '<i>obsazeno</i>' : '')+'</button>').join('');
+    m.hidden = false;
+    const left = r.left - wr.left + (d.x + 34) * sc, top = r.top - wr.top + (d.y - 30) * sc;
+    const mw = m.offsetWidth, alt = r.left - wr.left + (d.x - 34) * sc - mw;
+    m.style.left = (left + mw <= wr.width ? left : alt >= 0 ? alt : Math.max(0, wr.width - mw)) + 'px'; m.style.top = Math.max(0, top) + 'px';
+    m.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); hideMenu(); beep('tick'); cb(b.dataset.p); });
+  }
+  function toSvg(e){ const svg = $('#ptnet'), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  function bindNet(){
+    const svg = $('#ptnet');
+    svg.onpointerdown = e => {
+      if(sim && sim.run) return;
+      const p = toSvg(e), g = e.target.closest('[data-dev]'), lk = e.target.closest('[data-link]'), d = g && dev(+g.dataset.dev);
+      hideMenu();
+      if(tool in MAX){
+        if(devs.filter(x => x.type === tool).length >= MAX[tool]){ beep('bad'); toast('V tomhle úkolu stačí '+MAX[tool]+'× '+KIND[tool].toLowerCase()); return; }
+        add(tool, clamp(p.x, 34, W - 34), clamp(p.y, 28, H - 54)); beep('tick'); tool = 'move'; sim = null; return drawAll();
+      }
+      if(tool === 'del'){
+        if(d){ devs = devs.filter(x => x !== d); links = links.filter(l => l.a.d !== d.id && l.b.d !== d.id); }
+        else if(lk) links.splice(+lk.dataset.link, 1);
+        else return;
+        if(pend && !dev(pend.d)) pend = null;
+        beep('tick'); sim = null; return drawAll();
+      }
+      if(tool === 'straight' || tool === 'cross'){
+        if(!d){ pend = null; drawNet(); return status(); }
+        if(pend && pend.d === d.id){ pend = null; drawNet(); return status(); }
+        if(!PORTS[d.type].some(q => !used(d, q))){ beep('bad'); toast(d.name+' nemá volný port'); return; }
+        if(!pend) portMenu(d, q => { pend = {d:d.id, p:q}; drawNet(); status(); });
+        else portMenu(d, q => { links.push({a:pend, b:{d:d.id, p:q}, cross:tool === 'cross'}); const l = links[links.length-1]; pend = null; sim = null; drawNet(); status();
+          if(!linkOk(l)){ beep('bad'); toast('Kabel svítí červeně – '+why(l)); } });
+        return;
+      }
+      if(d){ drag = {d, dx:p.x - d.x, dy:p.y - d.y}; try{ svg.setPointerCapture(e.pointerId); }catch(err){} }
     };
+    svg.onpointermove = e => { if(!drag) return; const p = toSvg(e); drag.d.x = clamp(p.x - drag.dx, 34, W - 34); drag.d.y = clamp(p.y - drag.dy, 28, H - 54); if(sim && !sim.run) sim = null; drawNet(); };
+    svg.onpointerup = svg.onpointercancel = () => { drag = null; };
   }
-  build(); render();
+
+  function animate(path, reach, done){
+    const pts = path.map(id => dev(id));
+    const seq = reach === 3 ? pts.concat(pts.slice(0, -1).reverse()) : reach === 1 ? pts : pts.slice(0, 1);
+    sim = {run:true, lit:new Set(), x:seq[0].x, y:seq[0].y, end:null};
+    let k = 0, t0 = performance.now();
+    const step = now => {
+      if(!$('#ptnet')) return;
+      if(k >= seq.length - 1){ sim.run = false; sim.end = reach === 3 ? 'ok' : 'bad'; drawNet(); return done(); }
+      const A = seq[k], B = seq[k+1], t = Math.min(1, (now - t0) / 330);
+      sim.x = A.x + (B.x - A.x) * t; sim.y = A.y + (B.y - A.y) * t;
+      if(t >= 1){ sim.lit.add(A.id+'-'+B.id); k++; t0 = now; beep('tick'); }
+      drawNet(); requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  function render(){
+    size(); devs.forEach(d => { d.x = clamp(d.x, 34, W - 34); d.y = clamp(d.y, 28, H - 54); });
+    labShell(11, 'Mini Packet Tracer · úroveň '+(lvl+1)+'/3',
+      '<p><b>'+esc(scen.task)+'</b></p>'+
+      '<div class="ptwrap"><svg id="ptnet" class="ptnet" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Pracovní plocha sítě"></svg><div class="ptmenu" id="ptmenu" hidden></div></div>'+
+      '<div class="ptbar">'+TOOLS.map(t => '<button class="iconbtn" data-t="'+t[0]+'" aria-pressed="false">'+t[1]+'</button>').join('')+
+      (lvl < 2 ? '<button class="iconbtn" id="ptclr">Vyčistit plochu</button>' : '')+'</div><div class="ptstat" id="ptstat"></div>'+
+      '<div id="ptcfg"></div>'+
+      '<div class="row"><button class="btn" id="ping">ping PC2 z PC1</button></div>'+
+      '<pre class="code term-log" id="ptlog">'+esc(log.join('\n') || 'C:\\> _')+'</pre>',
+      'Přímý kabel: PC↔switch a switch↔router. Křížený: PC↔router, switch↔switch. PC patří do sítě toho rozhraní routeru, ke kterému vede jeho kabel. Brána = IP tohoto rozhraní.');
+    bindNet();
+    $$('.ptbar [data-t]').forEach(b => b.onclick = () => { tool = b.dataset.t; pend = null; hideMenu(); drawNet(); status(); });
+    if($('#ptclr')) $('#ptclr').onclick = () => { if(sim && sim.run) return; devs = []; links = []; pend = null; sim = null; hideMenu(); drawAll(); };
+    $('#ping').onclick = () => {
+      if(sim && sim.run) return;
+      hideMenu(); pend = null; status();
+      const r = check(), ok = r.reach === 3;
+      log = ['C:\\> ping '+((cfg.PC2 && cfg.PC2.ip) || '?')]; $('#ptlog').textContent = log.join('\n');
+      const fin = () => {
+        log = log.concat(r.out); const lg = $('#ptlog'); if(lg) lg.textContent = log.join('\n');
+        if(!ok){ beep('bad'); return; }
+        beep('ok'); toast('Ping prošel!'); addXP(15);
+        setTimeout(() => { if(!$('#ptnet')) return; lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3, 'úrovně']], 20, () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); window.scrollTo(0,0); }, 1100);
+      };
+      if(r.path.length) animate(r.path, r.reach, fin); else { sim = null; drawNet(); fin(); }
+    };
+    onKey = e => { if(e.key === 'Escape'){ pend = null; tool = 'move'; hideMenu(); drawNet(); status(); } };
+    drawAll();
+  }
+  lvl = 0; build(); render();
 });
 
 /* ---------- T12: druhý terminálový scénář (procesy, roury, proměnné) ---------- */
