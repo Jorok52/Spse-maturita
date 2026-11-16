@@ -383,6 +383,32 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .fuse-x{width:30px;height:30px;border-radius:6px;border:1px solid #39413f;background:var(--chip-2);color:var(--silk-dim);cursor:pointer;font:600 16px/1 var(--font-mono)}
 .fuse-x.on{background:#173b30;border-color:var(--ok);color:var(--led-on);box-shadow:0 0 10px rgba(97,227,140,.35)}
 .fuse-x.or.on{border-color:var(--copper);color:var(--copper-hi,#f1c873)}
+.plawrap{flex:1 1 520px;min-width:0;overflow-x:auto;border-radius:10px}
+.plasvg{display:block;width:100%;min-width:480px;height:auto;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px}
+.plasvg text{font-family:var(--font-mono)}
+.plaplane{fill:rgba(255,255,255,.015);stroke:#2f3a37;stroke-dasharray:5 5}
+.plapl{font-size:9.5px;font-weight:600;letter-spacing:.14em;fill:#6f7f7a}
+.plaw{fill:none;stroke-width:2.4;stroke-linecap:round;transition:stroke .2s;pointer-events:none}
+.plasvg text,.plainv,.plaplane,.plagate{pointer-events:none}
+.plaw.hot{filter:drop-shadow(0 0 3px rgba(97,227,140,.75))}
+.plaw.unused{stroke-dasharray:4 5}
+.plainv{fill:var(--chip);stroke:#8e9d97;stroke-width:1.5}
+.plalit{font-size:11px;font-weight:600;fill:var(--silk)}
+.plain{font-size:15px;font-weight:700;fill:var(--silk)}
+.plasw{cursor:pointer}.plasw rect{fill:#26302d;stroke:#4c5a55;transition:fill .2s}.plasw rect.on{fill:#1f6b45;stroke:var(--led-on)}
+.plakn{fill:#e8ece9;transition:cx .2s}
+.plagate{fill:var(--chip);stroke:#8e9d97;stroke-width:1.6;transition:fill .2s,stroke .2s}
+.plagate.on{fill:#173b30;stroke:var(--led-on)}
+.plagt{font-size:11px;font-weight:700;fill:var(--silk-dim)}
+.plap{font-size:11px;font-weight:700;fill:var(--copper)}.plat{font-size:9.5px;fill:var(--silk-dim)}
+.plafuse{cursor:pointer}.plahit{fill:transparent}.plafuse:hover .plahit{fill:rgba(208,162,75,.18)}
+.pladot{fill:#f3cd7e;stroke:#1a1206;stroke-width:1.5}
+.plaxx{stroke:#566561;stroke-width:1.6;stroke-linecap:round}
+.plaled{fill:#2a1a17;stroke:#5a3d36;stroke-width:2;transition:fill .2s}
+.plaled.on{fill:#ff6150;stroke:#ffb4aa;filter:drop-shadow(0 0 8px #ff6150)}
+.plarow{cursor:pointer}.plarow:hover td{background:rgba(208,162,75,.1)}
+.tbl tr.plarow.cur td{outline:2px solid var(--copper);outline-offset:-2px}
+.plaexpr{font-size:15px}
 .tbl tr.miss td{background:rgba(255,97,80,.14)}
 .tbl tr.cur td{background:rgba(208,162,75,.16)}
 .ledwrap{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
@@ -3490,7 +3516,7 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
 });
 
 /* ---------- T3: PLA programátor (kreativní) ---------- */
-cre(3, 'Naprogramuj PLA', 'Propal propojky v poli AND a OR tak, aby výstup odpovídal pravdivostní tabulce.', n => {
+cre(3, 'Naprogramuj PLA', 'Propal propojky ve schématu PLA (pole AND a OR) tak, aby výstup odpovídal pravdivostní tabulce. Signály vidíš svítit přímo ve vodičích.', n => {
   const LIT = ['A','¬A','B','¬B','C','¬C'];
   const FN = [
     {name:'Y = A·B + ¬C', f:(a,b,c) => (a&&b)||!c},
@@ -3498,23 +3524,55 @@ cre(3, 'Naprogramuj PLA', 'Propal propojky v poli AND a OR tak, aby výstup odpo
     {name:'Y = majorita(A, B, C)', f:(a,b,c) => (a+b+c) >= 2},
     {name:'Y = ¬A·¬B·¬C + A·B·C', f:(a,b,c) => (!a&&!b&&!c)||(a&&b&&c)}
   ];
-  let lvl = 0, andM, orM, hint = false, tries = 0;
+  let lvl = 0, andM, orM, hint = false, tries = 0, cur = 0;
   function reset(){ andM = Array.from({length:4}, () => Array(6).fill(0)); orM = Array(4).fill(0); hint = false; }
   function term(i){ const l = andM[i].map((v,k) => v ? LIT[k] : null).filter(Boolean); return l.length ? l.join('·') : null; }
-  function evalY(a,b,c){ const val = [a,!a,b,!b,c,!c]; let y = false; for(let i = 0; i < 4; i++){ if(!orM[i]) continue; const used = andM[i].some(Boolean); if(!used) continue; if(andM[i].every((v,k) => !v || val[k])) y = true; } return y; }
+  const lits = x => { const a = !!(x&4), b = !!(x&2), c = !!(x&1); return [a,!a,b,!b,c,!c]; };
+  const prod = (i, val) => andM[i].some(Boolean) ? andM[i].every((v,k) => !v || val[k]) : null;
+  function evalY(a,b,c){ const val = [a,!a,b,!b,c,!c]; let y = false; for(let i = 0; i < 4; i++) if(orM[i] && prod(i, val)) y = true; return y; }
+  function schema(){
+    const val = lits(cur), LX = [62, 92, 162, 192, 262, 292], PY = [128, 184, 240, 296], OX = 438, ON = '#61e38c', OFF = '#33433d';
+    const col = v => v ? ON : OFF, P = PY.map((_, i) => prod(i, val)), y = [0,1,2,3].some(i => orM[i] && P[i]);
+    let g = '<defs><filter id="plaGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+    g += '<rect x="34" y="96" width="336" height="236" rx="8" class="plaplane"/><text x="362" y="326" text-anchor="end" class="plapl">POLE AND</text>';
+    g += '<rect x="404" y="96" width="70" height="236" rx="8" class="plaplane"/><text x="466" y="326" text-anchor="end" class="plapl">OR</text>';
+    // vstupy, přepínače, invertory
+    ['A','B','C'].forEach((nm, j) => {
+      const v = !!(cur & (4 >> j)), x = LX[j*2], xi = LX[j*2+1], cx = (x + xi) / 2;
+      g += '<g class="plasw" data-j="'+j+'"><rect x="'+(cx-22)+'" y="6" width="44" height="26" rx="13" class="'+(v ? 'on' : '')+'"/><circle cx="'+(v ? cx+9 : cx-9)+'" cy="19" r="9" class="plakn"/><text x="'+(cx-34)+'" y="24" text-anchor="end" class="plain">'+nm+'</text></g>';
+      g += '<path d="M'+cx+' 32V46H'+x+'V90M'+cx+' 46H'+xi+'V54" stroke="'+col(v)+'" class="plaw"/>';
+      g += '<path d="M'+(xi-7)+' 54H'+(xi+7)+'L'+xi+' 66Z" class="plainv"/><circle cx="'+xi+'" cy="69" r="3" class="plainv"/><path d="M'+xi+' 72V90" stroke="'+col(!v)+'" class="plaw"/>';
+    });
+    LX.forEach((x, k) => { g += '<path d="M'+x+' 90V320" stroke="'+col(val[k])+'" class="plaw'+(val[k] ? ' hot' : '')+'"/><text x="'+x+'" y="88" text-anchor="middle" class="plalit">'+LIT[k]+'</text>'; });
+    // součiny
+    PY.forEach((py, i) => {
+      const pv = P[i], used = pv !== null;
+      g += '<path d="M44 '+py+'H318" stroke="'+(used ? col(pv) : OFF)+'" class="plaw'+(used ? '' : ' unused')+(pv ? ' hot' : '')+'"/>';
+      g += '<path d="M318 '+(py-15)+'H334A15 15 0 0 1 334 '+(py+15)+'H318Z" class="plagate'+(pv ? ' on' : '')+'"/><text x="331" y="'+(py+4)+'" text-anchor="middle" class="plagt">&amp;</text>';
+      g += '<path d="M349 '+py+'H486" stroke="'+(used ? col(pv) : OFF)+'" class="plaw'+(pv ? ' hot' : '')+'"/><text x="492" y="'+(py-6)+'" class="plap">P'+(i+1)+'</text><text x="492" y="'+(py+9)+'" class="plat">'+esc(term(i) || 'nepoužit')+'</text>';
+      LX.forEach((x, k) => { const on = andM[i][k]; g += '<g class="plafuse'+(on ? ' on' : '')+'" data-i="'+i+'" data-k="'+k+'"><circle cx="'+x+'" cy="'+py+'" r="12" class="plahit"/>'+(on ? '<circle cx="'+x+'" cy="'+py+'" r="6.5" class="pladot" filter="url(#plaGlow)"/>' : '<path d="M'+(x-4)+' '+(py-4)+'l8 8M'+(x+4)+' '+(py-4)+'l-8 8" class="plaxx"/>')+'</g>'; });
+      const on = orM[i]; g += '<g class="plafuse or'+(on ? ' on' : '')+'" data-o="'+i+'"><circle cx="'+OX+'" cy="'+py+'" r="12" class="plahit"/>'+(on ? '<circle cx="'+OX+'" cy="'+py+'" r="6.5" class="pladot" filter="url(#plaGlow)"/>' : '<path d="M'+(OX-4)+' '+(py-4)+'l8 8M'+(OX+4)+' '+(py-4)+'l-8 8" class="plaxx"/>')+'</g>';
+    });
+    // OR hradlo a výstup
+    g += '<path d="M'+OX+' 104V338" stroke="'+col(y)+'" class="plaw'+(y ? ' hot' : '')+'"/>';
+    g += '<path d="M'+(OX-18)+' 338Q'+OX+' 346 '+(OX+18)+' 338Q'+(OX+18)+' 364 '+OX+' 378Q'+(OX-18)+' 364 '+(OX-18)+' 338Z" class="plagate'+(y ? ' on' : '')+'"/><text x="'+OX+'" y="360" text-anchor="middle" class="plagt">≥1</text>';
+    g += '<path d="M'+OX+' 378V388H500" stroke="'+col(y)+'" class="plaw'+(y ? ' hot' : '')+'"/><circle cx="514" cy="388" r="11" class="plaled'+(y ? ' on' : '')+'"/><text x="534" y="393" class="plain">Y</text>';
+    return '<svg class="plasvg" viewBox="0 0 580 404" role="img" aria-label="Schéma PLA">'+g+'</svg>';
+  }
   function render(){
     const F = FN[lvl]; let rows = '', ok = true;
-    for(let x = 0; x < 8; x++){ const a = !!(x&4), b = !!(x&2), c = !!(x&1); const y = evalY(a,b,c), t = !!F.f(a,b,c); if(y !== t) ok = false; rows += '<tr class="'+(y===t?'':'miss')+'"><td>'+(+a)+'</td><td>'+(+b)+'</td><td>'+(+c)+'</td><td><b>'+(+y)+'</b></td><td>'+(+t)+'</td></tr>'; }
+    for(let x = 0; x < 8; x++){ const a = !!(x&4), b = !!(x&2), c = !!(x&1); const y = evalY(a,b,c), t = !!F.f(a,b,c); if(y !== t) ok = false; rows += '<tr class="plarow'+(y===t?'':' miss')+(x===cur?' cur':'')+'" data-x="'+x+'"><td>'+(+a)+'</td><td>'+(+b)+'</td><td>'+(+c)+'</td><td><b>'+(+y)+'</b></td><td>'+(+t)+'</td></tr>'; }
     const expr = [0,1,2,3].filter(i => orM[i] && term(i)).map(term).join(' + ') || '0';
     labShell(3, 'Naprogramuj PLA · funkce '+(lvl+1)+'/'+FN.length,
-      '<p>Klikáním propal propojky: v poli <b>AND</b> vyber, které vstupy vstupují do součinu P1–P4, v poli <b>OR</b> které součiny jdou na výstup Y. Cílová funkce je zadaná jen pravdivostní tabulkou.</p>'+
-      '<div class="pla"><div class="tblwrap"><table class="tbl plat"><tr><th></th>'+LIT.map(l => '<th>'+l+'</th>').join('')+'<th>→ OR</th></tr>'+
-      [0,1,2,3].map(i => '<tr><th>P'+(i+1)+'</th>'+LIT.map((_,k) => '<td><button class="fuse-x'+(andM[i][k]?' on':'')+'" data-i="'+i+'" data-k="'+k+'" aria-label="P'+(i+1)+' '+LIT[k]+'">'+(andM[i][k]?'●':'·')+'</button></td>').join('')+'<td><button class="fuse-x or'+(orM[i]?' on':'')+'" data-o="'+i+'">'+(orM[i]?'●':'·')+'</button></td></tr>').join('')+'</table></div>'+
+      '<p>Klikáním na křížení propal propojky: v poli <b>AND</b> vyber, které vstupy jdou do součinu P1–P4, v poli <b>OR</b> které součiny jdou na výstup Y. Přepínači A, B, C nebo kliknutím na řádek tabulky zkoušíš vstupy – vodiče s hodnotou 1 svítí.</p>'+
+      '<div class="pla"><div class="plawrap">'+schema()+'</div>'+
       '<div class="tblwrap"><table class="tbl"><tr><th>A</th><th>B</th><th>C</th><th>Y tvoje</th><th>Y cíl</th></tr>'+rows+'</table></div></div>'+
-      '<p class="mono">Y = '+esc(expr)+'</p>'+(hint?'<p class="muted small">Nápověda: '+esc(F.name)+'</p>':'')+
+      '<p class="mono plaexpr">Y = '+esc(expr)+'</p>'+(hint?'<p class="muted small">Nápověda: '+esc(F.name)+'</p>':'')+
       '<div class="row"><button class="btn" id="dn"'+(ok?'':' disabled')+'>'+(ok?'Funguje! Další funkce':'Výstup zatím nesedí')+'</button><button class="btn ghost" id="hn">Nápověda</button><button class="btn ghost" id="cl">Smazat</button></div>',
-      'Součet součinů: každý řádek tabulky, kde má být Y = 1, pokryje aspoň jeden součin. Nepoužitý součin (bez propojek) se nepočítá.');
-    $$('.fuse-x').forEach(b => b.onclick = () => { if(b.dataset.o != null){ orM[+b.dataset.o] ^= 1; } else { andM[+b.dataset.i][+b.dataset.k] ^= 1; } tries++; beep('tick'); render(); });
+      'Součet součinů: každý řádek tabulky, kde má být Y = 1, pokryje aspoň jeden součin. Nepoužitý součin (bez propojek) se nepočítá. ● = propojeno, × = propojka přerušená.');
+    $$('.plafuse').forEach(b => b.onclick = () => { if(b.dataset.o != null){ orM[+b.dataset.o] ^= 1; } else { andM[+b.dataset.i][+b.dataset.k] ^= 1; } tries++; beep('tick'); render(); });
+    $$('.plasw').forEach(b => b.onclick = () => { cur ^= (4 >> +b.dataset.j); beep('tick'); render(); });
+    $$('.plarow').forEach(r => r.onclick = () => { cur = +r.dataset.x; render(); });
     $('#hn').onclick = () => { hint = true; render(); }; $('#cl').onclick = () => { reset(); render(); };
     $('#dn').onclick = () => { beep('ok'); lvl++; if(lvl >= FN.length) return labDone(3, 'PLA naprogramováno', [[FN.length, 'funkcí'], [tries, 'propálení']], 35, () => LABS[3].find(l => l.name === 'Naprogramuj PLA').run(3)); toast('Funkce sedí!'); reset(); render(); };
   }
