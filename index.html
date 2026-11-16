@@ -224,6 +224,55 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.fly{box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.shake{animation:shake .38s}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.ordx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start;margin-top:10px}
+@media (max-width:760px){.ordx{grid-template-columns:minmax(0,1fr)}}
+.ordhd{display:flex;justify-content:space-between;align-items:baseline;font:600 10.5px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin:0 0 10px}
+.ordhd b{font-weight:600;color:var(--silk-dim);letter-spacing:.04em}
+.ordline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:8px}
+.ordline::before{content:"";position:absolute;left:15px;top:14px;bottom:14px;width:2px;background:linear-gradient(var(--copper-dim),rgba(208,162,75,.15))}
+.ordline li{position:relative;display:flex;align-items:center;gap:12px;min-height:40px}
+.ordline li i{position:relative;z-index:1;flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font:normal 700 13px/1 var(--font-mono);background:var(--chip);border:2px solid #3a4446;color:var(--silk-dim)}
+.ordline li span{flex:1;padding:9px 12px;border-radius:8px;font-size:14.5px;line-height:1.35}
+.ordline li.done i{background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#f3cd7e;color:#1a1206;box-shadow:0 0 12px rgba(208,162,75,.4)}
+.ordline li.done span{background:var(--mask-2);border:1px solid rgba(208,162,75,.3)}
+.ordline li.slot i{border-color:var(--copper);color:var(--copper);animation:bpPulse 1.2s ease-in-out infinite}
+.ordline li.slot span{border:1px dashed var(--copper);color:var(--silk-dim);background:rgba(208,162,75,.05)}
+.ordline li.todo span{border:1px dashed #2f3739;min-height:20px}
+.ordline li.todo i{opacity:.5}
+.ordline.final{margin-top:12px}
+.ordcards{display:grid;gap:8px}
+.ordcard{text-align:left;font:500 14.5px/1.35 var(--font-body);color:var(--silk);background:var(--chip-2);border:1px solid #39413f;border-left:3px solid var(--copper-dim);border-radius:8px;padding:11px 13px;cursor:pointer;transition:border-color .15s,transform .15s,background .15s}
+.ordcard:hover{border-color:var(--copper);transform:translateX(3px);background:rgba(208,162,75,.06)}
+.ordcard.err,.ordcard.shake{border-color:var(--bad);background:rgba(255,97,80,.12)}
+.bksegs{display:flex;gap:4px;margin:6px 0 14px}.bksegs i{flex:1;height:6px;border-radius:3px;background:var(--led-off)}
+.bksegs i.cur{background:var(--copper);box-shadow:0 0 8px rgba(208,162,75,.6)}.bksegs i.ok{background:var(--led-on)}.bksegs i.bad{background:var(--bad)}
+.bkstage{display:flex;flex-direction:column;align-items:center;gap:10px;margin:4px 0 18px;min-height:110px}
+.bkcard{position:relative;max-width:560px;width:100%;text-align:center;font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);color:#1a1206;padding:24px 22px 20px;border-radius:12px;
+  background:linear-gradient(180deg,#f6e9c8,#e2cd98);box-shadow:0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:bkIn .35s var(--ease) both}
+.bkcard .bkn{position:absolute;top:8px;right:12px;font:600 10.5px/1 var(--font-mono);color:#8a6c34}
+.bkcard.gone{opacity:.28;filter:grayscale(.6);transform:scale(.96);transition:opacity .3s,transform .3s}
+@keyframes bkIn{from{opacity:0;transform:translateY(-16px) rotate(-1.5deg)}to{opacity:1;transform:none}}
+.bkstage .fb{min-height:42px}
+.bkbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}
+.bkbins.many{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.bkbin{display:flex;flex-direction:column;align-items:stretch;text-align:left;min-height:118px;padding:0;border-radius:10px;cursor:pointer;color:var(--silk);font:inherit;overflow:hidden;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--bc) 10%,transparent),rgba(0,0,0,.15));border:1px solid color-mix(in srgb,var(--bc) 45%,transparent);transition:transform .15s,box-shadow .2s,border-color .2s}
+.bkbin:hover:not(:disabled){transform:translateY(-3px);border-color:var(--bc);box-shadow:0 10px 22px rgba(0,0,0,.35),0 0 0 1px var(--bc)}
+.bkbin:disabled{cursor:default}
+.bkh{display:flex;align-items:center;gap:8px;padding:9px 10px;background:color-mix(in srgb,var(--bc) 18%,transparent);border-bottom:1px solid color-mix(in srgb,var(--bc) 35%,transparent)}
+.bkh b{flex:1;font:600 14px/1.2 var(--font-display)}
+.bkh em{font:normal 600 11px/1 var(--font-mono);padding:3px 6px;border-radius:10px;background:rgba(0,0,0,.3);color:var(--bc)}
+.bkk{font:600 10.5px/1 var(--font-mono);width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:var(--bc);color:#111}
+.bkin{display:flex;flex-wrap:wrap;gap:4px;padding:8px}
+.bkin i{font:normal 500 11.5px/1.25 var(--font-body);padding:4px 7px;border-radius:5px;background:rgba(255,255,255,.07);border:1px solid color-mix(in srgb,var(--bc) 30%,transparent)}
+.bkin i.bad{border-color:var(--bad);box-shadow:inset 3px 0 0 var(--bad)}
+.bkin i.new{animation:bpDrop .35s var(--ease) both}
+.bkbin.hit{border-color:var(--led-on);box-shadow:0 0 0 2px var(--led-on),0 0 18px rgba(97,227,140,.35)}
+.bkbin.miss{border-color:var(--bad);box-shadow:0 0 0 2px var(--bad)}
+.bkbin.want{animation:bpPulse 1s ease-in-out 2;box-shadow:0 0 0 2px var(--led-on)}
 .btn.green:disabled,.btn.red:disabled{opacity:1}
 .arr{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
 .cell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:52px;padding:10px 6px;background:var(--chip-2);border:1px solid #39413f;border-radius:6px}
@@ -2268,46 +2317,73 @@ function flash(el, cls){ if(!el) return; el.classList.add(cls); setTimeout(() =>
 const fmt = (v, d) => Number(v).toLocaleString('cs-CZ', {maximumFractionDigits: d == null ? 3 : d, minimumFractionDigits: d || 0});
 
 /* ---------- generic: ORDER ---------- */
+function flyTo(fromEl, toEl, cls, done){
+  try{
+    const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect(), c = fromEl.cloneNode(true);
+    c.className = (fromEl.className || '') + ' fly ' + (cls || ''); c.removeAttribute('id');
+    Object.assign(c.style, {position:'fixed', left:a.left+'px', top:a.top+'px', width:a.width+'px', height:a.height+'px', margin:0, zIndex:80, pointerEvents:'none', transition:'transform .42s cubic-bezier(.3,.7,.2,1), opacity .42s'});
+    document.body.appendChild(c);
+    requestAnimationFrame(() => { const dx = b.left + b.width/2 - (a.left + a.width/2), dy = b.top + b.height/2 - (a.top + a.height/2), sc = Math.min(1, Math.max(.25, b.width / a.width));
+      c.style.transform = 'translate('+dx+'px,'+dy+'px) scale('+sc+')'; c.style.opacity = '.15'; });
+    setTimeout(() => { c.remove(); done && done(); }, 430);
+  }catch(e){ done && done(); }
+}
 function orderLab(n, title, prompt, items){
   return () => {
-    const pool = shuffle(items.map((t,i) => ({t,i}))); let pos = 0, mistakes = 0;
+    const pool = shuffle(items.map((t,i) => ({t,i}))); let pos = 0, mistakes = 0, busy = false;
     function render(){
-      labShell(n, title, '<p class="muted" style="max-width:62ch">'+esc(prompt)+'</p>'+
-        '<ol class="seq">'+items.slice(0,pos).map(t => '<li>'+esc(t)+'</li>').join('')+(pos<items.length?'<li class="next">?</li>':'')+'</ol>'+
-        '<div class="pool">'+pool.filter(p => p.i >= pos).map(p => '<button class="tile-b" data-i="'+p.i+'">'+esc(p.t)+'</button>').join('')+'</div>'+
-        '<p class="mono small muted" style="margin-top:12px">chyby: '+mistakes+'</p>', 'Klikej na kroky ve správném pořadí.');
-      $$('.pool .tile-b').forEach(b => b.onclick = () => {
-        if(+b.dataset.i === pos){ pos++; beep('ok'); if(pos === items.length) return finish(); render(); }
-        else { mistakes++; beep('bad'); flash(b, 'err'); $('.mono.small').textContent = 'chyby: '+mistakes; }
+      labShell(n, title, '<p class="muted" style="max-width:66ch">'+esc(prompt)+'</p>'+
+        '<div class="ordx"><div class="ordtl"><div class="ordhd"><span>Postup</span><b>'+pos+'/'+items.length+'</b></div><ol class="ordline">'+
+          items.map((t,k) => k < pos ? '<li class="done"><i>'+(k+1)+'</i><span>'+esc(t)+'</span></li>' : k === pos ? '<li class="slot" id="ordslot"><i>'+(k+1)+'</i><span>Který krok je další?</span></li>' : '<li class="todo"><i>'+(k+1)+'</i><span></span></li>').join('')+'</ol></div>'+
+        '<div class="ordpool"><div class="ordhd"><span>Kroky k zařazení</span><b class="ordmis">chyby: '+mistakes+'</b></div><div class="ordcards">'+pool.filter(p => p.i >= pos).map(p => '<button class="ordcard" data-i="'+p.i+'">'+esc(p.t)+'</button>').join('')+'</div></div></div>',
+        'Klikej na kroky ve správném pořadí – správný krok se zařadí na časovou osu.');
+      $$('.ordcard').forEach(b => b.onclick = () => {
+        if(busy) return;
+        if(+b.dataset.i === pos){ busy = true; beep('ok'); b.classList.add('ok'); flyTo(b, $('#ordslot'), 'ok', () => { busy = false; pos++; if(pos === items.length) return finish(); render(); }); b.style.visibility = 'hidden'; }
+        else { mistakes++; beep('bad'); flash(b, 'shake'); $('.ordmis').textContent = 'chyby: '+mistakes; }
       });
     }
     function finish(){ labDone(n, mistakes ? 'Seřazeno' : 'Bez chyby', [[mistakes, 'chyby']], Math.max(5, 24 - mistakes*4), orderLab(n, title, prompt, items),
-      '<ol class="seq done">'+items.map(t => '<li>'+esc(t)+'</li>').join('')+'</ol>'); }
+      '<ol class="ordline final">'+items.map((t,k) => '<li class="done"><i>'+(k+1)+'</i><span>'+esc(t)+'</span></li>').join('')+'</ol>'); }
     render();
   };
 }
 /* ---------- generic: BUCKET (roztřiď) ---------- */
+const BKCOL = ['#e0b45f','#61e38c','#7fd3ff','#ff8a7e','#c39bff','#ffb340','#5fe0c8','#f78fc4','#b7d36a'];
 function bucketLab(n, title, prompt, cats, items){
   return () => {
-    const list = shuffle(items); let i = 0, ok = 0; const wrong = [];
+    const list = shuffle(items); let i = 0, ok = 0, busy = false; const wrong = [], res = [], inBin = cats.map(() => []);
+    const binsHTML = (final) => '<div class="bkbins'+(cats.length > 4 ? ' many' : '')+'">'+cats.map((c,k) => '<button class="bkbin" data-k="'+k+'" style="--bc:'+BKCOL[k % BKCOL.length]+'"'+(final ? ' disabled' : '')+'>'+
+      '<span class="bkh">'+(k < 9 && !final ? '<span class="bkk">'+(k+1)+'</span>' : '')+'<b>'+esc(c)+'</b><em>'+inBin[k].length+'</em></span>'+
+      '<span class="bkin">'+inBin[k].map(x => '<i class="'+(x[1] ? '' : 'bad')+'">'+esc(x[0])+'</i>').join('')+'</span></button>').join('')+'</div>';
     function render(){
       if(i >= list.length) return labDone(n, 'Roztříděno', [[ok+'/'+list.length, 'správně']], ok*3, bucketLab(n, title, prompt, cats, items),
-        wrong.length ? '<div class="wronglist">'+wrong.map(w => '<div><b>'+esc(w[0])+'</b><span>'+esc(cats[w[1]])+'</span></div>').join('')+'</div>' : '');
+        '<p class="muted small" style="margin:14px 0 6px">Takhle to patří:</p>'+binsHTML(true)+(wrong.length ? '<div class="wronglist">'+wrong.map(w => '<div><b>'+esc(w[0])+'</b><span>'+esc(cats[w[1]])+'</span></div>').join('')+'</div>' : ''));
       const it = list[i];
-      labShell(n, title, '<p class="muted">'+esc(prompt)+'</p><div class="qtop"><span class="lbl">'+(i+1)+'/'+list.length+' · správně '+ok+'</span></div>'+
-        '<div class="bucket-item">'+esc(it[0])+'</div><div class="cats">'+cats.map((c,k) => '<button class="btn ghost cat" data-k="'+k+'">'+(k<9?'<span class="kbd" style="margin:0 8px 0 0">'+(k+1)+'</span>':'')+esc(c)+'</button>').join('')+'</div><div class="fb" id="fb"></div>',
-        'Klávesy 1–'+Math.min(9,cats.length)+' vyberou kategorii.');
+      labShell(n, title, '<p class="muted">'+esc(prompt)+'</p>'+
+        '<div class="bksegs">'+list.map((_,k) => '<i class="'+(res[k] === true ? 'ok' : res[k] === false ? 'bad' : k === i ? 'cur' : '')+'"></i>').join('')+'</div>'+
+        '<div class="bkstage"><div class="bkcard" id="bkcard"><span class="bkn">'+(i+1)+'/'+list.length+'</span>'+esc(it[0])+'</div><div class="fb" id="fb"></div></div>'+binsHTML(false),
+        'Klikni na přihrádku, kam pojem patří. Klávesy 1–'+Math.min(9,cats.length)+' vyberou přihrádku, Enter pokračuje.');
       let done = false;
+      const next = () => { if(busy) return; i++; render(); };
       const pick = k => {
-        if(done) return; done = true;
-        const good = k === it[1];
-        $$('.cat').forEach(b => { b.disabled = true; if(+b.dataset.k === it[1]) b.classList.add('green'); else if(+b.dataset.k === k) b.classList.add('red'); });
-        if(good){ ok++; beep('ok'); } else { beep('bad'); wrong.push(it); }
-        $('#fb').innerHTML = '<span class="msg '+(good?'ok':'bad')+'">'+(good?'Správně':'Patří do: '+esc(cats[it[1]]))+'</span><button class="btn" id="nx">Další<span class="kbd">Enter</span></button>';
-        $('#nx').onclick = () => { i++; render(); };
-        onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); i++; render(); } };
+        if(done || busy) return; done = true;
+        const good = k === it[1], card = $('#bkcard'), target = $('.bkbin[data-k="'+it[1]+'"]'), chosen = $('.bkbin[data-k="'+k+'"]');
+        res[i] = good; if(good){ ok++; beep('ok'); } else { beep('bad'); wrong.push(it); }
+        $$('.bkbin').forEach(b => b.disabled = true);
+        chosen.classList.add(good ? 'hit' : 'miss'); if(!good) target.classList.add('want');
+        const land = () => { inBin[it[1]].push([it[0], good]); busy = false;
+          $$('.bkbin').forEach(b => { const kk = +b.dataset.k; b.querySelector('em').textContent = inBin[kk].length; });
+          const box = target.querySelector('.bkin'); box.insertAdjacentHTML('beforeend', '<i class="new'+(good ? '' : ' bad')+'">'+esc(it[0])+'</i>');
+          $('#fb').innerHTML = '<span class="msg '+(good?'ok':'bad')+'">'+(good?'Správně':'Patří do: '+esc(cats[it[1]]))+'</span><button class="btn" id="nx">Další<span class="kbd">Enter</span></button>';
+          $('#nx').onclick = next; };
+        busy = true;
+        if(good) flyTo(card, target, 'ok', land);
+        else { flash(card, 'shake'); setTimeout(() => flyTo(card, target, 'bad', land), 380); }
+        setTimeout(() => { card.classList.add('gone'); }, good ? 0 : 380);
+        onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); next(); } };
       };
-      $$('.cat').forEach(b => b.onclick = () => pick(+b.dataset.k));
+      $$('.bkbin').forEach(b => b.onclick = () => pick(+b.dataset.k));
       onKey = e => { const k = +e.key - 1; if(k >= 0 && k < cats.length && !e.repeat){ e.preventDefault(); pick(k); } };
     }
     render();
