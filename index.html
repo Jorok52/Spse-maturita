@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="15.11.2026 13:01">
+<meta name="md-version" content="16.11.2026 10:35">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -452,6 +452,10 @@ main{position:relative;z-index:2}
 #fx-music,#mute,.top .stats .iconbtn{white-space:nowrap}
 .iconbtn[aria-pressed="true"]::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--led-on);box-shadow:0 0 6px var(--led-on);margin-right:7px;vertical-align:1px}
 .fxbar{display:flex;gap:8px}
+.hback{font:600 18px/1 var(--font-mono);padding:1px 8px 3px;color:var(--silk);margin-right:-8px}
+.hback:not([hidden]) + .brand::before{display:none}
+.hback:hover{border-color:var(--copper);color:#fff3d6;box-shadow:0 0 12px rgba(208,162,75,.25)}
+.hback[hidden]{display:none}
 
 /* ---------- úvod ---------- */
 .hero h1{font-size:clamp(32px,5vw,58px);letter-spacing:-.01em;
@@ -871,12 +875,13 @@ main{position:relative;z-index:2}
 
 <canvas id="fx-pcb" aria-hidden="true"></canvas><canvas id="fx-pulse" aria-hidden="true"></canvas><div id="fx-light" aria-hidden="true"></div><div id="fx-vig" aria-hidden="true"></div>
 <header class="top"><div class="wrap">
+  <button class="iconbtn hback" id="hback" aria-label="Zpět na předchozí stránku" title="Zpět na předchozí stránku" hidden>←</button>
   <button class="brand" id="home" aria-label="Zpět na desku"><b>Maturitní deska</b><span>SPŠE · IT</span></button>
   <div class="stats" id="stats"></div>
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">15.11.2026 13:01</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 10:35</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -1569,6 +1574,10 @@ function renderStats(){
   document.getElementById('mute').onclick = () => { S.mute = !S.mute; save(); renderStats(); FX.refresh(); if(!S.mute) beep('ok'); };
 }
 document.getElementById('home').onclick = () => go('');
+/* šipka zpět v hlavičce: zmáčkne tlačítko Zpět aktuální obrazovky (uloží výsledky, zastaví časovače) */
+const hback = document.getElementById('hback');
+hback.onclick = () => { const b = document.getElementById('back'); if(b) b.click(); else go(''); };
+new MutationObserver(() => { hback.hidden = !document.getElementById('back'); }).observe(view, {childList:true, subtree:true});
 
 /* ---------------- routing ---------------- */
 function go(h){ if(location.hash.replace('#','') === h) route(); else location.hash = h; }
