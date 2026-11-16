@@ -224,6 +224,22 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.fatdir{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(208,162,75,.12),rgba(208,162,75,.03));border:1px solid rgba(208,162,75,.4);border-radius:10px;padding:10px 14px;margin:6px 0 12px}
+.fati{width:30px;height:30px;fill:none;stroke:var(--copper);stroke-width:1.6;stroke-linejoin:round}
+.fatdir b{font:600 15px/1.2 var(--font-mono);color:var(--silk)}.fatdir em{font-style:normal;color:var(--silk-dim);font-size:12px}
+.fatl{display:block;font:600 9.5px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper);margin-bottom:4px}
+.fc{position:relative}.ford{position:absolute;bottom:6px;right:6px;font:normal 700 11px/1 var(--font-mono);color:#1a1206;background:var(--copper);border-radius:8px;padding:2px 5px}
+.fatdisk{margin-top:14px;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:10px 12px}
+.fdk{display:grid;grid-template-columns:repeat(22,minmax(0,1fr));gap:3px;margin-top:6px}
+@media (max-width:700px){.fdk{grid-template-columns:repeat(11,minmax(0,1fr))}}
+.fdc{position:relative;height:42px;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px;border:1px solid #2f3739}
+.fdc span{font:9.5px/1 var(--font-mono);color:var(--silk-dim)}
+.fdc em{font:normal 700 12px/1 var(--font-mono);color:#1a1206;margin-bottom:auto;margin-top:5px}
+.fdc.free{background:#151a1b}.fdc.used{background:#3a4446}.fdc.bad{background:repeating-linear-gradient(45deg,rgba(255,97,80,.35) 0 4px,#1b1f20 4px 8px);border-color:rgba(255,97,80,.5)}
+.fdc.mine{background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#f3cd7e;animation:bpDrop .35s var(--ease) both}.fdc.mine span{color:#1a1206}
+.fdleg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font:11px var(--font-mono);color:var(--silk-dim);align-items:center}
+.fdleg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+.fdleg i.mine{background:#e0b45f}.fdleg i.used{background:#3a4446}.fdleg i.free{background:#151a1b;border:1px solid #2f3739}.fdleg i.bad{background:repeating-linear-gradient(45deg,rgba(255,97,80,.6) 0 3px,#1b1f20 3px 6px)}
 .mbrx{display:grid;grid-template-columns:auto minmax(240px,1fr);gap:16px;align-items:start}
 @media (max-width:900px){.mbrx{grid-template-columns:minmax(0,1fr)}}
 .mbrx .hex{max-width:100%;overflow-x:auto}
@@ -3277,8 +3293,11 @@ lab(15, 'Sleduj řetězec FAT', 'Podle FAT tabulky projdi clustery souboru až k
   let f = build(), pos = 0;
   function render(){
     labShell(15, 'Řetězec FAT · soubor '+(round+1)+'/2',
-      '<p>Záznam v adresáři: <span class="mono"><b>'+f.name+'</b> · první cluster '+f.chain[0]+' (0x'+f.chain[0].toString(16).toUpperCase()+') · '+fmt(f.size,0)+' B</span>. Klikej na clustery souboru v pořadí.</p>'+
-      '<div class="fat">'+Object.keys(f.fat).map(c => '<button class="fc'+(f.chain.indexOf(+c) > -1 && f.chain.indexOf(+c) < pos ? ' fnd' : '')+'" data-c="'+c+'"><span>cluster '+c+' (0x'+(+c).toString(16).toUpperCase()+')</span><b>'+f.fat[c]+'</b></button>').join('')+'</div>'+
+      '<div class="fatdir"><svg viewBox="0 0 24 24" class="fati"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5"/></svg><div><span class="fatl">záznam v adresáři</span><b>'+f.name+'</b></div><div><span class="fatl">první cluster</span><b>'+f.chain[0]+' <em>(0x'+f.chain[0].toString(16).toUpperCase()+')</em></b></div><div><span class="fatl">velikost</span><b>'+fmt(f.size,0)+' B</b></div></div>'+
+      '<p>Klikej na buňky FAT se clustery souboru v pořadí – hodnota v buňce říká, kam soubor pokračuje.</p>'+
+      '<div class="fat">'+Object.keys(f.fat).map(c => { const k = f.chain.indexOf(+c), fd = k > -1 && k < pos; return '<button class="fc'+(fd ? ' fnd' : '')+'" data-c="'+c+'"><span>cluster '+c+' (0x'+(+c).toString(16).toUpperCase()+')</span><b>'+f.fat[c]+'</b>'+(fd ? '<em class="ford">'+(k+1)+'.</em>' : '')+'</button>'; }).join('')+'</div>'+
+      '<div class="fatdisk"><span class="fatl">datová oblast disku · clustery 2–23</span><div class="fdk">'+Object.keys(f.fat).map(c => { const v = f.fat[c], k = f.chain.indexOf(+c), fd = k > -1 && k < pos, t = fd ? 'mine' : v === '0000' ? 'free' : v === 'FFF7' ? 'bad' : 'used';
+        return '<div class="fdc '+t+'">'+(fd ? '<em>'+(k+1)+'</em>' : '')+'<span>'+c+'</span></div>'; }).join('')+'</div><div class="fdleg"><i class="mine"></i>tvůj soubor <i class="used"></i>obsazeno <i class="free"></i>volné <i class="bad"></i>vadný</div></div>'+
       '<p class="mono small muted" style="margin-top:10px">0000 volný · FFF7 vadný · FFF8–FFFF EOF · jinak číslo dalšího clusteru (hex) · chyby: '+mistakes+'</p>', 'Hodnota v buňce clusteru říká, kde soubor pokračuje.');
     $$('.fc').forEach(b => b.onclick = () => {
       const c = +b.dataset.c;
