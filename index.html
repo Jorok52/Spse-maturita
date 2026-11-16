@@ -224,6 +224,11 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.dksvg{display:block;width:100%;max-width:560px;height:auto;margin:10px 0 4px}
+.dksvg text{font-family:var(--font-mono)}
+.dkt{font-size:9px;fill:#8fa3c4}.dkchip{font-size:15px;font-weight:700;fill:#d5dbd9}
+.dkpin{font-size:8.5px;fill:#c9d6ee}.dkled{font-size:9.5px;font-weight:600}
+.dkmode{font-size:10px;fill:#8fa3c4}.dkmode.out{fill:var(--led-on);font-weight:600}
 .bsx{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start;margin:10px 0 14px}
 @media (max-width:760px){.bsx{grid-template-columns:minmax(0,1fr)}}
 .bsviz{background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:14px 14px 10px}
@@ -2491,16 +2496,42 @@ lab(2, 'Rozsviť LED přes registry', 'Klikáním na bity nastav GPIOD->ODR a MO
       const pin = ri(12,15); task = {type:'moder', pin, target: (1 << (pin*2))>>>0};
     }
   }
+  function board(){
+    const C = {12:['#61e38c','zelená'], 13:['#ffb340','oranžová'], 14:['#ff5146','červená'], 15:['#5aa8ff','modrá']};
+    const P = {13:[360,48], 14:[436,112], 15:[360,176], 12:[284,112]}, Y = {12:84, 13:100, 14:116, 15:132};
+    const mode = p => task.type === 'moder' ? ['vstup','výstup','AF','analog'][(bits >>> (p*2)) & 3] : null;
+    let g = '<defs><radialGradient id="dkGlow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="currentColor" stop-opacity=".7"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs>';
+    g += '<rect x="6" y="6" width="508" height="212" rx="16" fill="#16243d" stroke="#2f4670" stroke-width="2"/>';
+    [[22,22],[498,22],[22,202],[498,202]].forEach(h => g += '<circle cx="'+h[0]+'" cy="'+h[1]+'" r="6" fill="#0a0d0e" stroke="#c9a35a" stroke-width="2"/>');
+    g += '<rect x="44" y="12" width="40" height="16" rx="3" fill="#b8c0be"/><text x="64" y="40" text-anchor="middle" class="dkt">USB</text>';
+    g += '<g transform="translate(72 50)"><rect x="0" y="0" width="120" height="120" rx="6" fill="#1a1e1f" stroke="#3d4648"/>';
+    for(let k = 0; k < 12; k++){ const o = 10 + k * 8.6; g += '<rect x="'+o+'" y="-6" width="4" height="6" fill="#b8c0be"/><rect x="'+o+'" y="120" width="4" height="6" fill="#b8c0be"/><rect x="-6" y="'+o+'" width="6" height="4" fill="#b8c0be"/><rect x="120" y="'+o+'" width="6" height="4" fill="#b8c0be"/>'; }
+    g += '<circle cx="14" cy="14" r="4" fill="#2b3133"/><text x="60" y="58" text-anchor="middle" class="dkchip">STM32</text><text x="60" y="74" text-anchor="middle" class="dkt">F407VG</text></g>';
+    g += '<rect x="340" y="92" width="40" height="40" rx="3" fill="#1a1e1f" stroke="#3d4648"/><text x="360" y="116" text-anchor="middle" class="dkt">MEMS</text>';
+    [12,13,14,15].forEach(p => {
+      const on = task.type === 'odr' && ((bits >> p) & 1), [x, y] = P[p], col = C[p][0], m = mode(p), out = m === 'výstup';
+      const R = {12:'M198 84H246V112H272', 13:'M198 100H256V48H348', 14:'M198 116H232V152H436V119', 15:'M198 132H222V176H348'};
+      g += '<path d="'+R[p]+'" fill="none" stroke="'+(on || out ? col : '#3a5a8a')+'" stroke-width="2.4" stroke-linejoin="round"'+(on || out ? ' style="filter:drop-shadow(0 0 3px '+col+')"' : '')+'/>';
+      g += '<text x="200" y="'+(Y[p] - 3)+'" class="dkpin">PD'+p+'</text>';
+      if(on) g += '<circle cx="'+x+'" cy="'+y+'" r="34" fill="url(#dkGlow)" style="color:'+col+'"/>';
+      g += '<rect x="'+(x-12)+'" y="'+(y-7)+'" width="24" height="14" rx="3" fill="'+(on ? col : '#2a3133')+'" stroke="'+col+'" stroke-width="1.6"'+(on ? '' : ' opacity=".75"')+'/>';
+      g += '<text x="'+x+'" y="'+(p === 15 ? y + 24 : p === 13 ? y - 13 : y + 22)+'" text-anchor="middle" class="dkled" fill="'+col+'">'+C[p][1]+'</text>';
+      if(m) g += '<text x="500" y="'+(40 + (p - 12) * 18)+'" text-anchor="end" class="dkmode'+(out ? ' out' : '')+'">PD'+p+': '+m+'</text>';
+    });
+    g += '<circle cx="470" cy="190" r="9" fill="#2b6dd6" stroke="#9cc3ff"/><text x="470" y="210" text-anchor="middle" class="dkt">USER</text><circle cx="430" cy="190" r="9" fill="#1a1e1f" stroke="#7f8e8a"/><text x="430" y="210" text-anchor="middle" class="dkt">RESET</text>';
+    g += '<text x="72" y="200" class="dkt">STM32F4 Discovery · GPIOD</text>';
+    return '<svg class="dksvg" viewBox="0 0 520 224" role="img" aria-label="Kit STM32F4 Discovery">'+g+'</svg>';
+  }
   function hex(v, w){ return '0x'+(v>>>0).toString(16).toUpperCase().padStart(w,'0'); }
   function render(){
     let inner;
     if(task.type === 'odr'){
       const want = [12,13,14,15].filter(p => task.target & (1<<p)).map(p => LEDN[p]+' (PD'+p+')').join(', ');
       inner = '<p>Úkol '+(round+1)+'/'+rounds+': rozsviť přesně tyto LED: <b>'+want+'</b>. Ostatní bity registru nech v 0.</p>'+
-        '<div class="ledbar">'+[12,13,14,15].map(p => '<span class="bigled l'+p+((bits>>p)&1?' on':'')+'"></span><span class="mono small">PD'+p+'</span>').join('')+'</div>'+
+        board()+
         '<div class="mono" style="margin:10px 0">GPIOD-&gt;ODR = <b>'+hex(bits,4)+'</b></div>'+bitGrid(16, bits, k => 'PD'+k);
     } else {
-      inner = '<p>Úkol '+(round+1)+'/'+rounds+': nastav pin <b>PD'+task.pin+'</b> jako <b>výstup</b>. Každý pin má v MODER 2 bity: 00 vstup, 01 výstup, 10 alternativní funkce, 11 analog.</p>'+
+      inner = '<p>Úkol '+(round+1)+'/'+rounds+': nastav pin <b>PD'+task.pin+'</b> jako <b>výstup</b>. Každý pin má v MODER 2 bity: 00 vstup, 01 výstup, 10 alternativní funkce, 11 analog.</p>'+board()+
         '<div class="mono" style="margin:10px 0">GPIOD-&gt;MODER = <b>'+hex(bits,8)+'</b></div>'+bitGrid(32, bits, k => 'P'+Math.floor(k/2)+(k%2?'↑':'↓'));
     }
     labShell(2, 'Rozsviť LED přes registry', inner+'<div class="row" style="margin-top:14px"><button class="btn" id="chk">Zapsat do registru</button><button class="btn ghost" id="clr">Vynulovat</button></div>'+
