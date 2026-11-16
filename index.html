@@ -412,10 +412,51 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .tbl tr.miss td{background:rgba(255,97,80,.14)}
 .tbl tr.cur td{background:rgba(208,162,75,.16)}
 .ledwrap{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
-.ledm{display:grid;grid-template-columns:repeat(8,28px);gap:5px;background:#050807;padding:12px;border-radius:10px;box-shadow:inset 0 0 20px #000}
-.lm{width:28px;height:28px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#3a1a17,#1a0b0a);cursor:pointer}
+.ledwrap>div:last-child{flex:1 1 300px;min-width:0}
+.ledwrap pre.code{white-space:pre-wrap;overflow-wrap:anywhere}
+.ledm{--lz:28px;display:grid;grid-template-columns:repeat(8,var(--lz));gap:5px;background:#050807;padding:12px;border-radius:10px;box-shadow:inset 0 0 20px #000}
+.lm{width:var(--lz);height:var(--lz);border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#3a1a17,#1a0b0a);cursor:pointer}
 .lm.on{background:radial-gradient(circle at 35% 30%,#ffd9d2,#ff5146 45%,#a3150c);box-shadow:0 0 10px rgba(255,81,70,.85)}
 .lm:disabled{cursor:default}
+.lm.ghost{background:radial-gradient(circle at 35% 30%,#5a2520,#2a100d);box-shadow:inset 0 0 0 1px rgba(255,81,70,.35)}
+.ledseg{display:inline-flex;flex-wrap:wrap;margin:0 0 14px;border:1px solid var(--copper-dim);border-radius:8px;overflow:hidden}
+.ledseg button{background:rgba(255,255,255,.02);border:0;border-right:1px solid var(--copper-dim);padding:9px 13px;font:500 12.5px/1 var(--font-mono);color:var(--silk-dim);cursor:pointer}
+.ledseg button:last-child{border-right:0}.ledseg button:hover{color:var(--silk);background:rgba(208,162,75,.1)}
+.ledseg button.on{background:linear-gradient(180deg,#f3cd7e,#c4913b);color:#1a1206;font-weight:600}
+.lmod{--lz:28px;position:relative;display:grid;grid-template-columns:62px auto;grid-template-rows:auto auto auto;gap:0 6px;width:max-content;max-width:100%;padding:16px 18px 12px 12px;border-radius:12px;
+  background:radial-gradient(circle at 20% 10%,rgba(255,255,255,.05),transparent 40%),linear-gradient(160deg,#145c45,#0b3528);border:1px solid #2c7a5d;box-shadow:inset 0 0 0 3px rgba(0,0,0,.18),0 14px 30px rgba(0,0,0,.4)}
+.lmod .ledm{--lz:inherit;grid-column:2;grid-row:2}
+.lmhole{position:absolute;right:8px;top:8px;width:10px;height:10px;border-radius:50%;background:#0a0d0e;box-shadow:0 0 0 3px #c9a35a}.lmhole.r{top:auto;bottom:8px}
+.lmmcu{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:6px;justify-content:flex-end;padding-bottom:6px}
+.lmsig{display:flex;flex-direction:column;gap:2px;font:600 8.5px/1 var(--font-mono);color:#9fd8c0}
+.lmsig span{padding:2px 4px;border-radius:3px;border-left:2px solid #2c7a5d}
+.lmsig span.on{background:#f3cd7e;color:#1a1206;border-color:#fff3d6;box-shadow:0 0 8px rgba(241,200,115,.8)}
+.lmcol{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:4px;padding:0 12px}
+.lmrow{grid-column:1;grid-row:2;display:flex;gap:4px;align-items:stretch}
+.ic{position:relative;background:linear-gradient(180deg,#2b3031,#111415);border-radius:4px;box-shadow:0 2px 0 rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);color:#d5dbd9;padding:6px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ic::before{content:"";position:absolute;left:50%;top:-1px;width:10px;height:5px;margin-left:-5px;border-radius:0 0 6px 6px;background:#0b3528}
+.ic b{font:700 10.5px/1.1 var(--font-mono);letter-spacing:.04em}.ic small{font:9px/1.2 var(--font-mono);color:#93a19c}
+.ic.wide{padding:7px}
+.ic.tall{width:30px;padding:6px 2px}.ic.tall b{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9.5px}.ic.tall small{display:none}
+.lpins{display:grid;gap:5px}
+.lpins.h{grid-template-columns:repeat(8,var(--lz))}
+.lpins.v{grid-template-rows:repeat(8,var(--lz));padding:12px 0;flex:1}
+.lpin{position:relative;display:flex;align-items:center;justify-content:center}
+.lpin.c{height:16px}.lpin.c::after{content:"";width:4px;height:100%;background:#b8c0be;border-radius:1px;transition:background .15s,box-shadow .15s}
+.lpin.r{width:24px}.lpin.r::after{content:"";height:4px;width:100%;background:#b8c0be;border-radius:1px;transition:background .15s,box-shadow .15s}
+.lpin.on::after{background:#ffd9d2;box-shadow:0 0 8px #ff5146,0 0 2px #fff}
+.lpin em{position:absolute;font:normal 600 7.5px/1 var(--font-mono);color:#9fd8c0}
+.lpin.c em{top:-1px;left:50%;transform:translate(-50%,-100%)}.lpin.c{margin-top:9px}
+.lpin.r em{left:-1px;top:50%;transform:translate(-100%,-50%);display:none}
+.lmsilk{grid-column:2;grid-row:3;text-align:center;font:600 9px/1 var(--font-mono);letter-spacing:.16em;color:#9fd8c0;opacity:.75;padding-top:8px}
+.srp{margin-top:12px;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:10px 12px;max-width:440px}
+.srl{display:block;font:600 10px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:8px}
+.src{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.src i{font:normal 700 16px/34px var(--font-mono);text-align:center;border-radius:5px;background:var(--chip);border:1px solid #3a4446;color:var(--silk-dim);transition:all .15s}
+.src i.on{background:rgba(255,81,70,.18);border-color:#ff8a7e;color:#ffd9d2}
+.src i.new{box-shadow:0 0 0 2px #f3cd7e}
+.srs{font:12.5px/1.45 var(--font-mono);color:var(--silk-dim);margin:8px 0 0;min-height:36px}.srs b{color:var(--silk)}
+@media (max-width:440px){.lmod,.lmod .ledm{--lz:23px}.lmod{grid-template-columns:52px auto;padding:12px 12px 10px 8px}.lpin.r{width:16px}.ledm{gap:4px}.lpins{gap:4px}}
 .hexin{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;align-content:start}
 .hexin .oct{width:52px;text-transform:uppercase}
 .bits.b32{grid-template-columns:repeat(32,minmax(22px,1fr))}
@@ -3583,12 +3624,46 @@ cre(3, 'Naprogramuj PLA', 'Propal propojky ve schématu PLA (pole AND a OR) tak,
 cre(3, 'LED matice 8×8', 'Kresli na LED panel (jako světelné tabule s 74595) a sleduj, jaké bajty bys do registrů poslal. Nebo zadej hex a zobraz obrázek.', n => {
   const ICONS = {'srdce':[0x00,0x66,0xFF,0xFF,0x7E,0x3C,0x18,0x00], 'smajlík':[0x3C,0x42,0xA5,0x81,0xA5,0x99,0x42,0x3C], 'šipka':[0x18,0x3C,0x7E,0xFF,0x18,0x18,0x18,0x18], 'písmeno M':[0x81,0xC3,0xA5,0x99,0x81,0x81,0x81,0x00], 'čip':[0x00,0x7E,0x42,0x5A,0x5A,0x42,0x7E,0x00]};
   let mode = 'draw', px = lsGet('led', Array(8).fill(0)), target = null, tname = '', solved = 0;
+  let scan = 'static', mx = {r:0, bit:0, sr:0, out:0, act:-1, ds:-1, clk:'', timer:null};
+  const stopScan = () => { clearInterval(mx.timer); mx.timer = null; };
+  function applyScan(){
+    const mod = $('#lmod'); if(!mod){ stopScan(); return; }
+    $$('#lmod .lm').forEach(b => { const r = +b.dataset.r, c = +b.dataset.c, bit = (px[r] >> (7-c)) & 1;
+      const lit = scan === 'static' ? bit : r === mx.act && ((mx.out >> (7-c)) & 1);
+      b.classList.toggle('on', !!lit); b.classList.toggle('ghost', scan !== 'static' && !lit && !!bit); });
+    $$('#lmod .lpin.c').forEach(p => { const c = +p.dataset.c; p.classList.toggle('on', scan === 'static' ? false : !!((mx.out >> (7-c)) & 1)); });
+    $$('#lmod .lpin.r').forEach(p => p.classList.toggle('on', scan === 'static' || +p.dataset.r === mx.act));
+    $$('.src i').forEach((cell, k) => { const v = (mx.sr >> (7-k)) & 1; cell.textContent = scan === 'static' ? '·' : v; cell.classList.toggle('on', scan !== 'static' && !!v); cell.classList.toggle('new', scan === 'slow' && k === 7 && mx.clk === 'sh'); });
+    const st = $('#srs'); if(st) st.innerHTML = scan === 'static' ? 'Statický obraz: oko vidí všechny řádky najednou. Zapni multiplex a uvidíš, jak to doopravdy funguje.' :
+      scan === 'fast' ? 'Rychlý multiplex: v každé chvíli svítí jen jeden řádek – při stovkách Hz to oko slije do celého obrázku.' :
+      mx.clk === 'st' ? '<b>ST_CP ↑</b> – latch: bajt <b>'+hx(mx.out)+'</b> se zapíše na výstupy Q7–Q0 a rozsvítí se <b>řádek '+mx.act+'</b>.' :
+      '<b>SH_CP ↑</b> – řádek '+mx.r+', bit '+mx.bit+'/8: na DS je <b>'+mx.ds+'</b>, registr se posune o jedno místo.';
+    ['ds','sh','st'].forEach(k => { const e = $('#sig-'+k); if(e) e.classList.toggle('on', scan === 'slow' && (k === 'ds' ? mx.ds === 1 && mx.clk === 'sh' : mx.clk === k)); });
+  }
+  function tick(){
+    if(!$('#lmod')){ stopScan(); return; }
+    if(scan === 'fast'){ mx.r = (mx.r + 1) % 8; mx.sr = mx.out = px[mx.r]; mx.act = mx.r; mx.clk = ''; }
+    else if(mx.bit < 8){ mx.ds = (px[mx.r] >> (7 - mx.bit)) & 1; mx.sr = ((mx.sr << 1) | mx.ds) & 255; mx.bit++; mx.clk = 'sh'; }
+    else if(mx.clk !== 'st'){ mx.out = mx.sr; mx.act = mx.r; mx.clk = 'st'; }
+    else { mx.r = (mx.r + 1) % 8; mx.bit = 0; mx.clk = ''; mx.ds = -1; }
+    applyScan();
+  }
+  function setScan(m){ scan = m; stopScan(); mx = {r:0, bit:0, sr:0, out:0, act:-1, ds:-1, clk:'', timer:null}; if(m !== 'static') mx.timer = setInterval(tick, m === 'slow' ? 260 : 70); }
+  function module(){
+    const cols = [0,1,2,3,4,5,6,7];
+    return '<div class="lmod" id="lmod"><div class="lmhole"></div><div class="lmhole r"></div>'+
+      '<div class="lmmcu"><div class="ic"><b>MCU</b><small>STM32</small></div><div class="lmsig"><span id="sig-ds">DS</span><span id="sig-sh">SH_CP</span><span id="sig-st">ST_CP</span></div></div>'+
+      '<div class="lmcol"><div class="ic wide"><b>74HC595</b><small>sloupce · Q7…Q0</small></div><div class="lpins h">'+cols.map(c => '<span class="lpin c" data-c="'+c+'"><em>Q'+(7-c)+'</em></span>').join('')+'</div></div>'+
+      '<div class="lmrow"><div class="ic tall"><b>ŘÁDKY</b><small>budič</small></div><div class="lpins v">'+cols.map(r => '<span class="lpin r" data-r="'+r+'"><em>R'+r+'</em></span>').join('')+'</div></div>'+
+      grid(px, true)+'<div class="lmsilk">LED MATRIX 8×8 · 1588BS</div></div>';
+  }
   const hx = v => '0x'+v.toString(16).toUpperCase().padStart(2,'0');
   function grid(bytes, clickable){ let s = '<div class="ledm">'; for(let r = 0; r < 8; r++) for(let c = 0; c < 8; c++){ const on = (bytes[r] >> (7-c)) & 1; s += '<button class="lm'+(on?' on':'')+'" data-r="'+r+'" data-c="'+c+'"'+(clickable?'':' disabled')+' aria-label="LED '+r+','+c+'"></button>'; } return s+'</div>'; }
   function render(){
     let inner = '<div class="row" style="margin-bottom:12px"><button class="btn '+(mode==='draw'?'':'ghost')+'" id="mdraw">Volné kreslení</button><button class="btn '+(mode==='chal'?'':'ghost')+'" id="mchal">Výzva: zadej hex</button></div>';
     if(mode === 'draw'){
-      inner += '<div class="ledwrap">'+grid(px, true)+'<div><div class="tblwrap"><table class="tbl"><tr><th>Řádek</th><th>Binárně (Q7…Q0)</th><th>Hex</th></tr>'+px.map((b,r) => '<tr><td>'+r+'</td><td>'+b.toString(2).padStart(8,'0')+'</td><td>'+hx(b)+'</td></tr>').join('')+'</table></div>'+
+      inner += '<div class="seg ledseg">'+[['static','Statický obraz'],['slow','Multiplex pomalu'],['fast','Multiplex rychle']].map(m => '<button class="'+(scan===m[0]?'on':'')+'" data-s="'+m[0]+'">'+m[1]+'</button>').join('')+'</div>'+
+        '<div class="ledwrap"><div>'+module()+'<div class="srp"><span class="srl">posuvný registr 74HC595</span><div class="src">'+[7,6,5,4,3,2,1,0].map(k => '<i data-q="'+k+'">·</i>').join('')+'</div><p class="srs" id="srs"></p></div></div><div><div class="tblwrap"><table class="tbl"><tr><th>Řádek</th><th>Binárně (Q7…Q0)</th><th>Hex</th></tr>'+px.map((b,r) => '<tr><td>'+r+'</td><td>'+b.toString(2).padStart(8,'0')+'</td><td>'+hx(b)+'</td></tr>').join('')+'</table></div>'+
         '<pre class="code">const uint8_t obr[8] = {'+px.map(hx).join(', ')+'};</pre>'+
         '<div class="row"><button class="btn ghost" id="inv">Invertovat</button><button class="btn ghost" id="shl">Posun ←</button><button class="btn ghost" id="shr">Posun →</button><button class="btn ghost" id="clr2">Smazat</button></div>'+
         '<div class="row" style="margin-top:8px">'+Object.keys(ICONS).map(k => '<button class="btn ghost icn" data-k="'+k+'">'+k+'</button>').join('')+'</div></div></div>';
@@ -3600,9 +3675,11 @@ cre(3, 'LED matice 8×8', 'Kresli na LED panel (jako světelné tabule s 74595) 
         '<div class="hexin">'+Array.from({length:8}, (_,r) => '<label class="mono small">řádek '+r+' 0x<input id="h'+r+'" class="oct" maxlength="2" inputmode="text" autocomplete="off"></label>').join('')+'<button class="btn" id="hchk">Odeslat do registrů</button></div></div>';
     }
     labShell(3, 'LED matice 8×8', inner, mode === 'draw' ? 'Každý řádek je jeden bajt – přesně tolik bitů nasuneš do jednoho 74595. Obrázek se ukládá v prohlížeči.' : 'Nápověda: 1111 1111 = 0xFF, 0001 1000 = 0x18, 0011 1100 = 0x3C.');
-    $('#mdraw').onclick = () => { mode = 'draw'; render(); }; $('#mchal').onclick = () => { mode = 'chal'; render(); };
+    $('#mdraw').onclick = () => { mode = 'draw'; render(); }; $('#mchal').onclick = () => { mode = 'chal'; setScan('static'); render(); };
     if(mode === 'draw'){
       $$('.lm').forEach(b => b.onclick = () => { px[+b.dataset.r] ^= (1 << (7 - +b.dataset.c)); lsSet('led', px); beep('tick'); render(); });
+      $$('.ledseg button').forEach(b => b.onclick = () => { setScan(b.dataset.s); render(); });
+      applyScan();
       $('#inv').onclick = () => { px = px.map(b => (~b) & 255); lsSet('led', px); render(); };
       $('#shl').onclick = () => { px = px.map(b => (b << 1) & 255); lsSet('led', px); render(); };
       $('#shr').onclick = () => { px = px.map(b => b >> 1); lsSet('led', px); render(); };
