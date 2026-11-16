@@ -224,6 +224,32 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.smx{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:10px;margin:4px 0 16px}
+@media (max-width:760px){.smx{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.smx>div{background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:10px;min-height:92px}
+.smx>div>span{display:block;font:600 9.5px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper);margin-bottom:8px}
+.smx>div>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.smv{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:110px;background:linear-gradient(180deg,rgba(97,227,140,.12),var(--chip-2))!important;border-color:rgba(97,227,140,.5)!important}
+.smv b{font:700 34px/1 var(--font-display);color:var(--led-on)}.smv i{font:normal 11px var(--font-mono);color:var(--silk-dim)}
+.smv.neg{background:linear-gradient(180deg,rgba(255,97,80,.14),var(--chip-2))!important;border-color:rgba(255,97,80,.6)!important}.smv.neg b{color:var(--bad)}
+.smks{border-color:rgba(208,162,75,.55)!important;background:repeating-linear-gradient(135deg,rgba(208,162,75,.05) 0 8px,transparent 8px 16px),var(--chip-2)!important}
+.smp{position:relative;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font:700 15px/1 var(--font-display);background:#2a3133;border:2px solid #56625e;color:var(--silk)}
+.smp.isact{background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#fff3d6;color:#1a1206;box-shadow:0 0 14px rgba(241,200,115,.6)}
+.smp em{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font:normal 700 9px/1 var(--font-mono);color:var(--copper);white-space:nowrap}
+.smx i{font-style:normal;color:var(--silk-dim)}.sme{font:normal 12px var(--font-mono);color:#56625e}
+.smks>div,.smq>div,.smo>div{padding-top:10px}
+.pkx{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:12px 14px;margin:4px 0 16px}
+.pkw{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.55}.pkw.isact{opacity:1}
+.pkw svg{width:40px;height:40px;fill:none;stroke:var(--silk-dim);stroke-width:2.2}.pkw.isact svg{stroke:var(--copper)}
+.pkw b{font:600 12px var(--font-mono)}.pkw em{font:normal 600 11px var(--font-mono);color:var(--copper)}
+.pkbuf>span,.pksem span{font:600 9.5px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper)}
+.pkbuf{text-align:center}
+.pkbuf>div{display:flex;gap:6px;margin-top:8px;justify-content:center}
+.pkbuf i{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:2px dashed #46524f;font-style:normal;color:var(--copper);font-size:22px}
+.pkbuf i.full{border-style:solid;border-color:var(--copper);background:rgba(208,162,75,.15)}
+.pksem{grid-column:1/-1;display:flex;gap:10px;justify-content:center}
+.pksem span{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 14px;border-radius:8px;background:var(--chip);border:1px solid #3a4446}
+.pksem b{font:700 20px/1 var(--font-display);color:var(--silk);letter-spacing:0}
 .cawrap{overflow-x:auto;border-radius:10px;margin:4px 0 8px}
 .casvg{display:block;width:100%;min-width:520px;max-width:760px;height:auto;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px}
 .casvg text{font-family:var(--font-mono)}
@@ -2135,7 +2161,7 @@ function runQuiz(cfg){
       '<div class="bench"><button class="back" id="back">← Ukončit</button>'+
       '<div class="qtop">'+segs()+'<div class="row" style="gap:14px">'+fuses()+'<span class="combo">'+(combo>1?'×'+combo+' série':'')+'</span></div></div>'+
       '<div class="qsrc">'+esc(cfg.title)+(cur.n?' · '+ref(cur.n)+' '+esc(T[cur.n].t):'')+(cur.x?' · <span class="xtag">doplněno z osnovy, mimo tvoje PDF</span>':'')+'</div>'+
-      '<div class="qtext">'+esc(cur.text)+'</div>'+(cur.code?'<pre class="code">'+esc(cur.code)+'</pre>':'')+(cur.img?'<img class="qimg" src="'+cur.img+'" alt="Obrázek z PDF">':'')+
+      '<div class="qtext">'+esc(cur.text)+'</div>'+(cur.html||'')+(cur.code?'<pre class="code">'+esc(cur.code)+'</pre>':'')+(cur.img?'<img class="qimg" src="'+cur.img+'" alt="Obrázek z PDF">':'')+
       '<div class="opts">'+cur.opts.map((o,k) => '<button class="opt" data-k="'+k+'"><span class="k">'+(k+1)+'</span><span>'+esc(o)+'</span></button>').join('')+'</div>'+
       '<div class="fb" id="fb"></div>'+
       '<div class="kbdhint">1–4 odpověď · Enter další otázka</div></div>';
@@ -2933,7 +2959,14 @@ lab(7, 'Semafor krok za krokem', 'Sleduj value a frontu semaforu při WAIT a SIG
   }
   runQuiz({title:'Semafor · počáteční value = '+init, total:steps.length, lives:null, record:false, next:i => {
     const s = steps[i];
-    return mcqOf('Stav: value = '+s.v+' · v KS: '+(s.ks.join(', ')||'nikdo')+' · fronta: '+(s.q.join(' → ')||'prázdná')+'. '+s.txt+' Co se stane?', s.ans, s.ws, 7);
+    const q = mcqOf('Stav: value = '+s.v+' · v KS: '+(s.ks.join(', ')||'nikdo')+' · fronta: '+(s.q.join(' → ')||'prázdná')+'. '+s.txt+' Co se stane?', s.ans, s.ws, 7);
+    const actor = (s.txt.match(/Proces (\w)/) || [])[1], sig = /SIGNAL/.test(s.txt), out = names.filter(x => !s.ks.includes(x) && !s.q.includes(x));
+    const tok = x => '<span class="smp'+(x === actor ? ' isact' : '')+'">'+x+(x === actor ? '<em>'+(sig ? 'SIGNAL' : 'WAIT')+'</em>' : '')+'</span>';
+    q.html = '<div class="smx"><div class="smv'+(s.v < 0 ? ' neg' : '')+'"><span>semafor S</span><b>'+s.v+'</b><i>value</i></div>'+
+      '<div class="smks"><span>kritická sekce</span><div>'+(s.ks.map(tok).join('') || '<em class="sme">volno</em>')+'</div></div>'+
+      '<div class="smq"><span>fronta semaforu</span><div>'+(s.q.map(tok).join('<i>→</i>') || '<em class="sme">prázdná</em>')+'</div></div>'+
+      '<div class="smo"><span>ostatní procesy</span><div>'+(out.map(tok).join('') || '<em class="sme">—</em>')+'</div></div></div>';
+    return q;
   }, extra:() => '<p class="muted small">WAIT: value−−, při value &lt; 0 se proces zablokuje. SIGNAL: value++, je-li někdo ve frontě, probudí se první.</p>',
     back:() => renderTopic(7), again:() => LABS[7][0].run(7)});
 });
@@ -4136,7 +4169,13 @@ lab(7, 'Producent–konzument se semafory', 'Sleduj semafory empty, full a mutex
     else { steps.push({txt:'Konzument odebere položku (WAIT(full), WAIT(mutex), odeber, SIGNAL(mutex), SIGNAL(empty)).', ans:'empty = '+(empty+1)+', full = '+(full-1), ws:['empty = '+(empty-1)+', full = '+(full+1), 'empty = '+empty+', full = '+(full-1), 'empty = '+(empty+1)+', full = '+full], e:empty, f:full}); empty++; full--; }
   }
   steps.push({txt:'Buffer je plný? Producent chce vložit další položku – co se stane, když empty = 0?', ans:'Producent se zablokuje na WAIT(empty), dokud konzument něco neodebere', ws:['Producent přepíše nejstarší položku v bufferu','Semafor empty přejde na −1 a položka se vloží','Konzument se zablokuje a producent vloží položku'], e:0, f:N});
-  runQuiz({title:'Producent–konzument (buffer '+N+')', total:steps.length, lives:null, record:false, next:i => { const s = steps[i]; return mcqOf('Buffer má '+N+' místa. Stav: empty = '+s.e+', full = '+s.f+', mutex = 1. '+s.txt+(i < steps.length-1 ? ' Jaké budou hodnoty potom?' : ''), s.ans, s.ws, 7); },
+  runQuiz({title:'Producent–konzument (buffer '+N+')', total:steps.length, lives:null, record:false, next:i => { const s = steps[i], q = mcqOf('Buffer má '+N+' místa. Stav: empty = '+s.e+', full = '+s.f+', mutex = 1. '+s.txt+(i < steps.length-1 ? ' Jaké budou hodnoty potom?' : ''), s.ans, s.ws, 7);
+      const pr = /Producent/.test(s.txt);
+      q.html = '<div class="pkx"><div class="pkw'+(pr ? ' isact' : '')+'"><svg viewBox="0 0 40 40"><circle cx="20" cy="11" r="7"/><path d="M8 38c0-9 5-15 12-15s12 6 12 15"/></svg><b>producent</b>'+(pr ? '<em>vkládá →</em>' : '')+'</div>'+
+        '<div class="pkbuf"><span>buffer · '+N+' místa</span><div>'+Array.from({length:N}, (_, k) => '<i class="'+(k < s.f ? 'full' : '')+'">'+(k < s.f ? '■' : '')+'</i>').join('')+'</div></div>'+
+        '<div class="pkw'+(!pr ? ' isact' : '')+'"><svg viewBox="0 0 40 40"><circle cx="20" cy="11" r="7"/><path d="M8 38c0-9 5-15 12-15s12 6 12 15"/></svg><b>konzument</b>'+(!pr ? '<em>← odebírá</em>' : '')+'</div>'+
+        '<div class="pksem"><span><b>'+s.e+'</b>empty</span><span><b>'+s.f+'</b>full</span><span><b>1</b>mutex</span></div></div>';
+      return q; },
     extra:() => '<p class="muted small">empty = volná místa, full = obsazená místa, mutex chrání buffer před současným přístupem.</p>',
     back:() => renderTopic(7), again:() => LABS[7].find(l => l.name === 'Producent–konzument se semafory').run(7)});
 });
