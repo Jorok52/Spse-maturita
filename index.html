@@ -340,7 +340,7 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .mode.lab.cre{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20l4-1L19 8l-3-3L5 16z'/%3E%3Cpath d='M14 7l3 3'/%3E%3Cpath d='M18 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z'/%3E%3C/svg%3E")}
 .mode.lab.cre::after{background:#9cc3ff}
 .mode[data-m="creative"]{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21h4'/%3E%3Cpath d='M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z'/%3E%3C/svg%3E")}
-.cpu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.cpu{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px}
 .code-ed{font:14px/1.5 var(--font-mono);min-height:260px;white-space:pre;tab-size:2}
 .regs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
 .regs div,.memgrid div{background:var(--chip-2);border:1px solid #39413f;border-radius:6px;padding:6px;text-align:center;min-width:0}
@@ -353,6 +353,31 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .phases span.on{background:var(--copper);color:var(--chip);box-shadow:0 0 14px rgba(208,162,75,.5)}
 .listing{font:13px/1.5 var(--font-mono);margin:10px 0 0;padding-left:28px;max-height:220px;overflow:auto}
 .listing li.cur{background:rgba(208,162,75,.2);border-radius:4px}
+.cpusvg{display:block;width:100%;height:auto;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px}
+.cpusvg text{font-family:var(--font-mono)}
+.cpuwrap{overflow-x:auto;border-radius:10px}
+@media (max-width:640px){.cpusvg{min-width:560px}}
+.cpusvg .cb rect,.cpusvg .cb path{fill:rgba(255,255,255,.02);stroke:#3a4547;stroke-width:1.3;transition:stroke .2s,fill .2s}
+.cpusvg .cb.on rect,.cpusvg .cb.on path{stroke:var(--copper);fill:rgba(208,162,75,.06)}
+.cpusvg .cb.alu path{fill:#172a24;stroke:#3f6a59}
+.cpusvg .cb.alu.on path{fill:rgba(208,162,75,.25);stroke:#f3cd7e;filter:drop-shadow(0 0 6px rgba(241,200,115,.6))}
+.cpusvg .cbt{font-size:10px;font-weight:600;letter-spacing:.12em;fill:var(--copper)}
+.cpusvg .cr rect,.cpusvg .cm rect{fill:var(--chip);stroke:#3f4a4c;stroke-width:1.2;transition:all .2s}
+.cpusvg .cr.on rect,.cpusvg .cm.on rect{stroke:#f3cd7e;fill:rgba(208,162,75,.18);filter:drop-shadow(0 0 6px rgba(241,200,115,.55))}
+.cpusvg .cm.tgt rect{stroke:var(--copper);stroke-dasharray:4 3}
+.cpusvg .crl{font-size:8.5px;fill:var(--silk-dim);letter-spacing:.06em}
+.cpusvg .crv{font-size:15px;font-weight:600;fill:var(--silk)}
+.cpusvg .cmv{font-size:16px;font-weight:600;fill:var(--silk)}
+.cpusvg .cpa{font-size:10px;fill:#6f7f7a}
+.cpusvg .cpi{font-size:11.5px;fill:var(--silk-dim)}.cpusvg .cpi.on{fill:#1a1206;font-weight:600}
+.cpusvg .cpcur{fill:#f3cd7e}
+.cpusvg .cw{fill:none;stroke:#4b5a55;stroke-width:2}
+.cpusvg .cw.on,.cpusvg .cbus.on{stroke:#f3cd7e;stroke-dasharray:6 4;animation:cpuFlow .6s linear infinite;filter:drop-shadow(0 0 4px rgba(241,200,115,.7))}
+.cpusvg .cbus{fill:none;stroke:#4b5a55;stroke-width:5}
+.cpusvg .cbl{font-size:9px;fill:var(--silk-dim);letter-spacing:.06em}
+@keyframes cpuFlow{to{stroke-dashoffset:-20}}
+.phases em{align-self:center;margin-left:4px;font-style:normal}
+.cpudesc{min-height:20px}
 .er{color:var(--bad);white-space:pre-wrap;font:13px/1.45 var(--font-mono)}
 .pla{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
 .fuse-x{width:30px;height:30px;border-radius:6px;border:1px solid #39413f;background:var(--chip-2);color:var(--silk-dim);cursor:pointer;font:600 16px/1 var(--font-mono)}
@@ -490,7 +515,7 @@ p.ptok{color:var(--led-on)}p.ptbad{color:var(--bad)}
 @media (max-width:520px){.pttool{min-width:56px;padding:8px 6px 6px}.ptbar{gap:10px 14px}}
 @media (max-width:820px){.top{transition:transform .25s var(--ease)}.top.hid{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px))}}
 .ptstat{font:12px/1.4 var(--font-mono);color:var(--silk-dim);min-height:17px;margin:6px 0 4px}
-@media (max-width:820px){.cpu{grid-template-columns:1fr}.memgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.regs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:820px){.cpu{grid-template-columns:minmax(0,1fr)}.memgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.regs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){.ledm{grid-template-columns:repeat(8,24px);gap:4px}.lm{width:24px;height:24px}}
 @media (max-width:820px){
   .hero{grid-template-columns:1fr}
@@ -3371,7 +3396,7 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
     });
     return ins;
   }
-  function reset(mem){ cpu = {pc:0, ir:'—', acc:0, z:1, nf:0, phase:'fetch', mem:(mem||[]).concat(Array(16).fill(0)).slice(0,16), steps:0, halted:false, cur:null, dec:''}; }
+  function reset(mem){ cpu = {pc:0, ir:'—', acc:0, z:1, nf:0, phase:'fetch', mem:(mem||[]).concat(Array(16).fill(0)).slice(0,16), steps:0, halted:false, cur:null, dec:'', last:null}; }
   function exec1(c, x){
     const set = v => { c.acc = v; c.z = v === 0 ? 1 : 0; c.nf = v < 0 ? 1 : 0; };
     switch(x.op){
@@ -3386,27 +3411,68 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
   function phaseStep(){
     if(cpu.halted) return;
     if(cpu.pc >= prog.length){ cpu.halted = true; return; }
-    if(cpu.phase === 'fetch'){ cpu.cur = prog[cpu.pc]; cpu.ir = cpu.cur.txt; cpu.pc++; cpu.phase = 'decode'; }
-    else if(cpu.phase === 'decode'){ cpu.dec = DESC[cpu.cur.op]; cpu.phase = 'execute'; }
-    else { exec1(cpu, cpu.cur); cpu.steps++; cpu.phase = 'fetch'; }
+    if(cpu.phase === 'fetch'){ cpu.cur = prog[cpu.pc]; cpu.ir = cpu.cur.txt; cpu.at = cpu.pc; cpu.pc++; cpu.phase = 'decode'; cpu.last = 'fetch'; cpu.dec = ''; }
+    else if(cpu.phase === 'decode'){ cpu.dec = DESC[cpu.cur.op]; cpu.phase = 'execute'; cpu.last = 'decode'; }
+    else { exec1(cpu, cpu.cur); cpu.steps++; cpu.phase = 'fetch'; cpu.last = 'execute'; }
   }
   function runAll(c, p){ let k = 0; while(!c.halted && c.pc < p.length && k++ < 5000){ const x = p[c.pc]; c.pc++; exec1(c, x); } return k < 5000; }
+  function diagram(){
+    const x = cpu.cur, op = x && x.op, L = cpu.last, A = {};
+    if(L === 'fetch'){ A.pc = A.pmem = A.ir = A.pcP = A.pIr = 1; }
+    else if(L === 'decode'){ A.ir = A.dec = A.irDec = 1; }
+    else if(L === 'execute' && op){
+      A.dec = 1;
+      if(['LOAD','STORE','ADD','SUB'].includes(op)){ A.ir = A.irAb = A.ab = A.dmem = 1; A['m'+x.v] = 1; A.db = 1; }
+      if(['LOAD','ADD','SUB'].includes(op)) A.dbAlu = 1;
+      if(op === 'LOADI'){ A.ir = A.irDb = A.db = A.dbAlu = 1; }
+      if(['LOAD','LOADI','ADD','SUB','INC','DEC'].includes(op)){ A.alu = A.aluAcc = A.acc = A.fl = 1; }
+      if(['ADD','SUB','INC','DEC'].includes(op)) A.accAlu = 1;
+      if(op === 'STORE'){ A.acc = A.accDb = 1; }
+      if(['JMP','JZ','JN'].includes(op)){ A.ir = A.irPc = A.pc = 1; if(op !== 'JMP') A.fl = 1; }
+    }
+    const o = k => A[k] ? ' on' : '';
+    const blk = (k, x0, y0, w, h, t) => '<g class="cb'+o(k)+'"><rect x="'+x0+'" y="'+y0+'" width="'+w+'" height="'+h+'" rx="7"/>'+(t ? '<text x="'+(x0+8)+'" y="'+(y0+15)+'" class="cbt">'+t+'</text>' : '')+'</g>';
+    const reg = (k, x0, y0, w, h, lb, v) => '<g class="cr'+o(k)+'"><rect x="'+x0+'" y="'+y0+'" width="'+w+'" height="'+h+'" rx="5"/><text x="'+(x0+6)+'" y="'+(y0+12)+'" class="crl">'+lb+'</text><text x="'+(x0+w/2)+'" y="'+(y0+h-8)+'" class="crv" text-anchor="middle">'+esc(String(v))+'</text></g>';
+    const w = (k, d, mk) => '<path class="cw'+o(k)+'" d="'+d+'"'+(mk === false ? '' : ' marker-end="url(#cpuAr'+(A[k] ? 'On' : '')+')"')+'/>';
+    let g = '<defs>'+['','On'].map(s => '<marker id="cpuAr'+s+'" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="'+(s ? '#f3cd7e' : '#4b5a55')+'"/></marker>').join('')+'</defs>';
+    // paměť programu
+    g += blk('pmem', 10, 10, 200, 170, 'PAMĚŤ PROGRAMU');
+    const P = prog || [], cur = L === 'fetch' || L === 'decode' || L === 'execute' ? cpu.at : cpu.pc, top = Math.max(0, Math.min((cur|0) - 3, P.length - 8));
+    for(let i = 0; i < 8; i++){ const k = top + i, ins = P[k]; if(!ins) break; const here = k === cur && cpu.last;
+      g += (here ? '<rect x="16" y="'+(30+i*18)+'" width="188" height="17" rx="3" class="cpcur"/>' : '')+'<text x="24" y="'+(43+i*18)+'" class="cpa">'+k+'</text><text x="48" y="'+(43+i*18)+'" class="cpi'+(here ? ' on' : '')+'">'+esc(ins.txt.length > 19 ? ins.txt.slice(0,18)+'…' : ins.txt)+'</text>'; }
+    if(!P.length) g += '<text x="110" y="100" text-anchor="middle" class="cpa">načti program</text>';
+    // řadič
+    g += blk('ctl', 228, 10, 178, 170, 'ŘADIČ');
+    g += reg('ir', 238, 30, 158, 40, 'IR', cpu.ir) + reg('pc', 238, 98, 66, 40, 'PC', cpu.pc) + '<g class="cr'+o('dec')+'"><rect x="314" y="98" width="82" height="72" rx="5"/><text x="320" y="110" class="crl">DEKODÉR</text><text x="355" y="142" text-anchor="middle" class="crv">'+(L && op && L !== 'fetch' ? op : '—')+'</text></g>';
+    g += w('pIr', 'M210 50H236') + w('pcP', 'M238 118H212') + w('irDec', 'M355 70V96') + w('irPc', 'M271 70V96');
+    // datová paměť
+    g += blk('dmem', 430, 10, 160, 380, 'DATOVÁ PAMĚŤ');
+    cpu.mem.forEach((v, i) => { const c = i % 4, r = (i / 4) | 0, x0 = 438 + c * 37, y0 = 30 + r * 88;
+      g += '<g class="cm'+o('m'+i)+(i === 2 ? ' tgt' : '')+'"><rect x="'+x0+'" y="'+y0+'" width="33" height="80" rx="5"/><text x="'+(x0+16.5)+'" y="'+(y0+14)+'" text-anchor="middle" class="crl">M'+i+'</text><text x="'+(x0+16.5)+'" y="'+(y0+50)+'" text-anchor="middle" class="cmv">'+v+'</text></g>'; });
+    // sběrnice
+    g += '<path class="cbus'+o('ab')+'" d="M228 205H428" marker-end="url(#cpuAr'+(A.ab ? 'On' : '')+')"/><text x="236" y="199" class="cbl">adresová sběrnice</text>';
+    g += '<path class="cbus'+o('db')+'" d="M218 240H428" marker-start="url(#cpuAr'+(A.db ? 'On' : '')+')" marker-end="url(#cpuAr'+(A.db ? 'On' : '')+')"/><text x="236" y="233" class="cbl">datová sběrnice</text>';
+    g += w('irAb', 'M398 50H416V203', false) + w('irDb', 'M396 62H406V238', false);
+    // ALU, střadač, příznaky
+    g += '<g class="cb alu'+o('alu')+'"><path d="M240 280H292L300 292L308 280H360L336 330H264Z"/><text x="300" y="318" text-anchor="middle" class="cbt">ALU</text></g>';
+    g += w('dbAlu', 'M266 242V278') + w('aluAcc', 'M300 330V346');
+    g += reg('acc', 250, 348, 100, 40, 'STŘADAČ', cpu.acc) + reg('fl', 370, 348, 27, 40, 'Z', cpu.z) + reg('fl', 400, 348, 27, 40, 'N', cpu.nf);
+    g += w('accAlu', 'M350 358H360V268H334V277') + w('accDb', 'M250 368H226V242');
+    return '<div class="cpuwrap"><svg class="cpusvg" viewBox="0 0 600 400" role="img" aria-label="Schéma střadačového procesoru">'+g+'</svg></div>';
+  }
   function render(){
     const T = TASKS[ti];
     labShell(2, 'Naprogramuj procesor · úloha '+(ti+1)+'/'+TASKS.length,
       '<p><b>'+esc(T.t)+'</b></p><div class="cpu"><div class="cpu-code"><label class="mono small muted" for="asm">Program</label><textarea id="asm" class="notes code-ed" spellcheck="false">'+esc(code)+'</textarea>'+
       '<div class="row" style="margin-top:8px"><button class="btn ghost" id="rs">Načíst a reset</button><button class="btn ghost" id="st">Krok (fáze)</button><button class="btn ghost" id="ru">Spustit</button><button class="btn" id="ck">Ověřit na 5 testech</button></div>'+
       '<p class="mono small muted">'+HELP+'</p></div>'+
-      '<div class="cpu-state">'+(err?'<p class="er">'+esc(err)+'</p>':'')+
-      '<div class="regs"><div><span>PC</span><b>'+cpu.pc+'</b></div><div><span>IR</span><b>'+esc(cpu.ir)+'</b></div><div><span>Střadač</span><b>'+cpu.acc+'</b></div><div><span>Z</span><b>'+cpu.z+'</b></div><div><span>N</span><b>'+cpu.nf+'</b></div></div>'+
-      '<div class="phases">'+['fetch','decode','execute'].map(p => '<span class="'+(cpu.phase===p&&!cpu.halted?'on':'')+'">'+p+'</span>').join('')+'</div>'+
-      '<p class="mono small">'+(cpu.halted?'<b style="color:var(--ok)">HALT</b> · ':'')+(cpu.dec?'dekodér: '+esc(cpu.dec):'')+'</p>'+
-      '<div class="memgrid">'+cpu.mem.map((v,i) => '<div class="'+(i===2?'tgt':'')+'"><span>M['+i+']</span><b>'+v+'</b></div>').join('')+'</div>'+
-      '<ol class="listing">'+(prog||[]).map((x,i) => '<li class="'+(cpu.cur===x&&cpu.phase!=='fetch'?'cur':'')+'">'+esc(x.txt)+'</li>').join('')+'</ol></div></div>',
+      '<div class="cpu-state">'+(err?'<p class="er">'+esc(err)+'</p>':'')+diagram()+
+      '<div class="phases">'+['fetch','decode','execute'].map(p => '<span class="'+(cpu.phase===p&&!cpu.halted?'on':'')+'">'+p+'</span>').join('')+'<em class="mono small muted">další fáze</em></div>'+
+      '<p class="mono small cpudesc">'+(cpu.halted?'<b style="color:var(--ok)">HALT</b> · ':'')+(cpu.last === 'fetch' ? 'FETCH: instrukce z adresy '+cpu.at+' je v IR, PC = '+cpu.pc : cpu.dec ? (cpu.last === 'decode' ? 'DECODE: ' : 'EXECUTE: ')+esc(cpu.dec) : 'Krokuj tlačítkem „Krok (fáze)“ a sleduj, kudy tečou data.')+'</p></div></div>',
       'Fetch: IR ← instrukce z paměti programu, PC++. Decode: dekodér určí operaci. Execute: ALU nebo řadič ji provede. Z = výsledek je nula, N = výsledek je záporný.');
     const ta = $('#asm'); ta.oninput = () => { code = ta.value; };
     $('#rs').onclick = load; $('#st').onclick = () => { if(!prog) load(); phaseStep(); beep('tick'); render(); };
-    $('#ru').onclick = () => { if(!prog) load(); if(!runAll(cpu, prog)) err = 'Program běžel moc dlouho – nekonečný cyklus?'; cpu.phase = 'fetch'; render(); };
+    $('#ru').onclick = () => { if(!prog) load(); if(!runAll(cpu, prog)) err = 'Program běžel moc dlouho – nekonečný cyklus?'; cpu.phase = 'fetch'; cpu.last = null; cpu.cur = null; render(); };
     $('#ck').onclick = check;
   }
   function load(){
