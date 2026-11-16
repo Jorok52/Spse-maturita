@@ -416,6 +416,7 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .bkstage{display:flex;flex-direction:column;align-items:center;gap:10px;margin:4px 0 18px;min-height:110px}
 .bkcard{position:relative;max-width:560px;width:100%;text-align:center;font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);color:#1a1206;padding:24px 22px 20px;border-radius:12px;
   background:linear-gradient(180deg,#f6e9c8,#e2cd98);box-shadow:0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:bkIn .35s var(--ease) both}
+.bkart{display:block;width:min(100%,340px);height:auto;margin:0 auto 12px}
 .bkcard .bkn{position:absolute;top:8px;right:12px;font:600 10.5px/1 var(--font-mono);color:#8a6c34}
 .bkcard.gone{opacity:.28;filter:grayscale(.6);transform:scale(.96);transition:opacity .3s,transform .3s}
 @keyframes bkIn{from{opacity:0;transform:translateY(-16px) rotate(-1.5deg)}to{opacity:1;transform:none}}
@@ -2514,19 +2515,19 @@ function orderLab(n, title, prompt, items){
 }
 /* ---------- generic: BUCKET (roztřiď) ---------- */
 const BKCOL = ['#e0b45f','#61e38c','#7fd3ff','#ff8a7e','#c39bff','#ffb340','#5fe0c8','#f78fc4','#b7d36a'];
-function bucketLab(n, title, prompt, cats, items){
+function bucketLab(n, title, prompt, cats, items, opt){
   return () => {
     const list = shuffle(items); let i = 0, ok = 0, busy = false; const wrong = [], res = [], inBin = cats.map(() => []);
     const binsHTML = (final) => '<div class="bkbins'+(cats.length > 4 ? ' many' : '')+'">'+cats.map((c,k) => '<button class="bkbin" data-k="'+k+'" style="--bc:'+BKCOL[k % BKCOL.length]+'"'+(final ? ' disabled' : '')+'>'+
       '<span class="bkh">'+(k < 9 && !final ? '<span class="bkk">'+(k+1)+'</span>' : '')+'<b>'+esc(c)+'</b><em>'+inBin[k].length+'</em></span>'+
       '<span class="bkin">'+inBin[k].map(x => '<i class="'+(x[1] ? '' : 'bad')+'">'+esc(x[0])+'</i>').join('')+'</span></button>').join('')+'</div>';
     function render(){
-      if(i >= list.length) return labDone(n, 'Roztříděno', [[ok+'/'+list.length, 'správně']], ok*3, bucketLab(n, title, prompt, cats, items),
+      if(i >= list.length) return labDone(n, 'Roztříděno', [[ok+'/'+list.length, 'správně']], ok*3, bucketLab(n, title, prompt, cats, items, opt),
         '<p class="muted small" style="margin:14px 0 6px">Takhle to patří:</p>'+binsHTML(true)+(wrong.length ? '<div class="wronglist">'+wrong.map(w => '<div><b>'+esc(w[0])+'</b><span>'+esc(cats[w[1]])+'</span></div>').join('')+'</div>' : ''));
       const it = list[i];
       labShell(n, title, '<p class="muted">'+esc(prompt)+'</p>'+
         '<div class="bksegs">'+list.map((_,k) => '<i class="'+(res[k] === true ? 'ok' : res[k] === false ? 'bad' : k === i ? 'cur' : '')+'"></i>').join('')+'</div>'+
-        '<div class="bkstage"><div class="bkcard" id="bkcard"><span class="bkn">'+(i+1)+'/'+list.length+'</span>'+esc(it[0])+'</div><div class="fb" id="fb"></div></div>'+binsHTML(false),
+        '<div class="bkstage"><div class="bkcard" id="bkcard"><span class="bkn">'+(i+1)+'/'+list.length+'</span>'+(opt && opt.art ? opt.art(it) : '')+esc(it[0])+'</div><div class="fb" id="fb"></div></div>'+binsHTML(false),
         'Klikni na přihrádku, kam pojem patří. Klávesy 1–'+Math.min(9,cats.length)+' vyberou přihrádku, Enter pokračuje.');
       let done = false;
       const next = () => { if(busy) return; i++; render(); };
@@ -3385,7 +3386,19 @@ lab(20, 'Technologie SATA', 'Přiřaď popis k technologii.', bucketLab(20, 'Tec
 lab(20, 'AHCI, nebo NVMe?', 'Roztřiď vlastnosti.', bucketLab(20, 'AHCI, nebo NVMe?', 'Kam vlastnost patří?', ['AHCI (SATA)','NVMe'],
   [['Režim SATA řadiče s NCQ a hot swap',0],['Navrženo pro mechanické disky',0],['SSD komunikuje s CPU přímo přes PCIe',1],['Vysoká paralelizace požadavků',1],['~7× vyšší propustnost než SATA SSD',1]]));
 lab(20, 'Zapojení IDE a USB', 'Barvy konektorů a vodičů.', bucketLab(20, 'Zapojení IDE a USB', 'Co barva znamená?', ['Master','Slave','Základní deska','+5 V','Data −','Data +','GND'],
-  [['Černý konektor IDE (Cable Select)',0],['Šedý konektor IDE',1],['Modrý konektor IDE',2],['Červený vodič USB',3],['Bílý vodič USB',4],['Zelený vodič USB',5],['Černý vodič USB',6]]));
+  [['Černý konektor IDE (Cable Select)',0],['Šedý konektor IDE',1],['Modrý konektor IDE',2],['Červený vodič USB',3],['Bílý vodič USB',4],['Zelený vodič USB',5],['Černý vodič USB',6]], {art: it => {
+    const nm = it[0];
+    if(/IDE/.test(nm)){
+      const on = /Černý/.test(nm) ? 'k' : /Šedý/.test(nm) ? 'g' : 'b', C = {b:['#2b6dd6',40,'deska'], g:['#9aa2a4',215,'slave'], k:['#16191a',320,'master']};
+      let g = '<rect x="20" y="34" width="330" height="22" fill="#c9ccc6"/>'+Array.from({length:20}, (_, k) => '<path d="M20 '+(35 + k)+'H350" stroke="#a6aaa3" stroke-width=".5"/>').join('')+'<path d="M20 35H350" stroke="#c2412d" stroke-width="1.6"/>';
+      Object.keys(C).forEach(k => { const [col, x, lb] = C[k], act = k === on; g += '<rect x="'+(x-18)+'" y="22" width="56" height="46" rx="4" fill="'+col+'" stroke="'+(act ? '#e0a83a' : '#555')+'" stroke-width="'+(act ? 4 : 1.2)+'" opacity="'+(act ? 1 : .45)+'"/>'; });
+      return '<svg class="bkart" viewBox="0 0 370 86" aria-hidden="true">'+g+'</svg>';
+    }
+    const W = {Červený:'#d8392b', Bílý:'#f2f2ee', Zelený:'#2fa24a', Černý:'#16191a'}, on = Object.keys(W).find(k => nm.startsWith(k));
+    let g = '<rect x="20" y="28" width="70" height="34" rx="3" fill="#b8c0be" stroke="#7d8587"/><rect x="28" y="36" width="54" height="10" fill="#2a3133"/><rect x="90" y="32" width="40" height="26" rx="4" fill="#2a3133"/>';
+    Object.keys(W).forEach((k, j) => { const act = k === on, y = 18 + j * 18; g += '<path d="M130 '+(38 + j * 5)+'C190 '+(38 + j * 5)+' 200 '+y+' 330 '+y+'" fill="none" stroke="#6b5a35" stroke-width="'+(act ? 9 : 6)+'" opacity="'+(act ? .9 : .3)+'"/><path d="M130 '+(38 + j * 5)+'C190 '+(38 + j * 5)+' 200 '+y+' 330 '+y+'" fill="none" stroke="'+W[k]+'" stroke-width="'+(act ? 7 : 4)+'" opacity="'+(act ? 1 : .35)+'"'+(act ? ' style="filter:drop-shadow(0 0 4px #e0a83a)"' : '')+'/><text x="338" y="'+(y + 4)+'" font-size="11" fill="#5a4a2a" opacity="'+(act ? 1 : .5)+'">'+(j + 1)+'</text>'; });
+    return '<svg class="bkart" viewBox="0 0 360 90" aria-hidden="true">'+g+'</svg>';
+  }}));
 
 /* ================= AI ================= */
 const AI = {mode:null, sample:null, dict:null, tts:null, needKey:false, ready:null};
