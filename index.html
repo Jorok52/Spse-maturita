@@ -224,6 +224,30 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.pgl{display:block;font:600 10px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:8px}
+.pgref{display:flex;flex-wrap:wrap;align-items:flex-end;gap:5px;margin:8px 0 14px}.pgref .pgl{width:100%;margin-bottom:2px}
+.pgt{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:34px;padding:6px 4px 5px;border-radius:7px;background:var(--chip-2);border:1px solid #39413f}
+.pgt b{font:700 16px/1 var(--font-mono);color:var(--silk-dim)}.pgt i{font:normal 600 10px/1 var(--font-mono);height:10px;color:var(--silk-dim)}
+.pgt.h{border-color:rgba(97,227,140,.5)}.pgt.h i{color:var(--led-on)}
+.pgt.f{border-color:rgba(255,97,80,.5)}.pgt.f i{color:var(--bad)}
+.pgt.cur{background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#f3cd7e;transform:translateY(-4px);box-shadow:0 8px 18px rgba(208,162,75,.35)}.pgt.cur b,.pgt.cur i{color:#1a1206}
+.pgmem{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:14px;margin-bottom:14px}
+.pgdisk{display:flex;flex-direction:column;align-items:center}
+.pgcyl{width:70px;height:46px;border-radius:50%/14px;background:linear-gradient(180deg,#5d6668,#2a3133);border:1px solid #7d8587;position:relative;margin-bottom:-26px}
+.pgin{position:relative;z-index:1;margin-top:34px;padding:8px 12px;border-radius:8px;background:linear-gradient(180deg,#f6e9c8,#e2cd98);color:#1a1206;font:500 12px/1 var(--font-mono);box-shadow:0 8px 16px rgba(0,0,0,.4)}
+.pgin b{font-size:16px}
+.pgarr{font:600 12px/1 var(--font-mono);color:var(--bad)}
+.pgram{flex:1;min-width:250px}
+.pgframes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pgfr{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px 16px;border-radius:6px;cursor:pointer;color:var(--silk);font:inherit;
+  background:linear-gradient(180deg,#1b5a40,#0f3a2a);border:1px solid #2c7a5d;transition:transform .15s,box-shadow .2s}
+.pgfr::after{content:"";position:absolute;left:8px;right:8px;bottom:4px;height:6px;background:repeating-linear-gradient(90deg,#c9a35a 0 4px,transparent 4px 7px);opacity:.8}
+.pgfr span{font:500 10.5px/1 var(--font-mono);color:#9fd8c0}
+.pgfr b{font:700 26px/1 var(--font-mono);padding:6px 12px;border-radius:5px;background:#111;color:var(--silk);min-width:44px;text-align:center}
+.pgfr:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.35),0 0 0 1px var(--copper)}
+.pgfr.swap{box-shadow:0 0 0 2px var(--led-on)}
+.tbl.pg td.pgf{background:rgba(255,97,80,.18);color:#ffb4aa;font-weight:700}.tbl.pg td.pgh{color:var(--led-on)}
+.tbl.pg td.pgnew{background:rgba(208,162,75,.16);color:#fff3d6;font-weight:700}
 .schx{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 4px}
 @media (max-width:820px){.schx{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .schcol,.schcpu{background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px}
@@ -2878,20 +2902,25 @@ lab(8, 'Výměna stránek', 'Při výpadku stránky vyber rámec, který se vym�
   }
   function histHTML(){
     let s = '<div class="tblwrap"><table class="tbl pg"><tr><th>ref</th>'+refs.map((r,k) => '<th class="'+(k===i?'cur':'')+'">'+r+'</th>').join('')+'</tr>';
-    for(let f = 0; f < F; f++) s += '<tr><td>rámec '+f+'</td>'+refs.map((_,k) => '<td>'+(hist[k] && hist[k].f[f] != null ? hist[k].f[f] : '')+'</td>').join('')+'</tr>';
-    return s+'<tr><td>výpadek</td>'+refs.map((_,k) => '<td>'+(hist[k] ? (hist[k].fault?'<b style="color:var(--bad)">F</b>':'') : '')+'</td>').join('')+'</tr></table></div>';
+    for(let f = 0; f < F; f++) s += '<tr><td>rámec '+f+'</td>'+refs.map((_,k) => { const h = hist[k], v = h && h.f[f] != null ? h.f[f] : '', nw = h && h.fault && v === refs[k] && (!hist[k-1] || hist[k-1].f[f] !== v); return '<td class="'+(nw ? 'pgnew' : '')+'">'+v+'</td>'; }).join('')+'</tr>';
+    return s+'<tr><td>výpadek</td>'+refs.map((_,k) => '<td class="'+(hist[k] ? (hist[k].fault ? 'pgf' : 'pgh') : '')+'">'+(hist[k] ? (hist[k].fault?'F':'✓') : '')+'</td>').join('')+'</tr></table></div>';
   }
   function render(){
     const p = refs[i];
     labShell(8, 'Výměna stránek · '+ALG+' · 3 rámce',
-      histHTML()+'<p>Požadovaná stránka <b>'+p+'</b> není v paměti a všechny rámce jsou plné. Kterou stránku podle '+ALG+' vyhodíš?</p>'+
-      '<div class="row">'+fr.map((q,k) => '<button class="btn ghost pick" data-k="'+k+'">rámec '+k+': stránka '+q+'</button>').join('')+'</div>'+
+      '<div class="pgref"><span class="pgl">požadavky</span>'+refs.map((r,k) => '<span class="pgt'+(k < i ? (hist[k].fault ? ' f' : ' h') : k === i ? ' cur' : '')+'"><b>'+r+'</b><i>'+(k < i ? (hist[k].fault ? 'F' : '✓') : k === i ? '?' : '')+'</i></span>').join('')+'</div>'+
+      '<div class="pgmem"><div class="pgdisk"><span class="pgl">disk (swap)</span><div class="pgcyl"></div><div class="pgin" id="pgin">stránka <b>'+p+'</b></div></div>'+
+      '<div class="pgarr">výpadek →</div><div class="pgram"><span class="pgl">RAM · 3 rámce</span><div class="pgframes">'+fr.map((q,k) => '<button class="pgfr pick" data-k="'+k+'"><span>rámec '+k+'</span><b>'+q+'</b><i></i></button>').join('')+'</div></div></div>'+
+      '<p>Požadovaná stránka <b>'+p+'</b> není v paměti a všechny rámce jsou plné. Kterou stránku podle <b>'+ALG+'</b> vyhodíš? Klikni na rámec.</p>'+
+      histHTML()+
       '<p class="mono small muted" style="margin-top:10px">výpadky: '+faults+' · chyby: '+mistakes+'</p>',
       {FIFO:'FIFO: vyhoď stránku, která je v paměti nejdéle.', LRU:'LRU: vyhoď stránku, která byla nejdéle nepoužitá.', OPT:'OPT: vyhoď stránku, která bude potřeba nejpozději (nebo už vůbec).'}[ALG]);
+    let busy = false;
     $$('.pick').forEach(b => b.onclick = () => {
+      if(busy) return;
       const k = +b.dataset.k;
-      if(need.includes(k)){ beep('ok'); fr[k] = p; loaded[k] = i; used[k] = i; faults++; hist.push({f:fr.slice(), fault:true}); i++; need = null; advance(); }
-      else { mistakes++; beep('bad'); flash(b,'err'); toast('Podle '+ALG+' to má být rámec '+need.join(' nebo ')); }
+      if(need.includes(k)){ busy = true; beep('ok'); b.classList.add('swap'); flyTo($('#pgin'), b, 'ok', () => { fr[k] = p; loaded[k] = i; used[k] = i; faults++; hist.push({f:fr.slice(), fault:true}); i++; need = null; advance(); }); }
+      else { mistakes++; beep('bad'); flash(b,'shake'); toast('Podle '+ALG+' to má být rámec '+need.join(' nebo ')); }
     });
   }
   advance();
