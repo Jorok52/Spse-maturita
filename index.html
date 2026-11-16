@@ -3028,9 +3028,10 @@ lab(11, 'Návrh VLSM', 'Rozděl síť /24 pro několik LAN – prefixy a adresy 
     $('#vlbar').innerHTML = blocks.filter(b => b.a != null && b.a >= 0 && b.a <= 255).map(b => {
       const over = blocks.some(o => o !== b && o.a != null && o.a < b.a + b.sz && b.a < o.a + o.sz), mis = b.a % b.sz !== 0, out = b.a + b.sz > 256, small = b.sz - 2 < b.h;
       used += b.sz;
-      return '<div class="vlb'+(over || out ? ' bad' : '')+(mis ? ' mis' : '')+'" style="left:'+(b.a/256*100)+'%;width:'+(Math.min(b.sz, 256 - b.a)/256*100)+'%;--vc:'+VC[b.i % VC.length]+'" title="'+names[b.i]+'"><b>'+names[b.i].replace('LAN ','')+'</b><span>/'+b.pp+'</span>'+(small ? '<i>málo</i>' : '')+'</div>';
+      return '<div class="vlb'+(over || out ? ' bad' : '')+(mis ? ' mis' : '')+'" style="left:'+(b.a/256*100)+'%;width:'+(Math.min(b.sz, 256 - b.a)/256*100)+'%;--vc:'+VC[b.i % VC.length]+'" title="'+names[b.i]+'"><b>'+names[b.i].replace('LAN ','').replace(' spoj','')+'</b><span>/'+b.pp+'</span>'+(small ? '<i>málo</i>' : '')+'</div>';
     }).join('');
-    $('#vlfree').textContent = 'obsazeno '+Math.min(used,256)+' z 256 adres';
+    const cov = new Set(); blocks.forEach(b => { if(b.a != null && b.a >= 0) for(let k = b.a; k < Math.min(256, b.a + b.sz); k++) cov.add(k); });
+    $('#vlfree').textContent = 'obsazeno '+cov.size+' z 256 adres';
     if(!checked) blocks.forEach(b => { $('#r'+b.i).innerHTML = '<span class="mono small '+(b.sz - 2 < b.h ? 'vlbad' : 'muted')+'">blok '+b.sz+' adres · '+Math.max(0, b.sz - 2)+' hostů'+(b.sz - 2 < b.h ? ' (málo)' : '')+'</span>'; });
   }
   need.forEach((_,i) => { $('#p'+i).onchange = drawMap; $('#a'+i).oninput = drawMap; });
