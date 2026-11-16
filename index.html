@@ -373,14 +373,63 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .domain{display:flex;align-items:center;gap:14px;margin:6px 0 10px;font:500 13px/1.3 var(--font-mono);color:var(--silk-dim)}
 .dom-arrow{font:700 16px/1 var(--font-mono);padding:8px 14px;border-radius:8px;background:var(--chip-2);border:1px solid #39413f;color:var(--silk);transition:transform .25s}
 .dom-arrow.r{border-color:var(--ok)}.dom-arrow.l{border-color:var(--bad)}
-.pcb{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0 16px}
-.slot{background:#0c2a20;border:1px dashed rgba(208,162,75,.45);border-radius:8px;padding:10px;display:grid;gap:6px}
-.slot.full{border-style:solid;border-color:var(--ok);background:#103326}
-.slot select,.sel{background:var(--chip-2);color:var(--silk);border:1px solid #39413f;border-radius:6px;padding:7px;font:14px var(--font-body);max-width:100%}
-.checks{background:var(--mask-2);border-radius:8px;padding:12px 14px;display:grid;gap:4px;font-size:14.5px;margin-bottom:14px}
-.checks h3{font-size:14px;margin:0 0 4px}
-.psubar{height:8px;background:var(--led-off);border-radius:4px;overflow:hidden;margin-top:8px;max-width:420px}
-.psubar i{display:block;height:100%}
+.sel{background:var(--chip-2);color:var(--silk);border:1px solid #39413f;border-radius:6px;padding:7px;font:14px var(--font-body);max-width:100%}
+.bpi{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bpjob{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,rgba(208,162,75,.14),rgba(208,162,75,.04));border:1px solid rgba(208,162,75,.45);border-left:4px solid var(--copper);border-radius:8px;padding:12px 14px;margin:6px 0 14px}
+.bpjob .bpi{width:26px;height:26px;color:var(--copper);margin-top:2px}
+.bpjob b{display:block;font:600 11px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:5px}
+.bpjob span{font-size:15px;line-height:1.4}
+.bpgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:880px){.bpgrid{grid-template-columns:1fr}}
+.bpcase{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.bpcase text{font-family:var(--font-mono);pointer-events:none}
+.bphit{cursor:pointer;color:var(--silk-dim)}
+.bphit rect{fill:transparent;stroke:transparent;stroke-width:2;stroke-dasharray:7 5;transition:stroke .15s,fill .15s}
+.bphit:hover rect{stroke:rgba(208,162,75,.7);fill:rgba(208,162,75,.06)}
+.bphit.on rect{stroke:var(--copper);fill:rgba(208,162,75,.08);animation:bpDash 1s linear infinite}
+.bphit .bphl{font-weight:600;fill:#c9a35a}
+@keyframes bpDash{to{stroke-dashoffset:-24}}
+.bppart.bpnew{animation:bpDrop .45s var(--ease) both}
+@keyframes bpDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.bpx{animation:bpPulse 1.2s ease-in-out infinite}
+@keyframes bpPulse{50%{opacity:.45}}
+.bpfan g{transform-box:fill-box;transform-origin:center}
+.bptabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.bptab{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 4px 7px;background:rgba(255,255,255,.03);border:1px solid var(--copper-dim);border-radius:8px;color:var(--silk);font:500 11.5px/1 var(--font-mono);cursor:pointer;transition:background .15s,border-color .15s}
+.bptab .bpi{width:24px;height:24px;color:var(--copper)}
+.bptab:hover{border-color:var(--copper);background:rgba(208,162,75,.08)}
+.bptab.on{background:linear-gradient(180deg,#f3cd7e,#c4913b);border-color:#f3cd7e;color:#1a1206}
+.bptab.on .bpi{color:#1a1206}
+.bptab .bpled{position:absolute;top:6px;right:6px}
+.bpled{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;background:var(--led-off);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.bpled.ok{background:var(--led-on);box-shadow:0 0 8px var(--led-on)}
+.bpled.bad{background:var(--bad);box-shadow:0 0 8px var(--bad)}
+.bpshelf{margin-top:12px;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px;padding:10px;display:grid;gap:7px}
+.bpshh{display:flex;align-items:center;gap:8px;padding:2px 2px 4px}
+.bpshh .bpi{color:var(--copper)}.bpshh b{font:600 15px/1 var(--font-display)}
+.bpout{margin-left:auto;background:rgba(255,97,80,.1);border:1px solid rgba(255,97,80,.6);color:#ffc9c1;border-radius:6px;padding:6px 10px;font:500 12px/1 var(--font-mono);cursor:pointer}
+.bpout:hover{background:rgba(255,97,80,.22)}
+.bpcard{position:relative;display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto;column-gap:10px;row-gap:5px;align-items:center;text-align:left;background:var(--chip);border:1px solid #333c3e;border-radius:8px;padding:9px 10px;color:var(--silk);cursor:pointer;transition:border-color .15s,transform .15s,background .15s}
+.bpcard:hover{border-color:var(--copper);transform:translateX(2px)}
+.bpcard .bpi.big{grid-row:1/3;width:36px;height:36px;padding:6px;border-radius:8px;background:rgba(208,162,75,.1);color:var(--copper)}
+.bpcn{font:600 14px/1.25 var(--font-body)}
+.bpch{display:flex;flex-wrap:wrap;gap:4px}
+.bpch em{font:normal 500 10.5px/1 var(--font-mono);padding:3px 6px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--silk-dim)}
+.bpcard.on{border-color:var(--led-on);background:rgba(97,227,140,.07)}
+.bpcard.on .bpi.big{background:rgba(97,227,140,.15);color:var(--led-on)}
+.bpcard.on.bad{border-color:var(--bad);background:rgba(255,97,80,.08)}
+.bpcard.on.bad .bpi.big{background:rgba(255,97,80,.15);color:var(--bad)}
+.bpin{position:absolute;top:8px;right:10px;font:600 10px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--led-on)}
+.bpcard.bad .bpin{color:var(--bad)}
+.bpchecks{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--mask-2);border:1px solid rgba(208,162,75,.25);border-radius:10px;padding:12px 16px;margin:16px 0 14px}
+.bpchecks h3{font-size:13px;margin:8px 0 6px;color:var(--copper);font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
+.bpchecks h3:first-child{margin-top:0}
+.bprow{display:flex;align-items:center;gap:9px;font-size:14.5px;line-height:1.35;padding:2px 0}
+.bprow em{font:normal 12px var(--font-mono);color:var(--silk-dim)}
+.bppsu{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:170px}
+.bpgauge{width:170px;height:auto}.bpgauge text{font-family:var(--font-mono)}
+.bppl{text-align:center}.bppl b{display:block;font:700 22px/1 var(--font-display)}.bppl span{font:12px var(--font-mono);color:var(--silk-dim)}
+@media (max-width:640px){.bpchecks{grid-template-columns:1fr}.bppsu{justify-self:center}.bptabs{grid-template-columns:repeat(4,1fr)}.bptab{font-size:10.5px;padding:8px 2px 6px}}
 .oct.ip{width:150px}
 .term-log{min-height:90px;white-space:pre-wrap}
 .ptwrap{position:relative;max-width:760px;margin:12px 0 4px}
@@ -3943,48 +3992,210 @@ lab(17, 'Cache: hit, nebo miss?', 'Přímo mapovaná cache se 4 řádky. Předpo
 });
 
 /* ---------- T18 + dílna: postav si PC (kreativní) ---------- */
-cre(18, 'Postav si PC', 'Vyber procesor, desku, paměti, chlazení, zdroj, disk a grafiku pro zakázku. Hlídej socket, DDR, TDP a výkon zdroje.', n => {
+cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do socketu, chladič, paměti, grafiku, disk a zdroj. Hlídej socket, DDR, TDP a výkon zdroje.', n => {
   const C = {
-    cpu:[{n:'Intel Core i5 (LGA 1151, 65 W)', s:'LGA1151', w:65}, {n:'Intel Core i9 (LGA 1151, 95 W)', s:'LGA1151', w:95}, {n:'AMD Ryzen 5 (AM4, 65 W)', s:'AM4', w:65}, {n:'AMD Ryzen 9 (AM4, 105 W)', s:'AM4', w:105}, {n:'Intel Xeon (LGA 2011, 140 W)', s:'LGA2011', w:140}, {n:'Úsporný Intel (LGA 1151, 25 W)', s:'LGA1151', w:25}],
-    mb:[{n:'Deska Z390 (LGA 1151, DDR4, M.2)', s:'LGA1151', r:'DDR4', m2:true}, {n:'Deska H110 (LGA 1151, DDR4, bez M.2)', s:'LGA1151', r:'DDR4', m2:false}, {n:'Deska B450 (AM4, DDR4, M.2)', s:'AM4', r:'DDR4', m2:true}, {n:'Deska X79 (LGA 2011, DDR3, bez M.2)', s:'LGA2011', r:'DDR3', m2:false}],
+    cpu:[{n:'Intel Core i5 (LGA 1151, 65 W)', s:'LGA1151', w:65, b:'intel', l:'Core i5'}, {n:'Intel Core i9 (LGA 1151, 95 W)', s:'LGA1151', w:95, b:'intel', l:'Core i9'}, {n:'AMD Ryzen 5 (AM4, 65 W)', s:'AM4', w:65, b:'amd', l:'Ryzen 5'}, {n:'AMD Ryzen 9 (AM4, 105 W)', s:'AM4', w:105, b:'amd', l:'Ryzen 9'}, {n:'Intel Xeon (LGA 2011, 140 W)', s:'LGA2011', w:140, b:'intel', l:'Xeon'}, {n:'Úsporný Intel (LGA 1151, 25 W)', s:'LGA1151', w:25, b:'intel', l:'Core T'}],
+    mb:[{n:'Deska Z390 (LGA 1151, DDR4, M.2)', s:'LGA1151', r:'DDR4', m2:true, c:'Z390'}, {n:'Deska H110 (LGA 1151, DDR4, bez M.2)', s:'LGA1151', r:'DDR4', m2:false, c:'H110'}, {n:'Deska B450 (AM4, DDR4, M.2)', s:'AM4', r:'DDR4', m2:true, c:'B450'}, {n:'Deska X79 (LGA 2011, DDR3, bez M.2)', s:'LGA2011', r:'DDR3', m2:false, c:'X79'}],
     ram:[{n:'2× 8 GB DDR4-3200 (Dual Channel)', r:'DDR4', dual:true}, {n:'1× 16 GB DDR4-2666', r:'DDR4', dual:false}, {n:'2× 8 GB DDR3-1600 (Dual Channel)', r:'DDR3', dual:true}],
-    cool:[{n:'Pasivní chladič (do 30 W)', max:30, quiet:true}, {n:'Box chladič s ventilátorem (do 95 W)', max:95}, {n:'Věžový chladič s heatpipe (do 180 W)', max:180}, {n:'AIO vodní 240 mm (do 200 W)', max:200}, {n:'Custom vodní okruh (nad 200 W)', max:400}],
+    cool:[{n:'Pasivní chladič (do 30 W)', max:30, quiet:true, k:'pas'}, {n:'Box chladič s ventilátorem (do 95 W)', max:95, k:'box'}, {n:'Věžový chladič s heatpipe (do 180 W)', max:180, k:'tower'}, {n:'AIO vodní 240 mm (do 200 W)', max:200, k:'aio'}, {n:'Custom vodní okruh (nad 200 W)', max:400, k:'loop'}],
     psu:[{n:'Zdroj 300 W (80 PLUS)', w:300}, {n:'Zdroj 450 W (80 PLUS)', w:450}, {n:'Zdroj 650 W (80 PLUS Gold)', w:650}, {n:'Zdroj 850 W (80 PLUS Gold, 12VHPWR)', w:850}],
     disk:[{n:'NVMe SSD (M.2, PCIe 4.0 x4)', m2:true, ssd:true}, {n:'SATA SSD (SATA III, 600 MB/s)', ssd:true}, {n:'HDD 7200 ot./min (SATA)', ssd:false}],
     gpu:[{n:'Bez grafiky (integrovaná v CPU)', w:0}, {n:'Grafika 75 W (jen ze slotu PCIe)', w:75}, {n:'Grafika 220 W (8pin + 6pin)', w:220}, {n:'Grafika 320 W (12VHPWR)', w:320}]
   };
   const SLOT = {cpu:'Procesor', mb:'Základní deska', ram:'Paměti', cool:'Chlazení', psu:'Zdroj', disk:'Disk', gpu:'Grafika'};
+  const TAB = {mb:'Deska', cpu:'Procesor', cool:'Chladič', ram:'Paměti', gpu:'Grafika', disk:'Disk', psu:'Zdroj'};
+  const ORDER = ['mb','cpu','cool','ram','gpu','disk','psu'];
   const JOBS = [
     {t:'Tichý kancelářský PC: pasivní chlazení, žádná přídavná grafika, SSD disk.', req:s => [['Pasivní chlazení', s.cool && s.cool.quiet], ['Bez přídavné grafiky', s.gpu && s.gpu.w === 0], ['SSD disk', s.disk && s.disk.ssd]]},
     {t:'Herní PC: grafika aspoň 220 W, NVMe disk, paměti v Dual Channel.', req:s => [['Grafika ≥ 220 W', s.gpu && s.gpu.w >= 220], ['NVMe disk', s.disk && s.disk.m2], ['Dual Channel', s.ram && s.ram.dual]]},
     {t:'Pracovní stanice na rendering: procesor aspoň 100 W TDP, SSD, zdroj s rezervou.', req:s => [['CPU ≥ 100 W TDP', s.cpu && s.cpu.w >= 100], ['SSD disk', s.disk && s.disk.ssd]]}
   ];
-  let job = 0; const sel = {};
+  const IC = {
+    mb:'<rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="6" height="6"/><path d="M16 6v8M18.5 6v8M6 17h10"/>',
+    cpu:'<rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 3v3M12 3v3M15 3v3M9 18v3M12 18v3M15 18v3M3 9h3M3 12h3M3 15h3M18 9h3M18 12h3M18 15h3"/>',
+    cool:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.8"/><path d="M12 10.2C11 7 12.5 4.8 15 4.6M13.8 12.4c3 .9 4.3 3.2 3.4 5.4M10.4 13c-2.3 2.3-4.9 2.2-6.3.4"/>',
+    ram:'<rect x="2.5" y="8" width="19" height="8" rx="1"/><path d="M5.5 10.5h2.5v3H5.5zM10 10.5h2.5v3H10zM14.5 10.5H17v3h-2.5zM11 16v2.5M6 16v2.5M16 16v2.5"/>',
+    gpu:'<rect x="2" y="6" width="20" height="11" rx="1.5"/><circle cx="8" cy="11.5" r="3"/><circle cx="16" cy="11.5" r="3"/><path d="M4 17v2.5h8V17"/>',
+    disk:'<rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="11" r="4.5"/><circle cx="12" cy="11" r="1"/><path d="M15 17.5h2"/>',
+    psu:'<rect x="2.5" y="5" width="19" height="14" rx="1.5"/><circle cx="9" cy="12" r="4"/><path d="M6.5 12h5M9 9.5v5M16 9h3M16 12h3M16 15h3"/>',
+    job:'<path d="M8 4h8v3H8zM6 5.5H4.5v15h15v-15H18"/><path d="M8 12l2.5 2.5L16 9"/>'
+  };
+  const ico = (k, c) => '<svg class="bpi'+(c ? ' '+c : '')+'" viewBox="0 0 24 24" aria-hidden="true">'+IC[k]+'</svg>';
+  let job = 0, cat = 'mb', fresh = null; const sel = {};
+  const pick = k => sel[k] != null ? C[k][sel[k]] : null;
+
   function rules(){
-    const s = {}; Object.keys(C).forEach(k => s[k] = sel[k] != null ? C[k][sel[k]] : null);
+    const s = {}; Object.keys(C).forEach(k => s[k] = pick(k));
     const r = [];
-    r.push(['Socket CPU = socket desky', s.cpu && s.mb ? s.cpu.s === s.mb.s : null, s.cpu && s.mb ? s.cpu.s+' vs '+s.mb.s : '']);
-    r.push(['Paměti odpovídají desce (DDR)', s.ram && s.mb ? s.ram.r === s.mb.r : null, s.ram && s.mb ? s.ram.r+' vs '+s.mb.r : '']);
-    r.push(['Chladič zvládne TDP', s.cool && s.cpu ? s.cool.max >= s.cpu.w : null, s.cool && s.cpu ? 'TDP '+s.cpu.w+' W, chladič do '+s.cool.max+' W' : '']);
-    r.push(['NVMe disk potřebuje M.2 na desce', s.disk && s.mb ? (!s.disk.m2 || s.mb.m2) : null, '']);
+    r.push(['Socket CPU = socket desky', s.cpu && s.mb ? s.cpu.s === s.mb.s : null, s.cpu && s.mb ? s.cpu.s+' vs '+s.mb.s : '', ['cpu','mb']]);
+    r.push(['Paměti odpovídají desce (DDR)', s.ram && s.mb ? s.ram.r === s.mb.r : null, s.ram && s.mb ? s.ram.r+' vs '+s.mb.r : '', ['ram']]);
+    r.push(['Chladič zvládne TDP', s.cool && s.cpu ? s.cool.max >= s.cpu.w : null, s.cool && s.cpu ? 'TDP '+s.cpu.w+' W, chladič do '+s.cool.max+' W' : '', ['cool']]);
+    r.push(['NVMe disk potřebuje M.2 na desce', s.disk && s.mb ? (!s.disk.m2 || s.mb.m2) : null, s.disk && s.mb && s.disk.m2 && !s.mb.m2 ? 'deska '+s.mb.c+' nemá M.2' : '', ['disk']]);
     const tot = (s.cpu ? s.cpu.w : 0) + (s.gpu ? s.gpu.w : 0) + 75;
     const load = s.psu ? tot / s.psu.w : null;
-    r.push(['Zdroj zatížený max. na 75 % (nejlepší účinnost 50–75 %)', s.psu && s.cpu && s.gpu ? load <= .75 : null, s.psu ? 'odběr ≈ '+tot+' W, zatížení '+Math.round(load*100)+' %' : '']);
-    return {s, r, tot, load};
+    r.push(['Zdroj zatížený max. na 75 % (nejlepší účinnost 50–75 %)', s.psu && s.cpu && s.gpu ? load <= .75 : null, s.psu ? 'odběr ≈ '+tot+' W, zatížení '+Math.round(load*100)+' %' : '', ['psu']]);
+    const bad = {}; r.forEach(x => { if(x[1] === false) x[3].forEach(k => bad[k] = true); });
+    return {s, r, tot, load, bad};
   }
+
+  /* ---------- skříň s deskou (SVG) ---------- */
+  function fan(cx, cy, r, op){
+    let b = ''; for(let i = 0; i < 7; i++){ const a = i * Math.PI * 2 / 7, x1 = cx + Math.cos(a) * r * .28, y1 = cy + Math.sin(a) * r * .28, x2 = cx + Math.cos(a + .9) * r * .9, y2 = cy + Math.sin(a + .9) * r * .9;
+      b += '<path d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+'Q'+(cx + Math.cos(a + .2) * r * .95).toFixed(1)+' '+(cy + Math.sin(a + .2) * r * .95).toFixed(1)+' '+x2.toFixed(1)+' '+y2.toFixed(1)+'"/>'; }
+    return '<g class="bpfan"'+(op ? ' opacity="'+op+'"' : '')+'><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#0d1112" stroke="#3a4446" stroke-width="1.5"/><g fill="none" stroke="#5d6a6c" stroke-width="2.2" stroke-linecap="round">'+b+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+(r * .24).toFixed(1)+'" fill="#1d2425" stroke="#4a5557"/></g>';
+  }
+  const box = (x, y, w, h, fill, stroke, rx, extra) => '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(rx || 2)+'" fill="'+fill+'" stroke="'+stroke+'"'+(extra || '')+'/>';
+  const txt = (x, y, t, sz, fill, anchor, extra) => '<text x="'+x+'" y="'+y+'" font-size="'+sz+'" fill="'+fill+'" text-anchor="'+(anchor || 'middle')+'"'+(extra || '')+'>'+t+'</text>';
+  function part(k, inner, bad){
+    return '<g class="bppart'+(fresh === k ? ' bpnew' : '')+(bad ? ' bpbad' : '')+'" data-k="'+k+'">'+inner+'</g>';
+  }
+  function badge(x, y){ return '<g class="bpx"><circle cx="'+x+'" cy="'+y+'" r="9" fill="var(--bad)"/><path d="M'+(x-3.5)+' '+(y-3.5)+'l7 7M'+(x+3.5)+' '+(y-3.5)+'l-7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>'; }
+  function hit(k, x, y, w, h, label){
+    const on = cat === k;
+    return '<g class="bphit'+(on ? ' on' : '')+'" data-k="'+k+'"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6"/>'+(label ? txt(x + w/2, y + h/2 + 4, label, 11, 'currentColor', 'middle', ' class="bphl"') : '')+'</g>';
+  }
+  function caseSVG(s, bad){
+    let g = '';
+    // skříň
+    g += '<defs><linearGradient id="bpIhs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9ecec"/><stop offset=".55" stop-color="#a9b0b2"/><stop offset="1" stop-color="#7d8587"/></linearGradient>'+
+      '<linearGradient id="bpGpu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3234"/><stop offset="1" stop-color="#15191a"/></linearGradient>'+
+      '<linearGradient id="bpPcb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123a2e"/><stop offset="1" stop-color="#0b261e"/></linearGradient>'+
+      '<pattern id="bpMesh" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="#273032"/></pattern></defs>';
+    g += box(8, 8, 524, 456, '#161b1c', '#3a4345', 16) + box(22, 22, 496, 428, '#0a0d0e', '#222a2b', 10);
+    g += '<rect x="30" y="54" width="34" height="96" rx="4" fill="url(#bpMesh)" stroke="#273032"/>' + fan(47, 102, 15, .9);   // zadní ventilátor
+    g += [90, 190, 290].map(y => fan(492, y + 16, 19, .55)).join('');                                                          // přední ventilátory
+    g += box(22, 366, 496, 84, '#111617', '#262e2f', 6) + txt(270, 444, 'kryt zdroje', 9, '#3b4648');
+    // deska
+    if(!s.mb){
+      g += box(76, 50, 300, 300, 'none', '#3b4648', 8, ' stroke-dasharray="6 6"') + [[86,60],[366,60],[86,340],[366,340],[226,60],[226,340]].map(p => '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#2a3233"/>').join('');
+    } else {
+      let b = box(76, 50, 300, 300, 'url(#bpPcb)', bad.mb ? 'var(--bad)' : '#2c5a49', 6, ' stroke-width="'+(bad.mb ? 2.5 : 1.2)+'"');
+      b += '<g stroke="#1f5a45" stroke-width="1.2" fill="none" opacity=".8"><path d="M210 130h18v-40h40M210 110h10v-50M300 200h40v60M120 230h-30v80h40M250 300h60v30M150 180v20h60"/><path d="M330 90h30M330 100h30M330 110h30"/></g>';
+      b += box(78, 58, 26, 92, '#3d4648', '#5a6466', 3) + txt(91, 108, 'I/O', 8, '#c9d0d1');
+      b += box(112, 58, 98, 14, '#2a3133', '#465052', 3) + box(112, 72, 14, 94, '#2a3133', '#465052', 3);                       // VRM chladiče
+      // socket
+      const sx = 136, sy = 82;
+      b += box(sx, sy, 74, 74, '#1e2425', '#c9a35a', 3, ' stroke-width="1.4"');
+      if(s.mb.s === 'AM4'){ let d = ''; for(let i = 0; i < 9; i++) for(let j = 0; j < 9; j++) d += '<circle cx="'+(sx + 9 + i * 7)+'" cy="'+(sy + 9 + j * 7)+'" r="1.1"/>'; b += '<g fill="#0a0d0e">'+d+'</g>'; }
+      else { let d = ''; for(let i = 0; i < 10; i++) for(let j = 0; j < 10; j++) if(!(i > 3 && i < 6 && j > 3 && j < 6)) d += '<rect x="'+(sx + 7 + i * 6.2)+'" y="'+(sy + 7 + j * 6.2)+'" width="2.4" height="2.4"/>'; b += '<g fill="#b8924a" opacity=".75">'+d+'</g>'; }
+      b += txt(sx + 37, sy + 88, s.mb.s, 9, '#c9a35a');
+      // RAM sloty
+      const rx = [232, 248, 264, 280];
+      b += rx.map((x, i) => box(x, 70, 8, 168, '#15191a', '#3f4a4c', 2) + box(x + 1.5, s.mb.r === 'DDR3' ? 168 : 150, 5, 3, '#0a0d0e', 'none', 0) + txt(x + 4, 250, ['A1','A2','B1','B2'][i], 7.5, '#7f8e8a')).join('') + txt(260, 64, s.mb.r, 9, '#c9a35a');
+      b += box(304, 112, 14, 58, '#e8e2cf', '#8f8a7a', 2) + txt(311, 182, 'ATX 24', 7.5, '#7f8e8a');                         // 24pin
+      b += box(112, 40, 26, 10, '#e8e2cf', '#8f8a7a', 2);                                                                     // CPU 8pin
+      if(s.mb.m2) b += box(120, 200, 112, 10, '#1a1f20', '#4a5557', 2) + '<circle cx="236" cy="205" r="3" fill="#c9a35a"/>' + txt(176, 196, 'M.2', 8.5, '#c9a35a');
+      b += box(96, 258, 210, 9, '#15191a', '#4a5557', 2) + txt(201, 254, 'PCIe x16', 8.5, '#c9a35a') + box(96, 300, 64, 7, '#15191a', '#4a5557', 2) + txt(128, 318, 'PCIe x1', 7.5, '#7f8e8a');
+      b += box(282, 280, 56, 52, '#2a3133', '#5a6466', 4) + txt(310, 310, s.mb.c, 11, '#e7c983', 'middle', ' font-weight="700"');   // čipset
+      b += [0,1,2,3].map(i => box(352, 270 + i * 15, 16, 10, '#202627', '#56a5c4', 2)).join('') + txt(360, 336, 'SATA', 7.5, '#7f8e8a');
+      b += '<circle cx="200" cy="318" r="10" fill="#c3c9ca" stroke="#7d8587"/>';
+      g += part('mb', b, bad.mb);
+    }
+    // procesor
+    if(s.cpu){
+      const c = s.cpu, off = bad.cpu ? -26 : 0;
+      g += part('cpu', '<g transform="translate('+off+' '+(bad.cpu ? -18 : 0)+')">'+box(140, 86, 66, 66, '#0f6a4c', '#0b4a35', 3)+box(146, 92, 54, 54, 'url(#bpIhs)', '#6c7476', 4)+
+        txt(173, 115, c.b === 'amd' ? 'AMD' : 'intel', c.b === 'amd' ? 10 : 11, '#3b4446', 'middle', ' font-weight="700"')+txt(173, 128, esc(c.l), 8.5, '#3b4446')+txt(173, 139, c.w+' W', 7.5, '#59625f')+'</g>'+(bad.cpu ? badge(204, 70) : ''), bad.cpu);
+    }
+    // chladič
+    if(s.cool){
+      const k = s.cool.k; let c = '';
+      if(k === 'pas') c = box(124, 74, 98, 90, '#5d6668', '#8a9395', 3) + '<g stroke="#2b3133" stroke-width="2">'+Array.from({length:13}, (_, i) => '<path d="M'+(130 + i * 7)+' 78v82"/>').join('')+'</g>' + txt(173, 176, 'pasivní', 8, '#9aa6a3');
+      else if(k === 'box') c = box(129, 75, 88, 88, '#1b2122', '#4a5557', 10) + fan(173, 119, 38);
+      else if(k === 'tower') c = box(130, 70, 86, 98, '#9aa2a4', '#c7cdce', 3) + '<g stroke="#5f6769" stroke-width="1.6">'+Array.from({length:12}, (_, i) => '<path d="M132 '+(76 + i * 8)+'h82"/>').join('')+'</g>' + box(114, 66, 14, 106, '#1b2122', '#4a5557', 3) + '<g stroke="#c9a35a" stroke-width="2.4" fill="none"><path d="M150 86v-24M166 86v-24M182 86v-24M198 86v-24"/></g>' + txt(173, 182, 'věž', 8, '#9aa6a3');
+      else {
+        const loop = k === 'loop', tube = loop ? '#3fd0ff' : '#1d2223', tw = loop ? 5 : 7;
+        c = box(110, 26, 300, 22, '#20272a', '#4a5557', 4) + fan(160, 37, 9) + fan(210, 37, 9) + (loop ? fan(260, 37, 9) + fan(310, 37, 9) : '') + txt(380, 41, 'radiátor', 8, '#9aa6a3');
+        c += '<path d="M160 112C150 80 130 60 140 48M186 112C200 80 220 70 230 48" fill="none" stroke="'+tube+'" stroke-width="'+tw+'" stroke-linecap="round"'+(loop ? ' opacity=".85"' : '')+'/>';
+        if(loop) c += box(418, 120, 26, 120, 'rgba(63,208,255,.25)', '#3fd0ff', 12) + '<rect x="421" y="160" width="20" height="77" rx="9" fill="rgba(63,208,255,.55)"/>' + '<path d="M186 130C260 150 380 140 418 170M431 240C431 300 300 290 210 260" fill="none" stroke="#3fd0ff" stroke-width="5" stroke-linecap="round" opacity=".85"/>' + txt(431, 112, 'nádržka', 8, '#9aa6a3');
+        c += '<circle cx="173" cy="119" r="30" fill="#14191a" stroke="'+(loop ? '#3fd0ff' : '#4a5557')+'" stroke-width="2"/><circle cx="173" cy="119" r="18" fill="none" stroke="'+(loop ? '#3fd0ff' : '#c9a35a')+'" stroke-width="2" opacity=".8"/>' + txt(173, 123, 'pumpa', 8, '#9aa6a3');
+      }
+      g += part('cool', c + (bad.cool ? badge(222, 72) : ''), bad.cool);
+    }
+    // paměti
+    if(s.ram){
+      const xs = s.ram.dual ? [248, 280] : [248];
+      g += part('ram', xs.map(x => box(x - 1, 72, 10, 164, s.ram.r === 'DDR3' ? '#1d5a3c' : '#2a3133', bad.ram ? 'var(--bad)' : '#c9a35a', 2) + (s.ram.r === 'DDR3' ? [0,1,2,3,4,5,6].map(i => box(x + 1, 80 + i * 21, 6, 13, '#111', 'none', 1)).join('') : box(x + 1, 80, 6, 148, '#c9a35a', 'none', 1, ' opacity=".35"'))).join('') + (bad.ram ? badge(290, 76) : ''), bad.ram);
+    }
+    // grafika
+    if(s.gpu){
+      if(s.gpu.w === 0) g += part('gpu', txt(201, 284, 'integrovaná grafika v CPU', 9, '#7f8e8a'));
+      else {
+        const fans = s.gpu.w >= 320 ? 3 : s.gpu.w >= 220 ? 2 : 1, w = fans === 1 ? 170 : 270, x = 90;
+        let c = box(x, 248, w, 58, 'url(#bpGpu)', '#56605f', 6) + box(x, 300, w, 6, '#0f1213', 'none', 0);
+        for(let i = 0; i < fans; i++) c += fan(x + w / (fans + 1) * (i + 1) - (fans === 1 ? 0 : 0), 275, 22);
+        if(s.gpu.w >= 320) c += box(x + w - 46, 240, 24, 9, '#e8e2cf', '#8f8a7a', 2);
+        else if(s.gpu.w >= 220) c += box(x + w - 64, 240, 22, 9, '#e8e2cf', '#8f8a7a', 2) + box(x + w - 38, 240, 16, 9, '#e8e2cf', '#8f8a7a', 2);
+        c += txt(x + w - 8, 300, s.gpu.w+' W', 8, '#c9a35a', 'end');
+        g += part('gpu', c);
+      }
+    }
+    // disk
+    if(s.disk){
+      let c = '';
+      if(s.disk.m2){ const fl = bad.disk; c = '<g transform="translate('+(fl ? 0 : 0)+' '+(fl ? -40 : 0)+')">'+box(122, 201, 108, 8, '#0f3a2c', fl ? 'var(--bad)' : '#2d6a55', 1.5) + [0,1,2].map(i => box(134 + i * 28, 202, 18, 6, '#1a1e1f', 'none', 1)).join('') + txt(176, 220, 'NVMe', 8, '#c9a35a') + '</g>' + (fl ? badge(236, 160) : ''); }
+      else if(s.disk.ssd) c = box(398, 382, 74, 50, '#2a3133', '#7d8587', 4) + txt(435, 411, 'SSD', 11, '#d9dede', 'middle', ' font-weight="700"') + txt(435, 424, '2,5″ SATA', 7.5, '#9aa6a3');
+      else c = box(392, 378, 112, 62, '#5f686a', '#9aa2a4', 4) + '<circle cx="436" cy="409" r="24" fill="#8d9698" stroke="#c7cdce"/><circle cx="436" cy="409" r="4" fill="#5f686a"/><path d="M482 386l-30 16" stroke="#2b3133" stroke-width="3" stroke-linecap="round"/>' + txt(488, 434, 'HDD', 8, '#1b2122', 'end', ' font-weight="700"');
+      if(!s.disk.m2 && s.mb) c += '<path d="M398 400C380 380 380 300 368 290" fill="none" stroke="#c2412d" stroke-width="3" stroke-linecap="round"/>';
+      g += part('disk', c, bad.disk);
+    }
+    // zdroj
+    if(s.psu){
+      let c = box(34, 376, 186, 64, '#1d2324', bad.psu ? 'var(--bad)' : '#4a5557', 4, bad.psu ? ' stroke-width="2.5"' : '') + '<circle cx="104" cy="408" r="26" fill="url(#bpMesh)" stroke="#3a4446"/>' + fan(104, 408, 22, .8) +
+        txt(176, 404, s.psu.w+' W', 13, '#e7c983', 'middle', ' font-weight="700"') + txt(176, 420, s.psu.w >= 650 ? '80+ Gold' : '80 PLUS', 8, '#9aa6a3');
+      if(s.mb) c += '<g fill="none" stroke-linecap="round" stroke-width="5" opacity=".9"><path d="M200 376C210 300 300 260 311 172" stroke="#262c2d"/><path d="M60 376C40 250 70 120 124 46" stroke="#262c2d"/></g>';
+      if(s.gpu && s.gpu.w > 75) c += '<path d="M150 376C150 330 '+(s.gpu.w >= 320 ? 300 : 290)+' 300 '+(s.gpu.w >= 320 ? 324 : 312)+' 246" fill="none" stroke="#262c2d" stroke-width="4" stroke-linecap="round"/>';
+      g += part('psu', c + (bad.psu ? badge(214, 378) : ''), bad.psu);
+    }
+    // klikací oblasti
+    g += hit('mb', 76, 50, 300, 300, s.mb ? '' : '+ základní deska');
+    if(s.mb){
+      g += hit(!s.cpu || cat === 'cool' ? 'cpu' : 'cool', 128, 74, 90, 90, s.cpu ? '' : '+ CPU');
+      g += hit('ram', 226, 66, 64, 176, s.ram ? '' : '+ RAM');
+      g += hit('gpu', 90, 244, 272, 64, s.gpu ? '' : '+ grafika');
+    }
+    g += hit('psu', 32, 374, 192, 68, s.psu ? '' : '+ zdroj') + hit('disk', 386, 374, 124, 68, s.disk ? '' : '+ disk');
+    return '<svg class="bpcase" viewBox="0 0 540 472" role="img" aria-label="Skříň počítače se základní deskou">'+g+'</svg>';
+  }
+
+  function gauge(load, tot, w){
+    const R = 62, cx = 80, cy = 78, ang = v => Math.PI * (1 - Math.min(v, 1.25) / 1.25), pt = (v, r) => [(cx + Math.cos(ang(v)) * r).toFixed(1), (cy - Math.sin(ang(v)) * r).toFixed(1)];
+    const arc = (a, b, col) => { const p = pt(a, R), q = pt(b, R); return '<path d="M'+p[0]+' '+p[1]+'A'+R+' '+R+' 0 0 1 '+q[0]+' '+q[1]+'" fill="none" stroke="'+col+'" stroke-width="10"/>'; };
+    const nd = load == null ? null : pt(load, R - 14);
+    return '<svg class="bpgauge" viewBox="0 0 160 96" aria-hidden="true">'+arc(0, .5, '#2c3a35')+arc(.5, .75, 'var(--ok)')+arc(.75, 1, 'var(--warn)')+arc(1, 1.25, 'var(--bad)')+
+      [0, .5, .75, 1].map(v => { const a = pt(v, R + 10); return '<text x="'+a[0]+'" y="'+a[1]+'" font-size="8" fill="var(--silk-dim)" text-anchor="middle">'+Math.round(v * 100)+'</text>'; }).join('')+
+      (nd ? '<path d="M'+cx+' '+cy+'L'+nd[0]+' '+nd[1]+'" stroke="var(--silk)" stroke-width="3" stroke-linecap="round"/>' : '')+'<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="var(--copper)"/></svg>';
+  }
+
   function render(){
-    const {s, r, tot, load} = rules(); const J = JOBS[job]; const jr = J.req(s);
+    const {s, r, tot, load, bad} = rules(), J = JOBS[job], jr = J.req(s).map(x => [x[0], x[1] === undefined ? false : x[1]]);
     const all = Object.keys(C).every(k => sel[k] != null), okAll = all && r.every(x => x[1]) && jr.every(x => x[1]);
-    const mark = v => v == null ? '<span class="muted">·</span>' : v ? '<span style="color:var(--ok)">✓</span>' : '<span style="color:var(--bad)">✗</span>';
+    const led = v => '<i class="bpled '+(v == null ? '' : v ? 'ok' : 'bad')+'"></i>';
+    const chips = (k, o) => ({cpu:[o.s, 'TDP '+o.w+' W'], mb:[o.s, o.r, o.m2 ? 'M.2 ✓' : 'bez M.2'], ram:[o.r, o.dual ? 'Dual Channel' : '1 modul'], cool:['do '+o.max+' W'].concat(o.quiet ? ['tichý'] : []),
+      psu:[o.w+' W'], disk:[o.m2 ? 'M.2 NVMe' : 'SATA', o.ssd ? 'SSD' : 'HDD'], gpu:[o.w ? o.w+' W' : 'iGPU']}[k]);
     labShell(18, 'Postav si PC · zakázka '+(job+1)+'/'+JOBS.length,
-      '<p><b>Zakázka:</b> '+esc(J.t)+'</p><div class="pcb">'+Object.keys(C).map(k => '<div class="slot'+(sel[k]!=null?' full':'')+'"><span class="mono small">'+SLOT[k]+'</span><select id="s-'+k+'"><option value="">— vyber —</option>'+C[k].map((o,i) => '<option value="'+i+'"'+(sel[k]===i?' selected':'')+'>'+esc(o.n)+'</option>').join('')+'</select></div>').join('')+'</div>'+
-      '<div class="checks"><h3>Kontrola kompatibility</h3>'+r.map(x => '<div>'+mark(x[1])+' '+esc(x[0])+(x[2]?' <span class="muted small">('+esc(x[2])+')</span>':'')+'</div>').join('')+
-      '<h3 style="margin-top:10px">Požadavky zakázky</h3>'+jr.map(x => '<div>'+mark(x[1] == null ? null : !!x[1])+' '+esc(x[0])+'</div>').join('')+
-      (s.psu ? '<div class="psubar"><i style="width:'+Math.min(100, load*100)+'%;background:'+(load<=.75?'var(--ok)':load<=1?'var(--warn)':'var(--bad)')+'"></i></div>' : '')+'</div>'+
-      '<div class="row"><button class="btn" id="go"'+(okAll?'':' disabled')+'>'+(okAll?'Předat zákazníkovi':'Sestava zatím nevyhovuje')+'</button></div>',
-      'Spotřeba ≈ TDP procesoru + grafika + 75 W (deska, paměti, disky, ventilátory). Podle podkladů má zdroj nejlepší účinnost při zatížení 50–75 %.');
-    Object.keys(C).forEach(k => { $('#s-'+k).onchange = e => { sel[k] = e.target.value === '' ? null : +e.target.value; beep('tick'); render(); }; });
-    $('#go').onclick = () => { beep('ok'); addXP(20); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length, 'sestav']], 30, () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); render(); };
+      '<div class="bpjob">'+ico('job')+'<div><b>Zakázka '+(job+1)+'</b><span>'+esc(J.t)+'</span></div></div>'+
+      '<div class="bpgrid"><div class="bpleft">'+caseSVG(s, bad)+'</div>'+
+      '<div class="bpright"><div class="bptabs">'+ORDER.map(k => '<button class="bptab'+(cat === k ? ' on' : '')+'" data-k="'+k+'">'+ico(k)+'<span>'+TAB[k]+'</span>'+led(sel[k] == null ? null : !bad[k])+'</button>').join('')+'</div>'+
+        '<div class="bpshelf"><div class="bpshh">'+ico(cat)+'<b>'+SLOT[cat]+'</b>'+(sel[cat] != null ? '<button class="bpout" id="bpout">Vyndat</button>' : '')+'</div>'+
+        C[cat].map((o, i) => '<button class="bpcard'+(sel[cat] === i ? ' on'+(bad[cat] ? ' bad' : '') : '')+'" data-i="'+i+'">'+ico(cat, 'big')+'<span class="bpcn">'+esc(o.n.replace(/\s*\(.*\)$/, ''))+'</span><span class="bpch">'+chips(cat, o).map(c => '<em>'+esc(c)+'</em>').join('')+'</span>'+(sel[cat] === i ? '<span class="bpin">vloženo</span>' : '')+'</button>').join('')+'</div>'+
+      '</div></div>'+
+      '<div class="bpchecks"><div><h3>Kontrola kompatibility</h3>'+r.map(x => '<div class="bprow">'+led(x[1])+'<span>'+esc(x[0])+(x[2] ? ' <em>'+esc(x[2])+'</em>' : '')+'</span></div>').join('')+
+        '<h3>Požadavky zakázky</h3>'+jr.map(x => '<div class="bprow">'+led(x[1] == null ? null : !!x[1])+'<span>'+esc(x[0])+'</span></div>').join('')+'</div>'+
+        '<div class="bppsu">'+gauge(load, tot)+'<div class="bppl"><b>'+(s.psu ? Math.round(load * 100)+' %' : '—')+'</b><span>'+(s.psu ? 'odběr ≈ '+tot+' W z '+s.psu.w+' W' : 'zatížení zdroje')+'</span></div></div></div>'+
+      '<div class="row"><button class="btn" id="go"'+(okAll ? '' : ' disabled')+'>'+(okAll ? 'Předat zákazníkovi' : 'Sestava zatím nevyhovuje')+'</button></div>',
+      'Klikni na místo ve skříni nebo na záložku a vyber díl. Spotřeba ≈ TDP procesoru + grafika + 75 W (deska, paměti, disky, ventilátory). Podle podkladů má zdroj nejlepší účinnost při zatížení 50–75 %.');
+    fresh = null;
+    $$('.bpcase .bphit').forEach(h => h.onclick = () => { cat = h.dataset.k; beep('tick'); render(); });
+    $$('.bptab').forEach(b => b.onclick = () => { cat = b.dataset.k; render(); });
+    $$('.bpcard').forEach(b => b.onclick = () => {
+      const i = +b.dataset.i; if(sel[cat] === i) return;
+      sel[cat] = i; fresh = cat; beep('tick');
+      const nx = ORDER.find(k => sel[k] == null); if(nx) cat = nx;
+      render();
+    });
+    if($('#bpout')) $('#bpout').onclick = () => { delete sel[cat]; beep('tick'); render(); };
+    $('#go').onclick = () => { beep('ok'); addXP(20); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length, 'sestav']], 30, () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); cat = 'mb'; render(); window.scrollTo(0, 0); };
   }
   render();
 });
