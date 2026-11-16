@@ -224,6 +224,28 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
+.s5wrap{overflow-x:auto;margin:12px 0 6px;border-radius:10px}
+.s5svg{display:block;width:100%;min-width:520px;max-width:760px;height:auto;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px}
+.s5svg text{font-family:var(--font-mono)}
+.s5t{font-size:10.5px;fill:var(--silk-dim)}.s5t.b{font-size:13px;font-weight:700;fill:var(--silk)}.s5t.s{font-size:9px;fill:#7f8e8a}
+.s5mcu{fill:#1a1f20;stroke:#3a4446}
+.s5t.lbl{paint-order:stroke;stroke:#121617;stroke-width:5px;stroke-linejoin:round}
+.s5chip{fill:#121617;stroke:#4a5557;stroke-width:1.5}.s5notch{fill:var(--chip-2);stroke:#4a5557}
+.s5w{fill:none;stroke:#3b4a45;stroke-width:2.4;stroke-linecap:round}
+.s5w.on{stroke:#61e38c;filter:drop-shadow(0 0 3px rgba(97,227,140,.7))}
+.s5w.pulse.on{stroke:#f3cd7e;animation:s5p .6s ease-out}
+.s5w.oe.on{stroke:#ff8a7e;filter:none}
+@keyframes s5p{0%{stroke-width:5;filter:drop-shadow(0 0 8px #f3cd7e)}100%{stroke-width:2.4}}
+.s5c{fill:var(--chip);stroke:#46524f;stroke-width:1.3}.s5c.one{fill:rgba(97,227,140,.16);stroke:#61e38c}
+.s5c.flash{animation:s5f .5s ease-out}@keyframes s5f{0%{stroke:#f3cd7e;stroke-width:3}}
+.s5v{font-size:14px;font-weight:700;fill:var(--silk)}
+.s5ar{fill:none;stroke:#5b6a65;stroke-width:1.4}
+.s5clk{fill:none;stroke:#7f8e8a;stroke-width:1.2}
+.s5buf{fill:#26302d;stroke:#8e9d97;stroke-width:1.3}.s5buf.off{fill:#3a2522;stroke:#ff8a7e}
+.s5bub{fill:var(--chip-2);stroke:#8e9d97;stroke-width:1.2}
+.s5led{fill:#2a1a17;stroke:#5a3d36;stroke-width:2}.s5led.on{fill:#ff5146;stroke:#ffb4aa;filter:drop-shadow(0 0 7px #ff5146)}
+.s5tg{fill:var(--chip);stroke:#46524f}.s5tg.one{fill:rgba(208,162,75,.25);stroke:var(--copper)}
+.s5tv{font-size:10px;font-weight:700;fill:var(--silk-dim)}
 .dksvg{display:block;width:100%;max-width:560px;height:auto;margin:10px 0 4px}
 .dksvg text{font-family:var(--font-mono)}
 .dkt{font-size:9px;fill:#8fa3c4}.dkchip{font-size:15px;font-weight:700;fill:#d5dbd9}
@@ -2562,8 +2584,37 @@ lab(2, 'CISC, RISC, Von Neumann, Harvard', 'Roztřiď vlastnosti architektur.', 
 
 /* ================= T3 – 74595 ================= */
 lab(3, 'Simulátor 74595', 'Nasouvej bity přes DS, SRCLK a RCLK a zobraz vzor na výstupech.', n => {
-  let round = 0, sr, latch, ds, oe, clocks, target, total = 0;
+  let round = 0, sr, latch, ds, oe, clocks, target, total = 0, act = '';
   function reset(){ sr = Array(8).fill(0); latch = Array(8).fill(0); ds = 0; oe = 1; clocks = 0; target = Array.from({length:8}, () => ri(0,1)); if(!target.includes(1)) target[ri(0,7)] = 1; }
+  function chip(){
+    const names = ['QA','QB','QC','QD','QE','QF','QG','QH'], X = k => 168 + k * 54;
+    const wire = (d, on, cls) => '<path d="'+d+'" class="s5w'+(on ? ' on' : '')+(cls ? ' '+cls : '')+'"/>';
+    let g = '<defs><marker id="s5a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7f8e8a"/></marker></defs>';
+    g += '<rect x="8" y="96" width="64" height="176" rx="6" class="s5mcu"/><text x="40" y="266" text-anchor="middle" class="s5t b">MCU</text>';
+    [['DS', 128, ds === 1, ''], ['SRCLK', 168, act === 'sc', 'pulse'], ['RCLK', 214, act === 'rc', 'pulse'], ['OE', 252, oe === 1, 'oe']].forEach(r => {
+      g += '<text x="66" y="'+(r[1]-5)+'" text-anchor="end" class="s5t">'+r[0]+(r[0] === 'DS' ? ' = '+ds : r[0] === 'OE' ? ' = '+oe : '')+'</text>';
+      g += wire('M72 '+r[1]+'H132', r[2], r[3]);
+    });
+    g += '<rect x="132" y="70" width="474" height="208" rx="8" class="s5chip"/><path d="M362 70a7 7 0 0 0 14 0" class="s5notch"/><text x="369" y="92" text-anchor="middle" class="s5t b">74HC595</text>';
+    g += '<text x="146" y="110" class="s5t s lbl">posuvný registr</text>';
+    g += wire('M132 128H'+(X(0)-24), ds === 1) + wire('M132 168H150V152H'+(X(7)+20), act === 'sc', 'pulse') + wire('M132 214H'+(X(7)+20), act === 'rc', 'pulse') + wire('M132 252H'+(X(7)+20), oe === 1, 'oe');
+    names.forEach((nm, k) => {
+      const x = X(k), lit = oe === 0 && latch[k];
+      g += '<rect x="'+(x-22)+'" y="116" width="44" height="26" rx="4" class="s5c'+(sr[k] ? ' one' : '')+(act === 'sc' ? ' flash' : '')+'"/><text x="'+x+'" y="134" text-anchor="middle" class="s5v">'+sr[k]+'</text>';
+      if(k < 7) g += '<path d="M'+(x+22)+' 129H'+(x+31)+'" class="s5ar" marker-end="url(#s5a)"/>';
+      g += '<path d="M'+(x-6)+' 152l6 -8l6 8" class="s5clk"/><path d="M'+x+' 144V178" class="s5ar" marker-end="url(#s5a)"/>';
+      g += '<rect x="'+(x-22)+'" y="180" width="44" height="26" rx="4" class="s5c'+(latch[k] ? ' one' : '')+(act === 'rc' ? ' flash' : '')+'"/><text x="'+x+'" y="198" text-anchor="middle" class="s5v">'+latch[k]+'</text>';
+      g += '<path d="M'+(x-6)+' 214l6 -6l6 6" class="s5clk"/>';
+      g += '<path d="M'+x+' 214V230" class="s5ar"/><path d="M'+(x-8)+' 230H'+(x+8)+'L'+x+' 244Z" class="s5buf'+(oe ? ' off' : '')+'"/><circle cx="'+(x+9)+'" cy="248" r="2.6" class="s5bub"/>';
+      g += wire('M'+x+' 244V300', lit) + '<text x="'+(x-5)+'" y="292" text-anchor="end" class="s5t s">'+(oe ? 'Z' : latch[k])+'</text>';
+      g += '<circle cx="'+x+'" cy="312" r="10" class="s5led'+(lit ? ' on' : '')+'"/><text x="'+x+'" y="338" text-anchor="middle" class="s5t">'+nm+'</text>';
+      g += '<rect x="'+(x-8)+'" y="346" width="16" height="16" rx="3" class="s5tg'+(target[k] ? ' one' : '')+'"/><text x="'+x+'" y="358" text-anchor="middle" class="s5tv">'+target[k]+'</text>';
+    });
+    g += '<text x="146" y="175" class="s5t s lbl">záchytný registr</text>';
+    g += wire('M'+(X(7)+22)+' 129H626', sr[7] === 1) + '<text x="626" y="122" text-anchor="end" class="s5t">QH′</text>';
+    g += '<text x="'+(X(0)-30)+'" y="358" text-anchor="end" class="s5t s">cíl</text>';
+    return '<div class="s5wrap"><svg class="s5svg" viewBox="0 0 634 370" role="img" aria-label="Logické schéma 74HC595">'+g+'</svg></div>';
+  }
   function render(){
     const names = ['QA','QB','QC','QD','QE','QF','QG','QH'];
     const done = oe === 0 && latch.every((v,k) => v === target[k]);
@@ -2574,15 +2625,13 @@ lab(3, 'Simulátor 74595', 'Nasouvej bity přes DS, SRCLK a RCLK a zobraz vzor n
         '<button class="btn" id="sc">SRCLK ↑<span class="kbd">S</span></button>'+
         '<button class="btn" id="rc">RCLK ↑<span class="kbd">R</span></button>'+
         '<button class="btn ghost" id="oe">OE = '+oe+(oe?' (Hi-Z)':' (aktivní)')+'<span class="kbd">O</span></button></div>'+
-      '<div class="lane"><span class="lbl">posuvný registr</span>'+sr.map((v,k) => '<span class="cell sm'+(v?' one':'')+'"><b>'+v+'</b><span>'+names[k]+'</span></span>').join('')+'</div>'+
-      '<div class="lane"><span class="lbl">záchytný registr → výstupy</span>'+latch.map((v,k) => '<span class="cell sm out'+(oe?' hz':(v?' lit':''))+'"><b>'+(oe?'Z':v)+'</b><span>'+names[k]+'</span></span>').join('')+'</div>'+
-      '<div class="lane"><span class="lbl">cíl</span>'+target.map((v,k) => '<span class="cell sm tgt'+(v?' one':'')+'"><b>'+v+'</b><span>'+names[k]+'</span></span>').join('')+'</div></div>'+
+      '</div>'+chip()+
       '<p class="mono small muted">SRCLK pulsů: '+clocks+' (minimum 8)'+(done?' · <b style="color:var(--ok)">hotovo!</b>':'')+'</p>',
       'SRCLK posune vše o jedno místo (QA ← DS, QB ← QA …). RCLK přepíše posuvný registr do záchytného. OE = 0 výstupy zapne. Tip: první nasunutý bit skončí na QH.');
-    $('#ds').onclick = () => { ds ^= 1; render(); };
-    $('#sc').onclick = () => { sr = [ds, ...sr.slice(0,7)]; clocks++; total++; beep('tick'); render(); };
-    $('#rc').onclick = () => { latch = sr.slice(); beep('tick'); check(); };
-    $('#oe').onclick = () => { oe ^= 1; check(); };
+    $('#ds').onclick = () => { ds ^= 1; act = 'ds'; render(); };
+    $('#sc').onclick = () => { sr = [ds, ...sr.slice(0,7)]; clocks++; total++; act = 'sc'; beep('tick'); render(); };
+    $('#rc').onclick = () => { latch = sr.slice(); act = 'rc'; beep('tick'); check(); };
+    $('#oe').onclick = () => { oe ^= 1; act = 'oe'; check(); };
     onKey = e => { const k = e.key.toLowerCase(); if(k==='d') $('#ds').click(); else if(k==='s') $('#sc').click(); else if(k==='r') $('#rc').click(); else if(k==='o') $('#oe').click(); };
   }
   function check(){
