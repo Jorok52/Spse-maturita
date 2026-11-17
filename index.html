@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>Maturitní deska</title>
-<meta name="md-version" content="16.11.2026 12:56">
+<meta name="md-version" content="17.11.2026 12:36">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c3125'/%3E%3Cg fill='%23d0a24b'%3E%3Crect x='18' y='8' width='4' height='8' rx='1'/%3E%3Crect x='18' y='48' width='4' height='8' rx='1'/%3E%3Crect x='26' y='8' width='4' height='8' rx='1'/%3E%3Crect x='26' y='48' width='4' height='8' rx='1'/%3E%3Crect x='34' y='8' width='4' height='8' rx='1'/%3E%3Crect x='34' y='48' width='4' height='8' rx='1'/%3E%3Crect x='42' y='8' width='4' height='8' rx='1'/%3E%3Crect x='42' y='48' width='4' height='8' rx='1'/%3E%3C/g%3E%3Crect x='12' y='15' width='40' height='34' rx='4' fill='%23141819' stroke='%238a6c34' stroke-width='2'/%3E%3Ccircle cx='20' cy='23' r='3' fill='%2361e38c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%23d0a24b'%3EMD%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0c3125">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -221,7 +221,6 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
 .seq li.next{background:transparent;border:1px dashed var(--copper-dim);color:var(--silk-dim)}
 .seq.done li{background:rgba(97,227,140,.08)}
 .pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:10px}
-.bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
 .cats{display:flex;flex-wrap:wrap;gap:8px}
 .cats .btn{font-size:14px}
 .mkocts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0}
@@ -453,10 +452,12 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .bksegs i.cur{background:var(--copper);box-shadow:0 0 8px rgba(208,162,75,.6)}.bksegs i.ok{background:var(--led-on)}.bksegs i.bad{background:var(--bad)}
 .bkstage{display:flex;flex-direction:column;align-items:center;gap:10px;margin:4px 0 18px;min-height:110px}
 .bkcard{position:relative;max-width:560px;width:100%;text-align:center;font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);color:#1a1206;padding:24px 22px 20px;border-radius:12px;
-  background:linear-gradient(180deg,#f6e9c8,#e2cd98);box-shadow:0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:bkIn .35s var(--ease) both}
+  background:linear-gradient(180deg,#f6e9c8,#e2cd98);box-shadow:0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:bkIn .35s var(--ease) backwards}
 .bkart{display:block;width:min(100%,340px);height:auto;margin:0 auto 12px}
 .bkcard .bkn{position:absolute;top:8px;right:12px;font:600 10.5px/1 var(--font-mono);color:#8a6c34}
 .bkcard.gone{opacity:.28;filter:grayscale(.6);transform:scale(.96);transition:opacity .3s,transform .3s}
+.bkcard.shake{animation:shake .38s}
+.fly{animation:none!important}
 @keyframes bkIn{from{opacity:0;transform:translateY(-16px) rotate(-1.5deg)}to{opacity:1;transform:none}}
 .bkstage .fb{min-height:42px}
 .bkbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}
@@ -489,8 +490,6 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .cell.out.hz{opacity:.45}
 .cell.tgt{border-style:dashed}
 .sim595 .ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
-.lane{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
-.lane .lbl{font:500 11px/1.2 var(--font-mono);color:var(--silk-dim);width:170px}
 .bits{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));gap:4px;margin:8px 0;overflow-x:auto}
 .bitc{background:var(--chip-2);border:1px solid #39413f;border-radius:4px;padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-width:0}
 .bitc b{font:600 15px/1 var(--font-mono)}.bitc span{font:500 9px/1 var(--font-mono);color:var(--silk-dim);margin-top:3px}
@@ -502,10 +501,6 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .chart{width:100%;max-width:640px;height:auto;display:block;margin:10px 0;background:var(--chip-2);border-radius:6px}
 .gantt{display:flex;position:relative;margin:14px 0 26px;border:1px solid var(--copper-dim);border-radius:4px;max-width:720px}
 .gantt.empty{padding:10px;color:var(--silk-dim);font-size:13px;border-style:dashed}
-.gseg{position:relative;padding:8px 2px;text-align:center;background:#173b30;border-right:1px solid var(--copper-dim);min-width:0}
-.gseg.idle{background:transparent}
-.gseg b{font:600 13px/1 var(--font-mono)}
-.gseg span{position:absolute;left:-4px;bottom:-20px;font:500 11px/1 var(--font-mono);color:var(--silk-dim)}
 .gend{position:absolute;right:-4px;bottom:-20px;font:500 11px/1 var(--font-mono);color:var(--silk-dim)}
 .tblwrap{overflow-x:auto;margin:10px 0}
 .tbl{border-collapse:collapse;font:14px/1.3 var(--font-mono);font-variant-numeric:tabular-nums}
@@ -632,9 +627,6 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .cpudesc{min-height:20px}
 .er{color:var(--bad);white-space:pre-wrap;font:13px/1.45 var(--font-mono)}
 .pla{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
-.fuse-x{width:30px;height:30px;border-radius:6px;border:1px solid #39413f;background:var(--chip-2);color:var(--silk-dim);cursor:pointer;font:600 16px/1 var(--font-mono)}
-.fuse-x.on{background:#173b30;border-color:var(--ok);color:var(--led-on);box-shadow:0 0 10px rgba(97,227,140,.35)}
-.fuse-x.or.on{border-color:var(--copper);color:var(--copper-hi,#f1c873)}
 .plawrap{flex:1 1 520px;min-width:0;overflow-x:auto;border-radius:10px}
 .plasvg{display:block;width:100%;min-width:480px;height:auto;background:var(--chip-2);border:1px solid #2f3739;border-radius:10px}
 .plasvg text{font-family:var(--font-mono)}
@@ -723,9 +715,6 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .bits.b32{grid-template-columns:repeat(32,minmax(22px,1fr))}
 .bitc.sep{margin-right:6px}
 .slider{width:100%;max-width:560px;accent-color:var(--copper);display:block;margin:6px 0 12px}
-.domain{display:flex;align-items:center;gap:14px;margin:6px 0 10px;font:500 13px/1.3 var(--font-mono);color:var(--silk-dim)}
-.dom-arrow{font:700 16px/1 var(--font-mono);padding:8px 14px;border-radius:8px;background:var(--chip-2);border:1px solid #39413f;color:var(--silk);transition:transform .25s}
-.dom-arrow.r{border-color:var(--ok)}.dom-arrow.l{border-color:var(--bad)}
 .sel{background:var(--chip-2);color:var(--silk);border:1px solid #39413f;border-radius:6px;padding:7px;font:14px var(--font-body);max-width:100%}
 .bpi{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .bpjob{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,rgba(208,162,75,.14),rgba(208,162,75,.04));border:1px solid rgba(208,162,75,.45);border-left:4px solid var(--copper);border-radius:8px;padding:12px 14px;margin:6px 0 14px}
@@ -844,7 +833,8 @@ p.ptok{color:var(--led-on)}p.ptbad{color:var(--bad)}
 @media (max-width:820px){.top{transition:transform .25s var(--ease)}.top.hid{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px))}}
 .ptstat{font:12px/1.4 var(--font-mono);color:var(--silk-dim);min-height:17px;margin:6px 0 4px}
 @media (max-width:820px){.cpu{grid-template-columns:minmax(0,1fr)}.memgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.regs{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:520px){.ledm{grid-template-columns:repeat(8,24px);gap:4px}.lm{width:24px;height:24px}}
+@media (max-width:520px){.lmod,.lmod .ledm,.ledm{--lz:24px}.ledm,.lpins{gap:4px}}
+@media (max-width:440px){.lmod,.lmod .ledm,.ledm{--lz:23px}}
 @media (max-width:820px){
   .hero{grid-template-columns:1fr}
   .actions{grid-template-columns:1fr}
@@ -1022,7 +1012,7 @@ main{position:relative;z-index:2}
 @keyframes fxIn{from{opacity:0;translate:0 18px;scale:.985;filter:blur(5px)}}
 .fx-stagger>*{animation:fxItem .5s var(--ease) backwards;animation-delay:calc(var(--i,0)*45ms + 90ms)}
 @keyframes fxItem{from{opacity:0;translate:0 14px}}
-.fx-q .qtext,.fx-q .card,.fx-q .bucket-item{animation:fxQ .45s var(--ease) backwards}
+.fx-q .qtext,.fx-q .card{animation:fxQ .45s var(--ease) backwards}
 @keyframes fxQ{from{opacity:0;translate:28px 0}}
 .fx-shake{animation:fxShake .42s}
 @keyframes fxShake{0%,100%{translate:0}15%{translate:-7px 0}30%{translate:6px 0}45%{translate:-4px 0}60%{translate:3px 0}75%{translate:-1px 0}}
@@ -1341,7 +1331,7 @@ main{position:relative;z-index:2}
   <div class="fxbar"><button class="iconbtn" id="fx-music" aria-pressed="false">hudba vyp</button></div>
 </div></header>
 <main class="wrap" id="view"></main>
-<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">16.11.2026 12:56</b></span><span id="mdnew" hidden></span></footer>
+<footer class="wrap mdver"><span>Maturitní deska · verze <b id="mdver">17.11.2026 12:36</b></span><span id="mdnew" hidden></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="fx-parts" aria-hidden="true"></canvas>
 
@@ -1847,12 +1837,12 @@ function onView(){
   const cb = view.querySelector('.combo'); if(cb) setCombo(cb);
   blownPrev = view.querySelectorAll('.fuse.blown').length;
   const nav = root.className + '|' + txt(root.querySelector('h1, h2.labh'));
-  const sig = nav + '|' + txt(root.querySelector('.qtext')) + '|' + txt(root.querySelector('.face .t')) + '|' + txt(root.querySelector('.bucket-item'));
+  const sig = nav + '|' + txt(root.querySelector('.qtext')) + '|' + txt(root.querySelector('.face .t')) + '|' + txt(root.querySelector('#bkcard'));
   if(sig === lastSig) return;
   const navChanged = nav !== lastNav; lastSig = sig; lastNav = nav;
   if(!reduce()){
     Array.from(view.children).forEach((c,i) => { c.classList.add(navChanged ? 'fx-in' : 'fx-q'); c.style.setProperty('--d', (i*80)+'ms'); });
-    view.querySelectorAll('.grid, .modes, .opts, .result, .wronglist, .actions, .outline, .pool, .cats, .match .col, .seq').forEach(l => {
+    view.querySelectorAll('.grid, .modes, .opts, .result, .wronglist, .actions, .outline, .pool, .cats, .match .col, .seq, .ordcards').forEach(l => {
       Array.from(l.children).forEach((c,i) => c.style.setProperty('--i', i)); l.classList.add('fx-stagger');
     });
   }
@@ -2036,8 +2026,9 @@ function renderStats(){
 document.getElementById('home').onclick = () => go('');
 /* šipka zpět v hlavičce: zmáčkne tlačítko Zpět aktuální obrazovky (uloží výsledky, zastaví časovače) */
 const hback = document.getElementById('hback');
-hback.onclick = () => { const b = document.getElementById('back'); if(b) b.click(); else go(''); };
-new MutationObserver(() => { hback.hidden = !document.getElementById('back'); }).observe(view, {childList:true, subtree:true});
+const backBtn = () => view.querySelector('#back, #bk');
+hback.onclick = () => { const b = backBtn(); if(b) b.click(); else go(''); };
+new MutationObserver(() => { hback.hidden = !backBtn(); }).observe(view, {childList:true});
 /* na mobilu hlavička při scrollu dolů odjede a při scrollu nahoru se vrátí */
 (function(){
   const top = document.querySelector('header.top'), mq = matchMedia('(max-width: 820px)'); let last = scrollY;
@@ -2528,8 +2519,8 @@ function flyTo(fromEl, toEl, cls, done){
     document.body.appendChild(c);
     requestAnimationFrame(() => { const dx = b.left + b.width/2 - (a.left + a.width/2), dy = b.top + b.height/2 - (a.top + a.height/2), sc = Math.min(1, Math.max(.25, b.width / a.width));
       c.style.transform = 'translate('+dx+'px,'+dy+'px) scale('+sc+')'; c.style.opacity = '.15'; });
-    setTimeout(() => { c.remove(); done && done(); }, 430);
-  }catch(e){ done && done(); }
+    setTimeout(() => { c.remove(); if(fromEl.isConnected) done && done(); }, 430);
+  }catch(e){ if(fromEl && fromEl.isConnected) done && done(); }
 }
 function orderLab(n, title, prompt, items){
   return () => {
@@ -2575,7 +2566,7 @@ function bucketLab(n, title, prompt, cats, items, opt){
         res[i] = good; if(good){ ok++; beep('ok'); } else { beep('bad'); wrong.push(it); }
         $$('.bkbin').forEach(b => b.disabled = true);
         chosen.classList.add(good ? 'hit' : 'miss'); if(!good) target.classList.add('want');
-        const land = () => { inBin[it[1]].push([it[0], good]); busy = false;
+        const land = () => { if(!card.isConnected) return; inBin[it[1]].push([it[0], good]); busy = false;
           $$('.bkbin').forEach(b => { const kk = +b.dataset.k; b.querySelector('em').textContent = inBin[kk].length; });
           const box = target.querySelector('.bkin'); box.insertAdjacentHTML('beforeend', '<i class="new'+(good ? '' : ' bad')+'">'+esc(it[0])+'</i>');
           $('#fb').innerHTML = '<span class="msg '+(good?'ok':'bad')+'">'+(good?'Správně':'Patří do: '+esc(cats[it[1]]))+'</span><button class="btn" id="nx">Další<span class="kbd">Enter</span></button>';
@@ -3317,7 +3308,7 @@ lab(14, 'MBR v hex editoru', 'Jako v DiskEditu: najdi v 512 B sektoru tabulku od
     $$('.hb').forEach(b => b.onclick = () => {
       const o = +b.dataset.o;
       if(TASKS[ti][1].includes(o)){ TASKS[ti][1].forEach(x => found.add(x)); beep('ok'); toast(TASKS[ti][2]); ti++;
-        if(ti >= TASKS.length) return labDone(14, 'MBR přečtený', [[mistakes, 'chyby'], [(n1/2048).toLocaleString('cs-CZ')+' MiB', 'velikost oddílu 1']], Math.max(8, 36 - mistakes*4), () => LABS[14][0].run(14));
+        if(ti >= TASKS.length) return labDone(14, 'MBR přečtený', [[mistakes, 'chyby'], [(n1/2048).toLocaleString('cs-CZ')+' MiB', 'velikost oddílu 1']], Math.max(8, 36 - mistakes*4), () => LABS[14][0].run(14), '<div class="mbrside" style="margin-top:16px">'+side()+'</div>');
         render(); }
       else { mistakes++; beep('bad'); flash(b,'err'); toast('Tohle je offset 0x'+o.toString(16).toUpperCase()); }
     });
@@ -3886,10 +3877,10 @@ lab(1, 'Najdi chybu v kódu', 'Kód se přeloží, ale nefunguje správně. Kde 
 /* ---------- T2: mini procesor (kreativní) ---------- */
 cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembleru a sleduj fázi fetch – decode – execute.', n => {
   const TASKS = [
-    {t:'Sečti M[0] a M[1], výsledek ulož do M[2].', start:'LOAD 0\n; sem doplň\nHALT', gen:() => { const a = ri(0,50), b = ri(0,50); return {m:[a,b], want:a+b}; }},
-    {t:'Odečti M[1] od M[0] a výsledek ulož do M[2].', start:'LOAD 0\n\nHALT', gen:() => { const a = ri(20,90), b = ri(0,20); return {m:[a,b], want:a-b}; }},
-    {t:'Vynásob M[0] × M[1] opakovaným sčítáním (M[1] ≥ 0), výsledek do M[2]. Tip: M[3] = 1 jako konstanta.', start:'; M[3] = 1 (konstanta)\nLOADI 0\nSTORE 2\nloop:\n  LOAD 1\n  JZ konec\n  ; sem doplň tělo cyklu\n  JMP loop\nkonec:\nHALT', gen:() => { const a = ri(0,9), b = ri(0,6); return {m:[a,b,0,1], want:a*b}; }},
-    {t:'Do M[2] ulož větší z čísel M[0] a M[1]. Tip: JN skáče, když je výsledek záporný.', start:'LOAD 0\nSUB 1\n; JN …\nHALT', gen:() => { const a = ri(0,99), b = ri(0,99); return {m:[a,b], want:Math.max(a,b)}; }}
+    {t:'Sečti M[0] a M[1], výsledek ulož do M[2].', start:'LOAD 0\n; sem doplň\nHALT', f:(a,b) => a+b, edge:[[0,0],[50,49]], gen:() => [ri(0,50), ri(0,50)]},
+    {t:'Odečti M[1] od M[0] a výsledek ulož do M[2].', start:'LOAD 0\n\nHALT', f:(a,b) => a-b, edge:[[20,20],[90,0]], gen:() => [ri(20,90), ri(0,20)]},
+    {t:'Vynásob M[0] × M[1] opakovaným sčítáním (M[1] ≥ 0), výsledek do M[2]. Tip: M[3] = 1 jako konstanta.', start:'; M[3] = 1 (konstanta)\nLOADI 0\nSTORE 2\nloop:\n  LOAD 1\n  JZ konec\n  ; sem doplň tělo cyklu\n  JMP loop\nkonec:\nHALT', f:(a,b) => a*b, mem:[0,1], edge:[[7,0],[0,5],[9,6]], gen:() => [ri(0,9), ri(0,6)]},
+    {t:'Do M[2] ulož větší z čísel M[0] a M[1]. Tip: JN skáče, když je výsledek záporný.', start:'LOAD 0\nSUB 1\n; JN …\nHALT', f:(a,b) => Math.max(a,b), edge:[[30,70],[70,30],[42,42],[0,99]], gen:() => [ri(0,99), ri(0,99)]}
   ];
   let ti = 0, code = TASKS[0].start, cpu, prog, err = '';
   const HELP = 'LOAD a · LOADI n · STORE a · ADD a · SUB a · INC · DEC · JMP L · JZ L · JN L · HALT · návěští „jméno:“ · komentář „;“';
@@ -3904,6 +3895,8 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
     });
     return ins;
   }
+  // pevné hraniční testy + 3 náhodné: chybný program nesmí projít náhodou opakovaným klikáním
+  function tests(T){ return (T.edge||[]).concat([T.gen(), T.gen(), T.gen()]).map(([a,b]) => ({m:[a,b].concat(T.mem||[]), want:T.f(a,b)})); }
   function reset(mem){ cpu = {pc:0, ir:'—', acc:0, z:1, nf:0, phase:'fetch', mem:(mem||[]).concat(Array(16).fill(0)).slice(0,16), steps:0, halted:false, cur:null, dec:'', last:null}; }
   function exec1(c, x){
     const set = v => { c.acc = v; c.z = v === 0 ? 1 : 0; c.nf = v < 0 ? 1 : 0; };
@@ -3972,7 +3965,7 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
     const T = TASKS[ti];
     labShell(2, 'Naprogramuj procesor · úloha '+(ti+1)+'/'+TASKS.length,
       '<p><b>'+esc(T.t)+'</b></p><div class="cpu"><div class="cpu-code"><label class="mono small muted" for="asm">Program</label><textarea id="asm" class="notes code-ed" spellcheck="false">'+esc(code)+'</textarea>'+
-      '<div class="row" style="margin-top:8px"><button class="btn ghost" id="rs">Načíst a reset</button><button class="btn ghost" id="st">Krok (fáze)</button><button class="btn ghost" id="ru">Spustit</button><button class="btn" id="ck">Ověřit na 5 testech</button></div>'+
+      '<div class="row" style="margin-top:8px"><button class="btn ghost" id="rs">Načíst a reset</button><button class="btn ghost" id="st">Krok (fáze)</button><button class="btn ghost" id="ru">Spustit</button><button class="btn" id="ck">Ověřit testy</button></div>'+
       '<p class="mono small muted">'+HELP+'</p></div>'+
       '<div class="cpu-state">'+(err?'<p class="er">'+esc(err)+'</p>':'')+diagram()+
       '<div class="phases">'+['fetch','decode','execute'].map(p => '<span class="'+(cpu.phase===p&&!cpu.halted?'on':'')+'">'+p+'</span>').join('')+'<em class="mono small muted">další fáze</em></div>'+
@@ -3985,14 +3978,14 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
   }
   function load(){
     err = ''; try{ prog = parse(code); }catch(e){ err = e.message; prog = []; }
-    const t = TASKS[ti].gen(); reset(t.m); render();
+    reset(tests(TASKS[ti]).pop().m); render();
   }
   function check(){
     try{ prog = parse(code); }catch(e){ err = e.message; render(); return; }
-    let ok = 0; const res = [];
-    for(let k = 0; k < 5; k++){ const t = TASKS[ti].gen(); const c = {}; reset(t.m); Object.assign(c, cpu); const fin = runAll(c, prog); const good = fin && c.mem[2] === t.want; if(good) ok++; res.push((good?'✓':'✗')+' M[0]='+t.m[0]+', M[1]='+t.m[1]+' → M[2]='+c.mem[2]+(good?'':' (má být '+t.want+')')); }
-    if(ok === 5){ beep('ok'); toast('Úloha splněna!'); addXP(15); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length, 'úloh']], 25, () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
-    else { beep('bad'); err = 'Testy: '+ok+'/5\n'+res.join('\n'); render(); }
+    let ok = 0; const res = [], TS = tests(TASKS[ti]);
+    for(const t of TS){ const c = {}; reset(t.m); Object.assign(c, cpu); const fin = runAll(c, prog); const good = fin && c.mem[2] === t.want; if(good) ok++; res.push((good?'✓':'✗')+' M[0]='+t.m[0]+', M[1]='+t.m[1]+' → M[2]='+c.mem[2]+(good?'':' (má být '+t.want+')')); }
+    if(ok === TS.length){ beep('ok'); toast('Úloha splněna!'); addXP(15); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length, 'úloh']], 25, () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
+    else { beep('bad'); err = 'Testy: '+ok+'/'+TS.length+'\n'+res.join('\n'); render(); }
   }
   reset([]); render();
 });
@@ -4248,7 +4241,8 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
   const isSw = t => t === 'sw';
   const linkOk = l => { const A = dev(l.a.d).type, B = dev(l.b.d).type; return l.cross ? isSw(A) === isSw(B) : isSw(A) !== isSw(B); };
   const lname = l => dev(l.a.d).name+' '+l.a.p+' ↔ '+dev(l.b.d).name+' '+l.b.p;
-  const why = l => l.cross ? 'mezi switchem a koncovým zařízením (PC, router) patří přímý kabel' : 'mezi '+(isSw(dev(l.a.d).type) ? 'dvěma switchi' : 'PC a routerem (stejný typ rozhraní)')+' patří křížený kabel';
+  const pairName = l => { const t = [dev(l.a.d).type, dev(l.b.d).type].sort().join('-'); return {'sw-sw':'dvěma switchi', 'pc-pc':'dvěma PC', 'rt-rt':'dvěma routery', 'pc-rt':'PC a routerem'}[t] + (t === 'sw-sw' ? '' : ' (stejný typ rozhraní)'); };
+  const why = l => l.cross ? 'mezi switchem a koncovým zařízením (PC, router) patří přímý kabel' : 'mezi '+pairName(l)+' patří křížený kabel';
   const IF = () => ({'Gi0/0':scen.r1, 'Gi0/1':scen.r2});
   function add(type, x, y){
     let k = 1; while(byName(KIND[type]+k)) k++;
@@ -4611,7 +4605,7 @@ cre(13, 'Hysterezní smyčka', 'Posunuj magnetické pole hlavy a zapiš do domé
       g += '<path d="M'+(dir > 0 ? cx - 10 : cx + 10)+' 104Q'+cx+' '+(104 + d * 1.25)+' '+(dir > 0 ? cx + 10 : cx - 10)+' 104" fill="none" stroke="#7fd3ff" stroke-width="1.6" opacity="'+op.toFixed(2)+'" marker-end="url(#hyAr)"/>'; });
     // hlava: feritové jádro a cívka
     g += '<path d="M'+(cx-18)+' 104H'+(cx-10)+'V66Q'+(cx-10)+' 54 '+cx+' 54Q'+(cx+10)+' 54 '+(cx+10)+' 66V104H'+(cx+18)+'V62Q'+(cx+18)+' 38 '+cx+' 38Q'+(cx-18)+' 38 '+(cx-18)+' 62Z" fill="url(#hyCore)" stroke="#8a9496" stroke-width="1"/>';
-    const coil = mag > .02 ? (H > 0 ? '#f3cd7e' : '#f3cd7e') : '#8a6c34';
+    const coil = mag > .02 ? '#f3cd7e' : '#8a6c34';
     for(let k = 0; k < 6; k++) g += '<ellipse cx="'+(cx - 15 + k * 6)+'" cy="46" rx="2.6" ry="11" fill="none" stroke="'+coil+'" stroke-width="2"'+(mag > .02 ? ' style="filter:drop-shadow(0 0 3px rgba(241,200,115,.7))"' : '')+'/>';
     g += '<path d="M'+(cx-18)+' 40H'+(cx-48)+'M'+(cx+18)+' 40H'+(cx+48)+'" stroke="'+coil+'" stroke-width="2"/>';
     g += '</g><text x="'+(cx-74)+'" y="58" text-anchor="end" font-size="12" fill="var(--silk)">I '+(mag > .02 ? (H > 0 ? '→' : '←') : '= 0')+'</text>';
@@ -4833,7 +4827,7 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
       else {
         const fans = s.gpu.w >= 320 ? 3 : s.gpu.w >= 220 ? 2 : 1, w = fans === 1 ? 170 : 270, x = 90;
         let c = box(x, 248, w, 58, 'url(#bpGpu)', '#56605f', 6) + box(x, 300, w, 6, '#0f1213', 'none', 0);
-        for(let i = 0; i < fans; i++) c += fan(x + w / (fans + 1) * (i + 1) - (fans === 1 ? 0 : 0), 275, 22);
+        for(let i = 0; i < fans; i++) c += fan(x + w / (fans + 1) * (i + 1), 275, 22);
         if(s.gpu.w >= 320) c += box(x + w - 46, 240, 24, 9, '#e8e2cf', '#8f8a7a', 2);
         else if(s.gpu.w >= 220) c += box(x + w - 64, 240, 22, 9, '#e8e2cf', '#8f8a7a', 2) + box(x + w - 38, 240, 16, 9, '#e8e2cf', '#8f8a7a', 2);
         c += txt(x + w - 8, 300, s.gpu.w+' W', 8, '#c9a35a', 'end');
@@ -4843,7 +4837,7 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
     // disk
     if(s.disk){
       let c = '';
-      if(s.disk.m2){ const fl = bad.disk; c = '<g transform="translate('+(fl ? 0 : 0)+' '+(fl ? -40 : 0)+')">'+box(122, 201, 108, 8, '#0f3a2c', fl ? 'var(--bad)' : '#2d6a55', 1.5) + [0,1,2].map(i => box(134 + i * 28, 202, 18, 6, '#1a1e1f', 'none', 1)).join('') + txt(176, 220, 'NVMe', 8, '#c9a35a') + '</g>' + (fl ? badge(236, 160) : ''); }
+      if(s.disk.m2){ const fl = bad.disk; c = '<g transform="translate(0 '+(fl ? -40 : 0)+')">'+box(122, 201, 108, 8, '#0f3a2c', fl ? 'var(--bad)' : '#2d6a55', 1.5) + [0,1,2].map(i => box(134 + i * 28, 202, 18, 6, '#1a1e1f', 'none', 1)).join('') + txt(176, 220, 'NVMe', 8, '#c9a35a') + '</g>' + (fl ? badge(236, 160) : ''); }
       else if(s.disk.ssd) c = box(398, 382, 74, 50, '#2a3133', '#7d8587', 4) + txt(435, 411, 'SSD', 11, '#d9dede', 'middle', ' font-weight="700"') + txt(435, 424, '2,5″ SATA', 7.5, '#9aa6a3');
       else c = box(392, 378, 112, 62, '#5f686a', '#9aa2a4', 4) + '<circle cx="436" cy="409" r="24" fill="#8d9698" stroke="#c7cdce"/><circle cx="436" cy="409" r="4" fill="#5f686a"/><path d="M482 386l-30 16" stroke="#2b3133" stroke-width="3" stroke-linecap="round"/>' + txt(488, 434, 'HDD', 8, '#1b2122', 'end', ' font-weight="700"');
       if(!s.disk.m2 && s.mb) c += '<path d="M398 400C380 380 380 300 368 290" fill="none" stroke="#c2412d" stroke-width="3" stroke-linecap="round"/>';
@@ -4868,7 +4862,7 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
     return '<svg class="bpcase" viewBox="0 0 540 472" role="img" aria-label="Skříň počítače se základní deskou">'+g+'</svg>';
   }
 
-  function gauge(load, tot, w){
+  function gauge(load){
     const R = 62, cx = 80, cy = 78, ang = v => Math.PI * (1 - Math.min(v, 1.25) / 1.25), pt = (v, r) => [(cx + Math.cos(ang(v)) * r).toFixed(1), (cy - Math.sin(ang(v)) * r).toFixed(1)];
     const arc = (a, b, col) => { const p = pt(a, R), q = pt(b, R); return '<path d="M'+p[0]+' '+p[1]+'A'+R+' '+R+' 0 0 1 '+q[0]+' '+q[1]+'" fill="none" stroke="'+col+'" stroke-width="10"/>'; };
     const nd = load == null ? null : pt(load, R - 14);
@@ -4892,7 +4886,7 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
       '</div></div>'+
       '<div class="bpchecks"><div><h3>Kontrola kompatibility</h3>'+r.map(x => '<div class="bprow">'+led(x[1])+'<span>'+esc(x[0])+(x[2] ? ' <em>'+esc(x[2])+'</em>' : '')+'</span></div>').join('')+
         '<h3>Požadavky zakázky</h3>'+jr.map(x => '<div class="bprow">'+led(x[1] == null ? null : !!x[1])+'<span>'+esc(x[0])+'</span></div>').join('')+'</div>'+
-        '<div class="bppsu">'+gauge(load, tot)+'<div class="bppl"><b>'+(s.psu ? Math.round(load * 100)+' %' : '—')+'</b><span>'+(s.psu ? 'odběr ≈ '+tot+' W z '+s.psu.w+' W' : 'zatížení zdroje')+'</span></div></div></div>'+
+        '<div class="bppsu">'+gauge(load)+'<div class="bppl"><b>'+(s.psu ? Math.round(load * 100)+' %' : '—')+'</b><span>'+(s.psu ? 'odběr ≈ '+tot+' W z '+s.psu.w+' W' : 'zatížení zdroje')+'</span></div></div></div>'+
       '<div class="row"><button class="btn" id="go"'+(okAll ? '' : ' disabled')+'>'+(okAll ? 'Předat zákazníkovi' : 'Sestava zatím nevyhovuje')+'</button></div>',
       'Klikni na místo ve skříni nebo na záložku a vyber díl. Spotřeba ≈ TDP procesoru + grafika + 75 W (deska, paměti, disky, ventilátory). Podle podkladů má zdroj nejlepší účinnost při zatížení 50–75 %.');
     fresh = null;
