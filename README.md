@@ -12,3 +12,14 @@ Učící hra na ústní maturitu z IT (SPŠE): 20 maturitních otázek jako čip
 Postup se ukládá v prohlížeči. Windows verze (.exe) je v sekci Releases.
 
 Obsah vychází ze školních podkladů; co je navíc podle oficiální osnovy, je ve hře označené „mimo PDF“.
+
+## Vývoj
+
+Zdrojáky jsou ve složce `zdroj/` a `index.html` se z nich generuje:
+
+```bash
+python3 zdroj/build/build.py zdroj
+cp zdroj/maturitni-deska-3.html index.html
+```
+
+Desktopová aplikace je v `electron/`, AI zkoušející (Supabase Edge Function + SQL) je v `supabase/`. Podrobnosti najdeš v `CLAUDE.md`.

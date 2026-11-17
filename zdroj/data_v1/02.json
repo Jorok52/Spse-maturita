@@ -1,0 +1,459 @@
+{
+"n": 2,
+"t": "Mikroprocesor",
+"outline": [
+"Co je mikroprocesor a jeho obecný popis",
+"Rozdíl mezi mikroprocesorem a mikrořadičem",
+"Charakteristika ARM STM32F4: architektura, paměť, registry",
+"Porty, čítače/časovače (časové smyčky), přerušovací systém",
+"Školní kit a periferie",
+"Konfigurace projektu v Keil v5"
+],
+"q": [
+[
+"Jakou technologií je vyroben mikroprocesor (miliony až miliardy tranzistorů na čipu)?",
+"VLSI",
+"LSI",
+"ULSI-TTL",
+"MSI"
+],
+[
+"Která část procesoru dekóduje instrukce a řídí ostatní části?",
+"Řadič (CU)",
+"ALU",
+"Střadač",
+"Registr příznaků"
+],
+[
+"Jaké jsou tři základní fáze zpracování instrukce?",
+"Fetch – Decode – Execute",
+"Load – Store – Jump (Načti, Ulož, Skoč)",
+"Read – Write – Reset (Čti, Piš, Resetuj)",
+"Decode – Fetch – Store (Dekóduj, Načti, Ulož)"
+],
+[
+"Mikropočítač = mikroprocesor + …",
+"paměť + vstupně-výstupní obvody",
+"grafický procesor + čipová sada",
+"BIOS + napájecí zdroj",
+"sběrnice + chladič procesoru"
+],
+[
+"Co je APU?",
+"CPU a GPU v jednom čipu",
+"Samostatný matematický koprocesor",
+"Zvukový procesor",
+"Řadič přerušení"
+],
+[
+"Co urychluje FPU?",
+"Výpočty s desetinnými čísly (plovoucí čárka)",
+"Přenos dat po systémové sběrnici",
+"Vykreslování grafiky a 3D scén na monitor",
+"Dekódování zvukových formátů (Dolby, DTS)"
+],
+[
+"Hlavní myšlenka Von Neumannovy architektury?",
+"Program a data jsou ve společné paměti",
+"Program a data mají oddělené paměti i sběrnice",
+"Každá instrukce se provede za jeden takt",
+"Instrukce se zpracovávají paralelně ve více ALU"
+],
+[
+"Co je Von Neumannova bariéra (bottleneck)?",
+"Procesor čeká na načtení instrukce po jediné sběrnici",
+"Přetečení zásobníku při hlubokém volání funkcí",
+"Omezení počtu jader, které může CPU obsahovat",
+"Limit taktovací frekvence kvůli zahřívání čipu"
+],
+[
+"Kolik sběrnic používá Harvardská architektura pro paměť?",
+"Dvě oddělené (program + data)",
+"Jednu společnou sběrnici pro instrukce i data",
+"Tři – adresní, datovou a řídicí pro každou paměť",
+"Žádnou – paměť přistupuje jen přes DMA"
+],
+[
+"Kde se typicky používá Harvardská architektura?",
+"Vestavěné systémy, DSP, mikrokontroléry",
+"Kancelářské PC a notebooky s Windows",
+"Webové servery a velká datová centra",
+"Tiskárny a skenery připojené přes USB"
+],
+[
+"Co je modifikovaná Harvardská architektura?",
+"Oddělená cache pro instrukce a data, společná hlavní paměť",
+"Dvě CPU sdílí jednu společnou operační paměť",
+"Program je v ROM, data v RAM, obojí na jedné sběrnici",
+"Instrukce se ukládají přímo do registrů procesoru"
+],
+[
+"Která vlastnost patří k CISC?",
+"Proměnlivá délka instrukcí, mikroprogramové řízení",
+"Všechny instrukce mají stejnou délku 32 bitů",
+"Každá instrukce trvá jen jeden hodinový takt",
+"Obvodově řízený řadič a snadný pipelining"
+],
+[
+"Která vlastnost patří k RISC?",
+"Stejná délka instrukcí a snadný pipelining",
+"Velká složitá instrukční sada s proměnlivou délkou",
+"Mikroprogramové řízení instrukcí v řadiči",
+"Vyšší spotřeba a instrukce trvající víc taktů"
+],
+[
+"Typický představitel RISC?",
+"ARM",
+"Intel x86",
+"Motorola 68000",
+"AMD Ryzen"
+],
+[
+"Jak moderní Intel x86 řeší CISC vs. RISC?",
+"CISC instrukce interně dekóduje na jednodušší RISC-like operace",
+"Je čistě RISC, CISC instrukce už nepodporuje",
+"Je čistě CISC a instrukce vykonává bez úprav",
+"Přepíná mezi režimy CISC a RISC podle operačního systému"
+],
+[
+"Co uchovává střadač (akumulátor)?",
+"Mezivýsledky výpočtů ALU",
+"Adresu instrukce, která se má vykonat",
+"Tabulku adres obslužných rutin přerušení",
+"Konfiguraci vstupně-výstupních portů"
+],
+[
+"Co sleduje registr příznaků (PSV)?",
+"Přetečení, znaménko, paritu, nulový výsledek",
+"Adresu právě vykonávané instrukce",
+"Hodinový signál a frekvenci procesoru",
+"Priority jednotlivých přerušení"
+],
+[
+"Na jakém jádře je STM32F4?",
+"ARM Cortex-M4",
+"ARM Cortex-A53",
+"Intel 8051",
+"AVR ATmega"
+],
+[
+"Maximální takt STM32F4?",
+"168 MHz",
+"72 MHz",
+"1,2 GHz",
+"216 MHz"
+],
+[
+"Kolik Flash a RAM má STM32F407 (Discovery)?",
+"1 MB Flash, 192 kB RAM",
+"256 kB Flash, 64 kB RAM",
+"2 MB Flash, 1 MB RAM",
+"512 kB Flash, 32 kB RAM"
+],
+[
+"Co znamená Load/Store architektura?",
+"S pamětí pracují jen instrukce LOAD a STORE, ostatní jen s registry",
+"Každá instrukce může číst i zapisovat přímo do paměti, registry se nepoužívají",
+"Data se ukládají pouze do cache, nikdy do RAM",
+"Program se před spuštěním načítá z disku do registrů"
+],
+[
+"Která sběrnice STM32 propojuje CPU, RAM a DMA (rychlá)?",
+"AHB",
+"APB",
+"I2C",
+"SPI"
+],
+[
+"K čemu je sběrnice APB?",
+"Pomalejší periferie (TIM, UART, I2C, SPI) s nízkou spotřebou",
+"Rychlé propojení CPU, RAM a DMA v burst módu s velkou šířkou dat",
+"Připojení grafického výstupu a displeje HDMI",
+"Propojení s pevnými disky a SSD přes SATA"
+],
+[
+"K čemu slouží RCC → AHB1ENR?",
+"Zapnutí hodin (aktivace) periferií, např. GPIO portů",
+"Čtení stavu tlačítek připojených na port",
+"Nastavení priority přerušení jednotlivých periferií",
+"Reset procesoru a návrat programu na začátek"
+],
+[
+"Který registr GPIO nastavuje režim pinu (vstup/výstup/analog/AF)?",
+"MODER",
+"IDR",
+"ODR",
+"AHB1ENR"
+],
+[
+"Který registr GPIO čte stav tlačítka?",
+"IDR",
+"ODR",
+"MODER",
+"AHB1ENR"
+],
+[
+"Co udělá GPIOA->ODR |= (1 << 5)?",
+"Rozsvítí LED na PA5 (nastaví výstup na 1)",
+"Nastaví pin PA5 jako vstup pro tlačítko",
+"Zhasne LED na PA5 (nastaví výstup na 0)",
+"Přečte stav pinu PA5 do proměnné"
+],
+[
+"Jak funguje čítač/časovač?",
+"Načte hodnotu, každý takt dekrementuje, v nule vyvolá přerušení",
+"Počítá stisky tlačítka a ukládá je do RAM, odkud je program čte",
+"Měří napětí na pinu a převádí ho na číslo",
+"Ukládá data z periferií přímo do paměti bez CPU"
+],
+[
+"Co je SysTick?",
+"Systémový časovač jádra Cortex-M4 s pevnou prioritou (pro RTOS)",
+"16bitový časovač TIM6 s prescalerem a auto-reloadem určený pro řízení DAC",
+"Externí obvod RTC s vlastní záložní baterií",
+"Řadič DMA pro přenosy mezi pamětí a periferií"
+],
+[
+"Co dělá SysTick_Config(SystemCoreClock / 1000)?",
+"Nastaví přerušení SysTick každou 1 ms",
+"Nastaví takt procesoru na 1 kHz",
+"Vypne SysTick a uvolní jeho přerušení",
+"Vytvoří zpoždění přesně jedné sekundy"
+],
+[
+"Jaké časovače jsou TIM6 a TIM7?",
+"Jednoduché 16bit časovače s prescalerem (mj. pro DAC)",
+"32bitové časovače pro PWM řízení motorů",
+"Watchdogy, které resetují zaseknutý procesor",
+"Hodiny reálného času napájené z baterie"
+],
+[
+"Hlavní nevýhoda pollingu?",
+"Zbytečně zatěžuje CPU neustálým dotazováním",
+"Je složitý na implementaci a potřebuje řadič",
+"Nedá se předvídat, kdy se periferie otestuje",
+"Vyžaduje řadič DMA a vektor přerušení"
+],
+[
+"Co je ISR?",
+"Obslužná rutina přerušení",
+"Registr instrukcí v řadiči procesoru",
+"Typ sběrnice pro připojení periferií",
+"Řadič paměti pro správu přerušení"
+],
+[
+"Co dělá PIC?",
+"Přijímá požadavky na přerušení a určuje jejich prioritu",
+"Přenáší data mezi pamětí a periferiemi bez CPU",
+"Generuje hodinový signál pro procesor a sběrnice",
+"Dekóduje instrukce a řídí aritmeticko-logickou jednotku"
+],
+[
+"Jaký signál posílá CPU řadiči přerušení jako potvrzení?",
+"INTA",
+"INT",
+"IRQ",
+"DREQ"
+],
+[
+"Co je vektor přerušení?",
+"Tabulka adres obslužných rutin",
+"Ukazatel na vrchol zásobníku procesoru",
+"Registr, který určuje typ časovače",
+"Číslo portu, na kterém přerušení vzniklo"
+],
+[
+"Co je DMA?",
+"Přímý přenos dat mezi pamětí a periferiemi bez CPU",
+"Typ vyrovnávací paměti mezi procesorem a operační pamětí",
+"Řadič přerušení s prioritami požadavků",
+"Paměť typu ROM s uloženým firmwarem"
+],
+[
+"Kterým signálem periferie žádá DMA o přenos?",
+"DREQ",
+"DACK",
+"HLDA",
+"EOP"
+],
+[
+"Jak DMA žádá CPU o uvolnění sběrnice?",
+"HOLD (HRQ), CPU odpoví HLDA",
+"IRQ, CPU odpoví signálem INTA",
+"DACK, CPU odpoví signálem EOP",
+"DREQ, CPU odpoví signálem RESET"
+],
+[
+"Který signál DMA značí konec přenosu?",
+"EOP (End of Process)",
+"DACK (DMA Acknowledge)",
+"DREQ (DMA Request)",
+"HLDA (Hold Acknowledge)"
+],
+[
+"Jaký ladicí nástroj je na STM32F4 Discovery?",
+"ST-LINK",
+"JTAG-ICE",
+"USBasp",
+"Arduino bootloader"
+],
+[
+"Co obsahuje školní kit navíc?",
+"LCD 8×2, klávesnice 4×3, 4 LED, COM, fotorezistor, reproduktor",
+"Wi-Fi modul, kameru a dotykový displej",
+"HDMI výstup, Ethernet, slot na SD kartu a dotykový displej 7\"",
+"GPS modul, akcelerometr a Bluetooth"
+],
+[
+"Kolik bitů mají registry pro konfiguraci portů (MODER…)?",
+"32",
+"8",
+"16",
+"64"
+],
+[
+"Z kolika základních částí se skládá Von Neumannova architektura?",
+"5 – řadič, ALU, paměť, vstupní a výstupní zařízení",
+"3 – procesor, operační paměť a pevný disk",
+"4 – ALU, cache, sběrnice a vstupně-výstupní obvody",
+"6 – CPU, RAM, ROM, DMA, sběrnice a zdroj"
+],
+[
+"Co znamená „nezávislost na problému“ u Von Neumanna?",
+"Stejný počítač řeší různé úlohy pouhou změnou programu",
+"Počítač nepotřebuje program, řeší úlohy hardwarově",
+"Každý problém potřebuje vlastní zapojení hardwaru",
+"Program se po spuštění už nedá změnit ani přepsat"
+],
+[
+"Co je potřeba nastavit v DMA řadiči před přenosem?",
+"Režim, typ přenosu, zdrojovou a cílovou adresu, délku, synchronizaci a indikaci konce",
+"Jen frekvenci procesoru a velikost cache",
+"Pouze adresu obslužné rutiny přerušení (ISR)",
+"Prioritu přerušení, číslo vektoru a velikost zásobníku – zbytek si DMA řadič zjistí sám"
+]
+],
+"terms": [
+[
+"ALU",
+"Aritmetické a logické operace"
+],
+[
+"Řadič (CU)",
+"Dekóduje instrukce, generuje řídicí signály"
+],
+[
+"Střadač",
+"Uchovává mezivýsledky"
+],
+[
+"PSV",
+"Registr příznaků (overflow, nula, parita)"
+],
+[
+"DMA",
+"Přenos dat bez účasti CPU"
+],
+[
+"PIC",
+"Řadič přerušení s prioritami"
+],
+[
+"ISR",
+"Obslužná rutina přerušení"
+],
+[
+"AHB",
+"Rychlá sběrnice CPU–RAM–DMA"
+],
+[
+"APB",
+"Pomalá sběrnice pro periferie"
+],
+[
+"MODER",
+"Režim pinu GPIO"
+],
+[
+"IDR",
+"Čtení vstupu GPIO"
+],
+[
+"ODR",
+"Zápis výstupu GPIO"
+],
+[
+"SysTick",
+"Časovač jádra Cortex-M4"
+],
+[
+"RISC",
+"Malá sada instrukcí stejné délky"
+],
+[
+"CISC",
+"Velká sada, proměnlivá délka instrukcí"
+]
+],
+"open": [
+{
+"q": "Popiš strukturu mikroprocesoru a jak zpracovává instrukci.",
+"k": [
+"Řadič (CU) – dekóduje, řídí, synchronizuje",
+"ALU – aritmetika a logika",
+"Registry, střadač, registr příznaků",
+"Cyklus Fetch → Decode → Execute",
+"Mikropočítač = CPU + paměť + I/O"
+]
+},
+{
+"q": "Porovnej Von Neumannovu a Harvardskou architekturu.",
+"k": [
+"VN: společná paměť i sběrnice pro program a data",
+"VN: sekvenční přístup, Neumannova bariéra, riziko přepsání programu",
+"Harvard: oddělené paměti i sběrnice, paralelní přístup",
+"Harvard: složitější řadič, horší využití paměti",
+"Harvard: DSP, mikrokontroléry; dnes modifikovaný Harvard (oddělená cache)"
+]
+},
+{
+"q": "Porovnej CISC a RISC.",
+"k": [
+"CISC: velká sada, proměnlivá délka, mikroprogramové řízení, více taktů (x86)",
+"RISC: malá sada, stejná délka (32b), 1 takt, obvodové řízení, pipelining (ARM)",
+"RISC nižší spotřeba",
+"x86 interně překládá na RISC-like operace"
+]
+},
+{
+"q": "Charakterizuj STM32F4 a školní kit.",
+"k": [
+"ARM Cortex-M4, 32bit RISC, až 168 MHz, DSP, MPU",
+"1 MB Flash, 192 kB RAM, Load/Store architektura",
+"Sběrnice AHB (rychlá) a APB (periferie), RCC/AHB1ENR",
+"Discovery: ST-LINK, 3× ADC, 2× DAC, 14 časovačů, USB, Ethernet",
+"Kit: LCD 8×2, klávesnice 4×3, LED, COM, fotorezistor, reproduktor"
+]
+},
+{
+"q": "Popiš porty a časovače STM32F4.",
+"k": [
+"GPIO: MODER (režim), IDR (čtení), ODR (zápis)",
+"Nejdřív povolit hodiny portu v RCC->AHB1ENR",
+"Časovač: načte hodnotu, dekrementuje, v nule IRQ – žádné aktivní čekání",
+"SysTick – pevná priorita, SysTick_Config()",
+"TIM6/TIM7 – 16bit, prescaler, auto-reload, DAC/DMA"
+]
+},
+{
+"q": "Vysvětli přerušovací systém a DMA.",
+"k": [
+"Polling – CPU se cyklicky dotazuje, zatěžuje CPU",
+"Přerušení: IRQ → PIC (priorita) → INT → INTA → vektor → ISR → návrat",
+"Vektor přerušení = tabulka adres ISR",
+"DMA: DREQ → HOLD/HLDA → DACK → přenos → EOP",
+"Typy přenosu: periferie↔RAM, periferie↔periferie, paměť↔paměť"
+]
+}
+]
+}

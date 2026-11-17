@@ -1,0 +1,486 @@
+{
+ "1": [
+  {
+   "q": "Překlad programu – preprocesor, compiler, linker.",
+   "k": [
+    "Zdroják v souboru .c; procesor neumí vykonat if/printf přímo → C je kompilovaný jazyk, překlad proběhne před spuštěním",
+    "Preprocesor: zpracuje direktivy s # – #include vloží obsah hlavičky, #define makra, #if podmíněný překlad → upravený zdrojový text",
+    "Compiler: kontroluje syntaxi a typy, vytvoří objektový soubor (.o / .obj)",
+    "Linker: propojí objektové soubory, vyřeší odkazy na definice funkcí a knihovny → spustitelný soubor",
+    "Operační systém program načte do paměti a předá řízení vstupnímu bodu (main)",
+    "Příklad: gcc main.c -o program (ve Windows vznikne program.exe)",
+    "Debugger slouží k ladění spuštěného programu; IDE = editor + nástroje pro překlad a ladění, není to totéž co compiler",
+    "Prototyp funkce oznámí jméno, návratový typ a parametry → překladač kontroluje počet a typ argumentů",
+    "Druhy chyb: syntaktická (při překladu – chybí středník), linkovací (undefined reference), za běhu (neplatný přístup do paměti), logická (zaměněné = a ==)",
+    "C nehlídá všechny chyby za běhu – chybný přístup do paměti = nedefinované chování"
+   ]
+  },
+  {
+   "q": "Datové typy v C.",
+   "k": [
+    "Typ určuje druh hodnot, rozsah, uložení v paměti a dostupné operace",
+    "Celočíselné: char (1 B), short (2 B), int (4 B), long (4 nebo 8 B), long long (8 B, aspoň 64 bitů)",
+    "Reálné: float (4 B, asi 6–7 platných číslic), double (8 B, asi 15–16 číslic)",
+    "void = nepřítomnost hodnoty (funkce nic nevrací)",
+    "Velikosti jsou typické, závisí na platformě; sizeof vrací velikost v bajtech",
+    "signed = záporná i kladná, unsigned = jen nezáporná a vyšší horní mez při stejné šířce",
+    "char je celočíselný – ukládá kód znaku ('A' = 65 v ASCII)",
+    "float/double nejsou přesné (0,1 nejde uložit binárně přesně) → neporovnávat přes ==",
+    "const – hodnotu nelze měnit; lokální proměnná platí jen ve funkci/bloku, globální mimo funkce; globální a statické začínají na 0",
+    "Chyby: přetečení (unsigned modulo 2^N, signed = nedefinované chování), ztráta přesnosti, míchání signed/unsigned, zbytečně velké typy"
+   ]
+  },
+  {
+   "q": "Definice, inicializace a přetypování.",
+   "k": [
+    "Deklarace představí jméno a typ (extern int citac;), definice objekt skutečně vytvoří a vyhradí paměť (int a;)",
+    "Inicializace nastaví hodnotu při vzniku (int b = 10;), přiřazení ji změní později (b = 20;)",
+    "Neinicializovaná lokální proměnná má neurčitou hodnotu; globální a statické jsou nulové → proměnné je dobré inicializovat",
+    "Implicitní převod proběhne automaticky: int → float (float b = a;)",
+    "Explicitní převod: (typ)výraz – (int)3.9f = 3, desetinná část se odřízne k nule",
+    "5 / 2 = 2 (celočíselné dělení), (double)5 / 2 = 2.5",
+    "Rizika: int → float ztráta přesnosti u velkých čísel; float → int odříznutí a překročení rozsahu; double → float zaokrouhlení",
+    "Přetypování ukazatele mění typ přístupu, ne adresu – neopravňuje přistupovat k libovolné paměti",
+    "Častá chyba: if (x = 1) je přiřazení a vždy pravda, porovnání je ==",
+    "Příklad u maturity: float 3.9 na int 3 a popis ztráty informace"
+   ]
+  },
+  {
+   "q": "Řídicí struktury – větvení a cykly.",
+   "k": [
+    "Program jde sekvenčně, řídicí struktury mění tok; 0 = nepravda, nenulová hodnota = pravda",
+    "Podmínky: porovnání ==, <, >= a logické &&, ||, !",
+    "if / else if / else – else if se zkouší jen když předchozí neplatily; samostatné if se vyhodnocují nezávisle",
+    "switch – podle celočíselného výrazu (i char, enum); case musí být konstanta; default když nic nesedí",
+    "break ukončí switch; bez break fall-through do další větve (lze záměrně seskupit case 1: case 3: …)",
+    "while – podmínka před iterací, nemusí proběhnout ani jednou; do while – po těle, aspoň jednou; for – inicializace; podmínka; změna",
+    "for: inicializace jednou, podmínka před iterací, změna po iteraci",
+    "break ukončí nejbližší cyklus/switch, continue přeskočí zbytek iterace (u for proběhne změna)",
+    "Nekonečný cyklus: podmínka se nikdy nesplní, záměrně while (1)",
+    "Chyby: i <= 5 místo i < 5 u pole o 5 prvcích, zapomenuté i++, špatně umístěný break"
+   ]
+  },
+  {
+   "q": "Pole a řetězce.",
+   "k": [
+    "Pole = více prvků stejného typu pod jedním jménem, leží souvisle v paměti",
+    "Indexy od 0, poslední N - 1 → int a[5] má indexy 0 až 4",
+    "Průchod polem cyklem for (int i = 0; i < 5; i++)",
+    "a[5] nebo a[-1] = nedefinované chování – C hranice nehlídá, program spadne nebo tiše poškodí data",
+    "2D pole int tabulka[2][3] = 2 řádky po 3 prvcích, přístup tabulka[řádek][sloupec], v paměti souvisle",
+    "Název pole se ve výrazech převádí na ukazatel na první prvek (a ≈ &a[0]); *(a + 1) = a[1]; pole a ukazatel ale nejsou totéž",
+    "Do funkce se předá adresa prvního prvku bez počtu → přidává se parametr s délkou: void vypis(const int *a, int pocet)",
+    "Řetězec = znaky ukončené \\0; char text[] = \"Ahoj\"; má 5 prvků",
+    "char kratke[4] = \"Ahoj\"; je chyba – nezbyde místo na \\0",
+    "Chyby: buffer overflow (zápis za konec), chybný index, chybějící \\0, malá velikost pole"
+   ]
+  },
+  {
+   "q": "Funkce.",
+   "k": [
+    "Funkce = pojmenovaný blok příkazů řešící úkol; modularita = rozdělení programu na funkční části",
+    "Prototyp: návratový typ, název a parametry před použitím – int soucet(int a, int b);",
+    "Definice obsahuje tělo ve složených závorkách; return předá výsledek volajícímu",
+    "void = funkce nic nevrací; funkce může být s parametry i bez (void)",
+    "Argumenty se v C předávají vždy hodnotou – funkce dostane kopii (zmenKopii(a) a nezmění)",
+    "Změna originálu: předám adresu – zmenOriginal(&a), uvnitř *x = 20 (s kontrolou x != NULL)",
+    "Parametry jsou lokální proměnné funkce; lokální proměnné platí jen ve funkci, globální jsou sdílené (moc globálních ztěžuje údržbu)",
+    "Více výsledků přes ukazatelové parametry: void vyhodnot(int a, int b, int *min, int *max)",
+    "Dobrá funkce: jasný účel, srozumitelný název, přiměřeně parametrů",
+    "Výhody: čitelnost, méně opakovaného kódu, snazší testování, znovupoužití a rozšiřování"
+   ]
+  },
+  {
+   "q": "Struktury a ukazatele.",
+   "k": [
+    "Ukazatel = objekt, jehož hodnotou je adresa jiného objektu nebo funkce; je typovaný (int *p)",
+    "Použití: práce s poli, předání přístupu k datům do funkcí, dynamická paměť",
+    "& získá adresu (p = &cislo), * přistoupí k objektu (*p = 25 změní cislo)",
+    "Ukazatel inicializovat platnou adresou nebo NULL; dereference NULL, neinicializované nebo uvolněné adresy = nedefinované chování",
+    "Struktura = složený typ s položkami různých typů (Student: jmeno, vek); struct, typedef dává přezdívku",
+    "Tečka pro položku (student.vek), vnořená struktura více tečkami (s.adresa.cisloPopisne)",
+    "Šipka přes ukazatel: ptr->vek = (*ptr).vek; závorky nutné, tečka má vyšší prioritu než *",
+    "U anonymního typedef struct { … } Student; píšu Student *ptr;, ne struct Student *ptr;",
+    "Pole struktur Student trida[30]; trida[0].vek; předání hodnotou (kopie) nebo ukazatelem (změna originálu)",
+    "malloc (stdlib.h) rezervuje bajty za běhu, při neúspěchu vrátí NULL; free uvolní, jinak memory leak; po free nastavit NULL",
+    "Chyby: neinicializovaný ukazatel, NULL dereference, dangling pointer, segmentation fault (možný projev, ne záruka)"
+   ]
+  },
+  {
+   "q": "Knihovny a #include.",
+   "k": [
+    "Knihovna = sada hotových funkcí pro více programů",
+    "Hlavička .h obsahuje deklarace funkcí, typů a konstant; implementace je v .c, objektových souborech nebo zkompilované knihovně",
+    "#include zpracuje preprocesor – vloží obsah souboru; <stdio.h> pro standardní, \"moje.h\" pro projektové hlavičky",
+    "Compiler potřebuje deklaraci (kontrola typů), linker implementaci – chybí-li, hlásí undefined reference",
+    "stdio.h: printf, scanf, FILE; stdlib.h: malloc, free, atoi, exit; string.h: strlen, strcpy, strcmp, memcpy",
+    "math.h: sqrt, pow, sin; time.h: time, clock; ctype.h: isdigit, toupper; stdbool.h: bool, true, false",
+    "Vlastní knihovna: rozhraní v .h (matematika.h), implementace v .c (matematika.c), main.c zahrne jen hlavičku",
+    "Překlad: gcc main.c matematika.c -o program",
+    "Include guard #ifndef / #define / #endif – hlavička se nezpracuje vícekrát"
+   ]
+  },
+  {
+   "q": "Standardní vstup a výstup.",
+   "k": [
+    "printf a scanf jsou v stdio.h (v PDF jen v tabulce hlaviček)",
+    "printf(formát, hodnoty) – formátovaný výstup; scanf(formát, &proměnná) – čtení, předává se adresa (mimo PDF)",
+    "Specifikátory %d int, %f float, %lf double ve scanf, %c znak, %s řetězec, %zu pro sizeof (mimo PDF)",
+    "Escape sekvence \\n nový řádek, \\t tabulátor; getchar/putchar, fgets pro bezpečné čtení řádku (mimo PDF)"
+   ]
+  },
+  {
+   "q": "Algoritmy třídění pole.",
+   "k": [
+    "Bubble sort – porovnává sousední prvky a prohazuje je, větší „probublávají“ na konec, O(n²) (mimo PDF – z osnovy)",
+    "Select sort – najde minimum zbytku a prohodí ho na začátek zbytku, O(n²) (mimo PDF – z osnovy)",
+    "Insert sort – vkládá prvky na správné místo do seřazené části (mimo PDF – z osnovy)",
+    "Prohození dvou prvků přes pomocnou proměnnou (mimo PDF – z osnovy)"
+   ]
+  },
+  {
+   "q": "Práce se soubory.",
+   "k": [
+    "Typ FILE * (stdio.h), otevření fopen(jméno, režim), zavření fclose (mimo PDF – z osnovy)",
+    "Režimy \"r\" čtení, \"w\" zápis (přepíše), \"a\" připisování, \"b\" binárně; při neúspěchu fopen vrátí NULL (mimo PDF – z osnovy)",
+    "Textový soubor = čitelné znaky (fprintf, fscanf, fgets), binární = bajty z paměti (fwrite, fread) (mimo PDF – z osnovy)",
+    "Postup: otevřít → zkontrolovat NULL → číst/zapisovat → fclose (mimo PDF – z osnovy)"
+   ]
+  }
+ ],
+ "2": [
+  {
+   "q": "Co je mikroprocesor, jeho struktura a princip činnosti.",
+   "k": [
+    "Mikroprocesor je sekvenční automat vyrobený technologií VLSI (miliony až miliardy tranzistorů na čipu)",
+    "Řadič (CU) řídí a synchronizuje činnost, dekóduje instrukce, generuje řídicí signály a přijímá stavová hlášení",
+    "ALU provádí aritmetické a logické operace, porovnání a bitové posuny; výsledek ukládá do registrů nebo paměti",
+    "Instrukce se zpracovává ve fázích Fetch (načtení) → Decode (dekódování) → Execute (vykonání)",
+    "Části řadiče: registr adresy, registr instrukce, dekodér instrukcí, generátor řídicích impulzů",
+    "Části ALU: operační blok, střadač (akumulátor) pro mezivýsledky, registr příznaků PSV (přetečení, znaménko, parita, nula)",
+    "Mikroprocesor sám nefunguje – potřebuje paměť, I/O obvody a řadiče sběrnic; mikropočítač = mikroprocesor + paměť + I/O",
+    "Druhy: CPU, GPU (mnoho paralelních ALU, GPGPU), APU (CPU + GPU), FPU (výpočty s plovoucí čárkou), zvukový procesor"
+   ]
+  },
+  {
+   "q": "Architektury Von Neumann a Harvard, CISC a RISC.",
+   "k": [
+    "Von Neumann (1945): program i data ve společné paměti, jedna sběrnice, sekvenční zpracování, nezávislost na problému",
+    "Von Neumann: 5 částí (řadič, ALU, paměť, vstup, výstup); toky dat, řídicí signály a stavová hlášení",
+    "Nevýhody: Von Neumannova bariéra (bottleneck), riziko přepsání programu daty",
+    "Harvard: oddělená paměť programu a dat, každá s vlastní sběrnicí → paralelní přístup, vyšší výkon, žádné přepsání programu",
+    "Harvard nevýhody: složitější řadič, nevyužitou paměť nelze sdílet; použití vestavěné systémy, DSP, mikrokontroléry",
+    "Modifikovaný Harvard: oddělená cache pro instrukce a data, společná hlavní paměť",
+    "CISC: velká sada instrukcí proměnlivé délky, mikroprogramové řízení, více taktů, Intel x86, Motorola 68000",
+    "RISC: malá sada, instrukce stejné délky (32 b), 1 takt, obvodové řízení, snadný pipelining, nižší spotřeba, ARM, AVR",
+    "Hybridní přístup: x86 interně dekóduje CISC na RISC-like operace"
+   ]
+  },
+  {
+   "q": "Rozdíl mikroprocesor × mikrořadič a charakteristika STM32F4.",
+   "k": [
+    "Mikroprocesor potřebuje externí paměť a periferie; mikrořadič (MCU) má CPU, paměť i periferie na jednom čipu",
+    "STM32F4: 32bitový mikrořadič s jádrem ARM Cortex-M4 (RISC), takt až 168 MHz",
+    "Podpora DSP instrukcí (FFT, filtrace) a MPU – jednotka ochrany paměti",
+    "Paměť: 1 MB Flash (program), 192 kB RAM (u Discovery 192 + 4 kB)",
+    "Napájení 2–3,6 V, úsporné režimy (low-power)",
+    "Load/Store architektura: s pamětí pracují jen LOAD a STORE, ostatní instrukce jen s registry",
+    "Sběrnice AHB (rychlá: CPU, RAM, DMA, burst mód) a APB (pomalé periferie: TIM, UART, I2C, SPI) propojené mostem",
+    "Programování v C/C++, prostředí Keil uVision (SPŠE), STM32CubeIDE, IAR; ladění přes SWD"
+   ]
+  },
+  {
+   "q": "Registry a porty GPIO.",
+   "k": [
+    "Nejdřív se musí povolit hodiny periferie v RCC – registr AHB1ENR (každý bit = jedna periferie, šetří energii)",
+    "Všechny konfigurační registry jsou 32bitové",
+    "MODER – režim pinu po 2 bitech: vstup, výstup, analog, alternativní funkce (AF)",
+    "IDR – čtení stavu vstupních pinů (tlačítko): if (GPIOA->IDR & (1 << 0))",
+    "ODR – nastavení výstupu: GPIOA->ODR |= (1 << 5) rozsvítí LED na PA5, &= ~(1 << 5) zhasne",
+    "Příklad: GPIOA->MODER |= (1 << 10) nastaví PA5 jako výstup",
+    "Bitové operace OR pro nastavení, AND s negací pro vynulování"
+   ]
+  },
+  {
+   "q": "Čítače/časovače a realizace časových smyček.",
+   "k": [
+    "Časovač měří čas nezávisle na programu – OS ho využívá pro plánování, přerušení a synchronizaci",
+    "Princip: nastaví se počáteční hodnota, s každým taktem se dekrementuje, v nule vyvolá přerušení (IRQ)",
+    "Výhoda: odstraní aktivní čekání procesoru",
+    "SysTick – časovač jádra Cortex-M4 s pevnou prioritou, pro RTOS, nastavení SysTick_Config(SystemCoreClock / 1000) = 1 ms",
+    "TIM6 a TIM7 – jednoduché 16bitové časovače s prescalerem a auto-reload, přerušení při přetečení, DMA, řízení DAC",
+    "Režimy: periodický časovač, časovač událostí, PWM (jas LED, motory)",
+    "Časová smyčka = čekání na N přerušení SysTick místo prázdného cyklu",
+    "Kit STM32F407 má 14 časovačů"
+   ]
+  },
+  {
+   "q": "Přerušovací systém a DMA.",
+   "k": [
+    "Polling: CPU se cyklicky dotazuje periferií – jednoduché, ale zatěžuje CPU a reaguje pomalu",
+    "Přerušení: asynchronní reakce na událost, CPU se věnuje jiné práci",
+    "Postup: periferie IRQ → PIC vyhodnotí prioritu → signál INT → CPU INTA → PIC pošle typ přerušení → CPU uloží stav a najde adresu ve vektoru přerušení → ISR → návrat",
+    "PIC: příjem požadavků, prioritizace, odeslání signálu CPU, více úrovní priorit",
+    "Vektor přerušení = tabulka adres obslužných rutin (např. IRQ1 klávesnice)",
+    "DMA: přímý přenos mezi pamětí a periferiemi bez CPU, CPU jen nastaví přenos",
+    "Typy přenosu: periferie ↔ RAM, periferie ↔ periferie, paměť ↔ paměť",
+    "Nastavení DMA: režim, typ, zdrojová a cílová adresa, délka, synchronizace, indikace konce",
+    "Signály: DREQ → HOLD (HRQ) → HLDA → adresa → DACK a přenos → EOP → uvolnění sběrnice"
+   ]
+  },
+  {
+   "q": "Školní kit a práce v Keil uVision 5.",
+   "k": [
+    "STM32F407G Discovery: ARM Cortex-M4, 5stupňová pipeline, 1 MB Flash, 192 + 4 kB RAM, až 168 MHz",
+    "Ladění přes ST-LINK",
+    "Periferie: 3× 12bit ADC, 2× 12bit DAC, 14 časovačů, 140 GPIO s přerušením, 3× I²C a SPI, USB 2.0, Ethernet 10/100, generátor náhodných čísel",
+    "Napájení 5 V přes USB",
+    "Školní kit navíc: LCD 8×2, maticová klávesnice 4×3, 4 LED, sériový port COM, fotorezistor, reproduktor",
+    "Keil: nový projekt, výběr čipu, překlad, nahrání do kitu a ladění",
+    "Před použitím portu ho musíš nakonfigurovat přes registry (MODER)"
+   ]
+  }
+ ],
+ "3": [
+  {
+   "q": "Charakterizuj PLD, výhody, nevýhody, jazyky a rozdělení.",
+   "k": [
+    "PLD = číslicový IO, jehož vnitřní strukturu lze uživatelsky konfigurovat (naprogramovat)",
+    "Programování propojkami/pojistkami v místech křížení nebo zápisem do EEPROM/Flash buněk",
+    "Nahrazuje kombinační i sekvenční obvody z hradel, čítačů a registrů",
+    "Funkce se zapisují jako součet součinů (disjunktivní normální forma)",
+    "Struktura: matice logických prvků a programovatelná mřížka vodičů",
+    "Výhody: přehlednost, méně vývodů, spolehlivost, snadná změna návrhu, výkon",
+    "Nevýhody: nutný HDL jazyk, porucha = výměna celého čipu, vyšší cena u malých projektů",
+    "Výrobci: Xilinx, Altera (Intel), Lattice",
+    "VHDL – otevřený standard, nezávislý na čipu, simulace; Verilog – syntaxí jako C, méně přísný",
+    "Dělení: SPLD (PAL, PLA, GAL) a CPLD, nejvýkonnější FPGA"
+   ]
+  },
+  {
+   "q": "Popiš obvody PLA, PAL, GAL, CPLD a FPGA.",
+   "k": [
+    "SPLD: jedno pole AND a jedno pole OR, každý řádek AND matice = jedno součinové hradlo",
+    "PAL: programovatelné pole AND, pevné OR → omezený počet součinů (např. 8), ale rychlejší",
+    "PLA: programovatelné AND i OR, větší flexibilita (pro N vstupů až 2ⁿ AND hradel)",
+    "GAL: mazatelná a přeprogramovatelná náhrada PAL (EEPROM), levná, vhodná pro vývoj",
+    "CPLD: více SPLD bloků (makrobuněk, řádově stovky) propojených interní logikou, univerzální I/O piny, např. CoolRunner",
+    "FPGA: až miliony hradel, logické bloky CLB propojené globální maticí GPM, přímé propojení sousedů (sčítačky, násobičky)",
+    "FPGA bloky: IOB (vstup/výstup), CLB (LUT v SRAM, klopné obvody, řetězení), block RAM, násobičky, DCM (hodiny), PLL/DLL",
+    "FPGA se konfiguruje po zapnutí z externí EEPROM"
+   ]
+  },
+  {
+   "q": "Makrobuňka vs. logický blok.",
+   "k": [
+    "Makrobuňka (OLMC – Output Logic Macro Cell) je základní jednotka SPLD a CPLD",
+    "Obsahuje kombinační logiku AND/OR, D-klopný obvod a výstupní logiku (volba přímého nebo registrovaného výstupu)",
+    "Jedna makrobuňka zvládne funkci až se 16 součinovými termy",
+    "Více makrobuněk tvoří logický blok",
+    "Logický blok (CLB) je základ FPGA – flexibilnější a výkonnější",
+    "CLB obsahuje LUT (tabulka v RAM), flip-flopy/registry, budiče a multiplexory",
+    "Logické bloky jsou v matici a propojují se přes propojovací mřížku"
+   ]
+  },
+  {
+   "q": "Vývojové prostředí WebPACK a PLD kompilátor.",
+   "k": [
+    "ISE WebPACK – bezplatné prostředí Xilinx pro FPGA a CPLD, jazyky VHDL a Verilog",
+    "Postup: překlad HDL → syntéza → mapování → implementace → bitstream .bit",
+    "Lze spustit rovnou poslední krok, předchozí se provedou automaticky",
+    "Project Navigator: hierarchie návrhu, editor HDL, konzole, nástroje",
+    "Programování FPGA aplikací iMPACT přes USB nebo LPT",
+    "Metodika návrhu: formální zápis → popis problému (tabulky, rovnice, grafy, Karnaughovy mapy) → simulace → realizace",
+    "Kompilátor je nezávislý na typu PLD, převádí popis do nahratelného formátu",
+    "Výstupy: dříve .JEDEC (.jed) pro CPLD, dnes .BIT pro FPGA; minimalizace rovnic a optimalizace I/O a makrobuněk"
+   ]
+  },
+  {
+   "q": "Charakteristika NPLD a obvody 74164, 74166, 74595.",
+   "k": [
+    "NPLD – funkce pevně daná výrobou, klasické obvody řady 74xx (posuvné a záchytné registry, komparátory, čítače, budiče)",
+    "74164: 8bit sériově-paralelní posuvný registr z 8 D-klopných obvodů; vstupy A (data), B (povolení), CLK, CLR (aktivní v 0); výstupy Qa–Qh; rozšíření výstupů MCU",
+    "74166: 8bit paralelně-sériový registr; SH/LD = 0 načtení A–H, SH/LD = 1 posun; 1 + 8 = 9 pulsů na převod; CLK INH (aktivní v 1) zastaví hodiny",
+    "74595: sériový vstup DS, posuv SRCLK, záchytný registr RCLK, třístavové výstupy řízené OE (aktivní v 0)",
+    "74595: SRCLR asynchronní reset, QH' pro řetězení více registrů (16, 24, 32 bitů); 3 piny ovládnou 8 výstupů",
+    "Použití: LED, sedmisegmentovky, relé, světelné tabule"
+   ]
+  },
+  {
+   "q": "Obvody 74573, 74244, 74245, 74688 a 74193.",
+   "k": [
+    "74573: 8bit záchytný registr (latch), LE = 1 výstupy sledují vstupy, LE = 0 data drží; OE = 0 aktivní výstupy, 1 = Hi-Z; zachytávání dat ze sběrnice",
+    "74244: jednosměrný budič (posilovač) sběrnice, OE = 0 propouští, 1 = Hi-Z; vyšší proud, adresové sběrnice",
+    "74245: obousměrný 8bit budič, DIR = 1 A → B, DIR = 0 B → A, OE řídí výstupy; převod úrovní 3,3 V ↔ 5 V",
+    "74688: 8bit komparátor, XNOR na každý bit + AND + NAND → výstup 0 při shodě (aktivně nízký); adresní dekodér",
+    "74193: 4bit synchronní čítač nahoru/dolů (0–15), 4 JK klopné obvody, vstupy UP a DOWN, LOAD předvolba, CLR reset",
+    "74193: CO přetečení a BO podtečení pro kaskádování; použití čítání výrobků, odpočet, generátor adres"
+   ]
+  }
+ ],
+ "4": [
+  {
+   "q": "Porovnej sériový a paralelní přenos dat.",
+   "k": [
+    "Sériový: bity postupně po jedné lince, méně vodičů – USB, FireWire, SPI, Ethernet, SATA",
+    "Paralelní: více bitů najednou, každý po vlastním vodiči v jednom taktu – ISA, PATA, SCSI, PCI, FSB",
+    "Paralelní: zpočátku rychlejší, ale při vyšších frekvencích a délkách rušení, odrazy a skew (rozdílné zpoždění vodičů)",
+    "Paralelní nevhodný na delší vzdálenosti, dřív tiskárny a vnitřní propojení",
+    "Sériový: vhodný i na velké vzdálenosti, menší rušení a přeslechy, levnější kabeláž; vyžaduje převod (USART)",
+    "Trend: přechod k sériovým – IEEE 1284 → USB, PATA → SATA, SCSI → FireWire / USB 3.0"
+   ]
+  },
+  {
+   "q": "Připojení s otevřeným kolektorem a třístavovým výstupem – vytvoření sběrnice.",
+   "k": [
+    "Otevřený kolektor: výstup tvoří NPN tranzistor, emitor na zemi, kolektor vyveden ven",
+    "Tranzistor sepnutý → log. 0; rozepnutý → výstup „visí“ – nutný pull-up rezistor (4,7–10 kΩ) do log. 1",
+    "Drátová logika (wired AND): kdokoli dá 0 → celá sběrnice 0; nikdo nemůže „vnutit“ 1 → odolnost proti kolizím",
+    "Použití: I²C, porovnávací obvody, prioritní logika, zátěž s větším proudem",
+    "Třístavový výstup: 0, 1 a vysoká impedance (Hi-Z), řízený signálem OE",
+    "Aktivní OE → normální výstup; neaktivní → elektricky odpojený od sběrnice",
+    "Na sběrnici smí vysílat jen jeden výstup, ostatní jsou Hi-Z; použití systémové sběrnice, řízení RAM",
+    "Porovnání: OC pasivně (každý může stáhnout do 0, potřeba pull-up), tristate aktivně (nutné řízení OE)"
+   ]
+  },
+  {
+   "q": "Sběrnice – princip, dělení a parametry.",
+   "k": [
+    "Sběrnice = svazek vodičů pro přenos dat, adres, řídicích signálů a chybových hlášení",
+    "Northbridge propojuje CPU, GPU a RAM; southbridge disky, mechaniky, zvuk, USB",
+    "Lokální sběrnice (nejrychlejší): FSB, QPI, DMI; rozšiřující: PCI, PCIe, USB, SATA, M.2",
+    "Parametry: šířka (bit), frekvence (Hz), propustnost (bit/s), přístupová doba (s)",
+    "Podle vodičů: řídicí (CLK, CS, R/W), datová (obousměrná, D0–D7), adresní (jednosměrná z CPU, A0–A7)",
+    "Podle synchronizace: synchronní (společné hodiny – I²C, SPI), asynchronní (vlastní hodiny – RS-232)",
+    "Podle směru: simplex (LPT), half duplex (I²C), full duplex (USB 3.0, Ethernet)"
+   ]
+  },
+  {
+   "q": "Popiš sběrnice I²C a SPI.",
+   "k": [
+    "I²C (Philips/NXP): 2 vodiče SDA a SCL, sériová, synchronní, half duplex, multi-master/multi-slave",
+    "I²C: otevřený kolektor + pull-up, klid = obě linky v 1, standard mode 100 kb/s",
+    "I²C rámec: START (SDA 1→0 při SCL 1) → 7/10bit adresa + R/W (0 zápis, 1 čtení) → ACK (0 = OK) → data po 8 bitech od MSB → ACK → STOP (SDA 0→1 při SCL 1)",
+    "I²C: SDA se mění jen při SCL = 0, detekce kolize porovnáním vysílaného s tím, co je na sběrnici",
+    "Použití I²C: LCD, AD/DA převodníky, RTC, EEPROM, senzory",
+    "SPI (Motorola): sériová, synchronní, full duplex, 1 master, více slave",
+    "SPI vodiče: SCLK (hodiny od mastera), MOSI, MISO, SS/CS (výběr slave, aktivní v 0)",
+    "SPI výhody: vysoká rychlost (1–66,7 Mb/s, až 100 Mb/s), jednoduchost; nevýhody: CS pro každý slave, žádná detekce kolizí, kratší dosah"
+   ]
+  },
+  {
+   "q": "Popiš RS-232, IEEE 1284 a USB.",
+   "k": [
+    "RS-232 (COM): sériová, asynchronní, full duplex, bod–bod, max. 115 200 Bd a 15 m, konektor D-Sub (DE-9, DB-25)",
+    "Řízení toku: HW (RTS/CTS) nebo SW (XON/XOFF)",
+    "Rámec: start bit (0), 7–8 datových bitů od LSB, volitelná parita, 1–2 stop bity (1)",
+    "IEEE 1284 (LPT): paralelní, simplex později half duplex, 8 datových + 9 řídicích + 8 zemnicích vodičů, do 5 m (ideálně 2 m), tiskárny",
+    "Další: RS-422 (diferenciální), RS-485 (až 32 zařízení), FireWire, GPIB (až 15 přístrojů)",
+    "USB: náhrada COM a LPT, přenos dat i napájení, hvězdicová topologie s HUBy, až 127 zařízení, plug & play",
+    "USB 1.0: 4 piny, half duplex, 12 Mb/s, konektory A a B; USB 2.0: 480 Mb/s, Mini a Micro; USB 3.0: full duplex, 5 Gb/s, 8 vodičů",
+    "Princip: hostitel vysílá paket (typ, směr, adresa), zařízení odpoví datovým paketem, potvrzení handshake paketem"
+   ]
+  },
+  {
+   "q": "Rozdělení pamětí a popis SRAM a DRAM buňky.",
+   "k": [
+    "RWM (závislé na napájení): RAM – SRAM (cache), DRAM (operační paměť); NoRAM – FIFO (fronta), LIFO (zásobník)",
+    "ROM (nezávislé): Mask ROM (z výroby, BIOS), PROM (jednorázově), EPROM (mazání UV světlem celá), EEPROM (elektricky po bajtech), Flash (rychlá, USB, SSD)",
+    "SRAM: bistabilní klopný obvod ze 6 tranzistorů (T1, T2 adresování, T3, T4 uchování, T5, T6 zátěž), vodiče DATA a DATA neg",
+    "SRAM: nepotřebuje refresh, přístup 1–20 ns, drahá, malá kapacita, čtení přes třístavový zesilovač, nutný Chip Select",
+    "DRAM: náboj v kondenzátoru C1, tranzistory pro zápis a čtení, samovolné vybíjení → refresh",
+    "DRAM: čtení je destruktivní (C1 se vybije), přístup 10–70 ns, levná, velká kapacita",
+    "DRAM adresování: řádek a sloupec po stejné sběrnici (RAS a CAS) → méně pinů"
+   ]
+  },
+  {
+   "q": "Organizace paměti – kapacita, hloubka, délka slova, paměťová mapa.",
+   "k": [
+    "Kapacita = hloubka paměti × délka datového slova (N × n), např. 256 × 4 = 1024 bitů",
+    "Hloubka N = počet adresovatelných míst (slov); rozšíření paralelním zapojením čipů",
+    "Délka slova n = počet bitů na jedné adrese, odpovídá šířce datové sběrnice CPU (např. 32 b)",
+    "Paměťové místo = nejmenší adresovatelná jednotka; buňka uchová 1 bit",
+    "Počet adresních vodičů p = log₂(N); 2048 míst (2k) → 11 vodičů A0–A10",
+    "Zápis 16k (2k × 8) = 2048 míst po 8 bitech",
+    "Adresa se zadává na adresní sběrnici (A0–An), data jdou po datové (D0–Dn), lze zapisovat hexadecimálně",
+    "Maticové uspořádání buněk na řádky (ROW) a sloupce (COLUMN)"
+   ]
+  }
+ ],
+ "5": [
+  {
+   "q": "Charakteristika AD převodníku, přesnost a princip převodu.",
+   "k": [
+    "ADC převádí spojitý analogový signál na diskrétní digitální, aby ho zpracoval mikroprocesor",
+    "Použití: měření teploty, tlaku, zvuku, světla v měřicích, regulačních a automatizačních systémech",
+    "Digitální signál se přenáší s menším zkreslením a vyšší odolností proti rušení",
+    "Přesnost závisí na rozlišení (počet bitů: 8 b = 256 úrovní, 10 b = 1024) a chybách (kvantizace, linearita, offset, šum)",
+    "Převod: vzorkování (vzorkovací frekvence) → kvantování (zaokrouhlení na úroveň, vzniká kvantizační šum) → kódování (binárně, MSB a LSB)",
+    "Clipping – signál přesáhne rozsah převodníku a je oříznut",
+    "Granularita = rozsah / počet úrovní, např. 5 V / 256 = 0,0195 V; jemnější granularita = menší kvantizační chyba",
+    "Opakem je DA převodník (DAC)"
+   ]
+  },
+  {
+   "q": "Porovnej analogový a digitální signál.",
+   "k": [
+    "Analogový: spojitý v čase i amplitudě, nekonečně mnoho hodnot, reálné veličiny (proud, napětí, zvuk)",
+    "Analogový: horší uchování, šum, zkreslení, kopie v horší kvalitě (VHS, magnetofon, gramofonová deska)",
+    "Vzorkovaný signál: odebraný jen v určitých časových okamžicích",
+    "Kvantovaný signál: hodnoty amplitudy zaokrouhlené na úrovně",
+    "Digitální: nespojitý v čase i amplitudě, omezený počet hodnot, binární 0 a 1",
+    "Digitální: snadné kopírování a komprese, oprava chyb kódováním, nevýhoda ztráty kvality při kódování",
+    "Uložení digitálních dat: Flash, CD, HDD, SSD"
+   ]
+  },
+  {
+   "q": "Popiš paralelní (flash) převodník a jeho kaskádní zapojení.",
+   "k": [
+    "Nejrychlejší typ, také přímý nebo komparační, převod v nanosekundách (přes 100 MHz)",
+    "Uref se napěťovým děličem rozdělí na stejné dílky, každý komparátor porovnává Ux s jednou úrovní",
+    "Výstupy komparátorů tvoří teploměrový kód, dekodér ho převede na binární",
+    "n-bitový převodník potřebuje 2ⁿ − 1 komparátorů (8 bitů = 255)",
+    "Vyrábí se obvykle 4–8 bitů, vyšší rozlišení je náročné; omezená přesnost",
+    "Kaskáda (pipeline): první převodník převede horní bity (MSB), DA převodník je vrátí na napětí, odečte se od Ux",
+    "Zbytek Ur = Ux − Uda převede druhý převodník (LSB) → jen 30 komparátorů místo 255, delší převod, vyšší rozlišení"
+   ]
+  },
+  {
+   "q": "Popiš kompenzační převodníky – přírůstkový a sledovací.",
+   "k": [
+    "Kompenzační převodníky generují digitální hodnotu, jejíž napětí z DA převodníku porovnávají se vstupem",
+    "Stačí jeden komparátor; nejpoužívanější, jednoduché na výrobu",
+    "Přírůstkový (čítací): čítač od nuly čítá nahoru, DA převodník dává „schody“",
+    "Když Uda ≥ Uvst, komparátor zastaví čítání a hodnota se uloží do paměti",
+    "Sledovací (s vratným čítačem): čítač čítá nahoru, je-li Ua > Uda, dolů, je-li Ua < Uda",
+    "Sledovací rychle reaguje na pomalé změny a hodnota je k dispozici stále",
+    "Nevýhoda sledovacího: nestíhá rychlé změny signálu"
+   ]
+  },
+  {
+   "q": "Popiš převodník s postupnou aproximací.",
+   "k": [
+    "Porovnává Ux se zpětnovazebním napětím Uda z DA převodníku",
+    "Bity výstupního registru se nastavují od MSB po LSB",
+    "Na začátku se registr vynuluje a MSB se nastaví na 1 → Uda = Uref / 2",
+    "Uda < Ux → bit zůstane 1; Uda > Ux → bit se nastaví na 0; pak další bit",
+    "Pevná doba převodu – vždy n kroků podle počtu bitů",
+    "Velmi přesný, rychlý; použití voltmetry a digitální osciloskopy",
+    "Nevýhoda: změna vstupu během převodu způsobí chybu → používá se vzorkovací obvod"
+   ]
+  },
+  {
+   "q": "Popiš převodník s dvojitou integrací a sigma-delta.",
+   "k": [
+    "Dvojitá integrace: napětí Uvst se převede na časový interval úměrný jeho velikosti",
+    "1. fáze: start, integrátor lineárně nabíjí rychlostí úměrnou Uvst, čítač počítá impulzy",
+    "2. fáze: přepnutí na Uref opačné polarity, kondenzátor se vybíjí, čítač počítá do U = 0; obsah čítače odpovídá Uvst",
+    "Dvojitá integrace: velmi přesný, odolný proti šumu a brumu, pomalý; použití multimetry",
+    "Sigma-delta: oversampling – vzorkování mnohonásobně vyšší frekvencí (fvz = n · fmax)",
+    "ΔΣ modulace přesune kvantizační šum do vyšších frekvencí mimo užitečné pásmo",
+    "Číslicová filtrace a decimace (snížení vzorkovací frekvence) → vysoké rozlišení 24–32 bitů",
+    "Sigma-delta: jednoduchá analogová část, složitá digitální, nízká spotřeba, nevhodný pro rychlé změny"
+   ]
+  }
+ ]
+}

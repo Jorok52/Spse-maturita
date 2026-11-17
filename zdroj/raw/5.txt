@@ -1,0 +1,458 @@
+5. A/D Převodníky
+použití, přesnost a
+01 Charakteristika,
+princip převodu
+02 Analogový vs. Digitální signál
+03 Popis a funkce převodníků
+a) Paralelní
+b) Přírůstkový
+c) Sledovací s vratným čítačem
+d) S postupnou aproximací
+e) S dvojitou integrací
+f) Sigma-delta
+5. A/D Převodníky
+Charakteristika
+Analogově-digitální převodník (ADC) je elektronická součástka sloužící k převodu
+analogového (spojitého) signálu na digitální (diskrétní) signál.
+Důvod převodu: Umožňuje zpracování analogových signálů (např. napětí, proud, zvuk)
+na číslicovou podobu, a dále zpracovány mikroprocesory, počítači nebo mikrokontroléry.
+ADC je nezbytný pro aplikace, kde je potřeba měřit fyzikální veličiny, jako jsou teplota,
+tlak, zvuk nebo světlo, které mají obvykle analogovou povahu.
+Převodník se využívá ve spojení s mikroprocesory v měřicích, regulačních a
+automatizačních systémech (nutnost měření analogové veličiny)
+Analogové signály lze po převodu na digitální signál přenášet a zpracovávat s menším
+zkreslením a vyšší odolností vůči rušení.
+Převodníky se liší svým principem činnosti, přesností, rychlostí převodu a nároky na
+spotřebu energie.
+Přesnost převodu závisí na:
+Rozlišení (počet bitů) – určuje počet možných diskrétních úrovní (např. 8bitový
+převodník rozlišuje 256 úrovní, 10bitový 1024 úrovní).
+Chybách převodu – zahrnuje chybu kvantizace, linearity, offsetu a šumu.
+Opakem ADC je DA převodník (DAC), který převádí digitální signál zpět na analogový.
+Druhy signálů
+A
+m
+p
+li
+t
+u
+d
+a
+t (čas)
+Analogový signál
+Spojitý v čase i amplitudě
+Hodnoty signálu (amplitudy) se mění plynule
+v čase bez jakýchkoli skoků nebo přerušení.
+A
+m
+p
+li
+t
+u
+d
+a
+Vzorkovaný signál
+Spojitý v čase, ale nespojitý v amplitudě
+Signál je vzorkován jen v určitých časových
+okamžicích
+A
+m
+p
+li
+t
+u
+d
+a
+A
+m
+p
+li
+t
+u
+d
+a
+t (čas)
+Kvantizovaný signál
+Spojitý v amplitudě, nespojitý v čase
+Hodnoty amplitudy jsou zaokrouhleny
+(kvantizovány).
+t (čas)
+t (čas)
+Digitální signál
+Nespojitý v čase ani v amplitudě
+Signál je vzorkován pouze v určitých
+časových okamžicích
+5. A/D Převodníky
+Analogový signál
+Obsahuje hodně informací (Při přiblížení křivky - vždy nějaká hodnota, bez mezer)
+Hodnota se mění v libovolném čase (nekonečný počet možných stavů)
+Horší uchování a přenášení
+Fyzické opotřebení (šum a zkreslení)
+Lze uchovat na VHS kazetě, magnetofonových páskách, gramofonových deskách
+Vznik šumu, kopie v horší kvalitě (degradace média)
+Reprezentace reálných fyzikálních veličin (proud, napětí, zvukové vlny)
+Digitální signál
+Výhoda kopírování, kódování - obsah méně dat. Data mohou být komprimována.
+Je tvořen posloupnosti vzorků, které mohou nabývat pouze omezeného počtu hodnot
+Nevýhoda ztráty kvality a vznik šumu při kódování
+Kódování v binární formě (0 a 1) - náhlý přechod mezi hodnotami, nemá nekonečný počet
+stavů
+Chyby při ztrátě dat lze opravit pomocí kódování
+Lze uchovat na Flash discích, CD, disketách, HDD, SSD
+Převod analogového signálu na digitální
+Fyzikální jev
+Technické jednotky
+Čeho chceme dosáhnout
+ANALOG
+Vzorkování
+Kvantování
+Kódování
+DIGITAL
+Převod analogového signálu na digitální probíhá ve třech hlavních
+krocích:
+Vzorkování: Spojitý analogový signál je odebírán v pravidelných časových intervalech
+(vzorkovací frekvence).
+Kvantování: Hodnoty jednotlivých vzorků jsou převedeny na nejbližší hodnotu z předem
+definovaných úrovní (diskrétní amplitudy).
+Kódování: Kvantizované hodnoty jsou převedeny do binární (digitální) podoby, která je čitelná
+pro číslicové systémy.
+5. A/D Převodníky
+Konkrétnější popis převodu analog -> digital
+1. Vzorkování
+1. Vzorkování: Analogový signál je rozdělen A
+do svislých vzorkovacích úrovní, podle
+kterých na na ose x určíme přesné místo
+daného vzorku.
+Tam, kde je signál protnutý s vzorkovací
+úrovní bude jeden vzorek. Hodnota se pošle
+do kondenzátoru.
+Vzdálenost vzorků se bude lišit vzorkovací
+frekvencí, čím je větší, tím více vzorků a
+kvalitnější převedený signál.
+t (čas)
+Teploměrová škála Označení kvantizačních úrovní
+A
+2. Kvantování: Analogový signál je
+dále rozdělen pomocí
+horizontálních kvantizačních a
+rozhodovacích úrovní.
+Nyní určujeme zda se vzorek
+nachází nad nebo pod
+rozhodovací úrovní aby proběhlo
+zaokrouhlení na určitou kvantizační
+úroveň (kvantizace) - vznik šumu.
+2. Kvantování
+Kvantizační úroveň
+(celá čára)
+t (čas)
+Kvantizační šum:
+Rozhodovací úroveň
+(přerušovaná čára)
+Při kvantování se vzorky rozdělují do jednotlivých
+kvantizačních úrovní, čímž může vzniknout kvantizační
+šum, který zapříčiní právě ztrátu kvality digitálního signálu
+a výsledek se může od analogového lišit.
+3. Kódování:
+Jednotlivé vzorky se nachází na určité
+kvantizační a vzorkovací úrovni a nyní
+lze z nich vytvořit digitální signál v
+binární podobě.
+101
+První číslo zleva je MSB = bit s
+největší váhou.
+Poslední číslo je LSB = bit s nejmenší
+váhou
+010
+3. Kódování
+A
+100
+011
+001
+000
+t (čas)
+5. A/D Převodníky
+Rozsah (rozlišení) převodníku
+Má vždy pevný počet bitů, které dokáže zakódovat (např. 8 bitové převodníky)
+Určuje rozpětí, které je schopný převodník opsat na daný počet hodnot
+Každá jedna hodnota určuje zlomek celé škály (teploměr - jeden část/dílek: VZOREK)
+Je třeba řešit, jaké rozlišení převodníku použijeme, protože může být menší a signál
+přesahuje přes danou mez - Clipping (typické u audia - zvuku).
+Příliš malý rozsah
+Příliš velký rozsah
+Ideální rozsah
+Granualita převodníku
+Míra jemnosti kvantizace a určuje přesnost, s jakou převodník měří analogové napětí
+Granularita udává nejmenší rozdíl napětí, které AD převodník ještě rozpozná.
+Přímo souvisí s jeho rozlišením
+Převodník s 8 bit rozlišením: (2)^8 = 256 diskrétních úrovní. V případě rozsahu měřeného
+napětí 0-5V by granualita byla:
+GRANUALITA = (Rozsah napětí)/(Počet úrovní) = 5/256 = 0.0195 V
+=> Převodník dokáže rozlišit rozdíly v napětí přibližně 0.0195 V
+Má také vliv na kvantizační chybu (rozdíl mezi skutečnou hodnotou analogového signálu
+a nejbližší hodnotou, kterou přiřadí AD převodník).
+Jemnější granualita (vyšší rozlišení převodníku) = menší kvantizační chyba a vyšší
+přesnost převodu analogového signálu na digitální
+5. A/D Převodníky
+Architektury AD Převodníků
+Paralelní (Flash) AD převodník
+Nazýván také jako přímý, komparační
+Jedná se o nejrychlejší typ AD převodníku, s rychlostí
+převodu řádově v nanosekundách (ns)
+Komparátory: Flash ADC využívá velké množství
+komparátorů, které porovnávají vstupní napětí Ux s
+referenčními napětími.
+Napěťový dělič: Referenční napětí Uref je rozděleno
+napěťovým děličem na stejně velké dílky.
+Teploměrový kód: Výstupy komparátorů vytvářejí
+teploměrový kód (sérii jedniček a nul podle velikosti
+vstupního napětí)
+Dekodér: Teploměrový kód se převede na binární kód
+pomocí dekodéru, který zpracuje výstupy
+komparátorů.
+Rychlost je dána rychlostí komparátorů s dekodérem
+(převod je řádově v ns)
+Počet komparátorů: Pro n-bitový převodník je
+potřeba 2^n−1 komparátorů (např. pro 8bitový
+převodník je to 255 komparátorů)
+Rychlost: Rychlost převodu je dána rychlostí
+komparátorů a dekodéru. Typicky víc než 100 MHz
+Rozlišení: Běžně se vyrábí převodníky s rozlišením 4
+až 8 bitů. Vyšší rozlišení (např. 10 bitů) je méně
+obvyklé kvůli náročnosti na počet komparátorů.
+Přesnost: Omezená přesnost
+Zobrazení teploměrového kódu - tabulka stavů
+Ux = 0 V
+Logická 0 (všude)
+Ux = Uref
+Logická 1 (odpovídající
+úroveň)
+5. A/D Převodníky
+Paralelní AD převodník - Kaskáda (pipeline nebo linkové zapojení)
+Vylepšení flash převodníku kvůli velkému počtu komparátorů
+UR= UX - UDA
+převádí vrchní část
+vstupního napětí Ux​na
+binární hodnotu (MSB)
+(MSB) se převede zpět
+na analogové napětí
+Sumátor (žárovka). Od
+vstupního napětí Ux
+odečítáme napětí z D/A
+převodníku - U(da) - již
+zakódované napětí
+Zbytek napětí Ur
+převedeme ještě přes
+A/D => vyjde výsledek
+LSB - bity nižšího řádu
+Díky převodu jsme snížili počet převodníků, které potřebujeme. Výroba 4bitového
+převodníku není tak náročné a není potřeba tolik komparátorů
+Celkový počet komparátorů je nyní 30 (ušetřeno přes 200 komparátorů a odporů)
+Doba převodu je delší, ale je možnost dosáhnout přesnějšího a většího rozlišení
+Kompenzační AD převodníky (automatické kompenzátory napětí)
+Jedná se o typ kompenzační AD převodníků, které se nesnaží přímo převádět
+analogové napětí, ale místo toho generují digitální hodnotu, která odpovídá co
+nejbližšímu napětí.
+Postupně generujeme zpětnovazební napětí pomocí D/A převodníku, které se
+porovnává se vstupním analogovým napětím.
+Proces probíhá iterativně (postupným přibližováním), dokud zpětnovazební napětí
+co nejpřesněji neodpovídá vstupnímu napětí.
+Komparátor určuje, zda je zpětnovazební napětí menší nebo větší než vstupní, a
+podle toho se digitální hodnota upraví.
+Budeme potřebovat 1 komparátor a další pomocné obvody.
+Jsou nejvíce používané, jednoduché na výrobu, rychlé
+Porovnávají vstupní napětí se zpětnovazebním napětím (získaný z D/A převodníku)
+Čítací, sledovací, s postupnou aproximací
+5. A/D Převodníky
+Kompenzační čítací AD převodník - přírustkový
+Generuje signál připomínající “schody”, dokud komparátor neurčí, že napětí je stejné
+nebo větší.
+Vstupní napětí Uvst přivedeme na jednu ze svorek operačního zesilovače ve funkci
+komparátoru => generování hodinového signálu
+Napětí hned ze začátku nebude stejné, čítač s nulováním bude postupně čítat jedno
+číslo za druhým, které bude převedeno přes D/A převodník na analogové napětí, které
+bude porovnáváno s tím komparátorem.
+Když to dosáhne výsledné hodnoty, kdy ten D/A převodník vygeneruje napětí, které je
+stejné nebo vyšší než je samotné to napětí na vstupu => zastavení převodu => Procesor
+může z paměti vyčíst výslednou hodnotu, která řekne, které napětí to vlastně je.
+začíná na 0 a postupně čítá => DA
+Generátor clocku -řídí
+postupné čítání čítače
+Zpětnovazební
+zapojení
+Komparátor vyšle signál k
+zastavení čítání, pokud
+Uref => Uvst
+Převod hodnoty z čítače na
+analog. signál, který je poslán
+jako zpětnovazební napětí Uref
+ke komparátoru
+Stejnosměrný proud
+(referenční napětí pro DA)
+Pokud Uref => Uvst, hodnota
+je uložena do paměť n-nitů
+5. A/D Převodníky
+Sledovací převodník (s vratným čítačem)
+Používá obousměrný čítač, který může čítat jak směrem vpřed (inkrementovat), tak
+směrem vzad (dekrementovat)
+Směr čítání je řízen výstupem z komparátoru:
+Pokud je vstupní napětí Ua​větší než zpětnovazební napětí Uda​, čítač počítá vpřed
+Pokud je vstupní napětí Ua​menší než Uda, čítač počítá vzad
+Napětí Uda​je generováno pomocí převodníku Č/A (číslicově-analogového převodníku)
+na základě hodnoty čítače.
+Komparátor neustále porovnává vstupní napětí Ua s Uda a určuje směr čítání
+Tento mechanismus umožňuje sledovat změny vstupního napětí téměř okamžitě.
+Výhoda: Rychlá odezva na pomalé změny napětí, okamžitá dostupnost hodnoty Ux
+Nevýhoda: Špatně reaguje na rychlé změny signálu, protože čítač nestíhá dostatečně
+rychle měnit hodnoty.
+Často používaný převodník díky jednoduchosti a efektivnosti při sledování pomalejších
+signálů.
+Komparátor, který porovnává vstupní napětí
+Ua​se zpětnovazebním napětím Uda
+generovaným D/A převodníkem.
+Logické hradla
+Generátor Clocku
+Může inkrementovat
+(Vpřed) - Ua > Uda,
+nebo dekrementovat
+(Vzad) - Ua < Uda hodnoty
+podle signálu z
+komparátoru.
+Hodnota čítače se
+převádí na digitální
+výstup (b0 až bn)
+Převádí aktuální hodnotu čítače na
+zpětnovazební analogové napětí Uda​,
+které je porovnáváno s Ua
+5. A/D Převodníky
+Převodník s postupnou aproximací
+Postupně porovnává vstupní analogové napětí Ux s generovaným zpětnovazebním
+napětím Uda (pomocí D/A převodníku)
+Bity výstupního registru se nastavují od nejvýznamnějšího (MSB) po nejméně
+významný (LSB) na základě výsledku porovnání z komparátoru.
+Postup aproximace:
+Na začátku převodu je registr vynulován.
+Nejvýznamnější bit (MSB) je nastaven na hodnotu „1“
+D/A převodník vytvoří napětí Uda = Uref / 2
+Komparátor porovná Uda​s Ux​:
+Pokud Uda < Ux: Bit zůstane „1“
+Pokud Uda > Ux​: Bit se nastaví na „0“
+Tento proces se opakuje postupně pro všechny bity registru, až se dosáhne finální
+hodnoty.
+Má pevnou dobu převodu, která je dána počtem bitů (n), protože probíhá vždy n kroků.
+Je velmi přesný a využívá se v zařízeních, jako jsou voltmetry a digitální osciloskopy.
+Při převodu vyžaduje stabilní vstupní napětí, aby nedošlo k chybám.
+Výhody: Vysoká přesnost, rychlost, pevná doba převodu.
+Nevýhody: Změna vstupního napětí během převodu způsobuje chybu, proto se
+často používá vzorkovací obvod.
+Komparátor: porovnává
+vstupní napětí Ux se
+zpětnovazebním Uda
+Výstup rozhoduje, zda se bit
+zachová “1”, nebo ne “0”
+Obsahuje výslednou
+digitální hodnotu. Postupně
+nastavuje jednotlivé bity na
+základě výsledků komparace.
+Převádí digitální hodnotu z
+registru na analogové napětí
+Uda, porovnáváno s Ux
+Graf znázorňuje postupný proces
+aproximace:
+Napětí Uda se krokově přibližuje ke
+vstupnímu napětí Ux
+S každým krokem se hodnota registru
+(bity b0 až bn) upravuje, až odpovídá
+Ux
+5. A/D Převodníky
+Převodník s dvojitou integrací
+Analogový signál Uvst je převeden na časový interval Tref​, který je úměrný velikosti Uvst
+Proces převodu probíhá ve dvou fázích:
+1. Fáze (Integrace vstupního napětí):
+Signálem „start“ se otevře hradlo a čítač se začne plnit impulsy
+Integrátor lineárně zvyšuje své napětí U rychlostí úměrnou Uvst​, zatímco čítač
+počítá impulsy
+Jakmile dosáhne kondenzátor určité hodnoty, proces se přepne na druhou fázi.
+2. Fáze (Integrace referenčního napětí):
+Přepínač přepne na referenční napětí Uref opačné polarity, čímž začne
+kondenzátor vybíjet
+Čítač pokračuje v počítání impulzů, dokud U neklesne na nulu (integrace skončí)
+Obsah čítače v této fázi odpovídá vstupnímu napětí Uvst
+Pomalý převod: Doba převodu závisí na velikosti Uvst​, což činí převodník méně vhodný
+pro rychle se měnící signály
+Vysoká přesnost: Odolnost vůči šumu a brumu (např. z transformátorů) díky použití
+integrace
+Odolnost vůči rušení: Analogový signál je převeden na časový interval, což minimalizuje
+vliv rušení
+Využití především v multimerech a dalších přesných přístrojích
+Výhody: Velmi přesný, odolný proti rušení, stabilní výsledky.
+Nevýhody: Pomalý, nevhodný pro dynamické signály.
+Integrátor: zajišťuje
+lineární růst nebo pokles
+napětí v čase. V první fázi
+integruje vstupní napětí
+Uvst. Ve druhé fázi
+integruje referenční napětí
+Uref opačné polarity
+řídí přepínání mezi 1. a 2. fází
+Počet impulzů v první fázi
+je úměrný velikosti Uvst
+Druhá fáze slouží k měření
+času Tref
+Počítá impulzy během
+obou fází
+Sleduje napětí U na výstupu
+integrátoru. Jakmile U klesne na 0,
+vyšle signál „stop“, čímž uzavře čítač
+ukládá výslednou
+digitální hodnotu,
+odpovídá Uvst
+5. A/D Převodníky
+Sigma-delta převodník
+Vstupní analogový signál je převzorkován velmi vysokou frekvencí (oversampling), což
+zajišťuje vysokou přesnost.
+Pomocí ΔΣ modulace (delta-sigma modulace) je kvantizační šum přesunut do vyšších
+frekvencí mimo užitečné pásmo signálu.
+Následně je signál filtrován a decimován (snížení vzorkovací frekvence), čímž vznikne
+digitální výstup s vysokým rozlišením a požadovanou vzorkovací frekvencí.
+Analogová část:
+Obsahuje základní prvky, jako jsou integrátor, komparátor, zdroj referenčního
+napětí (Uref​) a další obvody pro zpracování analogových signálů.
+Jednoduchá, pomalejší, využívá spojité zpracování signálu.
+Digitální část:
+Zahrnuje číslicovou filtraci a decimaci vzorkovaného signálu.
+Složitější a rychlejší než analogová část.
+Oversampling:
+Vzorkovací frekvence (fvzf​) je mnohonásobně vyšší než maximální frekvence
+vstupního signálu (fmax​).
+fvz=n*fmax​, kde n je faktor převzorkování
+Umožňuje lepší potlačení šumu a přesnější rekonstruování signálu.
+Decimace:
+Po oversamplingu následuje proces decimace, kdy jsou odstraněny nepotřebné
+vzorky a signál je převeden na požadovanou vzorkovací frekvenci.
+Cílem je snížit množství dat bez ztráty informace.
+Číslicové filtry:
+Potlačují šum způsobený kvantizací a zajišťují čistotu výstupního signálu.
+Výstupní parametry: vysoké rozlišení (24/32 bitů, nízká spotřeba energie, vzorkovací
+kmitočty)
+Výhody: vysoké rozlišení (32 bitů), nízká spotřeba energie, efektivní potlačení šumu,
+jednoduchá analogová část
+Nevýhody: nevhodný pro rychlé změny signálu, komplexní digitální část (vyžaduje
+větší výpočetní výkon)
+Odečítá zpětnou vazbu
+(1 bit z výstupu DAC) od
+vstupního signálu.
+Odesílá zpětnou vazbu z
+digitálně analogového
+převodníku (DAC) zpět na vstup
+Zajišťuje akumulaci rozdílu v čase, což
+vede k vysoké citlivosti na
+nízkofrekvenční komponenty
+Převádí integrovaný signál
+na digitální hodnotu (1 bit)
+Redukuje datový tok a převádí
+signál na požadovanou
+vzorkovací frekvenci a rozlišení
+jádro převodníku
+(oversampling,
+modulace)
+odstraňuje vysokofrekvenční složky (decimace, vyhlazení signálu)

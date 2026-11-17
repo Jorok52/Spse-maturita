@@ -1,0 +1,454 @@
+{
+"n": 20,
+"t": "Rozhraní – typy a charakteristika",
+"outline": [
+"Rozhraní EIDE: vznik, složení, komunikační módy, zapojení",
+"Serial ATA: typy, charakteristika, rychlosti",
+"NCQ, Staggered Spin-Up, Port Multiplier, Port Selector, Hot Swap",
+"eSATA, mSATA, M.2 – rychlosti a konektory",
+"AHCI a NVMe",
+"USB: verze, konektory, rychlosti, kompatibilita"
+],
+"q": [
+[
+"PATA (IDE) je…",
+"Paralelní 16bit rozhraní pro disky a mechaniky",
+"Sériové 1bitové rozhraní pro disky",
+"Grafický slot na základní desce",
+"Síťové rozhraní pro kroucenou dvojlinku"
+],
+[
+"Kolik zařízení na jednom PATA kabelu?",
+"2 (Master/Slave)",
+"1 (jen Master)",
+"4 (2 Master + 2 Slave)",
+"15 (jako SCSI)"
+],
+[
+"Výpočet ATA 100?",
+"50 MHz (25 MHz DDR) × 2 B = 100 MB/s",
+"100 MHz × 1 B = 100 MB/s (bez DDR)",
+"25 MHz × 4 B = 100 MB/s",
+"33 MHz × 3 B ≈ 100 MB/s"
+],
+[
+"Max. délka PATA kabelu?",
+"46 cm",
+"1 m",
+"2 m",
+"15 cm"
+],
+[
+"Kdo vyvinul EIDE (ATA-2)?",
+"Western Digital",
+"Seagate",
+"Intel",
+"IBM"
+],
+[
+"Co přineslo EIDE?",
+"Vyšší rychlost, DMA, ATAPI (CD-ROM), větší kapacitu",
+"SATA kabel a sériový přenos",
+"Hot swap a NCQ pro disky",
+"NVMe a připojení disků přímo přes sběrnici PCIe místo IDE"
+],
+[
+"Rozdíl PIO a DMA?",
+"PIO přenáší přes CPU (zátěž), DMA přímo do paměti",
+"Žádný, jsou to dva názvy pro stejný režim",
+"DMA je pomalejší, protože čeká na CPU",
+"PIO je režim pro SSD, DMA pro HDD"
+],
+[
+"Kdy je nutný 80žilový kabel?",
+"Pro UDMA 4 a vyšší (každý druhý vodič zem)",
+"Vždy, pro všechna zařízení IDE",
+"Jen pro mechaniky CD-ROM (ATAPI)",
+"Jen pro disketové mechaniky"
+],
+[
+"Cable Select – černý konektor je…",
+"Master",
+"Slave",
+"Deska",
+"Napájení"
+],
+[
+"Cable Select – modrý konektor jde do…",
+"Základní desky",
+"Mastera",
+"Slave",
+"Zdroje"
+],
+[
+"Která ATA verze přinesla 48bit LBA?",
+"ATA 6",
+"ATA 3",
+"ATA 1",
+"ATA 4"
+],
+[
+"Kolik pinů má FDD kabel?",
+"34",
+"40",
+"80",
+"7"
+],
+[
+"Kolik zařízení podporuje SCSI?",
+"Až 15",
+"2",
+"127",
+"4"
+],
+[
+"Rychlost Ultra320 SCSI?",
+"320 MB/s",
+"320 Mb/s",
+"32 MB/s",
+"3,2 GB/s"
+],
+[
+"Datová šířka SATA?",
+"1 bit (sériově)",
+"16 bitů",
+"32 bitů",
+"8 bitů"
+],
+[
+"Rychlost SATA I?",
+"1,5 Gb/s (150 MB/s)",
+"3 Gb/s (300 MB/s)",
+"6 Gb/s (600 MB/s)",
+"1,5 Gb/s (187 MB/s)"
+],
+[
+"Rychlost SATA III?",
+"6 Gb/s (600 MB/s)",
+"3 Gb/s (300 MB/s)",
+"1,5 Gb/s (150 MB/s)",
+"12 Gb/s (1200 MB/s)"
+],
+[
+"Proč 1,5 Gb/s = 150 MB/s u SATA?",
+"Kódování 8b/10b – 10 bitů na bajt",
+"Ztráty v kabelu sníží rychlost o 20 %",
+"Kvůli NCQ se část pásma rezervuje",
+"Režim AHCI přidává ke každému bajtu režii"
+],
+[
+"Co dělá NCQ?",
+"Řadič disku přeuspořádá požadavky pro méně pohybů hlavy",
+"Umožní zapnout nebo vyměnit disk za chodu bez restartu systému",
+"Postupně roztáčí disky kvůli zatížení zdroje",
+"Připojí víc disků k jednomu portu řadiče"
+],
+[
+"Kde má NCQ smysl?",
+"U HDD (u SSD ne)",
+"Jen u SSD (u HDD ne)",
+"U USB flash disků",
+"U DVD mechanik"
+],
+[
+"Co je Staggered Spin-Up?",
+"Postupné roztáčení disků kvůli zatížení zdroje",
+"Rychlé roztočení všech disků najednou",
+"Parkování hlav při vypnutí disku",
+"Šifrování disků při startu systému"
+],
+[
+"Co je Port Selector?",
+"Jeden disk připojený ke dvěma řadičům (redundance)",
+"Více disků připojených k jednomu portu řadiče přes rozbočovač",
+"Přepínač mezi USB a SATA na disku",
+"Výběr bootovacího disku v BIOSu"
+],
+[
+"Co je Port Multiplier?",
+"Více disků k jednomu SATA řadiči",
+"Jeden disk připojený ke dvěma řadičům",
+"Zrychlení portu na dvojnásobek",
+"Rozbočovač pro USB disky"
+],
+[
+"Co je Hot Swap?",
+"Výměna disku za chodu bez restartu",
+"Přehřátí disku a jeho vypnutí",
+"Rychlé formátování bez restartu",
+"Automatické přepnutí na SSD"
+],
+[
+"Max. délka eSATA kabelu?",
+"2 m",
+"46 cm",
+"5 m",
+"15 m"
+],
+[
+"Kolik zasunutí vydrží eSATA konektor oproti SATA?",
+"500 vs. 50",
+"50 vs. 500",
+"Stejně",
+"10 000"
+],
+[
+"Kdy byl oznámen mSATA?",
+"2009",
+"2001",
+"2015",
+"1996"
+],
+[
+"Co je SATA Express?",
+"Kombinace SATA a 2 PCIe linek – neuchytila se, nahradil ji M.2",
+"Externí verze SATA s odolnějším konektorem a delším kabelem (až 2 m)",
+"Zmenšená verze SATA pro notebooky (2009)",
+"Nová verze SATA III s rychlostí 6 Gb/s"
+],
+[
+"Co podporuje M.2?",
+"4 PCIe linky, 2 SATA kanály, USB, audio – dle klíčování (B, M)",
+"Jen SATA disky v malém formátu 2242/2280, PCIe ani USB rozhraní nepodporuje",
+"Jen USB zařízení a Wi-Fi karty",
+"Jen jednu linku PCIe x1"
+],
+[
+"Rychlost M.2 NVMe dle podkladů?",
+"≈ 3500 MB/s",
+"≈ 600 MB/s",
+"≈ 150 MB/s",
+"≈ 10 000 MB/s"
+],
+[
+"Režimy SATA řadiče?",
+"IDE, AHCI, RAID",
+"PIO, DMA, UDMA",
+"Master, Slave, Cable Select",
+"USB, PCIe, NVMe"
+],
+[
+"Co AHCI umožňuje?",
+"Pokročilé funkce SATA (NCQ, hot swap)",
+"Přímé spojení SSD s CPU přes PCIe",
+"Paralelní přenos po 16 vodičích",
+"Hardwarové šifrování disku"
+],
+[
+"Hlavní výhoda NVMe?",
+"Přímá komunikace přes PCIe, vysoká paralelizace, nízká latence",
+"Plná kompatibilita se starým rozhraním IDE a režimem PIO bez ovladačů",
+"Levnější kabely a konektory než u SATA",
+"Je navrženo pro mechanické disky (HDD)"
+],
+[
+"Kolikrát vyšší propustnost má NVMe než SATA SSD dle podkladů?",
+"≈ 7×",
+"2×",
+"100×",
+"Stejně"
+],
+[
+"SAS je…",
+"Sériová verze SCSI pro servery, 12 Gb/s",
+"Typ USB rozhraní pro externí disky",
+"Paralelní verze SCSI pro pracovní stanice",
+"Mini SATA pro malé disky v noteboocích"
+],
+[
+"Lze SAS disk připojit k SATA řadiči?",
+"Ne",
+"Ano vždy",
+"Jen přes USB",
+"Jen v IDE režimu"
+],
+[
+"FireWire 800 rychlost?",
+"800 Mb/s",
+"800 MB/s",
+"80 Mb/s",
+"8 Gb/s"
+],
+[
+"Kolik USB zařízení a hubů max?",
+"127 zařízení, max. 7 hubů",
+"15 zařízení, max. 2 huby",
+"255 zařízení, max. 15 hubů",
+"63 zařízení, max. 4 huby"
+],
+[
+"Max. délka USB kabelu?",
+"5 m",
+"2 m",
+"46 cm",
+"15 m"
+],
+[
+"Barva pinu +5 V u USB?",
+"Červená",
+"Černá",
+"Oranžová",
+"Zelená"
+],
+[
+"Rychlosti USB 1.x?",
+"Low 1,5 Mb/s, Full 12 Mb/s",
+"Low 12 Mb/s, Full 480 Mb/s",
+"High 480 Mb/s, Super 5 Gb/s",
+"Low 10 Mb/s, Full 100 Mb/s"
+],
+[
+"Max. proud USB 3.0?",
+"900 mA",
+"100 mA",
+"500 mA",
+"3 A"
+],
+[
+"Kdo vyvinul Thunderbolt?",
+"Intel s Apple",
+"Microsoft",
+"AMD a IBM",
+"Samsung"
+],
+[
+"Rychlost Thunderbolt 3/4?",
+"40 Gb/s",
+"10 Gb/s",
+"20 Gb/s",
+"5 Gb/s"
+],
+[
+"Konektor Thunderbolt 3?",
+"USB-C",
+"Mini DisplayPort",
+"USB-A",
+"HDMI"
+],
+[
+"Kdy vyšlo USB 2.0 a USB 3.0?",
+"2000 a 2008",
+"1996 a 2000",
+"2008 a 2015",
+"2004 a 2010"
+],
+[
+"Kdo zahajuje přenos na sběrnici USB?",
+"Vždy hostitel (PC) – zařízení jen po vyzvání",
+"Kterékoli zařízení, jakmile má data",
+"Hub, ke kterému je zařízení připojené",
+"Naposledy připojené zařízení na sběrnici"
+]
+],
+"terms": [
+[
+"PATA/IDE",
+"Paralelní 16b, 40/80 žil, 46 cm"
+],
+[
+"EIDE",
+"Western Digital, DMA, ATAPI"
+],
+[
+"PIO",
+"Přenos přes CPU"
+],
+[
+"SCSI",
+"Až 15 zařízení, servery"
+],
+[
+"SATA III",
+"6 Gb/s, 600 MB/s"
+],
+[
+"NCQ",
+"Přeřazení požadavků HDD"
+],
+[
+"Staggered Spin-Up",
+"Postupné roztáčení"
+],
+[
+"Port Selector",
+"Disk ke 2 řadičům"
+],
+[
+"Port Multiplier",
+"Víc disků k 1 řadiči"
+],
+[
+"eSATA",
+"Externí, 2 m"
+],
+[
+"M.2",
+"PCIe ×4 / SATA, klíče B/M"
+],
+[
+"AHCI",
+"Režim SATA s NCQ"
+],
+[
+"NVMe",
+"SSD přímo přes PCIe"
+],
+[
+"SAS",
+"Sériové SCSI, 12 Gb/s"
+],
+[
+"Thunderbolt 3",
+"40 Gb/s, USB-C"
+]
+],
+"open": [
+{
+"q": "Popiš rozhraní PATA/EIDE.",
+"k": [
+"Paralelní 16b, 40žilový kabel, max. 2 zařízení, 46 cm, Molex",
+"EIDE (ATA-2, Western Digital): DMA, ATAPI, větší kapacita",
+"Módy PIO (CPU) vs. DMA/UDMA",
+"80žilový kabel pro UDMA 4+",
+"Master/Slave jumpery, Cable Select: černý master, šedý slave, modrý deska",
+"Verze ATA 1–7 (ATA 6: 48bit LBA, 100 MB/s)"
+]
+},
+{
+"q": "Popiš rozhraní SATA a jeho technologie.",
+"k": [
+"Sériové, 1 bit, tenký kabel",
+"SATA I 1,5 Gb/s (150 MB/s), II 3 Gb/s, III 6 Gb/s (600 MB/s); kódování 8b/10b",
+"NCQ, Hot Swap, Staggered Spin-Up, Port Selector, Port Multiplier"
+]
+},
+{
+"q": "Porovnej eSATA, mSATA, SATA Express a M.2.",
+"k": [
+"eSATA: externí, 2 m, robustní konektor (500 zasunutí), SMART",
+"mSATA: 2009, malý konektor, rychlost jako SATA",
+"SATA Express: 2× SATA + 2 PCIe, mrtvý",
+"M.2: 4 PCIe + 2 SATA, USB, klíče B/M; NVMe ≈ 3500 MB/s"
+]
+},
+{
+"q": "Vysvětli AHCI a NVMe.",
+"k": [
+"AHCI: mezivrstva čipset–SATA disk, NCQ, hot swap",
+"Režimy řadiče: IDE, AHCI, RAID",
+"NVMe: pro flash SSD přes PCIe, ~7× propustnost, ~3× nižší latence, paralelní fronty",
+"Další: SAS (12 Gb/s, servery), SCSI, FireWire"
+]
+},
+{
+"q": "Popiš rozhraní USB a Thunderbolt.",
+"k": [
+"Sériové, P&P, 127 zařízení, 7 hubů, 5 m, napájení 4,75–5,25 V",
+"Hvězdicová architektura, host řídí vše",
+"USB 1.x 1,5/12 Mb/s, 2.0 480 Mb/s (half duplex), 3.0 ~5 Gb/s full duplex, 8 vodičů, 900 mA",
+"Konektory A, B, Mini, Micro, USB-C; piny červená +5 V, bílá D−, zelená D+, černá GND",
+"Thunderbolt (Intel+Apple): TB3/4 40 Gb/s, USB-C, 100 W"
+]
+}
+]
+}

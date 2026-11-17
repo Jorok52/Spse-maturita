@@ -1,0 +1,399 @@
+{
+"n": 6,
+"t": "Operační systém & plánování procesů",
+"outline": [
+"Charakteristika operačního systému",
+"Typy jader OS",
+"Proces vs. vlákno, PCB, TCB",
+"Přepínání kontextů",
+"Plánovače OS, preemptivní a nepreemptivní plánování",
+"Algoritmy FCFS, SJF, SRTF, RR, PS, MFQS"
+],
+"q": [
+[
+"V jakém režimu pracuje jádro OS?",
+"Privilegovaném (kernel mode)",
+"Uživatelském (user mode)",
+"Chráněném režimu BIOSu",
+"Virtuálním režimu 8086"
+],
+[
+"Jak aplikace žádají jádro o služby?",
+"Systémovým voláním (system call)",
+"Přímým zápisem do registrů hardwaru",
+"Voláním služeb BIOSu přes přerušení",
+"Přes řadič DMA bez účasti jádra"
+],
+[
+"Které jádro má všechny služby v jednom adresním prostoru?",
+"Monolitické",
+"Mikrojádro",
+"Hybridní jádro",
+"Exokernel"
+],
+[
+"Příklad monolitického jádra dle podkladů?",
+"MS-DOS, Windows 95/98",
+"Minix, Symbian",
+"Windows NT, XP",
+"Nemesis, AE GIS"
+],
+[
+"Hlavní nevýhoda mikrojádra?",
+"Vysoká režie meziprocesové komunikace (IPC)",
+"Chyba v jedné části jádra shodí celý systém",
+"Služby nelze měnit bez přeložení jádra",
+"Je obrovské a zabírá hodně paměti"
+],
+[
+"Příklad mikrojádra?",
+"Minix, Symbian",
+"Windows 10, 11",
+"MS-DOS, Win 95",
+"Mac OS X"
+],
+[
+"Jaké jádro má Windows NT (XP, 7, 10, 11)?",
+"Hybridní",
+"Monolitické",
+"Mikrojádro",
+"Exokernel"
+],
+[
+"Co je typické pro exokernel?",
+"Aplikace mají téměř přímý přístup k HW, minimum abstrakce",
+"Obsahuje všechny služby včetně souborového systému",
+"Kombinuje mikrojádro a monolit pro vyšší výkon",
+"Běží jen na ARM a má pevné časování úloh"
+],
+[
+"Co garantuje Hard RTOS?",
+"Všechny úlohy budou dokončeny ve stanoveném čase",
+"Maximální výkon a co nejvíc úloh najednou",
+"Že se úloha zpravidla stihne, mírné zpoždění nevadí",
+"Grafické rozhraní s rychlou odezvou na myš"
+],
+[
+"Příklad použití Soft RTOS?",
+"Streamování videa",
+"Kardiostimulátor",
+"Jaderná elektrárna",
+"Řízení letadla"
+],
+[
+"Co je supersmyčka (super loop)?",
+"Nekonečná smyčka s globálními proměnnými v jednoduchých embedded systémech",
+"Plánovač RTOS, který přiděluje úlohám priority",
+"Typ přerušení, které se volá v nekonečném cyklu, dokud procesor nepřejde do režimu spánku",
+"Proces operačního systému, který nikdy neskončí"
+],
+[
+"Příklad RTOS pro ARM?",
+"RTX Keil",
+"Windows 11",
+"Ubuntu",
+"MS-DOS"
+],
+[
+"Proces je…",
+"Běžící instance programu v paměti",
+"Statický soubor programu na disku (např. EXE)",
+"Část vlákna, která sdílí jeho paměť",
+"Typ jádra operačního systému"
+],
+[
+"Co je PID?",
+"Jedinečný identifikátor procesu",
+"Ukazatel na další instrukci procesu",
+"Číselná priorita procesu v plánovači",
+"Typ plánovacího algoritmu"
+],
+[
+"Stavy procesu (5)?",
+"NEW, READY, RUN, WAIT, END",
+"START, GO, STOP, KILL, END",
+"IDLE, BUSY, DONE",
+"OPEN, CLOSE, WAIT"
+],
+[
+"Kdy přejde proces RUN → WAIT?",
+"Čeká na I/O operaci nebo signál",
+"Dostal přidělený procesor",
+"Dokončil všechny své instrukce",
+"Byl právě vytvořen uživatelem"
+],
+[
+"Co obsahuje PCB?",
+"Stav, PID, PC, registry, limity paměti, otevřené soubory, prioritu",
+"Jen strojový kód programu a jeho data",
+"Jen identifikátor vlákna TID, jeho zásobník a ukazatel na nadřazené vlákno",
+"Tabulku stránek uloženou na disku ve swapu"
+],
+[
+"Co je TCB?",
+"Řídicí blok vlákna (TID, ukazatel na PCB, PC, stav, registry)",
+"Řídicí blok procesu (PID, limity paměti, otevřené soubory, priorita)",
+"Tabulka cache s adresami naposledy použitých dat",
+"Typ jádra pro práci s vlákny v uživatelském režimu"
+],
+[
+"Co vlákna procesu sdílejí?",
+"Paměť (kód a data) procesu",
+"Registry a čítač instrukcí (PC)",
+"Vlastní zásobník každého vlákna",
+"Nic – každé má vlastní adresní prostor"
+],
+[
+"Proč je přepnutí mezi vlákny levnější než mezi procesy?",
+"Vlákna sdílí paměť, přepínají se jen registry",
+"Vlákna nemají registry ani čítač instrukcí",
+"Mezi vlákny žádné přepnutí neprobíhá",
+"Vlákna běží v BIOSu mimo operační systém"
+],
+[
+"Nevýhoda user-level vláken?",
+"OS o nich neví, nevyužijí více jader",
+"Pomalé přepínání, protože se volá jádro",
+"Vyžadují systémové volání při každé operaci",
+"Nelze je vytvořit bez práv administrátora"
+],
+[
+"Kam se ukládá kontext při přepnutí procesu?",
+"Do PCB",
+"Na disk",
+"Do BIOSu",
+"Do TCB jiného procesu"
+],
+[
+"Kdo provádí přepnutí kontextu podle plánovače?",
+"Dispatcher",
+"Kompilátor",
+"BIOS",
+"DMA"
+],
+[
+"Krátkodobý plánovač používá fronty…",
+"Připravených procesů a I/O",
+"Odložených procesů (swap) a disku",
+"Jen jednu společnou frontu všech procesů",
+"Tiskovou frontu a frontu přerušení"
+],
+[
+"Kterým systémovým voláním vzniká potomek procesu?",
+"FORK",
+"EXEC",
+"KILL",
+"WAIT"
+],
+[
+"Co dělá střednědobý plánovač?",
+"Swapuje procesy na disk a zpět",
+"Přiděluje CPU každých pár ms",
+"Rozhoduje o přijetí do systému",
+"Spravuje vlákna"
+],
+[
+"Jak se jmenuje dlouhodobý plánovač?",
+"Strategický",
+"Taktický",
+"Dispatcher",
+"CPU scheduler"
+],
+[
+"Kolik stavů má diagram se swapováním?",
+"7 (navíc odložený připravený a odložený čekající)",
+"5 (nový, připravený, běžící, čekající, ukončený)",
+"6 (navíc jen odložený čekající)",
+"9 (navíc stavy zombie a sirotek)"
+],
+[
+"Preemptivní plánování znamená…",
+"OS může procesu kdykoli odebrat CPU (přerušení časovače)",
+"Proces běží, dokud sám neuvolní CPU nebo neskončí",
+"Procesy se plánují bez plánovače podle příchodu",
+"Systém smí využívat jen jedno jádro procesoru"
+],
+[
+"Nevýhoda nepreemptivního plánování?",
+"Může zamrznout systém, pokud proces neuvolní CPU",
+"Složitá implementace a nutnost časovače",
+"Potřebuje hardwarovou podporu přerušení",
+"Hladovění všech procesů s nízkou prioritou"
+],
+[
+"Který algoritmus je FCFS?",
+"Kdo dřív přijde, ten dřív mele – nepreemptivní",
+"Nejkratší úloha dostane CPU jako první",
+"Každý proces dostane stejné časové kvantum",
+"CPU dostane proces s nejvyšší prioritou"
+],
+[
+"TAT (doba obrátky) = …",
+"CT − AT",
+"TAT − BT",
+"CT − BT",
+"AT − CT"
+],
+[
+"WT (čekací doba) = …",
+"TAT − BT",
+"CT − AT",
+"BT − AT",
+"CT + BT"
+],
+[
+"Hlavní problém SJF?",
+"Hladovění dlouhých procesů a nutnost znát dobu trvání",
+"Je preemptivní, takže často přepíná kontext",
+"Nemá frontu připravených procesů",
+"Je ze všech algoritmů nejpomalejší"
+],
+[
+"SRTF je…",
+"Preemptivní varianta SJF",
+"Nepreemptivní varianta FCFS",
+"Round Robin s pevnými prioritami",
+"Víceúrovňová fronta se zpětnou vazbou"
+],
+[
+"U Priority Scheduling nižší číslo znamená…",
+"Vyšší prioritu",
+"Nižší prioritu",
+"Kratší úlohu",
+"Delší kvantum"
+],
+[
+"Co charakterizuje Round Robin?",
+"Časové kvantum a kruhová fronta – férový, bez hladovění",
+"Nejkratší úloha jde první, dlouhé procesy mohou hladovět",
+"Pevné priority, nižší čísla mají přednost",
+"Nepreemptivní, proces běží až do konce"
+],
+[
+"Co se v MFQS stane procesu, který vyčerpá kvantum?",
+"Přesune se do fronty s nižší prioritou",
+"Ukončí se a uvolní své prostředky",
+"Přesune se do fronty s vyšší prioritou",
+"Odloží se na disk do swapovacího oddílu"
+],
+[
+"Jak se v MFQS mění kvantum?",
+"Obvykle roste s klesající prioritou fronty",
+"Je ve všech frontách stejné",
+"Klesá s klesající prioritou fronty",
+"Kvantum se nepoužívá, fronty jsou FCFS"
+]
+],
+"terms": [
+[
+"Monolitické jádro",
+"Vše v jednom prostoru (MS-DOS)"
+],
+[
+"Mikrojádro",
+"Minimum v jádře, IPC (Minix)"
+],
+[
+"Hybridní jádro",
+"Windows NT, Mac OS X"
+],
+[
+"Exokernel",
+"Přímý přístup aplikací k HW"
+],
+[
+"PCB",
+"Řídicí blok procesu"
+],
+[
+"TCB",
+"Řídicí blok vlákna"
+],
+[
+"Dispatcher",
+"Provádí přepnutí kontextu"
+],
+[
+"FCFS",
+"Pořadí příchodu"
+],
+[
+"SJF",
+"Nejkratší úloha první"
+],
+[
+"SRTF",
+"Preemptivní SJF"
+],
+[
+"RR",
+"Časové kvantum, kruhová fronta"
+],
+[
+"MFQS",
+"Víceúrovňové fronty se zpětnou vazbou"
+],
+[
+"Hard RTOS",
+"Striktní garance času"
+],
+[
+"Střednědobý plánovač",
+"Swapování"
+]
+],
+"open": [
+{
+"q": "Charakterizuj operační systém a jeho strukturu.",
+"k": [
+"Prostředník mezi HW a aplikacemi",
+"Správa CPU, RAM, virtuální paměti, UI (GUI/CLI)",
+"Struktura: jádro, ovladače, příkazový procesor, GUI, podpůrné programy",
+"Jádro v kernel mode, systémová volání (kernel/library interface)"
+]
+},
+{
+"q": "Popiš typy jader OS.",
+"k": [
+"Monolitické: vše v jádře, rychlé, chyba shodí systém (MS-DOS, Win 9x); moduly",
+"Mikrojádro: CPU, paměť, I/O, IPC; zbytek v user mode; režie IPC (Minix)",
+"Hybridní: Windows NT, Mac OS X",
+"Exokernel: přímý přístup k HW (Nemesis)",
+"Nanokernel: embedded",
+"RTOS: hard / soft / firm"
+]
+},
+{
+"q": "Porovnej proces a vlákno, PCB a TCB.",
+"k": [
+"Proces: běžící instance programu, vlastní adresní prostor, PID",
+"Stavy NEW, READY, RUN, WAIT, END",
+"PCB: stav, PID, PC, registry, limity paměti, otevřené soubory, priorita",
+"Vlákno: sdílí paměť procesu, levné přepnutí, TCB (TID, ukazatel na PCB)",
+"Kernel-level vs. user-level vlákna"
+]
+},
+{
+"q": "Vysvětli přepínání kontextu a plánovače.",
+"k": [
+"Uložení stavu P0 do PCB, načtení P1; dispatcher",
+"Krátkodobý (CPU) – fronta připravených a I/O, FORK",
+"Střednědobý (taktický) – swapování, 7stavový model",
+"Dlouhodobý (strategický) – přijetí do systému",
+"Preemptivní (časovač, Linux) vs. nepreemptivní (staré Windows)"
+]
+},
+{
+"q": "Popiš plánovací algoritmy.",
+"k": [
+"FCFS: pořadí příchodu, nepreemptivní, kolony",
+"SJF: nejkratší první, hladovění, nutno znát BT",
+"SRTF: preemptivní SJF",
+"PS: priority (nižší číslo = vyšší), hladovění",
+"RR: časové kvantum, kruhová fronta, férový",
+"MFQS: víc front, zpětná vazba, kvantum roste dolů",
+"TAT = CT − AT, WT = TAT − BT"
+]
+}
+]
+}

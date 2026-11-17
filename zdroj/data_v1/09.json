@@ -1,0 +1,335 @@
+{
+"n": 9,
+"t": "Řízení vnější paměti",
+"outline": [
+"K čemu slouží vnější paměť",
+"Charakteristika HDD",
+"Přidělování místa: spojité, spojitý seznam, indexová alokace",
+"Plánování přístupu na disk: FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK",
+"HDD vs. SSD",
+"Fragmentace a defragmentace"
+],
+"q": [
+[
+"Hlavní vlastnost vnější paměti oproti RAM?",
+"Energetická nezávislost – data zůstanou po vypnutí",
+"Je rychlejší než operační paměť",
+"Procesor k ní přistupuje přímo instrukcemi",
+"Data se po vypnutí napájení ztratí"
+],
+[
+"Jak CPU přistupuje k disku?",
+"Přes OS, ovladače a řadič (SATA/NVMe)",
+"Přímo instrukcí LOAD na adresu sektoru",
+"Přes cache L1 bez účasti systému",
+"Přes BIOS při každém přístupu"
+],
+[
+"Jakým principem ukládá data HDD?",
+"Magnetickou indukcí na plotnách",
+"Nábojem v kondenzátorech jako DRAM",
+"Laserem do odrazné vrstvy jako CD",
+"Elektricky do flash buněk jako SSD"
+],
+[
+"Jaká hlava se používá ke čtení v HDD?",
+"MR (magnetorezistivní)",
+"Optická (laserová)",
+"Piezoelektrická",
+"Kapacitní snímací"
+],
+[
+"Z čeho jsou plotny HDD?",
+"Nemagnetický materiál (hliník, sklo) s feromagnetickou vrstvou",
+"Čistý permanentní magnet bez další vrstvy",
+"Křemík s tranzistory jako u flash pamětí, potažený tenkou ochrannou vrstvou",
+"Plast s odraznou hliníkovou vrstvou"
+],
+[
+"Co je stopa?",
+"Soustředná kružnice na plotně",
+"Výseč kružnice na plotně",
+"Stopy se stejným číslem nad sebou",
+"Skupina sektorů tvořící cluster"
+],
+[
+"Co je sektor?",
+"Nejmenší fyzická jednotka (výseč stopy), typicky 512 B / 4 kB",
+"Soustředná kružnice na povrchu plotny, číslovaná od 0 na vnějším okraji",
+"Stopy se stejným číslem na všech plotnách",
+"Logický cluster přidělený souboru systémem"
+],
+[
+"Co je cylindr?",
+"Stopy se stejným číslem na všech plotnách nad sebou",
+"Jedna plotna disku s oběma povrchy a vlastní hlavou",
+"Skupina sektorů na jedné stopě",
+"Rameno s hlavami nad plotnami"
+],
+[
+"Odkud se číslují stopy?",
+"Od 0 na vnějším okraji ke středu",
+"Od 0 uprostřed směrem k okraji",
+"Od 1 na vnějším okraji ke středu",
+"Podle výrobce, bez pravidla"
+],
+[
+"Hlavní nevýhoda spojitého přidělování?",
+"Fragmentace volného místa, problém s rostoucími soubory",
+"Pomalý sekvenční přístup, nutnost procházet bloky",
+"Velký pohyb hlav, protože bloky jsou rozházené",
+"Neumí přímý přístup, jen sekvenční čtení"
+],
+[
+"Řetězcová (seznamová) alokace se používá v…",
+"FAT12/16/32",
+"NTFS",
+"ext4 i-nody",
+"ISO 9660"
+],
+[
+"Co obsahuje FAT tabulka?",
+"Pro každý blok index následujícího bloku, konec EOF",
+"Kopii dat souboru pro případ poškození původního bloku",
+"Názvy souborů a jejich atributy",
+"Indexové bloky s adresami dat"
+],
+[
+"Soubor 6,1 kB, cluster 4 kB. Kolik místa zabere?",
+"8 kB (vnitřní fragmentace 1,9 kB)",
+"6,1 kB (přesně velikost souboru)",
+"4 kB (jeden cluster)",
+"12 kB (tři clustery)"
+],
+[
+"Co je cluster?",
+"Nejmenší alokační jednotka přidělovaná souboru",
+"Fyzický sektor o velikosti 512 B na jedné stopě",
+"Skupina disků zapojená do RAID",
+"Soustředná stopa na plotně"
+],
+[
+"Kde je uložen seznam adres bloků u indexové alokace?",
+"V indexovém bloku souboru",
+"V tabulce FAT na začátku disku",
+"V každém datovém bloku jako ukazatel",
+"V MBR v prvním sektoru disku"
+],
+[
+"Jakou hodnotou se inicializují položky indexového bloku?",
+"−1",
+"0",
+"EOF",
+"255"
+],
+[
+"Blok 2048 B, ukazatel 4 B. Kolik ukazatelů se vejde do bloku?",
+"512",
+"256",
+"1024",
+"2048"
+],
+[
+"Kde se používá indexová alokace?",
+"UNIX/Linux i-nody",
+"FAT16 v systému MS-DOS",
+"Souborový systém CD-ROM",
+"Diskety se systémem FAT12"
+],
+[
+"Který krok přístupu na disk trvá nejdéle?",
+"SEEK (přesun hlavy)",
+"LATENCY (otočení sektoru pod hlavu)",
+"TRANSFER (přenos dat do paměti)",
+"Dekódování adresy v řadiči"
+],
+[
+"Co je rotační latence?",
+"Čekání, než se sektor natočí pod hlavu",
+"Přesun hlavy nad požadovanou stopu",
+"Přenos dat z disku do operační paměti",
+"Roztočení ploten po zapnutí disku"
+],
+[
+"Průměrná latence u 7200 ot./min?",
+"≈ 4,17 ms",
+"≈ 8,33 ms",
+"≈ 2,08 ms",
+"≈ 5,56 ms"
+],
+[
+"Kterou nevýhodu má SSTF?",
+"Hladovění vzdálených požadavků",
+"Je ze všech metod nejpomalejší",
+"Hlava jede vždy až na kraj disku",
+"Nefunguje při nízké zátěži disku"
+],
+[
+"Který algoritmus se přezdívá výtah (elevator)?",
+"SCAN",
+"FCFS",
+"SSTF",
+"C-LOOK"
+],
+[
+"Nevýhoda SCAN?",
+"Střední stopy jsou obsluhovány častěji než krajní",
+"Hladovění vzdálených požadavků",
+"Hlava se pohybuje náhodně sem a tam",
+"Nikdy neobslouží požadavky na konci disku"
+],
+[
+"Jak se liší C-SCAN od SCAN?",
+"Obsluhuje jen jedním směrem, zpět se vrací naprázdno na začátek",
+"Obsluhuje oběma směry a nejezdí na kraj disku",
+"Vybírá vždy požadavek nejbližší k hlavičce, ale jen v jednom směru pohybu",
+"Otočí se u posledního požadavku a obsluhuje zpět"
+],
+[
+"Jak se liší LOOK od SCAN?",
+"Nejezdí až na kraj disku, otočí se u posledního požadavku",
+"Obsluhuje jen jedním směrem a na konci skáče zpět na začátek disku",
+"Vybírá vždy nejbližší požadavek k hlavičce",
+"Obsluhuje požadavky v pořadí, jak přišly"
+],
+[
+"C-LOOK…",
+"Jede jedním směrem k poslednímu požadavku a skočí zpět k nejnižšímu",
+"Jede až na kraj disku a cestou zpět obsluhuje všechny zbývající požadavky ve frontě",
+"Obsluhuje požadavky v pořadí, v jakém přišly do fronty",
+"Vždy jede k požadavku nejbližšímu k aktuální hlavičce"
+],
+[
+"Který algoritmus má nejhorší průměrnou odezvu?",
+"FCFS",
+"SSTF",
+"LOOK",
+"C-LOOK"
+],
+[
+"Typický přístupový čas HDD?",
+"5–15 ms",
+"pod 1 ms",
+"100 ns",
+"1 s"
+],
+[
+"Proč SSD netrpí fragmentací jako HDD?",
+"Nemá pohyblivé části, přístup ke všem buňkám je stejně rychlý",
+"Používá souborový systém FAT, který fragmentaci brání",
+"Každý den se automaticky defragmentuje sám",
+"Má větší clustery, takže se soubory nerozdělují"
+],
+[
+"Které technologie prodlužují život SSD?",
+"TRIM a wear leveling",
+"Pravidelná defragmentace",
+"Zapojení do RAID 0",
+"Monitorování S.M.A.R.T."
+],
+[
+"Co dělá defragmentace?",
+"Přesune části souborů do souvislých clusterů",
+"Smaže nepotřebné a dočasné soubory z disku",
+"Zkontroluje disk a opraví vadné sektory",
+"Komprimuje data, aby zabírala méně místa"
+]
+],
+"terms": [
+[
+"Stopa",
+"Soustředná kružnice"
+],
+[
+"Sektor",
+"Výseč stopy, 512 B / 4 kB"
+],
+[
+"Cylindr",
+"Stopy nad sebou"
+],
+[
+"Spojitá alokace",
+"Soubor v souvislém bloku"
+],
+[
+"Řetězcová alokace",
+"Bloky propojené ukazateli (FAT)"
+],
+[
+"Indexová alokace",
+"Indexový blok s adresami (i-nody)"
+],
+[
+"SEEK",
+"Přesun hlavy na stopu"
+],
+[
+"FCFS",
+"Pořadí příchodu"
+],
+[
+"SSTF",
+"Nejbližší požadavek"
+],
+[
+"SCAN",
+"Výtah – tam i zpět"
+],
+[
+"C-SCAN",
+"Jedním směrem, návrat naprázdno"
+],
+[
+"LOOK",
+"SCAN bez dojíždění na kraj"
+],
+[
+"C-LOOK",
+"C-SCAN mezi požadavky"
+],
+[
+"TRIM",
+"Údržba SSD"
+]
+],
+"open": [
+{
+"q": "K čemu slouží vnější paměť a jak je organizován HDD?",
+"k": [
+"Trvalé uložení, energeticky nezávislá, levná za GB",
+"Přístup přes OS, ovladače, řadič; data v souborech (FS)",
+"HDD: magnetická indukce, plotny (Al/sklo + Fe₂O₃), MR hlava",
+"Stopa, sektor (512 B/4 kB, CHS, CRC), cylindr"
+]
+},
+{
+"q": "Popiš metody přidělování místa na disku.",
+"k": [
+"Spojitá: souvislý blok, rychlá, fragmentace volného místa; first/best/last/worst fit",
+"Řetězcová: bloky s ukazateli, FAT tabulka, EOF; vnitřní fragmentace",
+"Indexová: indexový blok, −1, přímý přístup, i-nody",
+"Víceúrovňový a kombinovaný index"
+]
+},
+{
+"q": "Popiš plánovací metody přístupu na disk.",
+"k": [
+"Přístup = SEEK + LATENCY + TRANSFER",
+"FCFS – pořadí, nejhorší odezva",
+"SSTF – nejbližší, hladovění",
+"SCAN (výtah), C-SCAN (jedním směrem)",
+"LOOK, C-LOOK – jen k poslednímu požadavku"
+]
+},
+{
+"q": "Porovnej HDD a SSD, vysvětli fragmentaci.",
+"k": [
+"HDD: mechanický, 5–15 ms, hlučný, citlivý na nárazy, levný",
+"SSD: flash, < 1 ms, tichý, odolný, dražší, omezené zápisy (TRIM, wear leveling)",
+"Fragmentace: soubor roztříštěný po disku → pomalé čtení",
+"Defragmentace: Windows, O&O Defrag, Diskeeper"
+]
+}
+]
+}

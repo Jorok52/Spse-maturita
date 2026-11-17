@@ -1,0 +1,446 @@
+{
+"n": 15,
+"t": "Souborové systémy FAT, FAT32, NTFS, exFAT",
+"outline": [
+"Struktura logického disku, číslování sektorů, cluster",
+"Zaváděcí záznam, hlavní adresář, typy FAT, struktura podadresářů",
+"Rozdíly FAT, VFAT16 a VFAT32, dlouhé názvy",
+"Chyby FAT a jejich odstraňování",
+"Bezpečné odstraňování dat, fragmentace a defragmentace",
+"Charakteristika a vnitřní struktura NTFS, porovnání s FAT",
+"Metasoubory NTFS, registr Windows, body obnovení"
+],
+"q": [
+[
+"Dvě hlavní oblasti logického disku FAT?",
+"Organizační (boot record, FAT1, FAT2, root) a datová",
+"MBR a GPT (tabulky oddílů)",
+"MFT (hlavní tabulka souborů) a datová oblast se soubory",
+"Cache a swapovací oblast"
+],
+[
+"Proč jsou na disku dvě FAT tabulky?",
+"Druhá je záloha",
+"Jedna pro soubory, druhá pro adresáře",
+"Pro dva disky",
+"Kvůli rychlosti"
+],
+[
+"Co je cluster?",
+"Nejmenší alokační jednotka FS (skupina sektorů)",
+"Fyzický sektor o velikosti 512 B na stopě disku",
+"Soustředná stopa na plotně",
+"Oddíl disku s vlastním FS"
+],
+[
+"Od jakého čísla se číslují clustery ve FAT?",
+"Od 2 (0 a 1 jsou rezervované)",
+"Od 0 (první cluster disku)",
+"Od 1 (0 je rezervovaná)",
+"Od 16 (za systémovými)"
+],
+[
+"Kolik zabere 1B soubor při clusteru 4 KB?",
+"4 KB",
+"1 B",
+"512 B",
+"8 KB"
+],
+[
+"Co obsahuje BPB (BIOS Parameter Block)?",
+"Velikost sektoru, sektory v clusteru, počet FAT, velikost disku…",
+"Spouštěcí kód zavaděče Windows, cesty k jeho souborům a tabulku oddílů disku",
+"Seznam souborů v kořenovém adresáři",
+"Hesla a oprávnění uživatelů"
+],
+[
+"Hodnota 0000h ve FAT znamená…",
+"Volný cluster",
+"Vadný cluster",
+"EOF",
+"Další cluster"
+],
+[
+"Hodnota FFF7h ve FAT znamená…",
+"Vadný cluster",
+"Volný cluster",
+"Konec souboru (EOF)",
+"Kořenový adresář"
+],
+[
+"EOF ve FAT16?",
+"FFF8h – FFFFh",
+"0000h – 0001h",
+"FFF0h – FFF7h",
+"E5h"
+],
+[
+"Kolik bitů pro adresaci clusterů reálně využívá FAT32?",
+"28",
+"32",
+"16",
+"12"
+],
+[
+"Max. velikost souboru na FAT32?",
+"4 GB",
+"2 GB",
+"16 TB",
+"Neomezeně"
+],
+[
+"Co nepodporuje FAT12?",
+"Podadresáře",
+"Soubory",
+"Clustery",
+"Boot record"
+],
+[
+"Max. velikost oddílu FAT16?",
+"2–4 GB",
+"32 MB",
+"2 TB",
+"16 EB"
+],
+[
+"Konvence názvů FAT12/16?",
+"8.3 (8 znaků + 3 přípona)",
+"255 znaků včetně mezer",
+"11.4 (11 znaků + 4 přípona)",
+"Neomezená délka názvu"
+],
+[
+"Kolik znaků pojme jedna LFN položka VFAT?",
+"13",
+"8",
+"255",
+"11"
+],
+[
+"Kolik položek root dir má VFAT16?",
+"Pevně 512",
+"Neomezeně",
+"65 536",
+"13"
+],
+[
+"Kde je root dir ve FAT32?",
+"V datové oblasti (bez omezení položek)",
+"Za FAT2 s pevnou velikostí 512 položek",
+"V MBR na začátku disku",
+"V tabulce MFT jako záznam 5"
+],
+[
+"Výhoda exFAT oproti FAT32?",
+"Soubory nad 4 GB, bitmapa volného místa",
+"Žurnálování a přístupová práva ACL",
+"Šifrování souborů pomocí EFS",
+"Diskové kvóty pro uživatele"
+],
+[
+"Co chybí exFAT oproti NTFS?",
+"Oprávnění a šifrování",
+"Dlouhé názvy souborů",
+"Soubory větší než 4 GB",
+"Bitmapa volného místa"
+],
+[
+"Jaké položky obsahuje každý nový podadresář?",
+". (sám sebe) a .. (rodiče)",
+"Jen .. (odkaz na rodiče)",
+"Záznam $MFT a $Bitmap",
+"Kopie boot recordu"
+],
+[
+"Co je ztracený cluster?",
+"Cluster s daty, na který neukazuje žádný záznam FAT",
+"Cluster, na který ukazují dva různé soubory",
+"Vadný cluster označený hodnotou FFF7h",
+"Volný cluster s hodnotou 0000h"
+],
+[
+"Co je překřížený cluster?",
+"Na jeden cluster ukazují dva záznamy (dva soubory)",
+"Cluster, na který nikdo neukazuje, ale má data",
+"Cluster na konci disku za posledním souborem",
+"Cluster zašifrovaný pomocí EFS"
+],
+[
+"Jak OS ve FAT „smaže“ soubor?",
+"Přepíše 1. znak názvu na E5h a uvolní clustery ve FAT na 0",
+"Přepíše všechna data souboru nulami a cluster označí ve FAT jako volný",
+"Přesune soubor do koše a nic nemaže",
+"Smaže boot record a záznam v MBR"
+],
+[
+"Proč se SSD nedefragmentuje?",
+"Nemá mechanické části a defrag zkracuje životnost – používá se TRIM",
+"Technicky to nejde, protože SSD nemá clustery ani sektory, jen bloky flash paměti",
+"Je to pomalé, trvá to i několik dní",
+"SSD používá FAT, který se nefragmentuje"
+],
+[
+"Metoda přepisu DOD 5220.22-M?",
+"3× přepsání různými vzory",
+"35 průchodů s různými vzory",
+"1× přepsání nulami",
+"7× přepsání náhodnými daty"
+],
+[
+"Kolik průchodů má Guttmanova metoda?",
+"35",
+"3",
+"7",
+"1"
+],
+[
+"Co je žurnálování NTFS?",
+"Záznam změn do $LogFile pro obnovu po havárii",
+"Komprese souborů a složek do souboru $LogFile",
+"Šifrování souborů pomocí EFS",
+"Automatická defragmentace MFT"
+],
+[
+"Co je ACL v NTFS?",
+"Seznam přístupových práv k souboru/složce",
+"Tabulka obsazených clusterů (jako $Bitmap)",
+"Záložní kopie tabulky MFT",
+"Šifrovací klíč pro EFS"
+],
+[
+"Jak se jmenuje šifrování v NTFS?",
+"EFS",
+"BitLocker v FAT",
+"AES-FS",
+"LUKS"
+],
+[
+"Co je MFT?",
+"Hlavní tabulka souborů – každý soubor = 1 záznam",
+"Kopie tabulky FAT, kterou NTFS používá pro zpětnou kompatibilitu",
+"Boot sektor s parametry svazku",
+"Žurnál změn pro obnovu"
+],
+[
+"Kolik % disku je rezerva pro růst MFT?",
+"≈ 12 %",
+"≈ 50 %",
+"≈ 1 %",
+"≈ 25 %"
+],
+[
+"Co obsahuje $MFTMirr?",
+"Kopii prvních 16 záznamů MFT (ve středu disku)",
+"Celou kopii MFT na konci disku pro rychlou obnovu",
+"Žurnál všech změn souborů",
+"Seznam vadných clusterů disku"
+],
+[
+"Co obsahuje $Bitmap?",
+"Mapu obsazení clusterů (1 obsazeno, 0 volno)",
+"Obrázky ikon souborů a náhledy fotografií",
+"Definice všech atributů",
+"Kvóty jednotlivých uživatelů"
+],
+[
+"Co je $BadClus?",
+"Seznam vadných clusterů",
+"Transakční žurnál",
+"Boot sektor svazku",
+"Tabulka velkých písmen"
+],
+[
+"K čemu je $UpCase?",
+"Převod malých na velká písmena pro porovnávání názvů",
+"Šifrování názvů souborů a složek pomocí klíčů uložených v EFS",
+"Kvóty uživatelů na disku",
+"Komprese velkých souborů"
+],
+[
+"Max. velikost NTFS svazku s GPT dle podkladů?",
+"Až 18 EB",
+"2 TB",
+"256 TB",
+"16 TB"
+],
+[
+"Která větev registru obsahuje nastavení přihlášeného uživatele?",
+"HKEY_CURRENT_USER",
+"HKEY_LOCAL_MACHINE",
+"HKEY_USERS",
+"HKEY_CLASSES_ROOT"
+],
+[
+"Která větev obsahuje globální nastavení HW a SW?",
+"HKEY_LOCAL_MACHINE",
+"HKEY_CURRENT_USER",
+"HKEY_CURRENT_CONFIG",
+"HKEY_CLASSES_ROOT"
+],
+[
+"Co neukládá bod obnovení systému?",
+"Uživatelská data (dokumenty, fotky)",
+"Nastavení registru Windows",
+"Nainstalované ovladače",
+"Systémové soubory a konfiguraci"
+],
+[
+"Jak často se automaticky tvoří body obnovení?",
+"Každých 7 dní a před instalacemi",
+"Každou hodinu a při restartu",
+"Jen ručně, když o to uživatel požádá",
+"Při každém startu počítače"
+],
+[
+"Jaký FS potřebuje UEFI pro zavaděč (EFI oddíl)?",
+"FAT32",
+"NTFS",
+"exFAT",
+"ext4"
+],
+[
+"Kolik dat zaadresuje 28bitová LBA (sektor 512 B)?",
+"≈ 137 GB",
+"≈ 2 TB",
+"≈ 8 GB",
+"≈ 128 PB"
+],
+[
+"Kterými nástroji se opravují chyby v registru dle podkladů?",
+"TuneUp Utilities, Norton Utilities, CCleaner",
+"DiskEdit a Paragon Partition Manager",
+"fdisk, format a chkdsk",
+"ipconfig, ping a tracert"
+],
+[
+"Jaké atributy může mít položka adresáře FAT?",
+"Read-only, Hidden, System, Volume label, Subdirectory, Archive",
+"Owner, Group, Other, Read, Write, Execute, Sticky bit, Setuid",
+"ACL, EFS, Compressed, Quota, Journal, Sparse",
+"Only-read, Hidden, Locked, Shared, Temp, Backup"
+]
+],
+"terms": [
+[
+"Cluster",
+"Nejmenší alokační jednotka"
+],
+[
+"FAT tabulka",
+"Řetězce clusterů, 2 kopie"
+],
+[
+"FAT12",
+"Diskety, bez podadresářů"
+],
+[
+"FAT16",
+"Max 2–4 GB, 8.3"
+],
+[
+"FAT32",
+"28b, soubor max 4 GB"
+],
+[
+"VFAT",
+"Dlouhé názvy, 13 znaků/položka"
+],
+[
+"exFAT",
+"Flash, soubory > 4 GB"
+],
+[
+"E5h",
+"Smazaný záznam"
+],
+[
+"Ztracený cluster",
+"Data bez odkazu"
+],
+[
+"Překřížený cluster",
+"Dva soubory na 1 clusteru"
+],
+[
+"$MFT",
+"Hlavní tabulka NTFS"
+],
+[
+"$LogFile",
+"Žurnál"
+],
+[
+"$MFTMirr",
+"Kopie 16 záznamů MFT"
+],
+[
+"$Bitmap",
+"Obsazenost clusterů"
+],
+[
+"EFS",
+"Šifrování v NTFS"
+],
+[
+"HKLM",
+"Globální nastavení HW/SW"
+]
+],
+"open": [
+{
+"q": "Popiš strukturu logického disku FAT a cluster.",
+"k": [
+"Organizační oblast: boot record (VBR, BPB), FAT1 + FAT2, root dir",
+"Datová oblast: clustery",
+"Cluster = skupina sektorů, číslování od 2, vnitřní fragmentace",
+"CHS (sektor od 1) vs. LBA (od 0, 28b → 137 GB, 48b)"
+]
+},
+{
+"q": "Popiš FAT tabulku, typy FAT a uložení souboru.",
+"k": [
+"Hodnoty: 0000h volno, FFF7h vadný, XXXXh další, FFF8h–FFFFh EOF",
+"FAT12 (diskety, bez podadresářů), FAT16 (2–4 GB), FAT32 (28b, 4 GB soubor, 2 TB)",
+"Uložení: najdi volný cluster, zapiš, řetězec ve FAT, EOF, záznam v adresáři",
+"Podadresář = min. 1 cluster, položky . a .."
+]
+},
+{
+"q": "Porovnej FAT, VFAT16 a VFAT32 a řešení dlouhých názvů.",
+"k": [
+"FAT12/16: 8.3 konvence",
+"VFAT: LFN až 255 znaků, 13 znaků na položku + 1 DOS název (DLOUHE~1.TXT)",
+"VFAT16: root max. 512 položek",
+"VFAT32: root v datové oblasti",
+"exFAT: flash, > 4 GB, bitmapa, bez práv"
+]
+},
+{
+"q": "Popiš chyby FAT, mazání, skartaci a defragmentaci.",
+"k": [
+"Ztracený cluster, překřížený cluster, poškozený FAT, fragmentace",
+"Mazání: E5h + clustery na 0, data zůstávají (Recuva, TestDisk)",
+"Skartace: Eraser, WipeInfo; DOD 3×, Guttman 35×",
+"Defragmentace: dfrgui, O&O, Diskeeper; SSD → TRIM"
+]
+},
+{
+"q": "Charakterizuj NTFS a porovnej ho s FAT.",
+"k": [
+"Transakce (rollback) a žurnálování $LogFile",
+"Přemapování vadných clusterů, komprese, ACL, kvóty, EFS",
+"Databázová struktura: MFT, 12 % rezerva, $MFTMirr uprostřed",
+"FAT: kompatibilní, jednoduchý; NTFS: bezpečný, velké svazky (2 TB MBR, 18 EB GPT)"
+]
+},
+{
+"q": "Popiš metasoubory NTFS a registr Windows.",
+"k": [
+"Prvních 16 záznamů MFT začíná $",
+"$MFT, $MFTMirr, $LogFile, $Volume, $AttrDef, $Bitmap, $Boot, $BadClus, $Quota, $UpCase",
+"Registr: HKCR, HKCU, HKLM, HKU, HKCC; regedit",
+"Bod obnovení: systém + registr + ovladače, ne osobní data; každých 7 dní"
+]
+}
+]
+}

@@ -1,0 +1,346 @@
+{
+"n": 5,
+"t": "A/D převodníky",
+"outline": [
+"Charakteristika, použití, přesnost a princip převodu",
+"Analogový vs. digitální signál",
+"Paralelní (flash) převodník",
+"Přírůstkový (čítací) převodník",
+"Sledovací s vratným čítačem",
+"S postupnou aproximací",
+"S dvojitou integrací",
+"Sigma-delta"
+],
+"q": [
+[
+"Co dělá ADC?",
+"Převádí spojitý analogový signál na diskrétní digitální",
+"Převádí digitální signál zpět na analogový",
+"Zesiluje slabý analogový signál ze senzoru",
+"Filtruje šum z analogového signálu před měřením"
+],
+[
+"Kolik úrovní rozliší 10bitový převodník?",
+"1024",
+"256",
+"100",
+"4096"
+],
+[
+"Tři kroky převodu A→D v pořadí?",
+"Vzorkování → kvantování → kódování",
+"Kódování → vzorkování → kvantování",
+"Kvantování → kódování → vzorkování",
+"Filtrace → zesílení → kódování"
+],
+[
+"Digitální signál je…",
+"Nespojitý v čase i v amplitudě",
+"Spojitý v čase i v amplitudě",
+"Spojitý v čase, nespojitý v amplitudě",
+"Nespojitý v čase, spojitý v amplitudě"
+],
+[
+"Analogový signál je…",
+"Spojitý v čase i amplitudě",
+"Nespojitý v čase i v amplitudě",
+"Spojitý jen v čase, kvantovaný",
+"Spojitý jen v amplitudě, vzorkovaný"
+],
+[
+"Kde vzniká kvantizační šum?",
+"Při zaokrouhlení vzorku na nejbližší kvantizační úroveň",
+"Při vzorkování v pravidelných časových intervalech",
+"Při kódování kvantované hodnoty do binárního čísla",
+"Při přenosu digitálního signálu po kabelu"
+],
+[
+"Co je MSB?",
+"Bit s největší váhou",
+"Bit s nejmenší váhou",
+"Paritní bit",
+"Stop bit"
+],
+[
+"Co je clipping?",
+"Signál přesahuje rozsah převodníku a je oříznut",
+"Ztráta vzorků kvůli nízké vzorkovací frekvenci",
+"Přetečení čítače v převodníku s postupnou aproximací",
+"Rušení ze sítě (brum z transformátoru)"
+],
+[
+"Granularita 8bit převodníku pro rozsah 0–5 V?",
+"≈ 0,0195 V (5/256)",
+"≈ 0,625 V (5/8)",
+"≈ 0,0049 V (5/1024)",
+"≈ 0,0391 V (10/256)"
+],
+[
+"Jaký je nejrychlejší typ ADC?",
+"Paralelní (flash)",
+"S dvojitou integrací",
+"Sigma-delta",
+"Přírůstkový"
+],
+[
+"Kolik komparátorů potřebuje n-bitový flash ADC?",
+"2ⁿ − 1",
+"n (jeden na bit)",
+"2ⁿ (o jeden víc)",
+"2n + 1"
+],
+[
+"Kolik komparátorů má 8bitový flash ADC?",
+"255",
+"8",
+"256",
+"16"
+],
+[
+"Jaký kód vytvářejí výstupy komparátorů flash ADC?",
+"Teploměrový",
+"Grayův",
+"BCD kód",
+"Manchester"
+],
+[
+"Proč se flash ADC vyrábí jen 4–8 bitů?",
+"Kvůli velkému počtu komparátorů (2ⁿ − 1)",
+"Protože je převod pomalý (v ms)",
+"Kvůli nepřesnosti kolem nuly",
+"Protože potřebuje integrátor s kondenzátorem"
+],
+[
+"Co řeší kaskádní (pipeline) paralelní převodník?",
+"Snižuje počet komparátorů (např. na 30 místo 255)",
+"Zrychluje převod pod 1 ns na vzorek",
+"Odstraňuje kvantizační šum pomocí filtrace",
+"Zvyšuje vzorkovací frekvenci oversamplingem"
+],
+[
+"Na čem jsou založeny kompenzační převodníky?",
+"Porovnání vstupu se zpětnovazebním napětím z D/A převodníku",
+"Integraci vstupního a referenčního napětí ve dvou fázích",
+"Teploměrovém kódu z řady paralelních komparátorů",
+"Převzorkování signálu a následné decimaci"
+],
+[
+"Kolik komparátorů má kompenzační převodník?",
+"1",
+"2ⁿ − 1",
+"n",
+"Žádný"
+],
+[
+"Jak funguje přírůstkový (čítací) převodník?",
+"Čítač od 0 čítá nahoru (schody), dokud U z DA nedosáhne vstupu",
+"Nastavuje bity od MSB po LSB podle komparátoru, vždy v n krocích",
+"Integruje vstupní napětí ve dvou fázích",
+"Převzorkuje signál a výsledek decimuje"
+],
+[
+"Čím je specifický sledovací převodník?",
+"Vratný čítač čítá nahoru i dolů podle komparátoru",
+"Má 2ⁿ − 1 komparátorů a teploměrový kód",
+"Má pevnou dobu převodu danou počtem bitů",
+"Používá ΔΣ modulaci a číslicový filtr"
+],
+[
+"Nevýhoda sledovacího převodníku?",
+"Špatně reaguje na rychlé změny signálu",
+"Je velmi drahý kvůli mnoha součástkám",
+"Potřebuje 2ⁿ − 1 komparátorů",
+"Má malé rozlišení, nejvýš 4 bity"
+],
+[
+"Převodník s postupnou aproximací nastavuje bity…",
+"Od MSB po LSB",
+"Od LSB po MSB",
+"Všechny najednou",
+"Náhodně"
+],
+[
+"První krok postupné aproximace: DA vytvoří napětí…",
+"Uref / 2",
+"Uref",
+"0 V",
+"Uref / 4"
+],
+[
+"Proč má postupná aproximace pevnou dobu převodu?",
+"Vždy proběhne n kroků (n = počet bitů)",
+"Je řízena integrátorem s pevnou konstantou",
+"Používá paralelní komparátory jako flash",
+"Čítá vždy od nuly až do maximální hodnoty"
+],
+[
+"Proč se u postupné aproximace používá vzorkovací obvod?",
+"Změna vstupu během převodu způsobí chybu",
+"Zvyšuje rychlost převodu na nanosekundy",
+"Je potřeba pro decimaci výstupních dat",
+"Chrání převodník před clippingem signálu"
+],
+[
+"Převodník s dvojitou integrací převádí napětí na…",
+"Časový interval",
+"Frekvenci",
+"Proud",
+"Teploměrový kód"
+],
+[
+"Ve 2. fázi dvojité integrace se integruje…",
+"Referenční napětí opačné polarity (vybíjení)",
+"Znovu vstupní napětí, ale delší dobu",
+"Šum, aby se odečetl od výsledku",
+"Nic, kondenzátor se vybíjí sám přes rezistor"
+],
+[
+"Kde se používá dvojitá integrace?",
+"Multimetry a přesné přístroje",
+"Zvukové karty s vysokým rozlišením",
+"Rychlé osciloskopy (GHz vzorkování)",
+"Videokamery a digitalizace obrazu"
+],
+[
+"Hlavní výhoda dvojité integrace?",
+"Velká přesnost a odolnost proti šumu a brumu",
+"Velmi rychlý převod v řádu nanosekund",
+"Jednoduchá konstrukce s jediným rezistorem",
+"Vhodný pro rychle se měnící signály"
+],
+[
+"Co je oversampling u sigma-delta?",
+"Vzorkování mnohonásobně vyšší frekvencí než fmax",
+"Snížení vzorkovací frekvence na požadovanou hodnotu",
+"Odečtení zpětné vazby z 1bitového DAC",
+"Kódování výstupu do teploměrového kódu"
+],
+[
+"Co je decimace?",
+"Snížení vzorkovací frekvence odstraněním nadbytečných vzorků",
+"Převzorkování signálu mnohonásobně vyšší frekvencí, než je fmax",
+"Zesílení signálu před komparátorem",
+"Kvantování na deset úrovní (decimální)"
+],
+[
+"Kam ΔΣ modulace přesouvá kvantizační šum?",
+"Do vyšších frekvencí mimo užitečné pásmo",
+"Do nízkých frekvencí pod užitečné pásmo",
+"Do stejnosměrné složky, kterou odfiltruje kondenzátor",
+"Nikam – modulace šum úplně odstraní"
+],
+[
+"Rozlišení sigma-delta převodníků?",
+"24–32 bitů",
+"4–8 bitů",
+"1 bit",
+"12 bitů max"
+],
+[
+"Opak ADC je…",
+"DAC (D/A převodník)",
+"Komparátor napětí",
+"Multiplexer (MUX)",
+"Vzorkovací obvod"
+]
+],
+"terms": [
+[
+"Vzorkování",
+"Odběr hodnot v pravidelných časech"
+],
+[
+"Kvantování",
+"Zaokrouhlení na úroveň"
+],
+[
+"Kódování",
+"Převod do binární podoby"
+],
+[
+"Flash ADC",
+"2ⁿ−1 komparátorů, ns"
+],
+[
+"Přírůstkový",
+"Čítač od nuly, schody"
+],
+[
+"Sledovací",
+"Vratný čítač nahoru/dolů"
+],
+[
+"Postupná aproximace",
+"Bity od MSB, n kroků"
+],
+[
+"Dvojitá integrace",
+"Napětí → čas, multimetry"
+],
+[
+"Sigma-delta",
+"Oversampling, decimace, 24–32 b"
+],
+[
+"Granularita",
+"Nejmenší rozlišitelný rozdíl napětí"
+],
+[
+"Clipping",
+"Signál přesáhne rozsah"
+],
+[
+"Teploměrový kód",
+"Výstup komparátorů flash ADC"
+]
+],
+"open": [
+{
+"q": "Charakterizuj AD převodník a princip převodu.",
+"k": [
+"Analog (spojitý) → digitál (diskrétní)",
+"Měření teploty, tlaku, zvuku…; spolupráce s µP",
+"Přesnost: rozlišení (bity), chyby kvantizace, linearity, offsetu, šumu",
+"Vzorkování → kvantování (kvantizační šum) → kódování",
+"Granularita = rozsah / 2ⁿ"
+]
+},
+{
+"q": "Porovnej analogový a digitální signál.",
+"k": [
+"Analog: spojitý v čase i amplitudě, nekonečně stavů, degraduje (VHS, deska)",
+"Vzorkovaný a kvantovaný signál jako mezistupně",
+"Digitál: nespojitý v obou, omezené hodnoty, kopírování bez ztráty, komprese, oprava chyb",
+"Uložení: Flash, CD, HDD, SSD"
+]
+},
+{
+"q": "Popiš paralelní (flash) převodník.",
+"k": [
+"Nejrychlejší, převod v ns",
+"Odporový dělič Uref + 2ⁿ−1 komparátorů",
+"Teploměrový kód → dekodér → binár",
+"Typicky 4–8 bitů",
+"Kaskáda/pipeline snižuje počet komparátorů"
+]
+},
+{
+"q": "Popiš kompenzační převodníky (přírůstkový, sledovací, postupná aproximace).",
+"k": [
+"Porovnání vstupu s napětím z DA převodníku, 1 komparátor",
+"Přírůstkový: čítač od 0 nahoru (schody), zastaví se při Uda ≥ Uvst",
+"Sledovací: vratný čítač, sleduje pomalé změny, rychlé nestíhá",
+"Postupná aproximace: SAR od MSB, Uref/2, n kroků, potřebuje vzorkovací obvod"
+]
+},
+{
+"q": "Popiš převodník s dvojitou integrací a sigma-delta.",
+"k": [
+"Dvojitá integrace: 1. fáze integruje Uvst, 2. fáze vybíjí Uref opačné polarity",
+"Napětí → čas, pomalý, přesný, odolný proti brumu – multimetry",
+"Sigma-delta: oversampling, ΔΣ modulace přesune šum do vysokých frekvencí",
+"Digitální filtr + decimace, 24–32 bitů, nízká spotřeba, pomalejší"
+]
+}
+]
+}

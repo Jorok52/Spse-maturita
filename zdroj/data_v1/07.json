@@ -1,0 +1,337 @@
+{
+"n": 7,
+"t": "Synchronizace procesů",
+"outline": [
+"Problém producent vs. konzument",
+"Kritická sekce: charakteristika, podmínky, ošetření",
+"Aktivní a pasivní čekání",
+"Sdílený prostředek",
+"Řešení: zákaz přerušení, zamykací proměnná, přesné střídání, Peterson, atomická instrukce, sleep/wakeup, semafory",
+"Klasické synchronizační problémy"
+],
+"q": [
+[
+"Kdy producent nesmí vkládat do bufferu?",
+"Když je buffer plný",
+"Když je buffer prázdný",
+"Když konzument právě spí",
+"Když je v bufferu jen jedna položka"
+],
+[
+"Proč count++ není bezpečné bez synchronizace?",
+"Je to několik instrukcí (načti, zvyš, ulož) a může dojít k přepnutí kontextu",
+"Je to jedna atomická instrukce, takže je bezpečné vždy – problém je jen v pomalé cache",
+"Protože proměnná count je uložená jen v cache",
+"Protože inkrementace je pomalá a zdržuje konzumenta"
+],
+[
+"Co je race condition (závodní podmínka)?",
+"Výsledek závisí na pořadí přístupu procesů ke sdíleným datům",
+"Souboj procesů o nejvyšší prioritu v plánovači",
+"Přetečení bufferu, když producent nestíhá konzument",
+"Situace, kdy rychlejší proces vždy vyhraje procesor"
+],
+[
+"Co je kritická sekce?",
+"Část kódu, kde se přistupuje ke sdíleným prostředkům",
+"Část jádra OS, kam smí jen administrátor",
+"Chybový stav, kdy proces čeká na prostředek",
+"Oblast paměti BIOSu chráněná proti zápisu"
+],
+[
+"Podmínka Mutual Exclusion znamená…",
+"V kritické sekci smí být najednou jen jeden proces",
+"Procesy se v kritické sekci přesně střídají",
+"Žádný proces nesmí na vstup čekat",
+"Systém smí mít jen jeden procesor"
+],
+[
+"Podmínka Bounded Waiting (nepřítomnost blokování)?",
+"Proces mimo KS nesmí blokovat jiný proces ve vstupu",
+"Proces smí čekat na vstup libovolně dlouho",
+"Řešení smí fungovat jen pro dva procesy",
+"V kritické sekci se nesmí přerušovat"
+],
+[
+"Aktivní čekání (busy waiting) je…",
+"Proces neustále testuje podmínku a spotřebovává CPU",
+"Proces je uspán a čeká na probuzení jiným procesem",
+"Proces je odložen na disk, dokud se KS neuvolní",
+"Proces je ukončen a po uvolnění KS spuštěn znovu"
+],
+[
+"Pasivní čekání znamená…",
+"Proces se uspí a čeká na probuzení – nešetří CPU zbytečně",
+"Proces neustále testuje proměnnou a spotřebovává CPU",
+"Proces běží naprázdno v cyklu, dokud se KS neuvolní",
+"Proces zakáže přerušení a čeká na konec KS"
+],
+[
+"Které řešení KS používá pasivní čekání?",
+"Řešení zprostředkované OS (sleep, semafory)",
+"Zamykací proměnná (lock)",
+"Petersonovo řešení s proměnnými turn a interested",
+"Atomická instrukce Test-and-Set"
+],
+[
+"Proč je zákaz přerušení nevhodný pro víceprocesorové systémy?",
+"Procesy na jiných CPU zákaz ignorují a vstoupí do KS",
+"Je příliš pomalý a zdržuje přepínání kontextu",
+"Nelze ho na žádném procesoru implementovat",
+"Vyžaduje semafor a podporu operačního systému"
+],
+[
+"Hlavní problém zamykací proměnné?",
+"Dva procesy ji mohou otestovat současně a oba vstoupí (race condition)",
+"Proces nikdy nevstoupí, i když je sekce volná, protože čeká na signál od druhého procesu",
+"Je to pasivní čekání, proces se uspí",
+"Funguje jen pro jeden proces, ne pro dva"
+],
+[
+"Kterou proměnnou přidává přesné střídání?",
+"turn",
+"interested",
+"lock",
+"count"
+],
+[
+"Problém přesného střídání?",
+"Proces čeká, i když je KS volná (porušuje progres)",
+"Dva procesy vstoupí současně (race condition)",
+"Nefunguje pro dva procesy, jen pro jeden",
+"Při přerušení zamrzne celý systém"
+],
+[
+"Pro kolik procesů funguje Petersonovo řešení?",
+"Pro 2",
+"Pro libovolný počet",
+"Pro 1",
+"Pro 5 filozofů"
+],
+[
+"Jaké proměnné používá Peterson?",
+"turn a pole interested[]",
+"lock a pole count[]",
+"value a list",
+"in a out"
+],
+[
+"Příklady atomických instrukcí?",
+"Test-and-Set, Compare-and-Swap",
+"LOAD, STORE (Load/Store)",
+"FORK, EXEC (procesy)",
+"WAIT, SIGNAL v BIOSu"
+],
+[
+"Jak HW zajistí atomicitu instrukce?",
+"Uzamkne přístup k datové sběrnici",
+"Vypne cache procesoru",
+"Zastaví hodinový signál",
+"Restartuje procesor"
+],
+[
+"Problém sleep/wakeup u producent–konzument?",
+"Ztráta signálu (wakeup) mezi testem a uspáním → zamrznutí",
+"Konzument aktivně čeká v cyklu a zbytečně vytěžuje procesor",
+"Vznikne příliš mnoho procesů najednou",
+"Přeteče čítač položek v bufferu"
+],
+[
+"Co obsahuje obecný semafor?",
+"Čítač (value) a frontu čekajících procesů",
+"Jen hodnotu true/false bez fronty",
+"Řídicí bloky PCB a TCB procesů",
+"Adresu obslužné rutiny přerušení (ISR)"
+],
+[
+"Co udělá WAIT na semaforu?",
+"value--, při value < 0 zablokuje proces do fronty",
+"value++, a je-li někdo ve frontě, probudí ho",
+"value se nastaví na 0 a proces vstoupí do KS",
+"Ukončí proces, pokud je value záporná"
+],
+[
+"Co udělá SIGNAL na semaforu?",
+"value++, probudí proces z fronty",
+"value--, při záporné hodnotě uspí proces",
+"Inicializuje semafor na počáteční hodnotu",
+"Smaže frontu a odblokuje všechny procesy"
+],
+[
+"Kdo poskytuje semafory?",
+"Jádro OS",
+"Aplikace",
+"BIOS",
+"Kompilátor"
+],
+[
+"Binární semafor (mutex) nabývá hodnot…",
+"0 (obsazeno) a 1 (volno)",
+"0 až n podle počtu volných míst",
+"−1 (čeká) a 1 (volno)",
+"Libovolných celých čísel"
+],
+[
+"Co je deadlock?",
+"Procesy navzájem čekají na prostředky, které drží ten druhý",
+"Proces nikdy nedostane CPU, protože ho předbíhají jiné",
+"Procesy neustále mění stav, ale nikdo nepostoupí",
+"Proces s vysokou prioritou čeká na proces s nízkou"
+],
+[
+"Co je livelock?",
+"Procesy se snaží vyřešit konflikt, ale navzájem si brání – stále mění stav bez pokroku",
+"Zamrznutí jednoho procesu, který čeká na dokončení I/O operace a blokuje tím ostatní",
+"Ztráta dat při současném zápisu dvou procesů",
+"Přetečení bufferu, když producent nestíhá"
+],
+[
+"Co je inverze priorit?",
+"Proces s vysokou prioritou čeká na prostředek držený procesem s nízkou prioritou",
+"Proces s nízkou prioritou předběhne proces s vysokou prioritou díky časovému kvantu v Round Robin",
+"Otočení pořadí fronty připravených procesů",
+"Uživatel ručně změní priority běžících procesů"
+],
+[
+"Co je starvation (vyhladovění)?",
+"Proces nikdy nedostane přístup ke zdroji",
+"Proces spotřebuje celou volnou paměť",
+"Deadlock dvou procesů nad jedním zdrojem",
+"Ztráta signálu mezi testem a uspáním"
+],
+[
+"Riziko varianty čtenáři–písaři s předností čtenářů?",
+"Stárnutí (hladovění) písařů",
+"Stárnutí (hladovění) čtenářů",
+"Deadlock mezi čtenáři",
+"Nekonzistentní čtení dat"
+],
+[
+"Problém spícího holiče modeluje…",
+"Holič, jedno křeslo, omezená čekárna",
+"5 filozofů a sdílené vidličky",
+"Čtenáře a písaře nad daty",
+"Producenta a konzumenta s bufferem"
+],
+[
+"Kolik filozofů je v klasickém problému?",
+"5",
+"2",
+"4",
+"10"
+],
+[
+"Jak předejít deadlocku večeřících filozofů?",
+"Asymetrie (liší se pořadí brání vidliček) nebo max. 4 u stolu",
+"Přidat šestého filozofa ke stolu",
+"Zakázat jídlo dvěma filozofům natrvalo",
+"Dát všem filozofům nejdřív levou vidličku a pak čekat na pravou"
+],
+[
+"Čím se řeší producent–konzument?",
+"Semafory (volná/obsazená místa) + mutex",
+"Jen zákazem přerušení během zápisu",
+"Přesným střídáním proměnnou turn",
+"Zvětšením bufferu na neomezenou velikost"
+]
+],
+"terms": [
+[
+"Kritická sekce",
+"Kód s přístupem ke sdíleným datům"
+],
+[
+"Race condition",
+"Výsledek závisí na pořadí"
+],
+[
+"Deadlock",
+"Vzájemné čekání"
+],
+[
+"Livelock",
+"Aktivní blokování bez pokroku"
+],
+[
+"Starvation",
+"Proces se nikdy nedostane na řadu"
+],
+[
+"Inverze priorit",
+"High čeká na Low"
+],
+[
+"Peterson",
+"turn + interested[], 2 procesy"
+],
+[
+"Test-and-Set",
+"Atomická instrukce"
+],
+[
+"Semafor",
+"Čítač + fronta, WAIT/SIGNAL"
+],
+[
+"Mutex",
+"Binární semafor 0/1"
+],
+[
+"Aktivní čekání",
+"Neustálé testování"
+],
+[
+"Pasivní čekání",
+"Uspání a probuzení"
+]
+],
+"open": [
+{
+"q": "Popiš problém producent–konzument.",
+"k": [
+"Sdílený buffer s pevnou kapacitou n",
+"Producent nesmí do plného, konzument z prázdného",
+"count++/count-- není atomické → race condition",
+"Ukazatele in/out modulo n (kruhový buffer)",
+"Řešení: semafory + mutex; riziko deadlocku"
+]
+},
+{
+"q": "Co je kritická sekce, jaké má podmínky a jak se ošetřuje?",
+"k": [
+"Kód přistupující ke sdíleným prostředkům",
+"Podmínky: vzájemné vyloučení, nezávislost na počtu CPU, žádné nekonečné čekání, bounded waiting",
+"Řešení: SW aplikační, HW (Test-and-Set), přes OS",
+"Aktivní čekání (testuje, žere CPU) vs. pasivní (uspání)"
+]
+},
+{
+"q": "Popiš řešení kritické sekce s aktivním čekáním.",
+"k": [
+"Zákaz přerušení – jednoduché, ale ne pro více CPU",
+"Zamykací proměnná lock – race condition",
+"Přesné střídání (turn) – porušuje progres",
+"Peterson – turn + interested[], 2 procesy, splní podmínky",
+"Atomická instrukce – zamkne sběrnici, aktivní čekání, problém priorit"
+]
+},
+{
+"q": "Vysvětli sleep/wakeup a semafory.",
+"k": [
+"Sleep/wakeup: ztráta signálu → zamrznutí",
+"Semafor (OS): value + fronta, INIT, WAIT (value--, blok), SIGNAL (value++, probuzení), atomické",
+"Binární semafor/mutex: lock/unlock, 0/1",
+"Problémy: deadlock, starvation, livelock, inverze priorit"
+]
+},
+{
+"q": "Popiš klasické synchronizační problémy.",
+"k": [
+"Producent–konzument: semafory + mutex",
+"Čtenáři–písaři: více čtenářů současně, hladovění písařů",
+"Spící holič: čekárna, race condition",
+"Večeřící filozofové: 5 filozofů, vidličky = semafory, deadlock; prevence asymetrií nebo max. 4"
+]
+}
+]
+}

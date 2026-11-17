@@ -1,0 +1,29 @@
+{
+  "name": "maturitni-deska",
+  "version": "1.0.0",
+  "description": "Maturitní deska – učící hra na maturitní otázky",
+  "main": "main.js",
+  "author": "Maturitni deska",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^37.10.3",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  },
+  "build": {
+    "files": [
+      "main.js",
+      "preload.js",
+      "app.html",
+      "icon.png",
+      "package.json"
+    ],
+    "asar": true
+  }
+}

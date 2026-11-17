@@ -1,0 +1,949 @@
+
+STUDIJNÍ EDICE / INFORMAČNÍ TECHNOLOGIE / 2026
+
+PROGRAMOVÁNÍ
+V JAZYCE C
+Kompletní příprava k maturitě · souvislý výklad · infografiky · ukázky programu
+JAK STUDOVAT U každé kapitoly nejprve pochop schéma, potom projdi vysvětlení a příklady. Nakonec se
+
+zkus bez nápovědy vyjádřit k otázce „Co říct u maturity“.
+
+Obsah
+01–04 ZÁKLADY
+
+05–08 POKROČILÁ TÉMATA
+
+01 Překlad programu, compiler a linker
+
+05 Pole a řetězce
+
+02 Datové typy
+
+06 Funkce a modularita
+
+03 Definice, inicializace, přetypování
+
+07 Struktury a ukazatele
+
+04 Řídicí struktury, větvení a cykly
+
+08 Knihovny a #include
+
+Co v materiálu najdeš: definice základních pojmů, přehledné srovnávací tabulky, příklady kódu v C,
+vysvětlení typických chyb a krátké mluvené shrnutí pro maturitu.
+Materiál vychází z dodaných zápisků; doplňující technická upřesnění jsou zpracována jako vysvětlení a
+příklady. Pokud se formulace v infografice liší od kódu, řiď se ověřeným příkladem v textu.
+
+
+KAPITOLA 01 / 08
+
+Překlad programu, compiler a linker
+Jak se ze zdrojového souboru .c stane program, který dokáže procesor vykonat.
+
+Co je překlad programu
+Program v jazyce C je nejprve zdrojový text v souboru s příponou .c. Procesor sám nedokáže vykonávat
+příkazy zapsané jako if, for nebo printf. Je potřeba je převést na strojové instrukce pro cílový procesor a
+operační systém. Proto je C kompilovaný jazyk: překlad typicky proběhne před spuštěním.
+
+Od zdrojového kódu přes objektové soubory a knihovny ke spustitelnému programu.
+
+Čtyři navazující kroky
+01 Preprocesor zpracuje direktivy začínající #. U #include vloží obsah hlavičky, #define umožní makra a
+#if podmíněný překlad.
+
+02 Compiler zkontroluje syntaxi, typy a další pravidla jazyka a vytvoří přeložený objektový soubor ( .o
+nebo .obj).
+03 Linker propojí objektové soubory, vyřeší odkazy na definice funkcí a potřebné knihovny a sestaví
+spustitelný soubor.
+04 Operační systém program načte do paměti a při spuštění předá řízení jeho vstupnímu bodu.
+Nástroj
+
+Hlavní úloha
+
+Výsledek
+
+Preprocesor
+
+Zpracuje #include, #define, #if
+
+Upravený zdrojový text
+
+Compiler
+
+Přeloží zdroják; kontroluje chyby
+
+Objektový soubor
+
+Linker
+
+Spojuje části programu a knihovny
+
+Spustitelný program
+
+Debugger
+
+Ladění již spuštěného programu
+
+Informace o chování programu
+
+
+PŘÍKLAD ZDROJOVÉHO SOUBORU MAIN.C
+
+#include <stdio.h>
+int main(void) {
+printf("Ahoj, světe!\n");
+return 0;
+}
+
+PŘÍKLAD PŘÍKAZU V TERMINÁLU
+
+gcc main.c -o program # překlad a spojení
+# Ve Windows vznikne obvykle program.exe
+
+Prototyp funkce oznamuje překladači její jméno, návratový typ a parametry dříve, než je funkce
+definována. Překladač tak kontroluje například počet a typ argumentů. IDE (integrované vývojové
+prostředí) poskytuje editor a nástroje pro překlad či ladění, ale není totéž co compiler.
+
+Chyby při tvorbě programu
+Druh chyby
+
+Kdy vzniká
+
+Příklad
+
+Syntaktická
+
+Při překladu
+
+Chybějící středník nebo závorka
+
+Linkovací
+Za běhu
+Logická
+
+Při spojování objektových
+souborů
+Po spuštění programu
+Program běží, ale počítá
+špatně
+
+undefined reference na funkci
+Neplatný přístup do paměti
+Zaměněné = a ==
+
+POZOR C neprovádí automaticky všechny kontroly za běhu; některé chybné přístupy do paměti vedou k
+
+nedefinovanému chování.
+
+CO ŘÍCT U MATURITY „Program v C zapíšu do zdrojového souboru. Preprocesor zpracuje direktivy,
+
+compiler vytvoří objektový kód a linker jej spojí s knihovnami. Rozlišuji chyby syntaktické, linkovací a
+chyby za běhu.“
+
+KAPITOLA 02 / 08
+
+Datové typy
+Co může proměnná obsahovat, jak velkou paměť spotřebuje a proč na tom záleží.
+
+Co datový typ určuje
+Datový typ určuje druh hodnot, jejich rozsah, způsob uložení v paměti a dostupné operace. Například int
+uchovává celá čísla, char malé celočíselné hodnoty často reprezentující znaky a float či double čísla s
+desetinnou částí. void vyjadřuje nepřítomnost hodnoty, například u funkce, která nic nevrací.
+
+
+
+Přehled typů a typických velikostí; skutečné velikosti závisejí na platformě.
+
+Typ
+
+Význam
+
+Typická velikost
+
+char
+
+Znak nebo malá celočíselná hodnota
+
+1B
+
+short
+
+Celé číslo, zpravidla menší rozsah
+
+2B
+
+int
+
+Základní celočíselný typ
+
+4B
+
+long
+
+Celočíselný typ; rozsah závisí na systému
+
+4 nebo 8 B
+
+long long
+
+Celé číslo alespoň 64 bitů
+
+8B
+
+float
+
+Reálné číslo, nižší přesnost
+
+4B
+
+double
+
+Reálné číslo, vyšší přesnost
+
+8B
+
+Tabulka obsahuje běžné velikosti, nikoli záruku na každém počítači. Operátor sizeof vrací velikost objektu
+nebo typu v bajtech; standard jazyka určuje jen minimální požadavky a vztahy mezi některými typy.
+DEFINICE RŮZNÝCH TYPŮ
+
+int pocet = 12;
+char znak = 'A';
+float teplota = 21.5f;
+double pi = 3.141592653589793;
+printf("int: %zu bajtu\n", sizeof(int));
+
+Celá čísla a modifikátory signed / unsigned
+Celočíselné typy ukládají hodnoty přesně v rámci svého rozsahu. Modifikátory short, long a long long mění
+možný rozsah. signed umožňuje záporná i nezáporná čísla; unsigned pouze nezáporná čísla, a tím při stejné
+bitové šířce rozšiřuje horní mez.
+
+
+
+Typ char se označuje jako celočíselný, protože je uložen jako číselný kód. Například znak 'A' mívá v ASCII
+kód 65. Samotný char přitom může být podle implementace znaménkový nebo neznaménkový; signed char
+a unsigned char jsou explicitní varianty.
+ZNAMÉNKO A ZNAK
+
+unsigned int pocet = 400U;
+int rozdil = -3;
+char znak = 'A'; // často číselný kód 65
+
+Float, double a omezená přesnost
+float a double obvykle používají binární plovoucí řádovou čárku. Některá desetinná čísla, například 0,1,
+
+nelze přesně reprezentovat konečným počtem binárních bitů. Vznikají malé odchylky a přímé porovnání
+dvou výsledků pomocí == nemusí být vhodné. float mívá asi 6–7 platných číslic, double asi 15–16.
+REÁLNÉ TYPY
+
+float a = 0.1f;
+double b = 0.1;
+// a a b nejsou zpravidla přesnou hodnotou 1/10
+
+const, lokální a globální proměnné
+• `const` označuje objekt, který nelze měnit přes daný identifikátor nebo odkaz.
+• Lokální proměnná je deklarována uvnitř funkce či bloku; její jméno platí pouze tam.
+• Globální proměnná je definována mimo funkce; může být přístupná ve více funkcích, pokud to
+dovoluje její viditelnost.
+• Statické a globální objekty jsou bez výslovné inicializace v C nulově inicializovány.
+ROZSAH PLATNOSTI
+
+const int MAX = 100;
+int pocetVolani;
+// globální: začne na 0
+void test(void) {
+int lokalni = 5; // platí jen uvnitř funkce
+}
+
+Chyby při výběru typu
+• Přetečení: výsledek překročí rozsah typu. U unsigned se výsledek řídí aritmetikou modulo 2^N;
+přetečení běžného znaménkového typu má nedefinované chování.
+• Ztráta přesnosti: například při převodu double na float nebo int.
+• Nechtěná změna znaménka: míchání signed a unsigned může změnit výsledky porovnání.
+• Spotřeba paměti: zbytečně široké typy mohou zvětšit rozsáhlá pole nebo struktury.
+CO ŘÍCT U MATURITY „Datový typ říká, jaké hodnoty ukládám a kolik místa potřebují. Rozlišuji
+
+celočíselné a reálné typy, signed/unsigned, const a chápu rizika přetečení i ztráty přesnosti.“
+
+
+KAPITOLA 03 / 08
+
+Definice, inicializace, přetypování
+Kdy proměnná vznikne, jak získá hodnotu a co může ztratit při převodu typu.
+
+Deklarace, definice a přiřazení
+Deklarace představí překladači jméno a typ. Definice objekt nebo funkci skutečně vytvoří; u proměnné
+zpravidla vyhradí úložiště. Inicializace nastaví hodnotu v okamžiku vzniku objektu, zatímco přiřazení
+hodnotu změní později.
+
+Definice, inicializace a změna datového typu zobrazené jako práce s pamětí.
+ROZDÍLY V ZÁPISU
+
+extern int citac; // deklarace, definice může být jinde
+int a;
+// definice bez explicitní inicializace
+int b = 10;
+// definice a inicializace
+void f(void) {
+b = 20;
+// pozdější přiřazení
+}
+
+Automatická lokální proměnná bez inicializace má neurčitou hodnotu: její čtení může být nedefinované.
+Globální a statické objekty jsou bez výslovné inicializace nulově inicializovány. Proto je dobrým zvykem
+proměnné inicializovat.
+
+Implicitní a explicitní přetypování
+K implicitnímu převodu dojde automaticky, například když přiřadíme int do float. Explicitní převod
+zapisujeme jako (typ)výraz, pokud chceme určit konkrétní typ výsledku. Převod ovšem není automaticky
+bezpečný — cílový typ může mít jiný rozsah nebo přesnost.
+
+
+DVĚ FORMY PŘEVODU
+
+int a = 10;
+float b = a;
+
+// implicitně 10.0f
+
+float x = 3.9f;
+int y = (int)x;
+
+// explicitně 3, usekne se část
+
+double podil = (double)5 / 2; // 2.5
+int celyPodil = 5 / 2;
+// 2
+
+Převod
+
+Co se stane
+
+Riziko
+
+int → float
+
+Celé číslo se převede na reálné
+
+U velkých čísel ztráta přesnosti
+
+float → int
+
+Desetinná část se odřízne k nule
+
+Překročení rozsahu, ztráta části
+
+double → float
+
+Sníží se přesnost či rozsah
+
+Zaokrouhlení, překročení rozsahu
+
+ukazatel → jiný ukazatel
+
+Změní se interpretace adresy
+
+Neplatné zarovnání nebo přístup
+
+Přetečení a rozdíl mezi hodnotou a ukazatelem
+Při převodu velkého čísla do menšího typu se hodnota nemusí vejít; podle konkrétního typu a konverze
+může být výsledek ztrátový nebo nedefinovaný. U přetypování ukazatele se obvykle nemění samotné
+místo v paměti, ale typ, přes který se k němu přistupuje. Změna typu ukazatele neopravňuje přistupovat k
+libovolné paměti.
+ČASTÁ CHYBA if (x = 1) provede přiřazení a podmínka bude pravdivá. Pro porovnání se používá if (x ==
+
+1).
+
+CO ŘÍCT U MATURITY „Vysvětlím rozdíl mezi deklarací, definicí, inicializací a přiřazením. Znám implicitní
+
+a explicitní převody, například float 3.9 na int 3, a dokážu popsat ztrátu informace.“
+
+KAPITOLA 04 / 08
+
+Řídicí struktury – větvení a cykly
+Jak rozhodování a opakování mění výchozí postupné vykonávání programu.
+
+Tok programu a logická podmínka
+Ve výchozím stavu se příkazy vykonávají sekvenčně — jeden po druhém. Řídicí struktury tento tok mění. V
+C znamená 0 nepravdu, každá nenulová hodnota znamená pravdu. Výrazy v podmínkách mohou být
+porovnání (==, <, >=) i kombinace pomocí &&, || a !.
+
+
+
+Rozhodovací větve if/switch a tři základní cykly.
+
+Větvení if / else if / else
+PODMÍNĚNÉ VĚTVENÍ
+
+int cislo = 2;
+if (cislo == 1) {
+printf("jedna\n");
+} else if (cislo == 2) {
+printf("dva\n");
+} else {
+printf("jiné číslo\n");
+}
+
+Řetězec else if se zkouší teprve tehdy, pokud předchozí podmínky neplatily. Jakmile se některá splní,
+vykoná se její tělo a zbytek řetězce se přeskočí. Samostatné příkazy if se naopak vyhodnocují nezávisle.
+
+Switch, case, default a fall-through
+switch vybírá větev podle hodnoty celočíselného výrazu (včetně char a výčtových typů). case musí
+
+obsahovat konstantní celočíselnou hodnotu. default zpracuje situaci, kdy neodpovídá žádný case. Příkaz
+break ukončí switch; pokud chybí, může program pokračovat příkazy v další větvi — tomu se říká fall-
+
+through.
+VÝBĚR POMOCÍ SWITCH
+
+switch (cislo) {
+case 1: printf("leden\n"); break;
+case 2: printf("únor\n"); break;
+default: printf("jiný měsíc\n");
+}
+
+
+SESKUPENÍ VĚTVÍ PŘES FALL-THROUGH
+
+switch (mesic) {
+case 1: case 3: case 5: case 7:
+case 8: case 10: case 12:
+maximumDni = 31;
+break;
+default:
+maximumDni = 30; // jen zjednodušený příklad
+}
+
+V druhém příkladu jde o vědomě seskupené větve. Při skutečné kontrole kalendáře musí program zvlášť
+řešit únor a ověřit, že číslo měsíce leží mezi 1 a 12.
+
+Cykly while, do while a for
+Cyklus
+
+Kdy se testuje podmínka
+
+Typické použití
+
+while
+
+Před každou iterací
+
+Neznámý počet opakování
+
+do while
+
+Po vykonání těla
+
+Tělo má proběhnout aspoň jednou
+
+for
+
+Před každou iterací, po inicializaci
+
+Čítač, známý nebo řízený počet průchodů
+
+POROVNÁNÍ TŘÍ CYKLŮ
+
+int i = 0;
+while (i < 3) { printf("%d ", i); i++; }
+do { printf("%d ", i); i++; } while (i < 6);
+for (int j = 0; j < 3; j++) {
+printf("%d ", j);
+}
+
+Hlavička for má tři části: inicializace; podmínka; změna. Inicializace proběhne jednou, podmínka se
+zkontroluje před iterací a změna po jejím dokončení. while nemusí proběhnout ani jednou, kdežto do while
+se vykoná minimálně jednou.
+
+break, continue, nekonečný cyklus a chyby
+• break okamžitě ukončí nejbližší cyklus nebo switch.
+• continue přeskočí zbytek aktuální iterace a pokračuje další (u for ještě proběhne krok změny).
+• Nekonečný cyklus vznikne, když se nikdy nesplní ukončovací podmínka; může být záměrný, například
+while (1).
+
+• Mezi časté chyby patří hranice i <= 5 místo i < 5 pro pole s pěti prvky, zapomenuté i++ a nesprávně
+umístěný break.
+CO ŘÍCT U MATURITY „Řídicí struktury mění tok programu. if a switch jsou větvení; while, do while a for
+
+jsou cykly. Rozlišuji testování podmínky, význam break a continue i fall-through.“
+
+
+KAPITOLA 05 / 08
+
+Pole a řetězce
+Jak uložit více hodnot stejného typu a bezpečně přistupovat k jednotlivým prvkům.
+
+Co je pole a jak se indexuje
+Pole tvoří více prvků stejného datového typu pod jedním názvem. Prvky leží souvisle v paměti a
+přistupujeme k nim indexem. První prvek má index 0, poslední prvek pole o délce N má index N - 1. Rozsah
+platných indexů je tedy pro int a[5] přesně 0 až 4.
+
+Indexy od nuly, souvislá paměť, ukazatel na první prvek a znakový řetězec.
+JEDNOROZMĚRNÉ POLE A PRŮCHOD
+
+int a[5] = {10, 20, 30, 40, 50};
+printf("%d\n", a[0]); // 10
+printf("%d\n", a[4]); // 50
+for (int i = 0; i < 5; i++) {
+printf("%d ", a[i]);
+}
+
+Přístup k neexistujícímu prvku (např. a[5] nebo a[-1]) je nedefinované chování. Program může spadnout,
+ale také tiše poškodit jiná data. Jazyk C hranice běžných polí sám nehlídá.
+
+
+
+Jednorozměrné a dvourozměrné pole
+POLE JAKO ŘADA A TABULKA
+
+int radek[3] = {4, 5, 6};
+int tabulka[2][3] = {
+{1, 2, 3},
+{4, 5, 6}
+};
+printf("%d\n", tabulka[1][2]); // 6
+
+Dvourozměrné pole int tabulka[2][3] obsahuje dva řádky po třech prvcích. V paměti jsou všechny prvky
+uloženy souvisle; pro tabulku používáme dva indexy: tabulka[řádek][sloupec].
+
+Vztah pole a ukazatele
+Ve většině výrazů se název pole převádí na ukazatel na první prvek. Proto a často odpovídá adrese &a[0].
+Výraz *(a + 1) čte druhý prvek, stejně jako a[1]. Pole a ukazatel ale nejsou totožné typy ani objekty — pole
+nelze například přiřazením přesunout na jinou adresu.
+UKAZATEL NA PRVNÍ PRVEK
+
+int pole[3] = {10, 20, 30};
+int *ptr = pole;
+printf("%d\n", *ptr);
+// 10
+printf("%d\n", *(ptr + 1)); // 20
+printf("%d\n", pole[1]); // 20
+
+Při předání pole do funkce se obvykle předává adresa prvního prvku, ale počet prvků se sám nepředá.
+Proto přidáváme parametr s délkou.
+POLE JAKO PARAMETR FUNKCE
+
+void vypis(const int *a, int pocet) {
+for (int i = 0; i < pocet; i++)
+printf("%d ", a[i]);
+}
+
+Pole znaků a řetězce
+Řetězec v C je posloupnost znaků ukončená nulovým znakem \0. Výraz char text[] = "Ahoj"; vytvoří pole o
+pěti prvcích: 'A', 'h', 'o', 'j', '\0'. Poslední prvek není viditelný znak, ale označení konce řetězce.
+SPRÁVNĚ UKONČENÝ ŘETĚZEC
+
+char text[] = "Ahoj"; // pole má 5 znaků včetně \0
+printf("%s\n", text);
+// Není správně: char kratke[4] = "Ahoj";
+// V takovém poli nezbyde místo pro ukončovací \0.
+
+UPŘESNĚNÍ K OBRÁZKU Zápis char s[5] = "Ahoj\0"; může v C fungovat: pátý prvek je výslovně nulový znak
+
+a závěrečný implicitní terminátor se do pole velikosti 5 už neuloží. Je však zbytečně matoucí; pro běžný
+řetězec piš jednoduše char s[] = "Ahoj"; nebo char s[5] = "Ahoj";.
+
+
+
+Nejčastější chyby při práci s poli
+• Buffer overflow — zápis za konec pole, např. kopírování příliš dlouhého textu.
+• Chybný index — přístup na zápornou nebo příliš vysokou pozici.
+• Chybějící `\0` — knihovní funkce mohou číst dál za hranici paměti.
+• Nesprávná velikost — pole musí mít dost místa i pro terminátor řetězce.
+CO ŘÍCT U MATURITY „Pole uchovává prvky stejného typu souvisle v paměti a indexuje se od nuly. Umím
+
+popsat vztah pole–ukazatel, předání pole funkci a nulový znak na konci řetězce.“
+
+KAPITOLA 06 / 08
+
+Funkce
+Jak dělit program na smysluplné části a předávat mezi nimi data.
+
+Úloha funkce a modularita
+Funkce je pojmenovaný blok příkazů, který řeší určitý úkol — například spočítá součet, načte data nebo
+něco vypíše. Díky funkcím nemusíme stejný kód opakovat, lépe se orientujeme v programu a snadněji
+opravujeme chyby. Rozdělení do samostatných funkčních částí nazýváme modularita.
+
+Volání funkce, parametry a návrat hodnoty zpět do programu.
+
+Prototyp, definice, tělo a návratová hodnota
+Prototyp sdělí compileru návratový typ, název a parametry funkce před jejím použitím. Definice už
+obsahuje skutečné tělo mezi složenými závorkami. Pokud funkce vrací hodnotu, předá ji volajícímu pomocí
+return. Návratový typ void znamená, že funkce hodnotu nevrací.
+
+
+PROTOTYP, DEFINICE A VOLÁNÍ
+
+int soucet(int a, int b);
+
+// prototyp
+
+int soucet(int a, int b) { // definice
+return a + b;
+}
+int main(void) {
+int vysledek = soucet(3, 4);
+printf("%d\n", vysledek);
+return 0;
+}
+
+Předání hodnotou a změna pomocí ukazatele
+V jazyce C se argumenty vždy předávají hodnotou: funkce dostane kopie předaných hodnot. Když
+například změní parametr int x, původní proměnná volajícího programu se nezmění. Jestliže ale předáme
+ukazatel, funkcí předáváme kopii adresy; přes tuto adresu lze upravit původní objekt.
+HODNOTA VERSUS UKAZATEL
+
+void zmenKopii(int x) {
+x = 20;
+// původní proměnnou nezmění
+}
+void zmenOriginal(int *x) {
+if (x != NULL) *x = 20;
+}
+int a = 5;
+zmenKopii(a);
+// a zůstane 5
+zmenOriginal(&a); // a se změní na 20
+
+Lokální, globální proměnné a parametry
+• Lokální proměnné jsou viditelné pouze v dané funkci nebo bloku.
+• Parametry funkce fungují jako její vlastní lokální proměnné.
+• Globální proměnné se definují mimo funkce a mohou být sdílené; příliš mnoho globálních stavů ale
+ztěžuje údržbu.
+• Vrácení více výsledků lze řešit pomocí ukazatelových parametrů, které nastaví více původních
+objektů.
+FUNKCE VRACEJÍCÍ VÍCE VÝSLEDKŮ PŘES UKAZATELE
+
+void vyhodnot(int a, int b, int *min, int *max) {
+if (min != NULL) *min = (a < b) ? a : b;
+if (max != NULL) *max = (a > b) ? a : b;
+}
+
+Výhody funkčního rozdělení
+Dobře navržená funkce má jasný účel, srozumitelný název a přiměřený počet parametrů. Program je díky
+tomu čitelnější, méně se opakuje kód, lze jej snáze testovat, opakovaně použít a rozšiřovat.
+
+
+
+CO ŘÍCT U MATURITY „Funkce rozdělují program na moduly. Rozliším prototyp a definici, vysvětlím
+
+return a void. Parametry se v C předávají hodnotou; chceme-li měnit původní objekt, předáváme jeho
+adresu.“
+
+KAPITOLA 07 / 08
+
+Struktury a ukazatele
+Jak seskupit různé datové položky a pracovat s jejich adresami v paměti.
+
+Co je ukazatel
+Ukazatel (pointer) je objekt, jehož hodnotou je adresa jiného objektu nebo funkce. Používá se při práci s
+poli, při předávání přístupu k původním datům do funkcí i při dynamickém přidělování paměti. V C je
+ukazatel typovaný — například int *p označuje ukazatel na int.
+
+Struktura Student, vnořená adresa a ukazatel, který na ni odkazuje.
+
+Operátor
+
+Význam
+
+Příklad
+
+&
+
+Získá adresu objektu
+
+p = &cislo;
+
+*
+
+Přístup k objektu přes ukazatel
+
+*p = 20;
+
+.
+
+Položka struktury
+
+student.vek
+
+->
+
+Položka struktury přes ukazatel
+
+s->vek
+
+
+ADRESA A DEREFERENCE
+
+int cislo = 10;
+int *p = &cislo; // p drží adresu cisla
+printf("%d\n", *p); // 10
+*p = 25;
+// změní cislo na 25
+
+Ukazatel je potřeba inicializovat platnou adresou nebo hodnotou `NULL`. Při pokusu o dereferenci
+NULL, neinicializované nebo již uvolněné adresy vzniká nedefinované chování. To může vést k pádu
+
+programu nebo poškození dat.
+
+Struktury: data různého typu pohromadě
+Struktura je složený datový typ, který spojuje související položky různých typů pod jedním názvem.
+Například student má jméno a věk. Klíčové slovo struct uvozuje definici struktury, typedef může vytvořit
+pohodlnou přezdívku pro její typ.
+STRUKTURA A TEČKOVÁ NOTACE
+
+typedef struct {
+char jmeno[50];
+int vek;
+} Student;
+Student student = {"Petr", 18};
+printf("%d\n", student.vek);
+
+Vnořená struktura a řetězení teček
+Jedna struktura může obsahovat jinou. To dává smysl například u adresy uvnitř záznamu studenta; k
+vnořené položce pak přistupujeme postupně více tečkami.
+VNOŘENÁ STRUKTURA
+
+typedef struct {
+char ulice[50];
+int cisloPopisne;
+} Adresa;
+typedef struct {
+char jmeno[50];
+int vek;
+Adresa adresa;
+} Student;
+Student s = {"Eva", 18, {"Hlavní", 12}};
+printf("%d\n", s.adresa.cisloPopisne);
+
+Ukazatel na strukturu a operátor ->
+Pokud máme ukazatel Student *ptr = &student, přistoupíme k věku jako ptr->vek. Tento zápis je ekvivalentní
+(*ptr).vek; závorky jsou nutné, protože tečka má vyšší prioritu než unární hvězdička.
+
+
+ŠIPKOVÁ NOTACE
+
+Student student = {"Petr", 18};
+Student *ptr = &student;
+ptr->vek = 20;
+// totéž: (*ptr).vek = 20;
+
+POZOR NA TYPEDEF Pokud použijeme anonymní typedef struct { ... } Student;, píšeme ukazatel jako Student
+
+*ptr;, ne struct Student *ptr;. Druhý zápis vyžaduje pojmenovaný tag struktury.
+
+Pole struktur a předání do funkce
+Struktury můžeme ukládat i do pole, například Student trida[30];. K položkám konkrétního studenta pak
+přistupujeme výrazem trida[0].vek. Struktura se do funkce může předat hodnotou (vznikne kopie), nebo
+přes ukazatel, který umožní změnit původní data.
+POLE STRUKTUR A ZMĚNA PŮVODNÍCH DAT
+
+void upravVek(Student *student, int novyVek) {
+if (student != NULL) {
+student->vek = novyVek;
+}
+}
+Student trida[30] = {0};
+upravVek(&trida[0], 19);
+
+Dynamická alokace: malloc a free
+Funkce malloc z <stdlib.h> rezervuje za běhu požadovaný počet bajtů a vrátí ukazatel na začátek bloku. Při
+neúspěchu vrátí NULL. Když blok přestaneme potřebovat, musíme jej předat funkci free. Jinak vzniká
+memory leak (únik paměti). Po uvolnění nelze starý ukazatel dále dereferencovat.
+BEZPEČNÉ MINIMUM PRÁCE S MALLOC
+
+#include <stdlib.h>
+int *pole = malloc(5 * sizeof *pole);
+if (pole != NULL) {
+pole[0] = 10;
+free(pole);
+pole = NULL;
+}
+
+• Neinicializovaný ukazatel: může obsahovat neurčitou adresu.
+• NULL dereference: čtení či zápis přes nulový ukazatel je chybné.
+• Dangling pointer: ukazatel odkazuje na již uvolněnou nebo neplatnou paměť.
+• Segmentation fault: možný projev nepovoleného přístupu do paměti, není to však zaručená reakce na
+každou chybu.
+CO ŘÍCT U MATURITY „Struktura sdružuje různé údaje pod jedno jméno. Ukazatel uchovává adresu, & ji
+
+získá a * zpřístupní hodnotu. U struktur používám tečku a šipku, a pro dynamickou paměť znám
+malloc/free i rizika neplatných ukazatelů.“
+
+
+KAPITOLA 08 / 08
+
+Knihovny
+Jak používat existující funkce a rozdělit vlastní projekt do souborů.
+
+Knihovna, hlavička a implementace
+Knihovna je sada již vytvořených funkcí a dalších prvků, které můžeme používat v různých programech.
+Hlavičkový soubor (.h) obvykle obsahuje deklarace funkcí, typů a konstant. Implementace může být v
+souboru .c, objektových souborech nebo přímo ve zkompilované knihovně. Hlavička sama o sobě zpravidla
+nestačí — linker musí najít i skutečné definice funkcí.
+
+Hlavičky, implementace a linker umožňují opakované použití kódu.
+
+Direktiva #include
+Direktiva #include se zpracovává při preprocessingu a vkládá obsah jiného souboru do aktuálního zdroje.
+Zápis s úhlovými závorkami se používá zejména pro standardní hlavičky. Zápis v uvozovkách hledá
+nejprve v adresářích určených pro projektové hlavičky (podrobnosti závisí na překladači).
+DVA ZPŮSOBY INCLUDE
+
+#include <stdio.h> // standardní hlavička
+#include <stdlib.h> // malloc, free
+#include "moje.h" // vlastní hlavička projektu
+
+Compiler versus linker při použití knihovny
+Compiler potřebuje znát deklaraci volané funkce, aby mohl zkontrolovat typ návratové hodnoty a
+argumentů. Linker později hledá implementaci této funkce. Chybějící definice se obvykle projeví chybou
+undefined reference nebo odpovídajícím linkovacím hlášením.
+
+
+Nejčastější standardní hlavičky
+Hlavička
+
+Použití
+
+Příklady
+
+stdio.h
+
+Vstup a výstup
+
+printf, scanf, FILE
+
+stdlib.h
+
+Paměť, převody, ukončení
+
+malloc, free, atoi, exit
+
+string.h
+
+Práce s řetězci a pamětí
+
+strlen, strcpy, strcmp, memcpy
+
+math.h
+
+Matematické funkce
+
+sqrt, pow, sin
+
+time.h
+
+Práce s časem
+
+time, clock
+
+ctype.h
+
+Klasifikace a změna znaků
+
+isdigit, toupper
+
+stdbool.h
+
+Logické typy v C99–C17
+
+bool, true, false
+
+Vlastní knihovna v praxi
+Pro větší projekt je praktické oddělit rozhraní (deklarace v .h) od implementace (definice funkcí v .c).
+Hlavní program pak zahrne jen hlavičku. Stejný modul může být použit i v jiném projektu bez kopírování
+zdrojového textu do každého souboru.
+HLAVIČKOVÝ SOUBOR MATEMATIKA.H
+
+// matematika.h
+#ifndef MATEMATIKA_H
+#define MATEMATIKA_H
+int soucet(int a, int b);
+#endif
+
+IMPLEMENTACE MATEMATIKA.C
+
+// matematika.c
+#include "matematika.h"
+int soucet(int a, int b) {
+return a + b;
+}
+
+POUŽITÍ VLASTNÍ KNIHOVNY
+
+// main.c
+#include <stdio.h>
+#include "matematika.h"
+int main(void) {
+printf("%d\n", soucet(2, 3));
+return 0;
+}
+// překlad: gcc main.c matematika.c -o program
+
+Makra #ifndef, #define a #endif se zde používají jako include guard, aby se deklarace z jedné hlavičky
+nezpracovaly opakovaně při vícenásobném zahrnutí.
+
+
+
+CO ŘÍCT U MATURITY „Knihovna mi umožňuje používat hotové funkce. Hlavička poskytuje deklarace,
+
+implementace obsahuje kód. #include zpracuje preprocesor a linker propojí program s potřebnými
+definicemi.“
+
+RYCHLÉ OPAKOVÁNÍ
+
+Maturitní tahák na jednu stránku
+Ke každému tématu si připrav krátkou odpověď ve třech krocích: definice → princip → jednoduchý
+příklad. Následující přehled ti pomůže projít všechny části bez vynechání důležitých pojmů.
+Téma
+
+Jedna věta k zapamatování
+
+Překlad
+
+Preprocesor → compiler → objektové soubory → linker → program.
+
+Datové typy
+
+Typ určuje význam a rozsah hodnot i její velikost.
+
+Přetypování
+
+Převod může být implicitní nebo explicitní a někdy ztrácí informaci.
+
+Řídicí struktury
+
+if a switch větví; while, do while a for opakují příkazy.
+
+Pole
+
+Prvky stejného typu leží souvisle v paměti a indexují se od 0.
+
+Funkce
+
+Rozdělují program; parametry se v C předávají hodnotou.
+
+Struktury a ukazatele
+
+Struktury sdružují položky, ukazatele ukládají adresy.
+
+Knihovny
+
+Hlavička poskytne deklarace, linker potřebuje implementaci.
+
+Kontrolní otázky
+01 Jaký je rozdíl mezi compilerem a linkerem a co dělá preprocesor?
+02 K čemu je prototyp funkce a jak vypadá chybějící definice při linkování?
+03 Co znamenají signed a unsigned a proč může být float nepřesný?
+04 Jak se liší definice, inicializace a pozdější přiřazení?
+05 Co vrátí 5 / 2 a co (double)5 / 2?
+06 Jaký je rozdíl mezi while a do while?
+07 Co znamená fall-through v příkazu switch?
+08 Proč má pětiprvkové pole indexy 0 až 4?
+09 Proč se musí řetězec ukončovat \0?
+10 Jak změním původní proměnnou uvnitř funkce?
+11 Kdy použiji . a kdy -> u struktury?
+12 Proč musím po malloc zavolat free a co je dangling pointer?
+13 K čemu slouží #include a jak souvisí s knihovnami?
+
+
+

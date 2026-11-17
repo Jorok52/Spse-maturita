@@ -1,0 +1,459 @@
+11. IP adresace a
+směrování v dat. sítích
+01 Třídní adresování
+a) Rozdělení jednotlivých tříd, vyhrazené IP adresy
+02 Pojmy
+a)
+IP a MAC adresa, Síťová karta,
+výchozí brána, všesměrová adresa,
+prefix, maska (podsítě), VLSM, CIDR
+03 Zjištění
+a)
+Počtu podsítí (hostů), všesměrové a
+síťové adresy, velikost bloku, wild card
+maska
+04 Návrh topologie v rámci VLSM
+05 Sumarizace
+06 Charakteristika směrovače a směrovací tabulky
+07 Statické vs. dynamické routování
+08 Směrovací protokoly (RIP, IGRP, EIGRP, OSPF)
+09 Ukázka prostředí Cisco Packet Tracer
+11. IP adresace a směrování v dat. sítích
+IP adresa (Internet Protocol address)
+Je softwarová (logická) adresa, která jednoznačně identifikuje zařízení v síti.
+Slouží k adresování a směrování paketů mezi zařízeními v počítačových sítích, zejména
+v síti Internet.
+Označuje konkrétní umístění zařízení v síti – podobně jako poštovní adresa určuje místo
+doručení dopisu.
+IP adresa verze 4 (IPv4):
+Má 32 bitů (čtyři bajty).
+Bývá zapisována jako čtyři dekadická čísla oddělená tečkami (tzv. decimální zápis),
+např.: 192.168.1.10
+Každé číslo (oktet) může nabývat hodnoty 0 až 255.
+Teoreticky lze vytvořit až 2³² = 4 294 967 296 různých IP adres.
+IP adresa verze 6 (IPv6):
+Má 128 bitů (tj. 4× více bajtů než IPv4).
+Maximální počet adres: 2¹²⁸ = 340 undecilionů (340×10³⁶) – prakticky nevyčerpatelný
+rozsah.
+Zápis v hexadecimálním formátu:
+2001:0db8:85a3:0000:0000:8a2e:0370:7334
+MAC adresa
+MAC adresa (Media Access Control) je hardwarová adresa síťového zařízení.
+Je napevno vypálena výrobcem do síťové karty (NIC – Network Interface Card).
+Každá síťová karta má svou unikátní MAC adresu – tvoří ji 48 bitů (6 bajtů), zapisuje se
+nejčastěji v hexadecimálním formátu: 00:1A:2B:3C:4D:5E
+Používá se pro komunikaci na úrovni datové vrstvy (2. vrstva ISO/OSI), tedy v lokálních
+sítích (LAN).
+Pomocí MAC adres probíhá například ARP překlad (když zařízení zná IP, ale potřebuje
+MAC k odeslání).
+Všesměrová adresa (Broadcast)
+Broadcast adresa je speciální typ adresy, která označuje všechna zařízení v síti
+najednou.
+Používá se pro hromadné odesílání zprávy všem uzlům v rámci určité sítě.
+Broadcast v IP a MAC:
+IP broadcast (v IPv4): adresa celé sítě s host částí samými jedničkami
+Např.: Pro síť 192.168.1.0/24 je broadcast 192.168.1.255
+MAC broadcast adresa: FF:FF:FF:FF:FF:FF (všechny bity jsou jedničky – 48 jedniček)
+Prefix
+Prefix určuje kolik bitů zleva tvoří síťovou část IP adresy (NET ID).
+Zbytek IP adresy slouží pro zařízení uvnitř sítě (HOST ID).
+Zapisuje se pomocí tzv. CIDR zápisu (Classless Inter-Domain Routing) – lomítko za IP
+adresou, následované číslem:
+Např.: 192.168.0.20/24 znamená, že prvních 24 bitů je síťová část.
+Prefix může být v rozsahu 0–32:
+/0 znamená „všechny IP adresy“ (např. pro default route).
+/32 značí přesně jednu konkrétní IP adresu (např. u statického routování).
+11. IP adresace a směrování v dat. sítích
+Maska sítě (subnet mask)
+Maska podsítě (netmask) je také 32bitové číslo, které odděluje síťovou část IP adresy od
+části hostitelské.
+Maska má souvislý blok jedniček (pro síť) následovaný nulami (pro hosty).
+Používá se při směrování k určení, zda cílová adresa leží ve stejné síti.
+Typické příklady masek:
+/24 → 255.255.255.0
+/16 → 255.255.0.0
+/8 → 255.0.0.0
+Maska umožňuje:
+Subnetování – dělení sítě na menší části (podsítě).
+Zvýšení efektivity využití adresního prostoru.
+Zjednodušení směrování pomocí agregace IP bloků (tzv. supernetting).
+VLSM
+VLSM znamená adresování s maskou proměnné délky (Variable Length Subnet Masking).
+Umožňuje rozdělit jednu větší síť (např. /16) na podsítě různých velikostí – podle potřeby
+počtu zařízení v každé části.
+Například:
+Z rozsahu 192.168.0.0/24 lze vytvořit více podsítí např. /26, /28, /30, čímž se šetří IP
+adresy.
+Výhody:
+Efektivní využití adresního prostoru – žádné zbytečné plýtvání adresami.
+Možnost navrhnout přesně tak velké podsítě, jaké potřebujeme – např. 30 adres pro
+jednu kancelář, 14 pro jinou.
+Podmínky použití:
+VLSM nelze použít se staršími směrovacími protokoly jako RIP verze 1 (ten neumí
+přenášet masky).
+VLSM je podporováno protokoly:
+RIP v2 (Routing Information Protocol v2)
+EIGRP (Enhanced Interior Gateway Routing Protocol)
+OSPF (Open Shortest Path First)
+11. IP adresace a směrování v dat. sítích
+CIDR (Classless Inter-Domain Routing)
+Jedná se o moderní způsob zápisu IP adresy spolu s prefixem (maskou), nezávislý na
+třídách A/B/C.
+Zavedeno jako náhrada za zastaralé třídní adresování (Class A/B/C).
+Zapisuje se pomocí lomítka a čísla, které udává počet bitů pro síťovou část adresy
+(prefix).
+Např.: 192.168.1.0/24 (prefix 24 = maska 255.255.255.0)
+Výhody CIDR:
+Zkrácený zápis (např. /24 místo 255.255.255.0)
+Flexibilní adresování bez omezení na třídy A/B/C
+Umožňuje agregaci směrovacích záznamů (tzv. route summarization), což zjednodušuje
+směrovací tabulky.
+Vztah CIDR a VLSM:
+CIDR je nezbytný pro fungování VLSM, protože právě CIDR zápis definuje různě dlouhé
+masky jednotlivých podsítí.
+Oba koncepty umožňují efektivní přidělování a správu IP adres.
+11. IP adresace a směrování v dat. sítích
+Třídní adresování (Classful Addressing)
+Třída A
+Určení: Pro velmi rozsáhlé sítě (např. poskytovatelé internetu).
+První bit prvního oktetu je vždy 0 → Binárně: 0xxx xxxx
+Rozsah adres: 0.0.0.0 až 127.255.255.255
+Počet sítí: 2⁷ = 128 sítí (z toho 1× loopback, 1× rezervováno)
+Počet hostitelů v síti: 2²⁴ - 2 = 16 777 214
+Výchozí maska: 255.0.0.0 → Prefix: /8
+Třída B
+Určení: Pro střední a velké organizace
+První dva bity prvního oktetu: 10 → Binárně: 10xx xxxx
+Rozsah adres: 128.0.0.0 až 191.255.255.255
+Počet sítí: 2¹⁴ = 16 384
+Počet hostitelů v síti: 2¹⁶ - 2 = 65 534
+Výchozí maska: 255.255.0.0 → Prefix: /16
+Třída C
+Určení: Pro malé sítě (např. menší firmy, kanceláře) → V praxi často přidělovaná i
+větším sítím z důvodu šetření A a B adres.
+První tři bity prvního oktetu: 110 → Binárně: 110x xxxx
+Rozsah adres: 192.0.0.0 až 223.255.255.255
+Počet sítí: 2²¹ = 2 097 152
+Počet hostitelů v síti: 2⁸ - 2 = 254
+Výchozí maska: 255.255.255.0 → Prefix: /24
+Třída D
+Určení: Multicastové vysílání (odeslání na více hostitelů najednou)
+První čtyři bity: 1110
+Rozsah adres: 224.0.0.0 až 239.255.255.255
+Nepoužívá se maska podsítě, protože se nejedná o klasické síťování → Formálně se
+někdy uvádí prefix /32
+Použití: Např. IPTV, streamování, videokonference.
+Třída E
+Určení: Experimentální a rezervní účely
+První čtyři bity: 1111
+Rozsah adres: 240.0.0.0 až 255.255.255.255
+Nepoužívá se v běžném provozu – blokovány operačními systémy i routery.
+Speciální adresa 255.255.255.255 je broadcast – zpráva pro všechna zařízení v lokální
+síti.
+11. IP adresace a směrování v dat. sítích
+Práce s IP adresací a podsítěmi
+Zjištění IP adresy sítě
+Vypočítá se bitovým (logickým) součinem (AND) mezi IP adresou hostitele a maskou
+sítě.
+Výsledkem je adresa sítě (Network Address).
+Zjištění broadcast adresy (všesměrová adresa)
+Vypočítá se bitovým součtem (OR) mezi IP adresou a inverzní maskou (wildcard mask).
+Wildcard maska = bitová negace masky sítě (opačné bity).
+IP:
+192.168.1.130 → 11000000.10101000.00000001.10000010
+MASKA:
+255.255.255.0 → 11111111.11111111.11111111.00000000
+WILDCARD: 0.0.0.255 → 00000000.00000000.00000000.11111111
+OR:
+192.168.1.255 → 11000000.10101000.00000001.11111111
+Zjištění počtu hostitelů (hostů) v podsíti
+Vzorec: 2(počet **nemaskovaných** bitů) – 2
+Nemaskovaný bit je bit, který má v masce hodnotu 0 (hostitelská část)
+Odečítáme 2 adresy:
+0 = adresa podsítě
+1 = broadcast adresa
+Příklad:
+Maska /26 → 32 – 26 = 6 nemaskovaných bitů
+2⁶ – 2 = 64 – 2 = 62 hostitelů
+11. IP adresace a směrování v dat. sítích
+Zjištění počtu podsítí
+Vzorec: 2(počet **maskovaných** bitů) – 2
+Maskovaný bit je bit, který má v masce hodnotu 1 a rozšiřuje prefix
+Odečítají se 2 sítě (dříve se to vyžadovalo kvůli omezením, dnes většinou ne).
+Příklad:
+Síť původně třídy C (prefix /24) rozdělená na /26 → maskovaných bitů = 26 – 24 = 2
+2² – 2 = 4 – 2 = 2 podsítě (pozn.: moderní routery podporují i všechny)
+Zjištění velikosti bloku
+Vzorec: 256 – poslední hodnota masky
+→ Udává rozsah IP adres v jedné podsíti.
+Příklad:
+Maska 255.255.255.192 → poslední oktet: 192
+256 – 192 = 64 → velikost bloku je 64 adres
+Zjištění platných adres sítí (subnetů)
+Jsou to násobky velikosti bloku v daném oktetu (typicky posledním).
+Platné adresy sítí začínají vždy hodnotou: 0, blok, 2×blok, 3×blok...
+Příklad pro blok 64:
+0, 64, 128, 192 → 4 možné podsítě /26 v rámci jednoho C-bloku.
+Zjištění všesměrové (broadcast) adresy podsítě
+Vždy poslední adresa v bloku.
+Tj. číslo před začátkem následující sítě.
+Příklad:
+Pro síť 192.168.1.0/26 s blokem 64 → další síť začíná na .64
+→ Broadcast = .63
+Zjištění platných hostitelských adres
+Jsou to všechny adresy mezi:
+Adresa sítě + 1
+Broadcast adresa – 1
+Příklad: Síť: 192.168.1.0/26 → Platní hostitelé: .1 – .62 (62 adres)
+Rozdělení na podsítě (subnetting)
+Cíl: Rozdělit jednu síť na více logických segmentů
+Zvýšení bezpečnosti, efektivita, kontrola provozu
+Není možné využít všechny IP adresy, protože:
+Každá podsíť potřebuje vlastní IP sítě a broadcast
+Používané směrovací protokoly s třídním adresováním:
+RIP (Routing Information Protocol)
+IGRP (Interior Gateway Routing Protocol)
+Pozn.: Tyto protokoly jsou zastaralé – dnes se používá VLSM a protokoly jako OSPF,
+EIGRP (classless).
+11. IP adresace a směrování v dat. sítích
+11. IP adresace a směrování v dat. sítích
+Implementace VLSM
+1. Je nutné znát vztah mezi maskou a velikostí bloku
+Maska podsítě definuje velikost bloku (počítá se pomocí: 256 – poslední oktet masky)
+Např.:
+/26 → maska 255.255.255.192 → blok = 64
+/27 → maska 255.255.255.224 → blok = 32
+2. Blok nesmíš stanovit „od oka“
+Velikost bloku vždy vyplývá z masky – nemůžeš si vymyslet libovolnou hodnotu.
+Maska a blok spolu vždy matematicky souvisejí.
+3. Počítání sítí se dělá od nuly
+První síť vždy začíná na 0.
+Další síť začíná na násobku velikosti bloku.
+Např. při velikosti bloku 64 → 0, 64, 128, 192
+4. Sítě se nesmí překrývat
+Každá podsíť musí mít jedinečný rozsah adres.
+Překryv způsobí nestabilitu směrování a chyby v síti.
+5. Začínáme vždy od největší sítě
+Nejprve rozdělíme adresní prostor pro největší požadovanou síť.
+Dále pokračujeme sítěmi s menšími požadavky.
+Díky tomu minimalizujeme plýtvání adresami.
+11. IP adresace a směrování v dat. sítích
+Příklad:
+Navrhni IP adresaci s použitím VLSM pro sítě 192.168.10.0 třídy C
+11. IP adresace a směrování v dat. sítích
+Sumarizace (Route Summarization)
+Souhrnná (agregační) cesta – slučuje více podsítí do jedné směrovací položky.
+Využívá se především u směrovačů ke zjednodušení směrovacích tabulek.
+Jak to funguje?
+Směrovač má 4 sousední sítě:
+192.168.0.0/24
+192.168.1.0/24
+192.168.2.0/24
+192.168.3.0/24
+Tyto sítě je možné sumarizovat do jedné sítě:
+192.168.0.0/22
+/22 pokrývá adresy od 192.168.0.0 do 192.168.3.255
+Směrovač tak pošle pouze jednu trasu místo čtyř.
+Co je k tomu potřeba:
+1. Znalost velikosti bloků
+Určíš, kolik adres bude sumarizační síť obsahovat.
+Pomocí této velikosti pak vypočítáš masku sumarizační trasy (např. /22, /21…).
+2. Síťová adresa sumarizační routy
+Vždy odpovídá první síti v bloku.
+Sumarizační adresa musí začínat na první možnou adresu, která odpovídá dané velikosti
+bloku.
+11. IP adresace a směrování v dat. sítích
+Kolizní doména
+Část počítačové sítě, kde mohou vznikat kolize při přenosu dat mezi zařízeními.
+V jedné kolizní doméně může v daný čas přenášet data jen jedno zařízení.
+Pokud dvě zařízení vysílají současně → kolize → nutnost opakovaného přenosu.
+Řešení kolizí:
+CSMA/CD (Carrier Sense Multiple Access with Collision Detection) – u kabelových sítí
+(Ethernet)
+CSMA/CA (Collision Avoidance) – u bezdrátových sítí (Wi-Fi)
+Rozšiřující info:
+Každý port přepínače (switch) vytváří vlastní kolizní doménu.
+Naopak rozbočovač (hub) zachovává jednu společnou kolizní doménu pro všechna
+zařízení.
+Funkce
+Rozbočovač (hub)
+Přepínač (switch)
+Typ zařízení
+Pasivní (2. vrstva ISO/OSI)
+Aktivní (2. vrstva ISO/OSI)
+Přenos dat
+Posílá data na všechny porty
+Posílá data jen na cílový port
+Inteligence
+Žádná – jen „opakovač“
+Uchovává si MAC tabulku
+Kolizní doména
+Sdílí jednu společnou kolizní doménu
+Každý port = vlastní kolizní doména
+Využití
+Staré nebo testovací sítě
+Moderní sítě LAN
+Výchozí brána (Default Gateway)
+IP adresa zařízení (nejčastěji routeru), přes kterou odchází data mimo lokální síť.
+Používá se v případě, že cílová IP adresa nepatří do místní podsítě.
+Prakticky:
+Pokud se například zařízení s IP adresou 192.168.1.10/24 pokusí komunikovat s 8.8.8.8,
+použije výchozí bránu, např. 192.168.1.1.
+11. IP adresace a směrování v dat. sítích
+Směrovač (Router)
+Aktivní síťové zařízení pracující na 3. vrstvě ISO/OSI modelu – síťová vrstva.
+Zajišťuje směrování (routing) datových paketů mezi různými sítěmi (subnety).
+Funkce a vlastnosti:
+Má alespoň dva rozhraní (porty) – každé připojené do jiné sítě (např. LAN a WAN).
+Na každém rozhraní má platnou IP adresu z dané podsítě.
+Uchovává směrovací tabulku (routing table) – rozhoduje, kam dále předat paket.
+Jak router zpracovává paket:
+1.Router přijme paket, který obsahuje:
+Zdrojovou IP adresu
+Cílovou IP adresu
+2.Zjistí, zda je cílová IP adresa jeho vlastní – pokud ano, zpracuje ji.
+3.Pokud ne:
+Nahlédne do směrovací tabulky.
+Pokud najde síť odpovídající cílové adrese, odešle paket příslušným rozhraním dál.
+Pokud nenajde odpovídající záznam, zahodí paket (není kam ho směrovat).
+Směrovací (routrovací) tabulka
+Základní nástroj směrovače (routeru) pro rozhodování, kam přeposlat datový paket.
+Obsahuje logickou mapu topologie sítě z pohledu daného směrovače.
+Směrovač podle tabulky vyhodnocuje nejvhodnější cestu k cíli (cílové IP adrese).
+Obsah směrovací tabulky:
+Každý záznam v tabulce obvykle obsahuje následující údaje:
+1. Síťová adresa (Network Destination)
+Identifikuje cílovou síť nebo podsíť, ke které paket směřuje.
+Zapisuje se ve formátu: adresa + maska (např. 192.168.1.0/24).
+Je závislá na použitém směrovacím protokolu (např. RIP, OSPF, EIGRP).
+Směrovač může udržovat více tabulek pro různé protokoly.
+2. Výstupní rozhraní (Interface)
+Určuje konkrétní síťový port (např. FastEthernet0/1, eth0), přes který bude paket
+vyslán.
+Je to směrovačem přímo ovládané rozhraní, připojené do dané sítě nebo směrem ke
+směrovanému cíli.
+3. Metrika (Metric)
+Vyjadřuje „vzdálenost“ k cílové síti – čím nižší hodnota, tím lepší cesta.
+Způsob výpočtu se liší podle směrovacího protokolu:
+RIP: počet skoků (hop count)
+OSPF: šířka pásma (bandwidth)
+EIGRP: kombinace latency, šířky pásma, spolehlivosti aj.
+11. IP adresace a směrování v dat. sítích
+Statické směrování (Static Routing)
+Směrovací záznamy jsou nastavovány ručně administrátorem.
+Nepoužívá žádný směrovací protokol, tudíž nedochází k výměně informací mezi
+směrovači.
+Je vhodné pro menší, stabilní sítě s jednoduchou topologií.
+Výhody:
+Nízké nároky na výpočetní výkon směrovače – žádná režie pro výpočet či aktualizaci
+tabulek.
+➜ Umožňuje použití levnějších routerů.
+Nepoužívá šířku pásma pro směrovací aktualizace.
+➜ Veškerá kapacita linky je dostupná pro data.
+Vyšší bezpečnost:
+Do sítě se směruje pouze to, co je výslovně povoleno.
+Není možné „prolézt“ jinam bez explicitního nastavení.
+Nevýhody:
+Vyžaduje perfektní znalost celé topologie sítě.
+Změna v síti (např. přidání nové podsítě) znamená ruční konfiguraci na všech
+relevantních směrovačích.
+Nereálné ve velkých sítích – správa je složitá, náchylná k chybám.
+Neřeší výpadky automaticky – pokud spoj selže, pakety se zahodí, pokud neexistuje
+záložní statická trasa.
+Zápis statické trasy – příkaz ip route:
+ip route [cílová_síť] [maska] [adresa_dalšího_přeskoku | výstupní_rozhraní]
+[administrativní_vzdálenost] [permanent]
+ip route 172.16.3.0 255.255.255.0 192.168.2.4 (Přidá trasu přes směrovač s IP
+192.168.2.4 - next-hop)
+ip route 172.16.3.0 255.255.255.0 s0/0/0 (Přidá trasu přes výstupní rozhraní s0/0/0)
+Adresa dalšího přeskoku (next-hop address):
+IP adresa směrovače, který je dalším bodem směrem ke vzdálené síti.
+Tento směrovač paket převezme a dále přesměruje.
+Musí být dostupný – ověřeno např. příkazem ping.
+Pokud neexistuje, trasa se nezobrazí ve směrovací tabulce.
+Výstupní rozhraní:
+Místo IP adresy lze uvést název rozhraní (např. FastEthernet0/0, GigabitEthernet0/1).
+V tabulce se pak zobrazuje jako „přímo připojená“ cesta.
+Administrativní vzdálenost (Administrative Distance – AD):
+Vyjadřuje důvěryhodnost trasy – čím nižší číslo, tím spolehlivější.
+Výchozí hodnota:
+1 při použití IP adresy
+0 při použití výstupního rozhraní
+Rozsah hodnot: 0–255 (vyšší = méně důvěryhodná)
+Permanent:
+Volitelný parametr permanent umožňuje:
+Zachování trasy ve směrovací tabulce i při výpadku rozhraní.
+Jinak se trasa při odpojení rozhraní automaticky odstraní
+11. IP adresace a směrování v dat. sítích
+Výchozí směrování
+Umonuje zasílat pakety do vzdálené sítě, která není uvedena ve směrovací tabulce
+Vhodné pro použití v koncových sítích, které mají jednu výstupní cestu – výchozí bránu
+Dynamické směrování
+Automaticky spravuje směrovací tabulky pomocí směrovacích protokolů
+Vyšší zatížení CPU než u statického směrování
+Směrovací protokol určuje pravidla pro komunikaci mezi směrovači a výměnu
+směrovacích informací
+Typy protokolů:
+IGP (Interior Gateway Protocol) – uvnitř jednoho autonomního systému (AS)
+Příklady: RIP, OSPF, EIGRP, IGRP
+EGP (Exterior Gateway Protocol) – mezi různými AS
+Příklady: EGP, BGP
+RIP – Routing Information Protocol
+Distance-vector protokol
+Zasílá celé směrovací tabulky každých 30 sekund
+Výběr nejlepší cesty: počet přeskoků (hop count), max. 15, pak síť = nedosažitelná
+Vhodný pro menší sítě
+RIP v1: třídní adresování (stejná maska)
+RIP v2: beztřídní adresování (VLSM), podpora CIDR
+Automatická sumarizace
+Pomalé reakce na změny v síti
+11. IP adresace a směrování v dat. sítích
+OSPF – Open Shortest Path First
+Link-state protokol
+Otevřený standard (podporován mnoha výrobci)
+Velmi rychlé aktualizace, vhodný i pro velké sítě
+Podpora: VLSM, CIDR, více tras, žádná automatická sumarizace
+Neomezený počet přeskoků
+OSPF AREA:
+Skupina směrovačů se stejným area ID
+Area 0 (backbone) je výchozí
+Ostatní oblasti se připojují k backbone
+OSPF COST:
+Cena cesty = součet cost všech výstupních rozhraní
+Rozmezí 1–65535 (nižší = lepší cesta)
+OSPF komunikace:
+Komunikují pouze sousední zařízení
+Používá multicast (nezatěžuje koncová zařízení)
+Data obsažena v IP hlavičce
+OSPF Router ID:
+Unikátní identifikátor směrovače
+Zvolena nejvyšší IP adresa rozhraní
+Nastavuje se při spuštění routeru (pozdější změny neplatí)
+OSPF HELLO:
+Periodické pakety (každých 10 s) pro nalezení sousedů
+Obsahují seznam nalezených směrovačů
+OSPF výměna dat:
+Pouze mezi přilehlými sousedy
+Jeden je hlavní (vyšší RID)
+Hlavní odešle topologickou databázi
+OSPF směrovací tabulka:
+Vytváří se po aktualizaci topologické databáze
+Zahrnuje nejkratší cestu a adresu dalšího přeskoku
+IGRP – Interior Gateway Routing Protocol
+CISCO distance-vector protokol (předchůdce EIGRP)
+Maximálně 255 přeskoků, výchozí administrativní vzdálenost: 100
+Komplexní metrika: zpoždění, šířka pásma, spolehlivost atd.
+Vhodný i pro větší sítě
+Aktualizace každých 90 sekund
+Využívá AS číslo při aktivaci
+11. IP adresace a směrování v dat. sítích
+EIGRP – Enhanced IGRP
+Hybridní protokol (kombinace distance-vector a link-state)
+Vyvinutý firmou CISCO
+Spolu s OSPF nejpoužívanější a nejrozšířenější směrovací protokol
+Pracuje s autonomním systémem (AS)
+Beztřídní – podpora VLSM, CIDR
+Neposílá stav linky, ale diferenciální aktualizace pouze při změně
+Velmi rychlý a efektivní
+Využívá DUAL algoritmus pro výpočet nejlepší cesty bez smyček
+Úloha dynamického routování:

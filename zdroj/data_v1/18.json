@@ -1,0 +1,397 @@
+{
+"n": 18,
+"t": "Sockety, chlazení, chipset",
+"outline": [
+"Vnitřní struktura a části základní desky",
+"Chipset",
+"Typy a charakteristiky socketů Intel a AMD",
+"Vliv zátěže a frekvence na spotřebu",
+"TDP a návrh chlazení",
+"Typy chlazení CPU, princip heatpipe",
+"Technologie TCC, EIST, Intelligent Power Capability, Cool'n'Quiet, Turbo Boost"
+],
+"q": [
+[
+"Co napájí baterie CR2032 na desce?",
+"RTC hodiny a nastavení BIOS/UEFI",
+"Procesor při výpadku napájení",
+"Ventilátory v pohotovostním režimu",
+"USB porty pro nabíjení telefonu"
+],
+[
+"Co dělá CLK generátor?",
+"Generuje hodinový signál pro synchronizaci CPU, RAM…",
+"Napájí desku stabilním napětím 3,3 V, 5 V a 12 V pro všechny součásti",
+"Chladí čipset a regulátory napětí",
+"Řídí USB a ostatní periferie"
+],
+[
+"Co je chipset?",
+"Logika desky řídící komunikaci CPU s RAM, GPU, disky a periferiemi",
+"Hlavní procesor na základní desce, který vykonává programy i operační systém",
+"Typ operační paměti na základní desce",
+"Napájecí zdroj zabudovaný v desce"
+],
+[
+"Severní most řídil komunikaci…",
+"CPU, RAM a grafiky (MCH)",
+"Disků, USB a ostatních periferií",
+"Zvukové karty a síťového adaptéru",
+"Paměti BIOSu a hodin reálného času"
+],
+[
+"Jak se severní most spojoval s CPU?",
+"FSB (Front Side Bus)",
+"DMI (Direct Media Interface)",
+"USB 2.0",
+"SATA"
+],
+[
+"Šířka FSB?",
+"64 bitů",
+"32 bitů",
+"128 bitů",
+"16 bitů"
+],
+[
+"Kolik přenese 400 MHz FSB?",
+"3,2 GB/s",
+"400 MB/s",
+"1,6 GB/s",
+"25,6 GB/s"
+],
+[
+"Kolikrát za takt přenáší FSB (quad pumped)?",
+"4×",
+"1×",
+"2×",
+"8×"
+],
+[
+"Jižní most obsahuje řadiče…",
+"Disků (ATA, SATA, RAID), USB, PS/2, zvuk, síť",
+"Operační paměti a grafické karty (AGP)",
+"Procesoru a jeho mezipaměti cache",
+"Sběrnice FSB a hodinového signálu"
+],
+[
+"Jakou sběrnicí se propojuje severní a jižní most / CPU a PCH?",
+"DMI",
+"QPI",
+"FSB",
+"ISA"
+],
+[
+"Co nahradilo FSB při přesunu řadiče paměti do CPU?",
+"QPI (Quick Path Interconnect)",
+"DMI (Direct Media Interface)",
+"AGP (Accelerated Graphics Port)",
+"PCI (Peripheral Component Interconnect)"
+],
+[
+"Jak se jmenoval severní most bez řadiče paměti?",
+"IOH (Input/Output Hub)",
+"PCH (Platform Controller Hub)",
+"MCH (Memory Controller Hub)",
+"ICH (I/O Controller Hub)"
+],
+[
+"Propustnost QPI dle podkladů?",
+"Až 25,6 GB/s",
+"Až 3,2 GB/s",
+"Až 1 GB/s",
+"Až 100 GB/s"
+],
+[
+"QPI je…",
+"Full duplex (2 × 20 bitů), přímá komunikace mezi CPU",
+"Half duplex (1 × 64 bitů), sdílená sběrnice",
+"Paralelní 64bit sběrnice s jedním CPU",
+"Sběrnice pro připojení disků a USB"
+],
+[
+"Co je PCH?",
+"Platform Controller Hub – zastává funkci jižního mostu",
+"Severní most s řadičem paměti a grafiky (náhrada za MCH)",
+"Typ socketu pro procesory Intel",
+"Chladič čipsetu s heatpipe"
+],
+[
+"Propustnost DMI 3.0?",
+"Až 4 GB/s",
+"25,6 GB/s",
+"400 MB/s",
+"64 GB/s"
+],
+[
+"Nevýhoda přesunu řadiče paměti do CPU?",
+"Vyšší teplo CPU",
+"Pomalejší RAM",
+"Horší kompatibilita",
+"Více čipů na desce"
+],
+[
+"Technologie Intel socketů?",
+"LGA – plošky na desce, piny v socketu",
+"PGA – piny na procesoru, otvory v socketu",
+"BGA – procesor připájený k desce",
+"Slot – procesor se zasouvá jako karta"
+],
+[
+"Technologie tradičních AMD socketů?",
+"PGA – piny na procesoru",
+"LGA – plošky na procesoru",
+"Slot – zasouvací karta",
+"SIMM – paměťový modul"
+],
+[
+"Socket LGA 1151 podporuje…",
+"Intel 6.–9. generace (Skylake–Coffee Lake)",
+"AMD Ryzen všech generací (Zen až Zen 3)",
+"Intel 4. generace (Haswell)",
+"Intel Pentium II a III"
+],
+[
+"Socket AM4 podporuje…",
+"AMD Ryzen (Zen až Zen 3)",
+"AMD FX a Phenom (AM3+)",
+"Intel Core 6.–9. generace",
+"Jen APU řady Kaveri"
+],
+[
+"Socket pro AMD FX-8350?",
+"AM3+",
+"AM4",
+"FM2+",
+"LGA 2011"
+],
+[
+"Pro jaké CPU je LGA 1155?",
+"Sandy Bridge a Ivy Bridge",
+"Haswell a Broadwell",
+"Skylake a Kaby Lake",
+"Nehalem a Westmere"
+],
+[
+"Co je TDP?",
+"Maximální tepelný výkon (W), podle kterého se volí chlazení",
+"Maximální takt procesoru v Turbo režimu, kterého dosáhne při plné zátěži",
+"Napájecí napětí jádra procesoru (Vcore)",
+"Počet jader a vláken procesoru"
+],
+[
+"Doporučené chlazení pro TDP < 30 W?",
+"Pasivní",
+"Custom vodní",
+"LN2",
+"AIO"
+],
+[
+"Doporučené chlazení pro 95–200 W?",
+"Výkonné aktivní nebo AIO vodní",
+"Pasivní chladič bez ventilátoru",
+"Žádné, stačí proudění ve skříni",
+"Jen teplovodivá pasta bez chladiče"
+],
+[
+"K čemu je teplovodivá pasta?",
+"Vyplní vzduchové mezery mezi CPU a chladičem",
+"Přilepí chladič k procesoru natrvalo",
+"Elektricky izoluje procesor od chladiče",
+"Sama chladí procesor odpařováním"
+],
+[
+"Rozdíl 3pin a 4pin ventilátoru?",
+"4pin má PWM – deska reguluje otáčky",
+"3pin je rychlejší, protože má plné napětí",
+"4pin nemá napájení, jen signál",
+"Žádný, čtvrtý pin je jen zem navíc"
+],
+[
+"Co je AIO?",
+"Uzavřené vodní chlazení (All In One)",
+"Otevřený vodní okruh (custom loop)",
+"Pasivní chladič s heatpipe",
+"Ventilátor zabudovaný do skříně"
+],
+[
+"Čím se chladí při extrémním přetaktování?",
+"Tekutým dusíkem (LN2), suchým ledem",
+"Vodou z kohoutku v otevřeném okruhu",
+"Několika ventilátory na skříni",
+"Silnou vrstvou teplovodivé pasty"
+],
+[
+"Co je uvnitř heatpipe?",
+"Pracovní kapalina (voda, čpavek, alkohol) a knot",
+"Plyn helium pod vysokým tlakem, který odvádí teplo",
+"Vakuum bez jakékoli náplně",
+"Olej, který čerpá malá pumpa"
+],
+[
+"Jak se kapalina vrací v heatpipe?",
+"Kapilárními silami v knotu",
+"Gravitací (nutný sklon)",
+"Elektrickou pumpou",
+"Proudem z ventilátoru"
+],
+[
+"Výhoda heatpipe oproti termosifonu?",
+"Funguje v libovolné orientaci",
+"Potřebuje pumpu, takže je výkonnější",
+"Je těžší a lépe drží teplo",
+"Funguje jen svisle, ale lépe chladí"
+],
+[
+"Co dělá TCC?",
+"Při kritické teplotě vkládá nulové cykly / throttling",
+"Zvýší takt jader nad základní frekvenci, když je dost chlazení",
+"Řídí časování operační paměti",
+"Je to typ socketu pro procesory Intel"
+],
+[
+"Co dělá EIST?",
+"Mění frekvenci a napětí CPU podle zátěže (Intel)",
+"Přetaktuje procesor nad základní takt, když to chlazení dovolí",
+"Řídí otáčky ventilátoru chladiče",
+"Natrvalo vypíná nepoužívaná jádra"
+],
+[
+"Ekvivalent EIST od AMD?",
+"Cool'n'Quiet",
+"Turbo Boost",
+"Precision Boost Overdrive",
+"Hyper-Threading"
+],
+[
+"Co dělá Turbo Boost?",
+"Zvýší takt jader nad základní, dovolí-li teplota a spotřeba",
+"Snižuje napětí a takt, když procesor nic nedělá, aby se šetřila energie",
+"Vypne procesor při kritické teplotě",
+"Přidá procesoru víc vyrovnávací paměti"
+],
+[
+"Co dělá Intelligent Power Capability?",
+"Napájí jen právě potřebné části CPU",
+"Zvýší takt jader při vysoké zátěži",
+"Řídí otáčky ventilátorů podle teploty",
+"Je to typ napájecího zdroje s PFC"
+],
+[
+"Vliv přetaktování?",
+"Vyšší spotřeba a teplo – potřeba lepšího chlazení a zdroje",
+"Nižší spotřeba a teplo, protože procesor dokončí práci rychleji a déle spí",
+"Žádný vliv na spotřebu, jen vyšší výkon",
+"Chladnější procesor díky rychlejší práci"
+]
+],
+"terms": [
+[
+"North Bridge (MCH)",
+"CPU – RAM – GPU"
+],
+[
+"South Bridge",
+"Disky, USB, periferie"
+],
+[
+"FSB",
+"64b, 4× za takt"
+],
+[
+"QPI",
+"Full duplex CPU–CPU, 25,6 GB/s"
+],
+[
+"DMI",
+"Spojení CPU/NB s PCH/SB"
+],
+[
+"IOH",
+"NB bez řadiče paměti"
+],
+[
+"PCH",
+"Moderní náhrada jižního mostu"
+],
+[
+"LGA",
+"Intel – plošky"
+],
+[
+"PGA",
+"AMD – piny na CPU"
+],
+[
+"TDP",
+"Tepelný výkon pro chladič"
+],
+[
+"Heatpipe",
+"Odpar, kondenzace, knot"
+],
+[
+"TCC",
+"Tepelná ochrana, throttling"
+],
+[
+"EIST",
+"Intel úspora takt/napětí"
+],
+[
+"Cool'n'Quiet",
+"AMD úspora"
+],
+[
+"Turbo Boost",
+"Dočasné zvýšení taktu"
+]
+],
+"open": [
+{
+"q": "Popiš části základní desky.",
+"k": [
+"Socket CPU, sloty RAM (DDR4/5), Flash ROM s BIOS/UEFI",
+"CLK generátor, PCIe sloty, napájecí konektory 24pin + 8pin EPS",
+"Přední panel, baterie CR2032 (RTC), I/O konektory",
+"SATA, M.2 NVMe, I/O řadič, sběrnice"
+]
+},
+{
+"q": "Popiš vývoj chipsetu.",
+"k": [
+"Severní most (MCH): CPU, RAM, GPU přes FSB 64b, 4×/takt",
+"Jižní most: disky, USB, PS/2, zvuk; DMI",
+"Řadič paměti v CPU: IOH + QPI (full duplex, 25,6 GB/s)",
+"Plně integrovaný NB: jen PCH, DMI 3.0 (4 GB/s)"
+]
+},
+{
+"q": "Porovnej sockety Intel a AMD.",
+"k": [
+"Intel LGA – plošky, piny v socketu: 1151, 1150, 1155, 1156, 1366, 2011",
+"AMD PGA – piny na CPU: AM4 (Ryzen), AM3+ (FX), FM2+ (APU)",
+"Kompatibilita chladičů, TDP"
+]
+},
+{
+"q": "Popiš TDP a typy chlazení včetně heatpipe.",
+"k": [
+"TDP = max. teplo ve W → volba chladiče",
+"Pasivní (žebra, pasta, < 30 W), aktivní (3pin vs. 4pin PWM), vodní (AIO, custom), extrémní (LN2)",
+"Heatpipe: výparník → pára → kondenzace → knot vrací kapalinu, libovolná orientace",
+"vs. termosifon (gravitace)"
+]
+},
+{
+"q": "Popiš technologie řízení spotřeby a tepla CPU.",
+"k": [
+"TCC: kritická teplota → nulové cykly, throttling",
+"EIST (Intel) a Cool'n'Quiet (AMD): frekvence + napětí dle zátěže",
+"Intelligent Power Capability: napájí jen potřebné části",
+"Turbo Boost: takt nad základní",
+"Přetaktování → vyšší spotřeba, teplo, nároky na zdroj"
+]
+}
+]
+}

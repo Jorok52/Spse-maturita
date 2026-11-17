@@ -1,0 +1,556 @@
+{
+ "n": 1,
+ "t": "Programovací jazyk C",
+ "outline": [
+  "Překlad programu, compiler a linker",
+  "Datové typy",
+  "Definice, inicializace, přetypování",
+  "Řídicí struktury – větvení a cykly",
+  "Pole a řetězce",
+  "Funkce a modularita",
+  "Struktury a ukazatele",
+  "Knihovny a #include"
+ ],
+ "q": [
+  [
+   "Co dělá preprocesor?",
+   "Zpracuje direktivy s # (#include, #define, #if)",
+   "Kontroluje syntaxi a typy a vytvoří objektový soubor",
+   "Spojí objektové soubory s knihovnami do programu",
+   "Načte hotový program do paměti a spustí ho"
+  ],
+  [
+   "Co dělá linker?",
+   "Propojí objektové soubory a knihovny do spustitelného programu",
+   "Zpracuje direktivy #include a #define ve zdrojovém textu",
+   "Kontroluje syntaxi a typy a hlásí chybějící středníky v kódu",
+   "Ladí již spuštěný program a ukazuje hodnoty proměnných"
+  ],
+  [
+   "Správné pořadí překladu programu v C?",
+   "Preprocesor → compiler → linker → spuštění",
+   "Compiler → preprocesor → linker → spuštění",
+   "Linker → preprocesor → compiler → spuštění",
+   "Preprocesor → linker → compiler → spuštění"
+  ],
+  [
+   "Hláška „undefined reference“ na funkci je chyba…",
+   "linkovací – chybí definice funkce",
+   "syntaktická – chybí středník nebo závorka",
+   "za běhu – neplatný přístup do paměti",
+   "logická – zaměněné = a =="
+  ],
+  [
+   "Co oznamuje překladači prototyp funkce?",
+   "Jméno, návratový typ a parametry funkce",
+   "Tělo funkce mezi složenými závorkami",
+   "Seznam knihoven, ve kterých se funkce nachází",
+   "Seznam knihoven, ve kterých funkce je"
+  ],
+  [
+   "Co určuje datový typ?",
+   "Druh a rozsah hodnot, uložení v paměti a dostupné operace",
+   "Jen to, kolik bajtů proměnná zabere v operační paměti počítače",
+   "Jen to, jestli proměnná může být lokální nebo globální",
+   "Jen to, ve které knihovně je proměnná deklarovaná"
+  ],
+  [
+   "Typická velikost typu char?",
+   "1 B",
+   "2 B",
+   "4 B",
+   "8 B"
+  ],
+  [
+   "Typická velikost typu int?",
+   "4 B",
+   "1 B",
+   "2 B",
+   "8 B"
+  ],
+  [
+   "Co umí unsigned oproti signed?",
+   "Jen nezáporná čísla, ale vyšší horní mez",
+   "Jen záporná čísla, ale vyšší dolní mez",
+   "Desetinná čísla se stejnou bitovou šířkou",
+   "Větší bitovou šířku při stejném rozsahu"
+  ],
+  [
+   "Proč je char celočíselný typ?",
+   "Ukládá se jako číselný kód znaku ('A' = 65)",
+   "Protože může obsahovat jen číslice 0 až 9 (ASCII)",
+   "Protože zabírá stejně místa jako typ int",
+   "Protože se do něj nesmí uložit písmeno"
+  ],
+  [
+   "Proč se float/double nemají porovnávat přes ==?",
+   "Některá čísla (např. 0,1) nejde binárně uložit přesně",
+   "Operátor == na reálných číslech způsobí chybu při překladu",
+   "Porovnání reálných čísel vždy vrátí nepravdu",
+   "double se při porovnání převede na int a usekne"
+  ],
+  [
+   "Co dělá deklarace?",
+   "Představí překladači jméno a typ",
+   "Vyhradí paměť a nastaví hodnotu",
+   "Změní hodnotu existující proměnné",
+   "Převede hodnotu na jiný datový typ"
+  ],
+  [
+   "Rozdíl mezi inicializací a přiřazením?",
+   "Inicializace nastaví hodnotu při vzniku, přiřazení ji změní později",
+   "Přiřazení nastaví hodnotu při vzniku, inicializace ji změní později",
+   "Inicializace se smí jen u globálních, přiřazení jen u lokálních",
+   "Je to totéž, jen inicializace se píše se slovem const"
+  ],
+  [
+   "Jakou hodnotu má neinicializovaná lokální proměnná?",
+   "Neurčitou – její čtení může být nedefinované",
+   "Vždy 0, stejně jako globální a statická proměnná",
+   "Vždy -1, aby šla chyba poznat",
+   "Poslední hodnotu z předchozího běhu"
+  ],
+  [
+   "Co vrátí výraz 5 / 2 v C?",
+   "2",
+   "2.5",
+   "3",
+   "2,5"
+  ],
+  [
+   "Co vrátí výraz (double)5 / 2?",
+   "2.5",
+   "2",
+   "3",
+   "2.0"
+  ],
+  [
+   "Co je v y po: float x = 3.9f; int y = (int)x;?",
+   "3",
+   "4",
+   "3.9",
+   "0"
+  ],
+  [
+   "Co udělá if (x = 1)?",
+   "Přiřadí 1 do x a podmínka bude pravdivá",
+   "Porovná x s 1 a vrátí výsledek porovnání",
+   "Ohlásí chybu překladu kvůli jednomu =",
+   "Přiřadí 1 do x a podmínka bude nepravdivá"
+  ],
+  [
+   "Co v C znamená v podmínce hodnota 0?",
+   "Nepravda – každá nenulová hodnota je pravda",
+   "Pravda – každá nenulová hodnota je nepravda",
+   "Chybu – podmínka musí být typu bool",
+   "Nic – podmínka se přeskočí"
+  ],
+  [
+   "Co je fall-through ve switch?",
+   "Bez break program pokračuje příkazy další větve",
+   "Switch se při chybějícím break vyhodnotí znovu od začátku",
+   "Switch se vyhodnotí znovu od první větve",
+   "Program přeskočí všechny zbylé větve"
+  ],
+  [
+   "Který cyklus proběhne vždy aspoň jednou?",
+   "do while",
+   "while",
+   "for",
+   "switch (s default)"
+  ],
+  [
+   "Tři části hlavičky cyklu for?",
+   "Inicializace; podmínka; změna",
+   "Deklarace; přiřazení; return;",
+   "Deklarace; přiřazení; return",
+   "Start; krok; default"
+  ],
+  [
+   "Co dělá break v cyklu?",
+   "Okamžitě ukončí nejbližší cyklus nebo switch",
+   "Přeskočí zbytek iterace a pokračuje další",
+   "Zastaví celý program a vrátí systému kód chyby",
+   "Zastaví program a vrátí kód chyby"
+  ],
+  [
+   "Co dělá continue?",
+   "Přeskočí zbytek iterace a pokračuje další",
+   "Okamžitě ukončí nejbližší cyklus nebo switch",
+   "Vrátí se na začátek funkce a začne znovu",
+   "Pokračuje do další větve ve switchi"
+  ],
+  [
+   "Jaký index má první prvek pole?",
+   "0",
+   "1",
+   "-1",
+   "Záleží na překladači"
+  ],
+  [
+   "Jaké platné indexy má pole int a[5]?",
+   "0 až 4",
+   "1 až 5",
+   "0 až 5",
+   "1 až 4"
+  ],
+  [
+   "Co se stane při přístupu k a[5] u pole int a[5]?",
+   "Nedefinované chování – C hranice nehlídá",
+   "Překladač vždy ohlásí chybu indexu",
+   "Pole se automaticky zvětší o jeden prvek",
+   "Pole se automaticky zvětší o prvek"
+  ],
+  [
+   "Čemu ve výrazech obvykle odpovídá název pole a?",
+   "Ukazateli na první prvek, &a[0]",
+   "Počtu prvků pole (jako sizeof)",
+   "Adrese posledního prvku, &a[4]",
+   "Adrese posledního prvku"
+  ],
+  [
+   "Čím končí řetězec v C?",
+   "Nulovým znakem \\0",
+   "Znakem nového řádku \\n",
+   "Mezerou",
+   "Tečkou"
+  ],
+  [
+   "Kolik prvků má pole char text[] = \"Ahoj\";?",
+   "5",
+   "4",
+   "6",
+   "3"
+  ],
+  [
+   "Proč je char kratke[4] = \"Ahoj\"; špatně?",
+   "Nezbyde místo pro ukončovací \\0",
+   "Pole char se nesmí inicializovat textem",
+   "Řetězec musí být v apostrofech",
+   "Pole musí mít velikost dělitelnou osmi"
+  ],
+  [
+   "Co je funkce?",
+   "Pojmenovaný blok příkazů, který řeší určitý úkol",
+   "Proměnná, která uchovává adresu jiné proměnné",
+   "Soubor s deklaracemi, které zpracuje preprocesor",
+   "Soubor s deklaracemi pro preprocesor"
+  ],
+  [
+   "Rozdíl mezi prototypem a definicí funkce?",
+   "Prototyp oznámí hlavičku, definice obsahuje i tělo",
+   "Definice oznámí hlavičku, prototyp obsahuje i tělo",
+   "Prototyp se píše do .c, definice jen do .h",
+   "Prototyp je pro void funkce, definice pro ostatní"
+  ],
+  [
+   "Jak se v C předávají argumenty funkcím?",
+   "Vždy hodnotou – funkce dostane kopii",
+   "Vždy odkazem – funkce mění originál",
+   "Podle toho, co při spojování určí linker",
+   "Podle toho, co určí linker"
+  ],
+  [
+   "Jak funkcí změníš původní proměnnou?",
+   "Předáš její adresu: zmenOriginal(&a)",
+   "Předáš ji hodnotou: zmenOriginal(a)",
+   "Vrátíš ji z funkce příkazem break",
+   "Vrátíš ji příkazem break"
+  ],
+  [
+   "Jak funkce vrátí více výsledků?",
+   "Přes ukazatelové parametry (int *min, int *max)",
+   "Několika příkazy return napsanými za sebou",
+   "Zapsáním více návratových typů před název funkce",
+   "Vrácením hodnot oddělených čárkou"
+  ],
+  [
+   "Co je ukazatel (pointer)?",
+   "Objekt, jehož hodnotou je adresa jiného objektu",
+   "Proměnná, která obsahuje kopii jiné proměnné",
+   "Datový typ pro uložení více hodnot různých typů",
+   "Číslo řádku, na kterém je proměnná definovaná"
+  ],
+  [
+   "Co dělá operátor &?",
+   "Získá adresu objektu",
+   "Zpřístupní hodnotu na adrese",
+   "Vybere položku struktury",
+   "Uvolní paměť z haldy"
+  ],
+  [
+   "Co dělá operátor * u ukazatele?",
+   "Zpřístupní objekt na adrese (dereferencuje)",
+   "Získá adresu objektu v paměti (jako operátor &)",
+   "Vynásobí adresu velikostí typu",
+   "Vytvoří kopii ukazatele"
+  ],
+  [
+   "Kdy použiješ operátor -> u struktury?",
+   "Když ke struktuře přistupuješ přes ukazatel",
+   "Když přistupuješ přímo k proměnné struktury",
+   "Když definuješ novou strukturu se slovem struct",
+   "Když vytváříš pole struktur"
+  ],
+  [
+   "Co je struktura (struct)?",
+   "Složený typ spojující položky různých typů pod jedno jméno",
+   "Pole prvků stejného typu uložených souvisle v paměti",
+   "Knihovna funkcí ze stdlib.h pro práci se záznamy",
+   "Knihovna funkcí pro práci se záznamy"
+  ],
+  [
+   "Co vrátí malloc při neúspěchu?",
+   "NULL",
+   "0 bajtů paměti",
+   "-1",
+   "Adresu předchozího bloku"
+  ],
+  [
+   "Co je memory leak?",
+   "Paměť z malloc se nikdy neuvolní přes free",
+   "Ukazatel ukazuje na už uvolněnou paměť z malloc",
+   "Ukazatel ukazuje na uvolněnou paměť",
+   "Čtení přes NULL ukazatel"
+  ],
+  [
+   "Co obvykle obsahuje hlavičkový soubor .h?",
+   "Deklarace funkcí, typů a konstant",
+   "Strojový kód už přeložených funkcí knihovny",
+   "Hotový spustitelný program",
+   "Jen funkci main"
+  ],
+  [
+   "Kdy se zpracovává #include?",
+   "Při preprocessingu – vloží obsah souboru",
+   "Při linkování – připojí knihovnu do programu",
+   "Při běhu – načte soubor z disku",
+   "Při ladění – zobrazí hlavičku"
+  ],
+  [
+   "Rozdíl #include <stdio.h> a #include \"moje.h\"?",
+   "<> standardní hlavičky, \"\" nejdřív projektové",
+   "<> projektové hlavičky, \"\" standardní hlavičky",
+   "<> vloží jen deklarace, \"\" vloží i definice",
+   "Žádný – je to jen otázka stylu zápisu"
+  ],
+  [
+   "Co potřebuje compiler a co linker při volání knihovní funkce?",
+   "Compiler deklaraci, linker implementaci",
+   "Compiler implementaci, linker deklaraci",
+   "Oba jen hlavičkový soubor",
+   "Oba jen zdrojový soubor .c"
+  ],
+  [
+   "K čemu je #ifndef / #define / #endif v hlavičce?",
+   "Include guard – hlavička se nezpracuje vícekrát",
+   "Podmíněný překlad jen pro Windows a ne pro Linux",
+   "Definice funkce přímo v hlavičce",
+   "Zakázání vložení hlavičky do main.c"
+  ]
+ ],
+ "terms": [
+  [
+   "Preprocesor",
+   "Zpracuje #include, #define, #if"
+  ],
+  [
+   "Compiler",
+   "Přeloží zdroják na objektový soubor"
+  ],
+  [
+   "Linker",
+   "Spojí objekty a knihovny do programu"
+  ],
+  [
+   "Debugger",
+   "Ladění spuštěného programu"
+  ],
+  [
+   "sizeof",
+   "Velikost typu v bajtech"
+  ],
+  [
+   "unsigned",
+   "Jen nezáporná čísla"
+  ],
+  [
+   "const",
+   "Hodnotu nelze měnit"
+  ],
+  [
+   "Deklarace",
+   "Představí jméno a typ"
+  ],
+  [
+   "Inicializace",
+   "Hodnota při vzniku"
+  ],
+  [
+   "(double)x",
+   "Explicitní přetypování"
+  ],
+  [
+   "Fall-through",
+   "Bez break pokračuje další case"
+  ],
+  [
+   "do while",
+   "Proběhne aspoň jednou"
+  ],
+  [
+   "continue",
+   "Přeskočí zbytek iterace"
+  ],
+  [
+   "\\0",
+   "Konec řetězce"
+  ],
+  [
+   "&",
+   "Adresa objektu"
+  ],
+  [
+   "->",
+   "Položka struktury přes ukazatel"
+  ],
+  [
+   "malloc / free",
+   "Alokace a uvolnění paměti"
+  ],
+  [
+   "Dangling pointer",
+   "Ukazatel na uvolněnou paměť"
+  ],
+  [
+   "Include guard",
+   "#ifndef / #define / #endif"
+  ],
+  [
+   "undefined reference",
+   "Linker nenašel definici"
+  ]
+ ],
+ "open": [
+  {
+   "q": "Překlad programu – preprocesor, compiler, linker.",
+   "k": [
+    "Zdroják v souboru .c; procesor neumí vykonat if/printf přímo → C je kompilovaný jazyk, překlad proběhne před spuštěním",
+    "Preprocesor: zpracuje direktivy s # – #include vloží obsah hlavičky, #define makra, #if podmíněný překlad → upravený zdrojový text",
+    "Compiler: kontroluje syntaxi a typy, vytvoří objektový soubor (.o / .obj)",
+    "Linker: propojí objektové soubory, vyřeší odkazy na definice funkcí a knihovny → spustitelný soubor",
+    "Operační systém program načte do paměti a předá řízení vstupnímu bodu (main)",
+    "Příklad: gcc main.c -o program (ve Windows vznikne program.exe)",
+    "Debugger slouží k ladění spuštěného programu; IDE = editor + nástroje pro překlad a ladění, není to totéž co compiler",
+    "Prototyp funkce oznámí jméno, návratový typ a parametry → překladač kontroluje počet a typ argumentů",
+    "Druhy chyb: syntaktická (při překladu – chybí středník), linkovací (undefined reference), za běhu (neplatný přístup do paměti), logická (zaměněné = a ==)",
+    "C nehlídá všechny chyby za běhu – chybný přístup do paměti = nedefinované chování"
+   ]
+  },
+  {
+   "q": "Datové typy v C.",
+   "k": [
+    "Typ určuje druh hodnot, rozsah, uložení v paměti a dostupné operace",
+    "Celočíselné: char (1 B), short (2 B), int (4 B), long (4 nebo 8 B), long long (8 B, aspoň 64 bitů)",
+    "Reálné: float (4 B, asi 6–7 platných číslic), double (8 B, asi 15–16 číslic)",
+    "void = nepřítomnost hodnoty (funkce nic nevrací)",
+    "Velikosti jsou typické, závisí na platformě; sizeof vrací velikost v bajtech",
+    "signed = záporná i kladná, unsigned = jen nezáporná a vyšší horní mez při stejné šířce",
+    "char je celočíselný – ukládá kód znaku ('A' = 65 v ASCII)",
+    "float/double nejsou přesné (0,1 nejde uložit binárně přesně) → neporovnávat přes ==",
+    "const – hodnotu nelze měnit; lokální proměnná platí jen ve funkci/bloku, globální mimo funkce; globální a statické začínají na 0",
+    "Chyby: přetečení (unsigned modulo 2^N, signed = nedefinované chování), ztráta přesnosti, míchání signed/unsigned, zbytečně velké typy"
+   ]
+  },
+  {
+   "q": "Definice, inicializace a přetypování.",
+   "k": [
+    "Deklarace představí jméno a typ (extern int citac;), definice objekt skutečně vytvoří a vyhradí paměť (int a;)",
+    "Inicializace nastaví hodnotu při vzniku (int b = 10;), přiřazení ji změní později (b = 20;)",
+    "Neinicializovaná lokální proměnná má neurčitou hodnotu; globální a statické jsou nulové → proměnné je dobré inicializovat",
+    "Implicitní převod proběhne automaticky: int → float (float b = a;)",
+    "Explicitní převod: (typ)výraz – (int)3.9f = 3, desetinná část se odřízne k nule",
+    "5 / 2 = 2 (celočíselné dělení), (double)5 / 2 = 2.5",
+    "Rizika: int → float ztráta přesnosti u velkých čísel; float → int odříznutí a překročení rozsahu; double → float zaokrouhlení",
+    "Přetypování ukazatele mění typ přístupu, ne adresu – neopravňuje přistupovat k libovolné paměti",
+    "Častá chyba: if (x = 1) je přiřazení a vždy pravda, porovnání je ==",
+    "Příklad u maturity: float 3.9 na int 3 a popis ztráty informace"
+   ]
+  },
+  {
+   "q": "Řídicí struktury – větvení a cykly.",
+   "k": [
+    "Program jde sekvenčně, řídicí struktury mění tok; 0 = nepravda, nenulová hodnota = pravda",
+    "Podmínky: porovnání ==, <, >= a logické &&, ||, !",
+    "if / else if / else – else if se zkouší jen když předchozí neplatily; samostatné if se vyhodnocují nezávisle",
+    "switch – podle celočíselného výrazu (i char, enum); case musí být konstanta; default když nic nesedí",
+    "break ukončí switch; bez break fall-through do další větve (lze záměrně seskupit case 1: case 3: …)",
+    "while – podmínka před iterací, nemusí proběhnout ani jednou; do while – po těle, aspoň jednou; for – inicializace; podmínka; změna",
+    "for: inicializace jednou, podmínka před iterací, změna po iteraci",
+    "break ukončí nejbližší cyklus/switch, continue přeskočí zbytek iterace (u for proběhne změna)",
+    "Nekonečný cyklus: podmínka se nikdy nesplní, záměrně while (1)",
+    "Chyby: i <= 5 místo i < 5 u pole o 5 prvcích, zapomenuté i++, špatně umístěný break"
+   ]
+  },
+  {
+   "q": "Pole a řetězce.",
+   "k": [
+    "Pole = více prvků stejného typu pod jedním jménem, leží souvisle v paměti",
+    "Indexy od 0, poslední N - 1 → int a[5] má indexy 0 až 4",
+    "Průchod polem cyklem for (int i = 0; i < 5; i++)",
+    "a[5] nebo a[-1] = nedefinované chování – C hranice nehlídá, program spadne nebo tiše poškodí data",
+    "2D pole int tabulka[2][3] = 2 řádky po 3 prvcích, přístup tabulka[řádek][sloupec], v paměti souvisle",
+    "Název pole se ve výrazech převádí na ukazatel na první prvek (a ≈ &a[0]); *(a + 1) = a[1]; pole a ukazatel ale nejsou totéž",
+    "Do funkce se předá adresa prvního prvku bez počtu → přidává se parametr s délkou: void vypis(const int *a, int pocet)",
+    "Řetězec = znaky ukončené \\0; char text[] = \"Ahoj\"; má 5 prvků",
+    "char kratke[4] = \"Ahoj\"; je chyba – nezbyde místo na \\0",
+    "Chyby: buffer overflow (zápis za konec), chybný index, chybějící \\0, malá velikost pole"
+   ]
+  },
+  {
+   "q": "Funkce.",
+   "k": [
+    "Funkce = pojmenovaný blok příkazů řešící úkol; modularita = rozdělení programu na funkční části",
+    "Prototyp: návratový typ, název a parametry před použitím – int soucet(int a, int b);",
+    "Definice obsahuje tělo ve složených závorkách; return předá výsledek volajícímu",
+    "void = funkce nic nevrací; funkce může být s parametry i bez (void)",
+    "Argumenty se v C předávají vždy hodnotou – funkce dostane kopii (zmenKopii(a) a nezmění)",
+    "Změna originálu: předám adresu – zmenOriginal(&a), uvnitř *x = 20 (s kontrolou x != NULL)",
+    "Parametry jsou lokální proměnné funkce; lokální proměnné platí jen ve funkci, globální jsou sdílené (moc globálních ztěžuje údržbu)",
+    "Více výsledků přes ukazatelové parametry: void vyhodnot(int a, int b, int *min, int *max)",
+    "Dobrá funkce: jasný účel, srozumitelný název, přiměřeně parametrů",
+    "Výhody: čitelnost, méně opakovaného kódu, snazší testování, znovupoužití a rozšiřování"
+   ]
+  },
+  {
+   "q": "Struktury a ukazatele.",
+   "k": [
+    "Ukazatel = objekt, jehož hodnotou je adresa jiného objektu nebo funkce; je typovaný (int *p)",
+    "Použití: práce s poli, předání přístupu k datům do funkcí, dynamická paměť",
+    "& získá adresu (p = &cislo), * přistoupí k objektu (*p = 25 změní cislo)",
+    "Ukazatel inicializovat platnou adresou nebo NULL; dereference NULL, neinicializované nebo uvolněné adresy = nedefinované chování",
+    "Struktura = složený typ s položkami různých typů (Student: jmeno, vek); struct, typedef dává přezdívku",
+    "Tečka pro položku (student.vek), vnořená struktura více tečkami (s.adresa.cisloPopisne)",
+    "Šipka přes ukazatel: ptr->vek = (*ptr).vek; závorky nutné, tečka má vyšší prioritu než *",
+    "U anonymního typedef struct { … } Student; píšu Student *ptr;, ne struct Student *ptr;",
+    "Pole struktur Student trida[30]; trida[0].vek; předání hodnotou (kopie) nebo ukazatelem (změna originálu)",
+    "malloc (stdlib.h) rezervuje bajty za běhu, při neúspěchu vrátí NULL; free uvolní, jinak memory leak; po free nastavit NULL",
+    "Chyby: neinicializovaný ukazatel, NULL dereference, dangling pointer, segmentation fault (možný projev, ne záruka)"
+   ]
+  },
+  {
+   "q": "Knihovny a #include.",
+   "k": [
+    "Knihovna = sada hotových funkcí pro více programů",
+    "Hlavička .h obsahuje deklarace funkcí, typů a konstant; implementace je v .c, objektových souborech nebo zkompilované knihovně",
+    "#include zpracuje preprocesor – vloží obsah souboru; <stdio.h> pro standardní, \"moje.h\" pro projektové hlavičky",
+    "Compiler potřebuje deklaraci (kontrola typů), linker implementaci – chybí-li, hlásí undefined reference",
+    "stdio.h: printf, scanf, FILE; stdlib.h: malloc, free, atoi, exit; string.h: strlen, strcpy, strcmp, memcpy",
+    "math.h: sqrt, pow, sin; time.h: time, clock; ctype.h: isdigit, toupper; stdbool.h: bool, true, false",
+    "Vlastní knihovna: rozhraní v .h (matematika.h), implementace v .c (matematika.c), main.c zahrne jen hlavičku",
+    "Překlad: gcc main.c matematika.c -o program",
+    "Include guard #ifndef / #define / #endif – hlavička se nezpracuje vícekrát"
+   ]
+  }
+ ]
+}

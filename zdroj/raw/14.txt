@@ -1,0 +1,495 @@
+14. Organizační struktura HDD OS Windows
+disku na oblasti MBR, EPT, GPT 01 Rozdělení
+typy a odlišnosti, souvislost s instalací OS
+02 Struktura a popis PAT a ETP programem diskedit
+03 Programy pro správu disků ADD, PPM
+04
+Adresování CHS a LBA, souvislost s BIOS
+a UEFI při bootování
+EFI systém partition, vznik, obsah,
+05 Vysvětlení
+souvislost s bootováním a instalací
+14. Organizační struktura HDD OS Windows
+Rozdělení disku na oblasti
+Rozdělení (particionace) pevného disku je proces, při kterém se jeden fyzický disk logicky
+rozdělí na více oddílů (partition). Tyto oddíly se pak v operačním systému tváří jako
+samostatné jednotky (např. C:, D: apod.).
+Důvody pro rozdělení disku:
+Organizace dat – oddělení systémových, pracovních a zálohovacích dat.
+Více operačních systémů – každý OS může být nainstalován na samostatný oddíl.
+Zvýšená bezpečnost a správa – např. obnova systému na jiném oddílu.
+Zjednodušení zálohování a defragmentace.
+Proces tvorby oddílů:
+Nízkoúrovňové formátování (Low-Level Format – provádí výrobce).
+Rozdělení na oddíly – vytvoření tabulky oddílů (např. MBR nebo GPT).
+Vysokoúrovňové formátování – vytvoření souborového systému (NTFS, FAT32…).
+MBR – Master Boot Record
+MBR je tradiční tabulka oddílů, která se používá od počátků PC. Představuje základní
+strukturu pro rozdělení disku a zavedení operačního systému.
+Umístění a struktura:
+Velikost: 512 bajtů
+Fyzické umístění: První sektor disku (Cylinder 0, Head 0, Sector 1 – CHS 0,0,1)
+Obsahuje:
+Zaváděcí (bootovací) kód – 446 B
+Partition table (PaT) – 4 záznamy po 16 B = 64 B
+Zaváděcí signaturu (tzv. boot signature, hodnota 0x55AA) – 2 B
+Vlastnosti MBR:
+Podporuje max. 4 primární oddíly, nebo 3 primární + 1 rozšířený oddíl.
+Rozšířený oddíl (Extended Partition) může obsahovat více tzv. logických disků, které
+jsou řízeny pomocí EPT – Extended Partition Table.
+Velikost jednoho oddílu max. 2 TB (omezení způsobené 32bitovým adresováním LBA).
+Vytváření a správa MBR:
+MBR se nevytváří výrobcem disku, ale až při instalaci prvního OS, případně nástroji
+jako:
+diskpart, diskedit
+Acronis Disk Director
+Paragon Partition Manager
+Při instalaci OS (např. Windows) je možné oddíly vytvořit a MBR automaticky
+inicializovat.
+Součásti MBR:
+Partition Table (PaT) – tabulka se záznamy o oddílech: typ, začátek, konec, aktivní
+příznak.
+Bootloader – základní kód, který zavede OS nebo předá řízení jinému zaváděcímu
+programu.
+14. Organizační struktura HDD OS Windows
+PaT – Partition Table (Tabulka oddílů)
+PaT je součástí MBR a obsahuje informace o všech hlavních oddílech disku.
+Základní charakteristiky:
+Má pouze 4 záznamy, což znamená, že MBR umožňuje maximálně:
+4 primární oddíly, nebo
+3 primární + 1 rozšířený (extended) oddíl
+Každý záznam má velikost 16 bajtů.
+Obsah jednoho záznamu v PaT:
+Typ oddílu (např. NTFS, FAT32, Linux…)
+Příznak aktivního oddílu (bootovací oddíl má příznak 0x80)
+CHS a LBA adresa začátku a konce oddílu
+Velikost oddílu v sektorech
+Funkce v procesu bootování:
+MBR obsahuje malý zaváděcí kód, který:
+Prohledá PaT a hledá aktivní oddíl.
+Na základě jeho startovní adresy (CHS) najde tzv. Boot Record (zaváděcí záznam
+oddílu).
+Nahraje tento kód do operační paměti a předá mu řízení.
+Díky tomu se OS spustí – MBR tedy není samotný OS, ale nástroj k jeho nalezení a
+předání řízení dál.
+14. Organizační struktura HDD OS Windows
+EPT – Extended Partition Table
+EPT je používaná v rámci tzv. rozšířeného oddílu (Extended Partition), který překonává
+omezení pouze 4 záznamů v PaT.
+K čemu slouží:
+Umožňuje vytvoření více než 4 oddílů pomocí logických disků uvnitř jednoho
+rozšířeného oddílu.
+Každý logický disk má svou vlastní EPT, která obsahuje:
+Záznam o logickém disku (jeho začátek a konec).
+Ukazatel (pointer) na další EPT, tedy další logický disk.
+Jak to funguje:
+EPT tabulky jsou propojeny jako jednosměrně vázaný seznam (linked list).
+V každém záznamu EPT je informace:
+O aktuálním logickém disku.
+O umístění následující EPT (pokud existuje další logický disk).
+Díky této řetězové struktuře lze vytvořit prakticky libovolný počet logických disků uvnitř
+jednoho rozšířeného oddílu.
+Struktura
+Funkce
+Omezení
+Propojení
+PaT
+Uchovává info o max. 4
+oddílech
+4 oddíly
+Je součástí MBR
+EPT
+Umožňuje více logických
+disků v extended oddílu
+Jeden extended, ale více
+logických
+Řetěz propojených tabulek
+14. Organizační struktura HDD OS Windows
+Bootování (proces zavádění systému)
+Bootování je proces, při kterém se operační systém načítá z úložného zařízení do
+operační paměti RAM, kde začne běžet.
+Klíčové kroky boot procesu:
+1. Po zapnutí počítače se spustí kód uložený v BIOS/UEFI (firmware základní desky).
+2. Ten provede POST (Power-On Self Test) a ověří funkčnost HW.
+3. Poté podle nastaveného bootovacího pořadí (v BIOS/UEFI setupu) vybere zařízení, ze
+kterého se má systém zavést – např. HDD, SSD, USB, CD/DVD, disketa.
+4. Načte zaváděcí záznam z daného média (např. MBR nebo EFI bootloader).
+5. Spustí zavaděč OS (např. bootmgr, GRUB, EFI loader).
+Zaváděcí záznam (Boot Record)
+Zaváděcí záznam je malý programový kód, který:
+Je načten BIOSem (nebo UEFI) z prvního sektoru vybraného média.
+Nachází se v MBR nebo jako EFI bootloader v systému s GPT.
+Funkce:
+Načte partition table (PaT nebo GPT).
+Najde aktivní oddíl (příznak 0x80) a z něj spustí další fázi bootu.
+Ověřuje, zda je disk bootovatelný (obsahuje potřebné soubory).
+U Windows systémů:
+Obsahuje 2 skryté systémové soubory:
+IO.SYS – inicializace systému a ovladačů.
+MSDOS.SYS – základní součást DOS/Windows jádra.
+Pokud tyto soubory existují, jsou načteny a spuštěny při startu.
+14. Organizační struktura HDD OS Windows
+GPT – GUID Partition Table
+GPT je moderní způsob rozdělení disku, který nahrazuje MBR a je součástí standardu UEFI
+(Unified Extensible Firmware Interface).
+KlíčKlíčové vlastnosti GPT:
+Používá 64bitové adresování (LBA – Logical Block Addressing) místo staršího CHS.
+Umožňuje adresovat disky větší než 2 TiB (2,2 TB) – MBR tuto velikost nepodporuje.
+Podpora až 128 primárních oddílů (MBR zvládne jen 4).
+4 oddíly jsou vyhrazené systémem (např. EFI System Partition, Microsoft Reserved
+Partition apod.).
+Záložní kopie GPT se ukládá na konec disku, což umožňuje obnovu tabulky v případě
+poškození hlavní kopie.
+Kompatibilita:
+GPT není podporován ve Windows XP a starších 32bit systémech (bootování z GPT
+vyžaduje 64bitový OS a UEFI).
+Moderní OS jako Windows 10/11, Linux, macOS GPT plně podporují.
+Vlastnost
+MBR
+GPT
+Max. velikost disku
+2 TiB
+9,4 ZB (teoreticky)
+Max. počet oddílů
+4 primární / 3 + 1 rozšířený
+128 primárních
+Adresování
+CHS / 32bit LBA
+64bit LBA
+Umístění tabulky
+Začátek disku
+Začátek i konec disku
+Kompatibilita
+Starší systémy (BIOS, Win XP)
+Nové systémy (UEFI, Win 10/11)
+14. Organizační struktura HDD OS Windows
+Program DiskEdit – práce s PaT a EPT
+Co je DiskEdit:
+Nástroj (dříve součást Norton Utilities, dnes existují i jiné hex editory), který umožňuje
+nízkoúrovňovou editaci disku.
+Umí pracovat s disky jak ve fyzickém módu (celé sektory nezávisle na OS), tak v
+logickém módu (přes souborový systém OS).
+Práce s Partition Table (PaT) v DiskEditu
+Co umí:
+Umožňuje přímo editovat MBR a jeho Partition Table (PaT) v prvním sektoru (CHS 0-01).
+To znamená:
+Přímý přístup k údajům o primárních a rozšířených oddílech.
+Změnu typů oddílů, aktivního příznaku (boot flag), začátku a délky oddílů.
+Možnost ručně opravit nebo smazat záznamy – užitečné při obnově dat nebo čištění
+disku.
+Struktura záznamu v hexa:
+Každý ze 4 záznamů v PaT má 16 bajtů.
+Uvádí se zde:
+Typ oddílu (např. NTFS = 07h)
+Boot flag (aktivní oddíl = 80h)
+Adresy počátku a konce (CHS + LBA)
+Práce s EPT (Extended Partition Table) v DiskEditu
+V rámci rozšířeného oddílu lze navigovat mezi EPT tabulkami uloženými na začátku
+každého logického disku.
+DiskEdit umožňuje:
+Procházet řetězec EPT tabulek (ukazatele na další EPT).
+Prohlížet nebo upravovat zaváděcí záznamy (Boot Record) každého logického disku.
+Přímo měnit ukazatele začátku a délky logických disků.
+Zobrazení sektorů – RAW MODE
+Program standardně zobrazuje obsah sektorů v HEXA a ASCII kódu – tzv. RAW MODE.
+Umožňuje přesnou analýzu a detekci chyb nebo dat.
+Stav diskových sektorů:
+Po správném formátování by měl být obsah všech sektorů nastaven na nuly (HEX: 00).
+Poškozené nebo chybové sektory mohou mít:
+Nenulové hodnoty
+Nestandardní obsah, např. systémové znaky, chybný kód nebo špatné označení.
+Některé utilitky označují vadné sektory jako „bad blocks“ – v DiskEditu viditelné přes
+HEX.
+14. Organizační struktura HDD OS Windows
+Acronis Disk Director
+Profesionální nástroj pro pokročilou správu pevných disků a oddílů.
+Vhodný pro správce systémů, IT techniky, ale i pokročilé domácí uživatele.
+Podporuje moderní operační systémy včetně Windows 8 a novějších.
+Hlavní funkce:
+1. Vytváření, mazání a úprava diskových oddílů
+Může měnit velikost oddílu bez ztráty dat.
+Možnost spojování a rozdělování oddílů.
+2. Obnova zaváděcí stopy (MBR/bootloader)
+Např. po selhání systému nebo neúspěšné instalaci OS.
+Schopnost opravit nebo přepsat poškozený boot sektor.
+3. Detekce a obnova ztracených clusterů a oddílů
+Pomáhá najít „ztracené“ nebo chybně označené části disku.
+Umožňuje obnovit oddíl po náhodném smazání, poškození nebo chybě disku.
+4. Defragmentace
+Uspořádání dat na disku pro zvýšení výkonu (hlavně u HDD).
+5. Záchrana dat
+Např. po havárii systému, útoku malware nebo chybě souborového systému.
+14. Organizační struktura HDD OS Windows
+Paragon Partition Manager
+Alternativa k Acronisu, zaměřená na spolehlivou správu diskových oddílů.
+Vhodný pro domácí i profesionální použití.
+Přehledné uživatelské rozhraní, dostupný i ve free verzi s omezenými funkcemi.
+Hlavní funkce:
+Tvorba, mazání, změna velikosti, slučování oddílů
+Rychlé a bezpečné přeuspořádání dat.
+Konverze souborových systémů
+Umožňuje převádět mezi:
+FAT16 ↔ FAT32
+FAT32 ↔ NTFS
+Bez nutnosti formátování (zachování dat).
+Záloha a obnova oddílů
+Možnost vytvoření image disku nebo oddílu.
+Záchrana systému a bootování
+Obsahuje bootovací nástroje pro obnovu při selhání systému.
+Funkce
+Acronis Disk Director
+Paragon Partition Manager
+Tvorba/mazání oddílů
+Ano
+Ano
+Obnova MBR a boot
+sektoru
+Ano
+Ano
+Obnova ztracených oddílů
+Ano
+Ano
+Defragmentace
+Ano
+Ne (většinou)
+Konverze FAT ↔ NTFS
+Ne (ne přímo)
+Ano
+Podpora moderních OS
+Ano (vč. Win8 a novějších)
+Ano
+Záchrana dat
+Ano
+Ano
+14. Organizační struktura HDD OS Windows
+Správa disku ve Windows
+Kde se nachází:
+Přístup: Ovládací panely → Nástroje pro správu → Správa počítače → Správa disků
+(nebo: diskmgmt.msc přes Spustit / Win+R)
+Co umožňuje:
+Zmenšování, rozšiřování a vytváření oddílů
+Např. z volného místa lze vytvořit nový oddíl bez nutnosti formátovat celý disk.
+Zmenšit svazek – umožní zmenšit existující oddíl a vytvořit nealokované místo.
+Rozšířit svazek – sloučí nealokované místo zpět k oddílu.
+Vytváření nových oddílů a jejich formátování
+Podporované souborové systémy ve Windows 8 a novějších:
+NTFS – pro plnohodnotné použití ve Windows (práva, šifrování, komprese).
+exFAT – vhodné pro flash disky a externí zařízení s podporou větších souborů (bez
+omezení 4 GB jako u FAT32).
+Nastavení sdílení disků
+Možnost přiřadit písmeno jednotky, měnit název, nebo nastavit sdílení ve Windows
+síti.
+Inicializace disku
+Nový fyzický disk musí být inicializován jako MBR nebo GPT, než lze vytvořit oddíly.
+Programy pro údržbu a optimalizaci disku v OS Windows
+CCleaner
+Nástroj pro čištění a údržbu systému, oblíbený pro svou jednoduchost.
+Funkce:
+Odstranění nepotřebných dočasných souborů (cache, logy, historie…).
+Vyčištění registrů od neplatných položek, zbytků po odinstalovaných programech.
+Správa spuštěných programů při startu systému.
+Odebrání nainstalovaných programů přímo z rozhraní.
+TuneUp Utilities (dnes AVG TuneUp)
+Sada nástrojů pro zvýšení výkonu systému a jeho dlouhodobou optimalizaci.
+Funkce:
+Automatická údržba – pravidelné čištění systému a opravování problémů.
+Defragmentace registru – slouží k jeho zrychlení a zmenšení.
+Deaktivace nepotřebných procesů a služeb, které zpomalují PC.
+Defraggler
+Nástroj od Piriform (tvůrce CCleaneru) pro defragmentaci disků a souborů.
+Funkce:
+Defragmentace celého disku nebo konkrétních složek a souborů – užitečné např. pro
+velké databáze.
+Defragmentace volného místa – pomáhá předejít fragmentaci nových dat.
+Kontrola disku z hlediska logických chyb a špatných sektorů (funkce „analyzovat
+disk“).
+14. Organizační struktura HDD OS Windows
+RAID – Redundant Array of Independent Disks
+RAID je technologie, která spojuje více fyzických disků do jednoho logického celku za účelem:
+Zvýšení výkonu
+Zvýšení kapacity
+Zajištění ochrany proti ztrátě dat při selhání jednoho nebo více disků
+Princip:
+Data se ukládají paralelně nebo zrcadleně na více disků.
+RAID je řízen RAID řadičem – může být softwarový (SW) nebo hardwarový (HW).
+Výsledné „RAID pole“ se v systému chová jako jeden disk.
+SW RAID (Softwarový RAID)
+Zajišťuje ho operační systém – bez potřeby speciálního HW.
+Často dostupný v základních deskách bez skutečného HW RAID řadiče.
+Využívá výpočetní výkon CPU a RAM systému, což může snižovat výkon.
+Nevýhody:
+Nízká spolehlivost při havárii – pokud se rozpadne (např. výpadek napájení nebo selhání
+OS), často není možné systém nabootovat ani obnovit RAID bez specializovaných
+nástrojů.
+Není vhodný pro servery a kritické nasazení.
+HW RAID (Hardwarový RAID)
+Používá samostatný RAID řadič – karta s vlastním procesorem a pamětí (např. cache
+RAM).
+RAID řadič přebírá všechnu logiku a řízení RAID pole – nezatěžuje hlavní CPU.
+Pro operační systém se RAID pole jeví jako jeden fyzický disk.
+Výhody:
+Vyšší výkon a stabilita
+Lepší správa a kontrola (např. kontrola stavu disků, prediktivní monitoring)
+Možnost hot-swap disků (výměna za běhu) a automatické rekonstrukce dat
+Možnost použití baterií pro zálohu cache (BBU)
+14. Organizační struktura HDD OS Windows
+Typy RAID – přehled a technické vysvětlení
+RAID (Redundant Array of Independent Disks) má několik úrovní (RAID levels) podle toho, jak
+kombinují:
+výkon (rychlost)
+bezpečnost (zálohování)
+kapacitu
+RAID 0 – Striping (prokládání dat)
+Data jsou rozdělená na bloky a střídavě ukládána na více disků.
+Zvýšení rychlosti – paralelní čtení a zápis.
+Nevýhoda: žádná ochrana dat – při výpadku jednoho disku ztráta všech dat.
+Minimálně 2 disky.
+Nevhodný pro důležitá data – používá se spíše pro výkon (např. scratch disky u videa).
+14. Organizační struktura HDD OS Windows
+RAID 1 – Mirroring (zrcadlení)
+Každý disk má přesnou kopii – data se zapisují současně na dva disky.
+Výborná ochrana dat – při selhání jednoho disku se data čtou z druhého.
+Zápis je pomalejší, čtení může být rychlejší (paralelní čtení).
+Nevýhoda: efektivní kapacita je jen 50 %.
+Minimálně 2 disky.
+RAID 0+1 (zrcadlení stripovaných polí)
+Kombinuje výhody RAID 0 a RAID 1.
+Nejprve data prokládána (RAID 0), poté zrcadlena (RAID 1).
+Potřebuje min. 4 disky.
+Rychlé čtení a zápis, dobrá odolnost.
+Nevýhoda: při výpadku jednoho disku z
+jednoho páru je ztracen celý stripe → zranitelnější než
+RAID 10.
+RAID 10 (RAID 1+0)
+Zrcadlení párů disků, následně prokládání mezi páry.
+Kombinuje rychlost RAID 0 s ochranou RAID 1.
+Odolnější než RAID 0+1 – přežije více výpadků
+(pokud nejsou ve stejném páru).
+Min. 4 disky, efektivní kapacita je 50 %.
+RAID 2
+Striping po bitech, nikoliv blocích.
+Zabezpečení pomocí Hammingova kódu – schopný detekovat i opravit chyby.
+Málo používaný – složitá implementace, malá propustnost.
+Nevyužívá se v běžné praxi.
+14. Organizační struktura HDD OS Windows
+RAID 3
+Striping + jeden paritní disk, který slouží k
+obnově dat.
+Data jsou stripována po bytech.
+Minimálně 3 disky.
+Výhoda: odolnost vůči výpadku jednoho disku.
+Nevýhoda: paritní disk je úzké hrdlo systému –
+trvale zatížený.
+RAID 4
+Striping po blocích, nikoliv bytech (na rozdíl od RAID 3).
+Jeden dedikovaný paritní disk.
+Nevýhoda: stejně jako RAID 3 trpí přetížením paritního disku.
+Výhoda: blokový striping umožňuje paralelní čtení.
+RAID 5
+Nejrozšířenější RAID pro servery.
+Striping s rozdělenou paritou – samoopravné informace jsou rozloženy mezi disky.
+Min. 3 disky, efektivní kapacita: (n−1) disků.
+Výhoda: paralelní čtení, základní ochrana proti výpadku.
+Nevýhoda: pomalejší zápis (výpočet parity), odolnost jen vůči jednomu selhání.
+14. Organizační struktura HDD OS Windows
+RAID 6
+Obdoba RAID 5, ale s dvěma paritními bloky.
+Minimálně 4 disky, efektivní kapacita: (n−2).
+Výhoda: odolnost proti výpadku dvou disků.
+Nevýhoda: ještě pomalejší zápis kvůli výpočtu dvou parit.
+RAID
+Min. disky
+Ochrana dat
+Rychlost
+Efektivní
+kapacita
+Vhodné pro
+0
+2
+❌
+✅✅✅
+100 %
+Výkon
+(bezpečnost
+neřeší)
+1
+2
+✅
+✅
+50 %
+Kritická data
+0+1
+4
+✅
+✅✅
+50 %
+Vyvážené, méně
+odolné než RAID
+10
+10
+4
+✅✅
+✅✅
+50 %
+Servery,
+databáze
+2
+5–7
+✅
+❌
+Nízká
+Historický,
+nepoužívá se
+3
+3
+✅
+❌
+(n−1)/n
+Specializované
+aplikace
+4
+3
+✅
+✅/❌
+(n−1)/n
+Občasné využití
+5
+3
+✅
+✅✅
+(n−1)/n
+Servery, NAS
+6
+4
+✅✅
+✅
+(n−2)/n
+NAS, datacentra
+14. Organizační struktura HDD OS Windows
+Dynamické svazky ve Windows (Dynamic Volumes)
+Dynamické svazky jsou pokročilou alternativou k základním oddílům na tzv. dynamickém
+disku. Umožňují větší flexibilitu v práci s úložištěm než klasické základní disky.
+Co umožňují:
+Změna velikosti svazku bez ztráty dat.
+Přidání volného místa z jiných disků – i z různých fyzických jednotek.
+Rozdělení a slučování svazků podle potřeby.
+Podporují více typů svazků, včetně:
+Jednoduchý (Simple Volume) – na jednom disku.
+Rozložený (Spanned Volume) – spojuje více disků do jednoho svazku.
+Zrcadlený (Mirrored Volume) – obdoba RAID 1.
+RAID 5 (na podporovaných edicích Windows Server).
+Důležité vlastnosti:
+Rozložený svazek může obsahovat až 32 fyzických disků.
+Dynamické disky umožňují vytvářet libovolný počet svazků.
+Základní disky (Basic Disks) naproti tomu podporují jen klasické primární a rozšířené
+oddíly.
+Pozor: Dynamické disky nejsou plně kompatibilní se všemi nástroji pro zálohování nebo
+multiboot konfigurace.
+Vytvoření dynamického svazku ve Windows:
+Postup:
+1. Start → Správa počítače (compmgmt.msc)
+2. Úložiště → Správa disků
+3. Kliknout pravým tlačítkem na základní disk a vybrat možnost "Převést na dynamický disk".
+4. Poté lze vytvářet jednotlivé typy svazků – jednoduchý, rozložený, zrcadlený atd.
+Dynamické svazky jsou běžně podporovány od edice Windows Professional výše. Na Home
+edicích je funkce omezena.

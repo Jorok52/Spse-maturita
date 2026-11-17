@@ -1,0 +1,579 @@
+17. Typy paměti a jejich
+funkce (Konstrukční uspořádání PC)
+01
+Popis funkcí paměti PC a jejich vzájemné
+souvislosti - ROM, BIOS, CMOS, RAM, DRAM,
+SDRAM, DDR-DDR4 (provedení, moduly,
+datové šířky, rychlosti, technologie přenosu dat)
+02 Cache (HW, SW) - popis a princip činnosti
+04 Časování paměti (latence) a Dual Channel
+05 Logická struktura operační paměti (Base, UMA, XMS)
+17. Typy paměti a jejich funkce
+Typy a funkce paměti v PC
+Paměť je základní součást počítače – slouží k uchovávání dat a instrukcí během zpracování i
+po vypnutí systému. Dělíme je podle různých kritérií:
+1. Dělení podle závislosti na napájení:
+Paměti závislé na napájení (volatilní)
+RWM – Read Write Memory
+Po odpojení napájení ztrácí svá data
+RAM – Random Access Memory
+Paměť s náhodným přístupem – každá buňka je přístupná stejně rychle.
+Umožňuje čtení i zápis.
+Slouží k dočasnému uložení spuštěných programů a dat, se kterými pracuje CPU.
+Typy RAM:
+SRAM – Static RAM
+Statická paměť, nepotřebuje refresh.
+Ukládá data pomocí bistabilních klopných obvodů (flip-flop).
+Rychlá, ale drahá a má malou kapacitu.
+Použití: Cache paměti (L1, L2, L3).
+DRAM – Dynamic RAM
+Dynamická paměť, využívá kondenzátory, které je nutno pravidelně obnovovat
+(refresh), jinak dojde ke ztrátě dat.
+Levnější, pomalejší, větší kapacita.
+Buňka = tranzistor + kondenzátor.
+Adresa se vystavuje ve dvou krocích: řádek a sloupec (matice).
+Použití: hlavní operační paměť PC.
+Moderní varianty DRAM:
+SDRAM – synchronní DRAM (synchronizovaná s hodinovým signálem).
+DDR (Double Data Rate) – přenáší data na náběžné i sestupné hraně taktu =
+dvojnásobná propustnost.
+Verze: DDR, DDR2, DDR3, DDR4, DDR5
+Rozdíly v napětí, rychlosti (takt), propustnosti, latenci.
+Vyrábí se jako moduly DIMM (desktop) nebo SO-DIMM (notebooky).
+Datové šířky a přenosy:
+Typické šířky: 64 bitů (8 bajtů).
+U DDR je běžná propustnost od 2,1 GB/s (DDR) až po 25,6 GB/s (DDR4) u
+dvoukanálových zapojeních.
+NRAM – Nonsequential/Buffer memory
+Paměti pracující se strukturou typu:
+FIFO (First In First Out) – fronta.
+LIFO (Last In First Out) – zásobník.
+Používají se jako buffer paměti, dočasné úložiště pro přenos dat (např. u disků nebo
+tiskáren).
+17. Typy paměti a jejich funkce
+Paměti nezávislé na napájení (nevolatilní)
+ROM – Read Only Memory
+Zachovávají data i po vypnutí napájení.
+Ukládají firmware, BIOS, bootovací kód apod.
+Typy ROM:
+ROM (Mask ROM)
+Naprogramována z výroby pomocí masky.
+Nelze měnit, vysoká životnost.
+Použití: pevné firmware zařízení.
+ROM BIOS
+Obsahuje základní vstupně-výstupní systém (Basic Input Output System).
+Spouští se jako první po zapnutí počítače – POST, inicializace HW, zavedení OS.
+Starší ROM BIOS nelze přepsat běžně (pouze speciálním postupem).
+PROM (Programmable ROM)
+Programovatelná jednorázově (OTP).
+Zápis pomocí programátoru.
+EPROM (Erasable PROM)
+Vymazatelná pomocí UV záření.
+K přepsání je nutné smazat celý obsah.
+EEPROM (Electrically Erasable PROM)
+Elektricky mazatelná i přepisovatelná.
+Použití: aktualizace BIOSu, konfigurace HW.
+FLASH paměť
+Speciální druh EEPROM.
+Rychlejší, častější použití v PC.
+Není potřeba externí programátor.
+Použití: SSD disky, USB, BIOS, firmware.
+17. Typy paměti a jejich funkce
+Základní parametry paměti
+Paměti v PC lze popsat několika klíčovými parametry, které určují jejich vhodnost, výkon a
+spolehlivost v konkrétní aplikaci.
+1) Kapacita
+Udává maximální množství dat, které je možné v paměti uložit.
+Vyjadřuje se v Bajtech (B) a jejich násobcích: kB, MB, GB, TB.
+Například: běžná operační paměť dnes mívá 8–32 GB.
+2) Přístupová doba (Access Time)
+Časový interval mezi zadáním požadavku a zpřístupněním dat.
+Udává se v nanosekundách (ns) nebo milisekundách (ms).
+Čím nižší, tím rychlejší paměť.
+Např.: DDR4 RAM má přístupovou dobu cca 10–15 ns, HDD až 10 ms.
+3) Přenosová rychlost (Bandwidth)
+Množství dat, které lze z paměti přečíst nebo do ní zapsat za jednotku času.
+Jednotky: MB/s, GB/s.
+Např.: DDR4 v dvoukanálovém zapojení má přenosovou rychlost až 25,6 GB/s.
+4) Statičnost / Dynamičnost
+Určuje, jak paměť uchovává informace při připojení ke zdroji napětí.
+Statické paměti (SRAM):
+Uchovávají informaci po celou dobu napájení, bez potřeby obnovování.
+Využívají klopné obvody (flip-flopy).
+Výhoda: rychlost, nevýhoda: vyšší spotřeba a cena.
+Dynamické paměti (DRAM):
+Informaci je nutno pravidelně obnovovat (refresh).
+Každá buňka obsahuje kondenzátor, který ztrácí náboj.
+Výhoda: vyšší kapacita, nižší cena.
+5) Destruktivnost při čtení
+Popisuje, zda čtení z paměti naruší nebo zachová uložená data.
+Destruktivní čtení:
+Přečtením dojde ke ztrátě dat, která je nutné ihned zapsat zpět.
+Např.: klasická DRAM je destruktivní.
+Nedestruktivní čtení:
+Čtení nemění obsah paměti.
+Např.: SRAM, ROM, Flash paměti.
+6) Energetická závislost
+Určuje, zda paměť uchovává data i bez napájení.
+Energeticky závislé (volatilní):
+Po odpojení od napájení dojde ke ztrátě informací.
+Např.: RAM, Cache.
+Energeticky nezávislé (nevolatilní):
+Data zůstávají zachována i bez napájení.
+Např.: ROM, EEPROM, Flash, SSD.
+17. Typy paměti a jejich funkce
+7) Způsob přístupu k datům
+Sekvenční přístup (sekvenční paměti):
+Pro získání konkrétní informace je nutné postupně projít předchozí data.
+Pomalejší přístup.
+Příklady: pásky, FIFO buffery.
+Přímý přístup (random access):
+Přístup k libovolné adrese bez nutnosti sekvence.
+Rychlý a efektivní.
+Příklady: RAM, ROM, SSD.
+8) Spolehlivost (MTBF – Mean Time Between Failures)
+Udává průměrnou dobu mezi dvěma poruchami paměti.
+Vyšší hodnota = vyšší spolehlivost.
+Moderní paměti mají MTBF v řádech milionů hodin.
+Kritický parametr pro serverová a datová úložiště.
+CMOS RAM, SRAM, DRAM
+CMOS RAM (Complementary Metal-Oxide Semiconductor RAM)
+Energeticky závislá paměť typu SRAM umístěná na základní desce.
+Uchovává data i po vypnutí PC díky lithiové knoflíkové baterii (např. CR2032).
+Slouží výhradně pro uložení konfiguračních dat – neukládá programy ani běžná data.
+Do paměti CMOS se přistupuje přes BIOS/UEFI SETUP – spuštěním speciální klávesy po
+zapnutí PC (např. DEL, F2, ESC – liší se dle výrobce).
+Obsah CMOS lze vymazat:
+Zkratem jumperu "CLR_CMOS" (clear CMOS).
+Vyjmutím baterie na několik minut.
+Obsahuje:
+Informace o hardware (HDD, RAM, CPU),
+Nastavení pořadí bootování,
+Datum a čas,
+Uživatelská a správní hesla,
+Napětí, frekvence, taktování a další BIOS parametry.
+17. Typy paměti a jejich funkce
+CMOS RAM (Complementary Metal-Oxide Semiconductor RAM)
+Energeticky závislá paměť typu SRAM umístěná na základní desce.
+Uchovává data i po vypnutí PC díky lithiové knoflíkové baterii (např. CR2032).
+Slouží výhradně pro uložení konfiguračních dat – neukládá programy ani běžná data.
+Do paměti CMOS se přistupuje přes BIOS/UEFI SETUP – spuštěním speciální klávesy po
+zapnutí PC (např. DEL, F2, ESC – liší se dle výrobce).
+Obsah CMOS lze vymazat:
+Zkratem jumperu "CLR_CMOS" (clear CMOS).
+Vyjmutím baterie na několik minut.
+Obsahuje:
+Informace o hardware (HDD, RAM, CPU),
+Nastavení pořadí bootování,
+Datum a čas,
+Uživatelská a správní hesla,
+Napětí, frekvence, taktování a další BIOS parametry.
+Rozdíl mezi CMOS, ROM a BIOSem
+CMOS = malá paměť na základní desce, uchovává nastavení systému.
+BIOS = program, který po startu počítače inicializuje hardware a předá řízení OS.
+Získává informace z CMOS paměti, ale sám v ní uložen není.
+ROM (dnes FLASH) = paměť, kde je BIOS uložen.
+Původně pevná ROM, později EPROM (mazatelná UV světlem), dnes Flash paměť
+(mazatelná i přepisovatelná elektricky).
+SRAM – Statická paměť s náhodným přístupem
+Volatilní paměť – uchovává data pouze při napájení.
+Po vypnutí napájení se obsah smaže.
+Každá paměťová buňka je realizována jako bistabilní klopný obvod (flip-flop).
+Paměť nepotřebuje refresh – stav je udržován stabilním zapojením tranzistorů.
+Nízká přístupová doba: cca 1–20 ns → velmi rychlá.
+Nižší hustota dat, vyšší spotřeba, vyšší cena než DRAM.
+Použití: vyrovnávací paměť (Cache L1, L2, L3) u CPU, rychlé registry.
+Paměťová buňka SRAM je tvořena:
+6 tranzistory: T1 až T6.
+T1, T2 = tranzistory pro zaadresování buňky (připojení na datovou sběrnici).
+T3, T4 = NPN tranzistory pro uchování informace – tvoří bistabilní klopný obvod.
+T5, T6 = zátěžové tranzistory – určují, který z hlavních tranzistorů se sepne.
+17. Typy paměti a jejich funkce
+Tři stavy paměťové buňky:
+1. Klidový režim
+Buňka není zaadresována → T1 a T2 jsou rozepnuté → buňka je odpojena od datových
+vodičů.
+Uvnitř klopného obvodu zůstává uložená hodnota ('1' nebo '0').
+2. Zápis do buňky
+Data a jejich inverze se přivedou na datové vodiče:
+DATA = '1', DATA_NEG = '0' (pro zápis log. 1).
+Zaadresováním buňky (aktivace adresy) sepnutím T1 a T2 se připojí paměťová buňka na
+sběrnici.
+Logika:
+T4 dostane '1' na bázi → sepne, a přes kolektor přivede '0' na bázi T3 → ten se rozepne.
+Výsledný stav je stabilní uchování '1'.
+Pro zápis '0' je princip analogický, tranzistory T3 a T4 se aktivují v opačné konfiguraci.
+Po zápisu se adresa deaktivuje (T1, T2 se rozepnou) → buňka se odpojí od sběrnice.
+Poznámka: Při zápisu rozhoduje poměr odporu tranzistorů T5 a T6 – slabší odpor → ovlivní
+stabilitu obvodu.
+3. Čtení z buňky
+Aktivuje se adresa → T1 a T2 sepnou → buňka se připojí na datovou sběrnici.
+Stav uložený v klopném obvodu se přenese na vodiče DATA a DATA_NEG:
+Např.: pokud je T4 sepnutý, na DATA = '1'.
+T3 bude rozepnutý → DATA_NEG = '0'.
+17. Typy paměti a jejich funkce
+DRAM – Dynamická paměť s náhodným přístupem
+DRAM = Dynamic Random Access Memory
+Energeticky závislá paměť – po odpojení napájení se data ztratí.
+Informace se uchovává pomocí elektrického náboje na kondenzátoru (C1).
+Kondenzátor má tendenci se vybíjet i během provozu → nutné periodické obnovování dat
+(refresh).
+Vyšší přístupová doba: typicky 10–70 ns, pomalejší než SRAM.
+Jednodušší a levnější výroba, větší hustota paměťových buněk, vhodná pro velké
+kapacity.
+Použití: operační paměť (RAM) v počítačích.
+Buňka je tvořena:
+1 kondenzátorem (C1) – uchovává log. 1 nebo 0 jako napětí.
+1 tranzistorem (Q3) – slouží pro řízení přístupu k buňce.
+Pro čtení a zápis využívá další logiku: Q1 (zesilovač), Q2 (čtení).
+Uspořádání paměti a adresování:
+Paměť je organizována jako matice (např. 1024 × 1024 = 1 Mbit).
+Buňka se adresuje pomocí dvou složek:
+RAS (Row Address Strobe) – vybírá řádek.
+CAS (Column Address Strobe) – vybírá sloupec.
+Řádková a sloupcová adresa se přenáší po stejné sběrnici kvůli úspoře pinů.
+Zápis do DRAM:
+Na adresový vodič přivedeme log. 1 → aktivace buňky přes RAS a CAS.
+Sepne se Q3 (tranzistor pro zápis) – typicky vyžaduje zvýšené napětí.
+Na datovém vodiči je signál DATA_WRITE:
+Pokud je log. 1 → přes Q3 se nabije kondenzátor C1.
+Pokud je log. 0 → kondenzátor se vybije.
+Po zapsání je C1 ve stavu odpovídajícím zapsané hodnotě (nabitý/vybitý).
+Pozor: předchozí hodnota v buňce se při zápisu přepisuje.
+Čtení z DRAM:
+Aktivujeme adresu (RAS + CAS) → vybere se konkrétní buňka.
+Q2 (čtecí tranzistor) se sepne, Q3 zůstává rozepnutý (aby nedošlo k rušení čtení).
+Pokud je C1 nabitý:
+Q1 se sepne → na výstupní vodič DATA_READ se dostane log. 1.
+Pokud je C1 vybitý:
+Q1 zůstane rozepnutý → na výstupu je log. 0.
+Pozor: čtení je destruktivní → C1 se vybije → nutné obnovení hodnoty (obnovovací zápis).
+Refresh (obnovování dat):
+Aby nedošlo ke ztrátě informací, je nutné pravidelně číst a znovu zapisovat obsah všech
+buněk (refresh cyklus).
+Obnovování se provádí řádkově, přičemž každý řádek bývá obnoven cca každých 64 ms.
+Moderní DRAM moduly mají integrovaný řadič refreshe, který tuto činnost provádí
+automaticky.
+17. Typy paměti a jejich funkce
+Technologie přenosu dat
+Paměťové moduly (např. DDR) přenášejí data synchronně s hodinovým signálem (CLK).
+Způsob, jakým je data možné přenášet během jednoho taktu, určuje efektivitu paměti.
+Typy přenosových technologií:
+SDR – Single Data Rate
+Přenos dat probíhá na jednu hranu hodinového signálu (buď náběžnou, nebo sestupnou).
+Např. klasická SDRAM (Synchronous DRAM).
+Nižší efektivní přenosová rychlost.
+DDR – Double Data Rate
+Přenos probíhá na obou hranách CLK signálu (náběžné i sestupné).
+Znamená dvojnásobnou efektivní frekvenci přenosu oproti skutečné taktovací frekvenci.
+Používá se u většiny moderních RAM typů:
+DDR, DDR2, DDR3, DDR4, DDR5
+QDR – Quad Data Rate
+Čtyřnásobný přenos dat během jednoho hodinového cyklu.
+Dosaženo pomocí dvou nezávislých kanálů:
+Jeden pro čtení
+Druhý pro zápis
+Zavedeno u některých speciálních pamětí (např. QDR SRAM) nebo sběrnic (např. FSB –
+front-side bus Intel).
+QPB (Quad Pumped Bus) – technologie zvyšující datovou propustnost napumpováním 4
+operací na 1 cyklus (např. u sběrnice Pentium 4).
+Výpočet přenosové rychlosti
+Přenosová rychlost = efektivní frekvence × datová šířka
+Jednotky:
+b/s = bit za sekundu
+B/s = bajt za sekundu (1 B = 8 b)
+MB/s, GB/s
+17. Typy paměti a jejich funkce
+Příklad výpočtu: DDR-200 = PC-1600
+DDR-200:
+Reálný takt: 100 MHz
+DDR = ×2 → efektivní takt = 200 MHz
+Datová šířka modulu = 64 bit = 8 bajtů
+Výpočet:
+200 MHz × 8 B = 1600 MB/s
+PC-1600 = označení podle propustnosti paměti
+Pozn.: u DDR3-1600 → 800 MHz reálně, 1600 MHz efektivně → PC3-12800 (1600 × 8)
+Paměťové moduly
+Paměť je fyzicky realizována jako modul, který se zasouvá do slotu na základní desce.
+SIMM – Single Inline Memory Module
+Starší typ modulu pro SDRAM.
+Datová šířka: 32 bitů.
+U procesorů Pentium (64bit sběrnice) bylo nutné osazení ve dvojicích.
+Měly stejné kontakty z obou stran – mechanicky jednodušší, elektricky nevýhodné.
+DIMM – Dual Inline Memory Module
+Standardní modul používaný u moderních RAM (DDR generací).
+Datová šířka: 64 bitů.
+Elektricky oddělené kontakty na obou stranách (vyšší propustnost a stabilita).
+Počet pinů (vývodů):
+168 – SDRAM
+184 – DDR
+240 – DDR2, DDR3
+288 – DDR4, DDR5
+SO-DIMM – Small Outline DIMM
+Zmenšená verze DIMM pro notebooky a kompaktní zařízení.
+Menší rozměry, nižší počet vývodů.
+Např.: DDR3 SO-DIMM = 204 pinů, DDR4 SO-DIMM = 260 pinů.
+Operační paměť (RAM – Random Access Memory)
+Vnitřní (hlavní) paměť PC, kam se načítají spuštěné programy a data, se kterými uživatel a
+procesor právě pracují.
+Volatilní – data se ztratí po vypnutí napájení.
+Výhody:
+Krátká přístupová doba (řádově jednotky až desítky ns)
+Vyšší rychlost než externí paměti (např. HDD, SSD).
+Výrobci: HyperX (Kingston), Kingston, ADATA, Corsair, Crucial…
+17. Typy paměti a jejich funkce
+SDRAM – Synchronous Dynamic RAM
+Synchronní dynamická paměť – pracuje synchronně s hodinovým signálem CPU a
+sběrnice.
+Uspořádání: rozdělena do banků → zlepšuje paralelní přístup.
+Frekvence SDRAM musí odpovídat taktu systémové sběrnice:
+PC-66 = 66 MHz
+PC-100 = 100 MHz
+PC-133 = 133 MHz
+SDR SDRAM (Single Data Rate)
+První generace synchronní DRAM.
+Přenáší data pouze na náběžné hraně hodinového signálu (CLK).
+Pracovní napětí: 3,3 V
+Nekompatibilní s DDR.
+Nahrazena výkonnějšími technologiemi (DDR a novějšími).
+Typický modul: 168 vývodů (DIMM)
+DDR – Double Data Rate SDRAM
+Dvojnásobný výkon oproti SDR SDRAM díky přenosu dat na obou hranách (náběžné i
+sestupné) signálu CLK.
+Napájení: 2,5 V
+Nekompatibilní se SDR a DDR2.
+Modul má 184 pinů (vývodů).
+Přenosové rychlosti:
+PC-1600 = DDR-200 (efektivní takt 200 MHz, skutečný 100 MHz)
+PC-2100 = DDR-266
+PC-2700 = DDR-333
+PC-3200 = DDR-400
+DDR2 SDRAM
+Vylepšená verze DDR, zpětně nekompatibilní s DDR.
+Přenáší data na obou hranách CLK.
+I/O sběrnice pracuje dvakrát rychleji než jádro paměti.
+Výhody:
+2× vyšší přenosová rychlost než DDR.
+Nižší spotřeba (1,8 V) – až o 50 % méně než DDR.
+Modul má 240 vývodů (odlišné rozmístění než DDR3).
+17. Typy paměti a jejich funkce
+DDR3 SDRAM
+Další generace, nástupce DDR2, nekompatibilní zpětně.
+Čtyřnásobná rychlost I/O sběrnice vůči jádru.
+Vysoká přenosová rychlost a efektivita.
+Nižší spotřeba (1,5 V) – až o 30 % méně než DDR2.
+Modul má také 240 vývodů, ale jiné klíčování než DDR2.
+Porovnání DDR, DDR2 a DDR3 – technologie přenosu dat
+Paměťové moduly DDR, DDR2 a DDR3 se liší zejména tím, jak rychle a v jakém objemu
+přenášejí data mezi paměťovými čipy a I/O buffery. Základní frekvence paměťových čipů
+zůstává často stejná (např. 200 MHz), ale efektivní rychlost roste díky zlepšení struktury
+přenosu (tzv. prefetch).
+17. Typy paměti a jejich funkce
+DDR-400 SDRAM (Double Data Rate)
+Struktura:
+Frekvence čipu (Memory Cell Array): 200 MHz
+Frekvence I/O bufferu: 200 MHz
+Počet spojení čip ↔ buffer (prefetch): 2
+Přenos dat na náběžné i sestupné hraně → efektivní frekvence = 2× 200 MHz = 400 MHz
+Efektivní přenosová rychlost:
+Např. při 64bit sběrnici (8 bajtů):
+200 MHz × 2 (DDR) × 8 B = 1600 MB/s
+DDR2-800 SDRAM
+Zlepšení oproti DDR:
+Paměťové čipy stále pracují na 200 MHz
+I/O buffer zvýšen na 400 MHz
+Počet spojení (prefetch): 4 – tzv. 4n prefetch
+Díky většímu počtu datových kanálů se za jeden cyklus jádra přenesou 4 bity
+Efektivní přenosová frekvence:
+2 hrany × 400 MHz = 800 MHz
+Výsledkem je 2× větší propustnost oproti DDR, při zachování nízké taktovací frekvence
+jádra
+Změna nastává jen v části modulu (I/O logice a prefetch), nikoliv v jádru čipu.
+DDR3-1600 SDRAM
+Další zdvojnásobení přenosové šířky:
+Čip stále běží na 200 MHz
+I/O buffer běží na 800 MHz
+Prefetch: 8n (tj. 8 dat na 1 takt paměti)
+Efektivní přenosová frekvence:
+2 hrany × 800 MHz = 1600 MHz
+Výsledkem je 4× vyšší výkon než DDR, přitom jádro běží stále jen na 200 MHz
+17. Typy paměti a jejich funkce
+Paměťové banky
+Paměťový bank je nejmenší logická jednotka paměti, která může být do systému přidána
+nebo odebrána jako celek.
+Velikost banku se řídí šířkou datové sběrnice procesoru:
+Například u 64bitové sběrnice musí bank přenášet 64 bitů najednou (tj. 8 bajtů).
+Pokud RAM moduly neposkytují dostatečnou šířku, musí být osazeny v páru nebo ve více
+slotech (např. dvě 32bitové moduly do jednoho 64bitového banku).
+Pro správnou funkci je nutné, aby všechny moduly v banku měly stejnou šířku přenosu
+dat jako sběrnice CPU.
+Cache paměti
+Cache = vyrovnávací paměť, která slouží k urychlení komunikace mezi rychlým a pomalým
+hardwarem.
+SW CACHE (softwarová cache)
+Implementována softwarově v operačním systému.
+Používá se při přístupu k pomalým externím pamětem – např. HDD, SSD.
+Operační systém ukládá často používaná data do RAM, aby se zrychlil přístup.
+Zápis na disk probíhá tak, aby byl co nejefektivnější (např. postupně) – to snižuje
+fragmentaci a zvyšuje výkon.
+HW CACHE (hardwarová cache)
+Realizována pomocí rychlé paměti typu SRAM (nepotřebuje refresh).
+Nachází se mezi CPU a hlavní pamětí (RAM).
+Účelem je kompenzovat rozdíl v rychlostech mezi rychlým procesorem a pomalejší RAM.
+Princip:
+CPU pracuje s daty uloženými v RAM.
+Při opakovaném přístupu k těmto datům si je CPU uloží do cache.
+Pokud je požadovaná položka při příštím přístupu již v cache (tzv. cache hit), načte se
+mnohonásobně rychleji než z RAM.
+Pokud není (tzv. cache miss), musí se načíst z RAM a cache se aktualizuje.
+Typy cache dle umístění:
+L1 Cache (interní, primární):
+Nejrychlejší a nejmenší cache (řádově desítky kB).
+Integrována přímo v CPU jádře.
+Odděleně pro instrukce a data (split cache – např. L1i a L1d).
+Pracuje ve stejném taktu jako CPU.
+L2 Cache (externí, sekundární):
+Dříve umístěna na základní desce – dnes už integrovaná v CPU.
+Větší kapacita (stovky kB až jednotky MB), ale pomalejší než L1.
+Slouží jako další vrstva pro data, která se nevejdou do L1.
+Řízená řadičem cache, který rozhoduje, kdy a co do cache uložit.
+L3 Cache (volitelně můžeš doplnit)
+Sdílená mezi více jádry procesoru.
+Ještě větší, ale pomalejší než L2 (až desítky MB).
+Zvyšuje efektivitu vícevláknového zpracování.
+17. Typy paměti a jejich funkce
+Cache typ
+Umístění
+Rychlost
+Kapacita
+Poznámka
+L1
+uvnitř CPU
+nejrychlejší
+~32–128 kB
+každé jádro zvlášť
+L2
+uvnitř CPU
+rychlá
+~256 kB–2 MB
+sdílená nebo zvlášť
+L3
+sdílená mezi jádry
+pomalejší
+~2–64 MB
+u vícejádrových CPU
+Latence paměti (časování DRAM)
+Latence = zpoždění, které nastává při přístupu k paměťovým buňkám.
+Udává se v počtu taktů (cyklů), které jsou nutné k provedení jednotlivých operací při
+čtení/zápisu dat v DRAM.
+Paměťový modul mívá časování uvedeno ve formátu např. 9-9-9-24, což odpovídá
+parametrům tCL–tRCD–tRP–tRAS.
+tCL (CAS Latency) – Zpoždění přístupu po výběru sloupce
+CAS = Column Address Strobe
+Udává počet taktů od potvrzení adresy sloupce signálem CAS do okamžiku, kdy je možné
+začít číst data z paměťové buňky.
+Nejvýznamnější parametr pro reálnou rychlost paměti.
+Příklad: tCL = 9 → čtení začne 9 cyklů po výběru sloupce.
+tRCD (RAS to CAS Delay) – Zpoždění mezi výběrem řádku a sloupce
+RAS = Row Address Strobe
+Udává počet taktů mezi aktivací řádku (RAS) a aktivací sloupce (CAS).
+Jinými slovy: kolik taktů je třeba čekat po výběru řádku, než může být zadán sloupec.
+Příklad: tRCD = 9 → po výběru řádku se 9 cyklů čeká, než lze zvolit sloupec.
+tRP (RAS Precharge Time) – Doba potřebná pro přepnutí mezi řádky
+Udává počet taktů nutných pro ukončení práce s aktuálním řádkem a přípravu paměti
+pro přístup k jinému řádku.
+Paměť musí nejdříve řádek deaktivovat, než může přejít na jiný.
+Příklad: tRP = 9 → 9 cyklů pauza před přístupem k dalšímu řádku.
+tRAS (Active to Precharge Delay) – Minimální doba aktivního řádku
+Určuje, jak dlouho musí zůstat řádek aktivní, než může být deaktivován (precharge).
+Kombinuje trvání potřebné pro aktivaci, čtení a ukončení práce s řádkem.
+Příklad: tRAS = 24 → řádek musí zůstat aktivní minimálně 24 taktů, než může být uzavřen.
+17. Typy paměti a jejich funkce
+Zkratka
+Název
+Význam
+tCL
+CAS Latency
+Počet taktů od aktivace sloupce po
+načtení dat
+tRCD
+RAS to CAS Delay
+Zpoždění mezi výběrem řádku a výběrem
+sloupce
+tRP
+RAS Precharge Time
+Pauza mezi ukončením jednoho řádku a
+aktivací dalšího
+tRAS
+Active to Precharge Delay
+Minimální doba, po kterou musí být řádek
+aktivní
+Dual Channel – dvoukanálová architektura paměti
+Dual Channel je technologie, která umožňuje současný přenos dat dvěma paměťovými kanály,
+čímž se zvyšuje propustnost operační paměti.
+Základní princip:
+Používá se u pamětí DDR, DDR2, DDR3 (a novějších).
+Každý kanál má 64bitovou šířku sběrnice, tedy při dvoukanálovém režimu 128 bitů celkem.
+Cílem je minimalizovat prodlevy, kdy paměť není dostupná (tzv. „wait states“).
+V ideálním případě to znamená teoreticky dvojnásobnou přenosovou rychlost oproti single
+channelu.
+Reálný nárůst výkonu bývá 10–30 % v závislosti na aplikaci (více při práci s velkým
+množstvím dat nebo grafikou).
+Podmínky pro správnou funkci Dual Channel:
+1.Podpora ze strany čipsetu základní desky (např. Intel, AMD).
+2.Párové zapojení paměťových modulů (DIMM) do správných slotů (např. A1 a B1).
+3.Identické parametry modulů:
+Stejná kapacita, Stejná frekvence (např. DDR3-1600), Nejlépe i stejné časování (latence).
+Pokud nejsou moduly identické, systém může běžet v single channelu nebo asymetrickém
+režimu (méně výhodné).
+17. Typy paměti a jejich funkce
+Existuje i triple & quad channel
+Logická struktura operační paměti
+1) Konvenční paměť
+Rozsah adres: 0x00000 – 0x9FFFF (0 – 640 kB)
+Velikost: 640 kB
+Dříve hlavní oblast RAM pro DOS, BIOS a základní OS funkce.
+Přímý přístup bez potřeby ovladačů.
+Používá se během bootování, pro základní funkce BIOSu a OS (např. načtení systémových
+částí MS-DOS).
+Historicky limitovaná velikost: „640 kB musí stačit každému“ – výrok připisovaný B. Gatesovi (i
+když nepravdivý).
+2) UMA – Upper Memory Area (Horní paměťová oblast)
+Rozsah adres: 0xA0000 – 0xFFFFF (640 kB – 1 MB)
+Velikost: 384 kB
+Vyhrazená oblast pro hardwarová zařízení a BIOS:
+Video BIOS (grafické karty)
+Systémový BIOS
+Ovladače rozhraní a zařízení
+Do této oblasti se často mapovaly paměti grafických karet (např. VGA – 0xA0000).
+Část této oblasti je často nepřístupná běžným programům, protože je „zabrána“ hardwarem.
+3) XMS – Extended Memory Specification
+Adresa: nad 1 MB (od 0x100000 dále, často až 4 GB u 32bitových systémů)
+Používá se jako hlavní paměť v moderních systémech.
+Přístup k této paměti je možný až po zavedení ovladačů nebo operačního systému.
+Využívána moderními OS (Windows, Linux) a aplikacemi.
+XMS byla specifikace pro správu této oblasti ve starších OS (např. HIMEM.SYS v DOSu).
+17. Typy paměti a jejich funkce
+Název
+Rozsah adres
+Velikost
+Účel
+Konvenční paměť
+0 – 640 kB
+640 kB
+Spuštění DOSu,
+BIOS, bez
+ovladačů
+UMA
+640 kB – 1 MB
+384 kB
+BIOS, ovladače
+HW, grafické
+paměti
+záleží na systému
+Hlavní paměť
+moderních OS,
+přístup po
+zavedení systému
+XMS
+nad 1 MB (až 4 GB)

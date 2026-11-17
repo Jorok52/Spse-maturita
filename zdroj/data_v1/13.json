@@ -1,0 +1,396 @@
+{
+"n": 13,
+"t": "Fyzická struktura HDD",
+"outline": [
+"Princip magnetického záznamu a čtení dat, základní pojmy, charakteristika HDD",
+"Geometrie HDD – stopa, sektor, cylindr",
+"Vystavovací mechanismy, teplotní kalibrace",
+"Přístupová doba, kódování, prekompenzace, ZBR, MTBF, SMART",
+"Proces výběru a zavedení OS, instalace OS přes UEFI"
+],
+"q": [
+[
+"Čím je potažen povrch plotny HDD?",
+"Feromagnetickou vrstvou (Fe₂O₃, příp. s MnO/BaO)",
+"Křemíkovou vrstvou s tranzistory jako u flash pamětí",
+"Tenkou vrstvou zlata proti korozi",
+"Plastem s odraznou hliníkovou vrstvou"
+],
+[
+"Jak se ukládá bit na plotnu?",
+"Orientací magnetické domény",
+"Nábojem v kondenzátoru",
+"Vypálenou dírkou",
+"Změnou odrazivosti povrchu"
+],
+[
+"Která hlava zapisuje?",
+"TF (thin-film) – elektromagnetická cívka",
+"MR (magnetorezistivní) hlava",
+"GMR (obří magnetorezistence) hlava",
+"Optická hlava s laserem"
+],
+[
+"Jak čte MR hlava?",
+"Mění se její elektrický odpor podle magnetizace domény",
+"Doména v ní indukuje proud v cívce, který elektronika zesílí a převede na bity",
+"Laserem měří odrazivost povrchu",
+"Měří kapacitu mezi hlavou a plotnou"
+],
+[
+"Co je remanence?",
+"Zbytková magnetizace – data zůstanou bez napájení",
+"Síla magnetického pole potřebná k přepsání",
+"Maximální (saturační) magnetizace materiálu",
+"Ztráta dat po vypnutí napájení"
+],
+[
+"Co je koercitivní síla?",
+"Velikost pole potřebná k přepsání (přemagnetování)",
+"Zbytková magnetizace, která zůstane po vypnutí pole",
+"Rychlost otáčení ploten disku",
+"Hustota zápisu v bitech na palec²"
+],
+[
+"Co je LMR?",
+"Podélný zápis – domény rovnoběžně s povrchem",
+"Kolmý zápis – domény svisle k povrchu",
+"Šindelový zápis – stopy se překrývají",
+"Zápis s ohřevem místa laserem"
+],
+[
+"Problém LMR při vysoké hustotě?",
+"Paramagnetismus – sousední domény se ovlivňují",
+"Přehřívání ploten při vysokých otáčkách",
+"Nízké otáčky a dlouhá rotační latence",
+"Zastaralé rozhraní bez podpory LBA"
+],
+[
+"Kolikrát vyšší hustotu umožňuje PMR oproti LMR?",
+"Až 5×",
+"Až 2×",
+"Až 10×",
+"Až 50×"
+],
+[
+"Co je ve PMR pod záznamovou vrstvou?",
+"Stabilizační vrstva",
+"Laserová dioda",
+"Zápisová cívka",
+"Vzduchový polštář"
+],
+[
+"V jakých jednotkách se měří hustota zápisu?",
+"bit/palec²",
+"ot/min",
+"MB/s",
+"stop/mm"
+],
+[
+"Na čem se vznáší hlavička nad plotnou?",
+"Na vzduchovém polštáři (µm)",
+"Na tenké vrstvě oleje",
+"Klouže přímo po plotně",
+"Na kolejnici nad plotnou"
+],
+[
+"K čemu je barometrický filtr?",
+"Vyrovnává tlak uvnitř HDD",
+"Zachytává prach z tření hlav",
+"Chladí disk a ploten",
+"Filtruje elektrický šum"
+],
+[
+"K čemu je recirkulační filtr?",
+"Zachytává mikroskopické částice uvnitř",
+"Vyrovnává tlak uvnitř disku pomocí malého ventilu",
+"Chladí vzduch v disku",
+"Čistí plotny kapalinou"
+],
+[
+"Kdo provádí LLF (low level format)?",
+"Výrobce disku",
+"Uživatel",
+"Windows při instalaci",
+"BIOS"
+],
+[
+"Jak se číslují sektory?",
+"Od 1 proti směru otáčení",
+"Od 0 ve směru otáčení",
+"Od středu plotny ven",
+"Od 1 ve směru otáčení"
+],
+[
+"Co obsahuje sektor?",
+"Identifikaci (CHS), data (512 B / 4 kB), CRC",
+"Jen data, bez identifikace polohy a kontrolního součtu",
+"Tabulku FAT pro danou stopu",
+"Kopii MBR a tabulku oddílů"
+],
+[
+"Počet cylindrů = …",
+"Počet stop na jedné plotně",
+"Počet ploten v disku",
+"Počet sektorů na stopě",
+"Počet čtecích hlav"
+],
+[
+"Čím se liší LBA od CHS?",
+"Lineární číslování bloků od 0 bez znalosti geometrie",
+"Používá cylindry, hlavy a sektory, ale čísluje je od nuly",
+"Je starší a nahradilo ho CHS",
+"Čísluje sektory od 1 podle geometrie"
+],
+[
+"CHS 001 odpovídá LBA…",
+"0",
+"1",
+"512",
+"63"
+],
+[
+"Kolik dat adresuje 48bitová LBA (512 B bloky)?",
+"≈ 128 PB",
+"≈ 2 TB",
+"≈ 137 GB",
+"≈ 16 EB"
+],
+[
+"Jak funguje moderní vystavovací mechanismus?",
+"Cívka v poli permanentního magnetu – proud určuje polohu ramene",
+"Krokový motor se šnekovým převodem, který posouvá rameno po pevných krocích",
+"Pneumatický píst ovládaný tlakem",
+"Pružina a elektromagnetická západka"
+],
+[
+"Proč se dělá teplotní kalibrace (TCAL)?",
+"Teplota roztahuje díly a posouvá hlavičky vůči stopám",
+"Kvůli chlazení disku za provozu – kalibrace řídí otáčky ventilátoru",
+"Kvůli zvýšení otáček ploten",
+"Kvůli aktualizaci údajů SMART"
+],
+[
+"Z čeho se skládá přístupová doba?",
+"Seek time + rotační latence + přepnutí hlavičky",
+"Jen seek time (přesun hlavy) – ostatní se zanedbává",
+"Transfer dat + kontrola CRC",
+"Otáčky (RPM) + velikost cache"
+],
+[
+"Co řeší prokládání (interleaving)?",
+"Hlavička nestihne další sektor – zapisuje se do každého n-tého",
+"Fragmentaci souborů na disku",
+"Přehřívání hlav při zápisu",
+"Ztrátu synchronizace řadiče při dlouhých řadách nul v zapisovaných datech"
+],
+[
+"Proč se data na disku kódují (FM, MFM, RLL)?",
+"Aby dlouhé řady nul nezpůsobily ztrátu synchronizace",
+"Kvůli šifrování dat na plotně",
+"Kvůli kompresi dat, aby se na plotnu vešlo víc informací",
+"Kvůli monitorování SMART"
+],
+[
+"Kódování s 2–7 mezerami mezi impulsy?",
+"RLL",
+"FM",
+"MFM",
+"PRML"
+],
+[
+"Moderní kódování odhadující nejpravděpodobnější bit?",
+"PRML / EPRML",
+"FM (frekvenční)",
+"MFM (modif. FM)",
+"RLL (2,7)"
+],
+[
+"Co je ZBR?",
+"Zónový záznam – vnější stopy mají víc sektorů",
+"Kódování s 2–7 mezerami",
+"Typ zápisové hlavy s tenkou vrstvou (Zone Bit Recorder)",
+"Šindelový zápis stop"
+],
+[
+"Co znamená MTBF?",
+"Střední doba mezi poruchami (statistika)",
+"Garantovaná doba životnosti disku",
+"Rychlost zápisu v MB/s",
+"Maximální provozní teplota"
+],
+[
+"Co dělá SMART?",
+"Monitoruje parametry disku a předvídá poruchy",
+"Šifruje celý disk hardwarově pomocí klíče v TPM",
+"Formátuje disk při chybách",
+"Zrychluje zápis pomocí cache"
+],
+[
+"Kterou poruchu SMART nepředvídá?",
+"Výpadek napájení / pád disku",
+"Rostoucí počet vadných sektorů",
+"Prodlužující se čas roztočení",
+"Zvyšující se teplotu disku"
+],
+[
+"Co je SMR?",
+"Šindelový zápis – stopy se překrývají",
+"Kolmý zápis – domény svisle",
+"Zápis s ohřevem laserem",
+"Zápis s mikrovlnným polem"
+],
+[
+"Nevýhoda SMR?",
+"Pomalý přepis (nutnost přepsat celé bloky)",
+"Malá kapacita oproti PMR (až o polovinu)",
+"Drahá výroba kvůli laseru",
+"Vysoká provozní teplota"
+],
+[
+"Co dělá HAMR?",
+"Laserem ohřeje místo a sníží koercitivitu před zápisem",
+"Překrývá stopy jako šindele na střeše, aby se zvýšila hustota",
+"Ohřívá místo mikrovlnami",
+"Chladí plotnu před zápisem"
+],
+[
+"Co používá MAMR?",
+"Spin-torque oscilátor – mikrovlnné pole",
+"Laser pro ohřev místa před zápisem dat",
+"Překrývání stop (šindele)",
+"Kapalinové ložisko ploten"
+],
+[
+"O kolik ušetří kódování MFM oproti FM?",
+"Až 20 %",
+"Až 50 %",
+"Nic",
+"Až 90 %"
+],
+[
+"O kolik ušetří RLL oproti MFM?",
+"Až 50 %",
+"Až 20 %",
+"Až 5 %",
+"Až 100 %"
+]
+],
+"terms": [
+[
+"Remanence",
+"Zbytková magnetizace"
+],
+[
+"Koercitivní síla",
+"Pole k přepsání"
+],
+[
+"TF hlava",
+"Zápis cívkou"
+],
+[
+"MR hlava",
+"Čtení změnou odporu"
+],
+[
+"LMR",
+"Podélný zápis"
+],
+[
+"PMR",
+"Kolmý zápis, 5× hustota"
+],
+[
+"LBA",
+"Lineární adresace od 0"
+],
+[
+"TCAL",
+"Teplotní kalibrace"
+],
+[
+"Interleaving",
+"Prokládání sektorů"
+],
+[
+"RLL",
+"2–7 mezer mezi impulsy"
+],
+[
+"ZBR",
+"Zóny s různým počtem sektorů"
+],
+[
+"MTBF",
+"Střední doba mezi poruchami"
+],
+[
+"SMART",
+"Monitoring zdraví disku"
+],
+[
+"SMR",
+"Šindelový zápis"
+],
+[
+"HAMR",
+"Ohřev laserem"
+],
+[
+"MAMR",
+"Mikrovlny"
+]
+],
+"open": [
+{
+"q": "Vysvětli princip magnetického zápisu a čtení na HDD.",
+"k": [
+"Plotny Al/sklo/keramika + feromagnetická vrstva (Fe₂O₃)",
+"Magnetické domény, orientace = 0/1",
+"Zápis TF hlavou – proud v cívce",
+"Hysterezní smyčka: remanence Br, koercitivní síla Hc, saturace",
+"Čtení MR/GMR hlavou – změna odporu",
+"LMR vs. PMR (5× hustota, stabilizační vrstva)"
+]
+},
+{
+"q": "Popiš geometrii HDD a adresování.",
+"k": [
+"Stopa – kružnice, od 0 z vnějšku, 30–50 nm",
+"Sektor – výseč, od 1, CHS + 512 B/4 kB + CRC",
+"Cylindr – stopy v zákrytu",
+"CHS vs. LBA (od 0, 48 b → 128 PB)",
+"LLF provádí výrobce"
+]
+},
+{
+"q": "Popiš vystavovací mechanismus, teplotní kalibraci a další konstrukční prvky.",
+"k": [
+"Aktuátor: cívka v poli permanentního magnetu, proud = poloha",
+"TCAL: dilatace → pravidelná kalibrace",
+"Vzduchový polštář, parkování (rampa / mimo plotny)",
+"Recirkulační a barometrický filtr",
+"RPM 5400–15000"
+]
+},
+{
+"q": "Vysvětli přístupovou dobu, kódování, ZBR, MTBF a SMART.",
+"k": [
+"Přístupová doba = seek + latence + přepnutí hlavy (8–15 ms)",
+"Interleaving 1:n",
+"Kódování FM, MFM, RLL (2–7), PRML",
+"Prekompenzace, ZBR – víc sektorů na vnějších stopách",
+"MTBF – statistika; SMART – vadné sektory, teplota, spin-up"
+]
+},
+{
+"q": "Popiš moderní záznamové technologie HDD.",
+"k": [
+"SMR – překrývající se stopy, vyšší kapacita, pomalý přepis",
+"HAMR – laser sníží koercitivitu, FePt, velmi vysoká hustota, drahé",
+"MAMR – mikrovlny, spin-torque oscilátor, levnější než HAMR"
+]
+}
+]
+}

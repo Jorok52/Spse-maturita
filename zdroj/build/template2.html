@@ -1,0 +1,845 @@
+<title>Maturitní deska 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a printed circuit board. Every maturita topic is an IC chip soldered onto the board;
+   games open on a "bench" panel. Single dark look by design (solder mask + copper + silkscreen). */
+:root{
+  --mask:#0c3125;        /* solder mask green */
+  --mask-2:#114035;      /* raised mask */
+  --chip:#141819;        /* IC epoxy */
+  --chip-2:#1f2527;      /* epoxy highlight */
+  --copper:#d0a24b;      /* copper / gold accent */
+  --copper-dim:#8a6c34;
+  --silk:#efebdd;        /* silkscreen white */
+  --silk-dim:#a7b9ae;
+  --led-on:#61e38c;
+  --led-off:#24342d;
+  --ok:#61e38c;
+  --bad:#ff6150;
+  --warn:#ffb340;
+  --font-display:"Chakra Petch","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:6px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;background:var(--mask);color:var(--silk);
+  font:16px/1.55 var(--font-body);
+  background-image:
+    radial-gradient(circle at 12px 12px, rgba(208,162,75,.16) 1.6px, transparent 2.4px),
+    linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,.08) 1px, transparent 1px);
+  background-size:48px 48px,24px 24px,24px 24px;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--chip)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--chip);border-bottom:2px solid var(--copper-dim)}
+.top .wrap{display:flex;align-items:center;gap:18px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;cursor:pointer;background:none;border:0;padding:0}
+.brand b{font:700 21px/1 var(--font-display);letter-spacing:.02em;color:var(--silk)}
+.brand span{font:500 11px/1 var(--font-mono);color:var(--copper);letter-spacing:.12em;text-transform:uppercase}
+.stats{display:flex;align-items:center;gap:16px;margin-left:auto;flex-wrap:wrap}
+.lvl{display:flex;align-items:center;gap:10px;min-width:0}
+.lvl .badge{font:600 12px/1 var(--font-mono);background:var(--copper);color:var(--chip);padding:5px 7px;border-radius:3px;white-space:nowrap}
+.lvl .rank{font:600 14px/1.1 var(--font-display);white-space:nowrap}
+.xpbar{width:120px;height:6px;background:var(--led-off);border-radius:3px;overflow:hidden;margin-top:4px}
+.xpbar i{display:block;height:100%;background:var(--copper);transition:width .4s}
+.stat{font:500 12px/1.2 var(--font-mono);color:var(--silk-dim);white-space:nowrap}
+.stat b{color:var(--silk);font-weight:600}
+.iconbtn{background:transparent;border:1px solid var(--copper-dim);border-radius:4px;padding:5px 8px;font:500 12px/1 var(--font-mono);color:var(--silk-dim);cursor:pointer}
+.iconbtn:hover{color:var(--silk);border-color:var(--copper)}
+
+main{padding-block:26px 60px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
+.eyebrow{font:500 11px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--copper)}
+
+/* ---------- board ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px;align-items:end;margin-bottom:22px}
+.hero h1{font-size:clamp(28px,4.4vw,44px);line-height:1.05;margin-top:8px}
+.hero p{color:var(--silk-dim);margin:10px 0 0;max-width:58ch}
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.act{background:var(--chip);border:1px solid var(--copper-dim);border-radius:var(--r);padding:14px 14px 12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0;transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--copper);transform:translateY(-2px)}
+.act b{font:600 16px/1.15 var(--font-display)}
+.act span{font:400 12.5px/1.35 var(--font-body);color:var(--silk-dim)}
+.act em{font:500 11px/1 var(--font-mono);font-style:normal;color:var(--copper)}
+.act[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+.boardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 12px;flex-wrap:wrap}
+.boardhead h2{font-size:18px;font-weight:600}
+.legend{font:500 12px/1 var(--font-mono);color:var(--silk-dim);display:flex;gap:6px;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:26px 30px;padding:6px 14px}
+.chip{position:relative;background:linear-gradient(160deg,var(--chip-2),var(--chip) 55%);border:0;border-radius:4px;padding:16px 16px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:150px;box-shadow:0 2px 0 rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s}
+.chip::before,.chip::after{content:"";position:absolute;top:14px;bottom:14px;width:9px;background:repeating-linear-gradient(180deg,#c9ccc8 0 5px,transparent 5px 12px)}
+.chip::before{left:-9px;border-radius:2px 0 0 2px}
+.chip::after{right:-9px;border-radius:0 2px 2px 0}
+.chip:hover{transform:translateY(-3px);box-shadow:0 2px 0 rgba(0,0,0,.45),0 14px 26px rgba(0,0,0,.35)}
+.chip .notch{position:absolute;top:-1px;left:50%;width:22px;height:11px;margin-left:-11px;border-radius:0 0 11px 11px;background:var(--mask)}
+.chip .ref{font:600 12px/1 var(--font-mono);color:var(--copper);letter-spacing:.08em}
+.chip .ttl{font:600 17px/1.2 var(--font-display);color:var(--silk)}
+.chip .meta{font:400 12px/1.3 var(--font-mono);color:var(--silk-dim);margin-top:auto}
+.leds{display:flex;align-items:center;gap:6px}
+.led{width:9px;height:9px;border-radius:50%;background:var(--led-off);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.led.on{background:var(--led-on);box-shadow:0 0 8px rgba(97,227,140,.7)}
+.leds .pct{font:600 12px/1 var(--font-mono);margin-left:auto;color:var(--silk)}
+.socket{border:2px dashed var(--copper-dim);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:8px;min-height:150px;color:var(--silk-dim)}
+.socket .ref{font:600 12px/1 var(--font-mono);color:var(--copper-dim)}
+.socket b{font:600 16px/1.2 var(--font-display);color:var(--silk-dim)}
+.socket span{font-size:13px}
+
+/* ---------- bench (panels) ---------- */
+.bench{max-width:780px;margin:0 auto;background:var(--chip);border:1px solid var(--copper-dim);border-radius:8px;padding:24px clamp(16px,4vw,32px) 28px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.bench.wide{max-width:980px}
+.back{background:none;border:0;color:var(--silk-dim);font:500 13px/1 var(--font-mono);cursor:pointer;padding:6px 0;margin-bottom:12px}
+.back:hover{color:var(--copper)}
+.thead{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.thead h1{font-size:clamp(24px,3.6vw,34px);line-height:1.1;margin-top:6px}
+.mbar{height:8px;background:var(--led-off);border-radius:4px;overflow:hidden;margin-top:14px}
+.mbar i{display:block;height:100%;background:linear-gradient(90deg,var(--copper),var(--led-on))}
+.big{font:700 34px/1 var(--font-display)}
+.muted{color:var(--silk-dim)}
+.small{font-size:13px}
+.mono{font-family:var(--font-mono)}
+.section{margin-top:26px}
+.section h3{font-size:15px;font-weight:600;margin-bottom:10px;color:var(--silk)}
+.outline{margin:0;padding-left:22px;color:var(--silk);display:grid;gap:5px;max-width:65ch}
+.outline li::marker{color:var(--copper);font-family:var(--font-mono);font-size:13px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.mode{background:var(--mask-2);border:1px solid transparent;border-radius:var(--r);padding:16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:border-color .15s,background .15s}
+.mode:hover{border-color:var(--copper);background:#154a3c}
+.mode b{font:600 17px/1.15 var(--font-display)}
+.mode span{font-size:13.5px;color:var(--silk-dim);line-height:1.4}
+.mode em{font:500 11.5px/1 var(--font-mono);font-style:normal;color:var(--copper);margin-top:auto;padding-top:6px}
+
+/* quiz */
+.qtop{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.qtop .lbl{font:500 12px/1.2 var(--font-mono);color:var(--silk-dim)}
+.segs{display:flex;gap:4px;flex:1;min-width:140px;max-width:340px}
+.segs i{flex:1;height:6px;border-radius:2px;background:var(--led-off)}
+.segs i.ok{background:var(--ok)}.segs i.bad{background:var(--bad)}.segs i.cur{background:var(--copper)}
+.fuses{display:flex;gap:6px;align-items:center}
+.fuse{width:22px;height:10px;border-radius:2px;border:1px solid #9aa39e;position:relative;background:#2a302e}
+.fuse::after{content:"";position:absolute;left:2px;right:2px;top:3px;height:2px;background:var(--warn)}
+.fuse.blown{border-color:#4a524e}.fuse.blown::after{background:transparent;border-top:2px dashed #555;top:2px}
+.combo{font:600 13px/1 var(--font-mono);color:var(--copper);min-width:64px;text-align:right}
+.qtext{font:600 clamp(19px,2.6vw,24px)/1.3 var(--font-display);margin:6px 0 18px;overflow-wrap:anywhere}
+.qsrc{font:500 11px/1 var(--font-mono);color:var(--copper);letter-spacing:.08em;text-transform:uppercase}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--chip-2);border:1px solid #39413f;border-radius:var(--r);padding:13px 14px;cursor:pointer;font-size:15.5px;line-height:1.4;transition:border-color .12s,background .12s;overflow-wrap:anywhere}
+.opt:hover:not([disabled]){border-color:var(--copper)}
+.opt .k{font:600 12px/1 var(--font-mono);color:var(--chip);background:var(--silk-dim);border-radius:3px;padding:4px 6px;margin-top:1px;flex:none}
+.opt.ok{border-color:var(--ok);background:rgba(97,227,140,.12)}
+.opt.ok .k{background:var(--ok)}
+.opt.bad{border-color:var(--bad);background:rgba(255,97,80,.12)}
+.opt.bad .k{background:var(--bad)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:16px;display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;min-height:46px}
+.fb .msg{font:600 15px/1.3 var(--font-display)}
+.fb .msg.ok{color:var(--ok)}.fb .msg.bad{color:var(--bad)}
+.btn{background:var(--copper);color:var(--chip);border:0;border-radius:var(--r);padding:11px 18px;font:600 15px/1 var(--font-display);cursor:pointer;letter-spacing:.01em}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--silk);border:1px solid var(--copper-dim)}
+.btn.ghost:hover{border-color:var(--copper)}
+.btn.red{background:#3a2422;color:#ffd2cc;border:1px solid var(--bad)}
+.btn.green{background:#1d3a2a;color:#d6ffe3;border:1px solid var(--ok)}
+.btn .kbd{font:500 11px/1 var(--font-mono);opacity:.75;margin-left:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kbdhint{font:400 12px/1.4 var(--font-mono);color:var(--silk-dim);margin-top:18px}
+
+/* results */
+.result{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.tile{background:var(--mask-2);border-radius:var(--r);padding:14px}
+.tile .v{font:700 28px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.tile .l{font:500 11px/1.2 var(--font-mono);color:var(--silk-dim);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+.wronglist{display:grid;gap:8px;margin-top:8px}
+.wronglist div{background:var(--chip-2);border-left:3px solid var(--bad);border-radius:4px;padding:10px 12px;font-size:14px}
+.wronglist div b{display:block;font-weight:600;margin-bottom:3px}
+.wronglist div span{color:var(--ok)}
+
+/* flashcards */
+.card{perspective:1200px;cursor:pointer;margin:6px 0 16px}
+.card-in{position:relative;min-height:220px;transition:transform .5s;transform-style:preserve-3d}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:10px;border:1px solid #39413f}
+.front{background:var(--chip-2)}
+.backf{background:#173b30;transform:rotateY(180deg);border-color:var(--copper-dim)}
+.face .t{font:600 clamp(18px,2.4vw,23px)/1.3 var(--font-display);overflow-wrap:anywhere}
+.face .h{font:500 11px/1 var(--font-mono);color:var(--copper);letter-spacing:.1em;text-transform:uppercase}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.tile-b{background:var(--chip-2);border:1px solid #39413f;border-radius:var(--r);padding:11px 12px;text-align:left;cursor:pointer;font-size:14.5px;line-height:1.35;min-height:52px;overflow-wrap:anywhere;transition:border-color .12s,background .12s,opacity .3s}
+.tile-b:hover:not([disabled]){border-color:var(--copper)}
+.tile-b.sel{border-color:var(--copper);background:rgba(208,162,75,.14)}
+.tile-b.done{border-color:var(--ok);background:rgba(97,227,140,.10);opacity:.55;cursor:default}
+.tile-b.err{border-color:var(--bad);background:rgba(255,97,80,.14)}
+.tile-b.term{font-family:var(--font-display);font-weight:600}
+
+/* oral */
+.notes{width:100%;min-height:96px;background:var(--chip-2);border:1px solid #39413f;border-radius:var(--r);color:var(--silk);font:15px/1.5 var(--font-body);padding:12px;resize:vertical}
+.notes:focus{border-color:var(--copper);outline:none}
+.kp{display:grid;gap:8px;margin:14px 0}
+.kp label{display:flex;gap:10px;align-items:flex-start;background:var(--chip-2);border:1px solid #39413f;border-radius:var(--r);padding:10px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+.kp input{margin-top:4px;accent-color:var(--ok);width:17px;height:17px;flex:none}
+.kp label:has(input:checked){border-color:var(--ok)}
+
+/* draw */
+.drum{font:700 clamp(80px,18vw,150px)/1 var(--font-display);text-align:center;color:var(--copper);font-variant-numeric:tabular-nums;margin:10px 0 6px;letter-spacing:-.02em}
+.drawn{text-align:center}
+.drawn h2{font-size:clamp(22px,3vw,30px)}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(30px);background:var(--copper);color:var(--chip);font:600 15px/1.2 var(--font-display);padding:12px 18px;border-radius:6px;opacity:0;pointer-events:none;transition:all .3s;z-index:20;max-width:calc(100% - 32px);text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- v2: labs ---------- */
+.labh{font-size:clamp(20px,2.8vw,26px);margin:6px 0 12px}
+.xtag{color:var(--warn);text-transform:none;letter-spacing:0}
+.xnote{margin-top:18px;font-size:13px;color:var(--warn)}
+.mode.lab{background:#102f27;border-color:rgba(208,162,75,.25)}
+.mode.ai{background:#2a2414;border-color:rgba(208,162,75,.45)}
+.code{background:#0b0e0f;border:1px solid #39413f;border-radius:6px;padding:12px 14px;font:14px/1.5 var(--font-mono);color:#e8e4d6;overflow-x:auto;margin:0 0 16px;white-space:pre}
+.seq{margin:10px 0;padding-left:26px;display:grid;gap:6px;max-width:68ch}
+.seq li{background:var(--mask-2);border-radius:5px;padding:7px 10px}
+.seq li::marker{color:var(--copper);font-family:var(--font-mono)}
+.seq li.next{background:transparent;border:1px dashed var(--copper-dim);color:var(--silk-dim)}
+.seq.done li{background:rgba(97,227,140,.08)}
+.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:10px}
+.bucket-item{font:600 clamp(18px,2.4vw,22px)/1.3 var(--font-display);background:var(--chip-2);border:1px solid #39413f;border-radius:8px;padding:18px;margin:8px 0 14px}
+.cats{display:flex;flex-wrap:wrap;gap:8px}
+.cats .btn{font-size:14px}
+.btn.green:disabled,.btn.red:disabled{opacity:1}
+.arr{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.cell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:52px;padding:10px 6px;background:var(--chip-2);border:1px solid #39413f;border-radius:6px}
+.cell b{font:600 20px/1 var(--font-mono)}
+.cell span{font:500 10px/1 var(--font-mono);color:var(--silk-dim);margin-top:5px}
+.cell.sm{min-width:40px;padding:7px 4px}.cell.sm b{font-size:16px}
+.cell.cmp{border-color:var(--copper);background:rgba(208,162,75,.15)}
+.cell.sorted{border-color:var(--ok)}
+.cell.one{background:#173b30}
+.cell.out.lit{background:rgba(97,227,140,.25);border-color:var(--ok);box-shadow:0 0 10px rgba(97,227,140,.4)}
+.cell.out.hz{opacity:.45}
+.cell.tgt{border-style:dashed}
+.sim595 .ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.lane{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.lane .lbl{font:500 11px/1.2 var(--font-mono);color:var(--silk-dim);width:170px}
+.bits{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));gap:4px;margin:8px 0;overflow-x:auto}
+.bitc{background:var(--chip-2);border:1px solid #39413f;border-radius:4px;padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;min-width:0}
+.bitc b{font:600 15px/1 var(--font-mono)}.bitc span{font:500 9px/1 var(--font-mono);color:var(--silk-dim);margin-top:3px}
+.bitc.on{background:#173b30;border-color:var(--ok)}
+.ledbar{display:flex;align-items:center;gap:8px;margin:8px 0}
+.bigled{width:22px;height:22px;border-radius:50%;background:var(--led-off);border:2px solid #3a443f}
+.bigled.l12.on{background:#4be37f;box-shadow:0 0 14px #4be37f}.bigled.l13.on{background:#ffa53a;box-shadow:0 0 14px #ffa53a}
+.bigled.l14.on{background:#ff5146;box-shadow:0 0 14px #ff5146}.bigled.l15.on{background:#4aa3ff;box-shadow:0 0 14px #4aa3ff}
+.chart{width:100%;max-width:640px;height:auto;display:block;margin:10px 0;background:var(--chip-2);border-radius:6px}
+.gantt{display:flex;position:relative;margin:14px 0 26px;border:1px solid var(--copper-dim);border-radius:4px;max-width:720px}
+.gantt.empty{padding:10px;color:var(--silk-dim);font-size:13px;border-style:dashed}
+.gseg{position:relative;padding:8px 2px;text-align:center;background:#173b30;border-right:1px solid var(--copper-dim);min-width:0}
+.gseg.idle{background:transparent}
+.gseg b{font:600 13px/1 var(--font-mono)}
+.gseg span{position:absolute;left:-4px;bottom:-20px;font:500 11px/1 var(--font-mono);color:var(--silk-dim)}
+.gend{position:absolute;right:-4px;bottom:-20px;font:500 11px/1 var(--font-mono);color:var(--silk-dim)}
+.tblwrap{overflow-x:auto;margin:10px 0}
+.tbl{border-collapse:collapse;font:14px/1.3 var(--font-mono);font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid #39413f;padding:6px 10px;text-align:center}
+.tbl th{color:var(--copper);font-weight:600;background:var(--chip-2)}
+.tbl.pg th.cur{background:var(--copper);color:var(--chip)}
+.tbl.vlsm td{text-align:left}
+.tbl select,.oct{background:var(--chip-2);color:var(--silk);border:1px solid #39413f;border-radius:4px;padding:5px;font:14px var(--font-mono)}
+.oct{width:70px}
+.tasks{display:grid;gap:4px;margin:6px 0 12px}
+.task{display:flex;gap:10px;font-size:14.5px;color:var(--silk-dim)}
+.task span{font:600 12px/1.6 var(--font-mono);width:18px;color:var(--copper)}
+.task.cur{color:var(--silk);font-weight:600}.task.done{color:var(--ok);text-decoration:line-through;text-decoration-color:rgba(97,227,140,.5)}
+.termwin{background:#07090a;border:1px solid #39413f;border-radius:6px;padding:12px;font:13.5px/1.45 var(--font-mono);color:#d8e6dc;height:340px;overflow:auto;cursor:text}
+.tout{white-space:pre-wrap;overflow-wrap:anywhere}
+.termwin .pr{color:var(--led-on)}.termwin .er{color:var(--bad)}
+.tin{display:flex;gap:8px;align-items:center}
+.tin input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:#fff;font:inherit;padding:2px 0}
+.hex{font:12.5px/1 var(--font-mono);overflow-x:auto;background:#07090a;border-radius:6px;padding:10px}
+.hrow{display:flex;gap:10px;align-items:center;white-space:nowrap}
+.ho{color:var(--copper);width:40px}
+.hx{display:flex}
+.hb{background:none;border:0;color:#cfd8d2;font:inherit;padding:3px 3px;cursor:pointer;border-radius:3px}
+.hb:hover{background:rgba(208,162,75,.25)}
+.hb.fnd{background:rgba(97,227,140,.3);color:#fff}.hb.err{background:rgba(255,97,80,.4)}
+.ha{color:var(--silk-dim);letter-spacing:.5px}
+.fat{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.fc{background:var(--chip-2);border:1px solid #39413f;border-radius:5px;padding:8px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px}
+.fc span{font:500 10.5px/1.2 var(--font-mono);color:var(--silk-dim)}
+.fc b{font:600 16px/1 var(--font-mono)}
+.fc.fnd{border-color:var(--ok);background:rgba(97,227,140,.12)}
+.fc.err,.btn.err,.tile-b.err{border-color:var(--bad)!important;background:rgba(255,97,80,.2)!important}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;margin:6px 0 14px;padding-right:4px}
+.msgb{max-width:86%;padding:11px 14px;border-radius:10px;white-space:pre-wrap;line-height:1.5;font-size:15px;overflow-wrap:anywhere}
+.msgb.ai{background:var(--mask-2);border:1px solid rgba(208,162,75,.3);align-self:flex-start}
+.msgb.me{background:#2b3134;align-self:flex-end}
+.aibox{background:var(--mask-2);border-radius:8px;padding:16px;display:grid;gap:8px;max-width:640px}
+.aiexp{margin-top:14px;background:var(--mask-2);border-left:3px solid var(--copper);border-radius:6px;padding:12px 14px;white-space:pre-wrap;font-size:15px;line-height:1.5}
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .actions{grid-template-columns:1fr}
+  .result{grid-template-columns:1fr 1fr 1fr}
+}
+@media (max-width:520px){
+  .stats{margin-left:0;gap:12px}
+  .xpbar{width:90px}
+  .match{grid-template-columns:1fr 1fr;gap:8px}
+  .tile-b{font-size:13px;padding:9px}
+  .result{grid-template-columns:1fr}
+  .grid{padding:6px 10px;gap:22px 26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+
+<header class="top"><div class="wrap">
+  <button class="brand" id="home" aria-label="Zpět na desku"><b>Maturitní deska</b><span>SPŠE · IT</span></button>
+  <div class="stats" id="stats"></div>
+</div></header>
+<main class="wrap" id="view"></main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>const DATA = /*DATA*/;
+const RAW = /*RAW*/;</script>
+<script>
+(function(){
+"use strict";
+const view = document.getElementById('view');
+const statsEl = document.getElementById('stats');
+const toastEl = document.getElementById('toast');
+
+/* ---------------- data ---------------- */
+const T = {}; DATA.forEach(t => T[t.n] = t);
+const NUMS = DATA.map(t => t.n).sort((a,b)=>a-b);
+const ALLQ = [];
+DATA.forEach(t => t.q.forEach((r,i) => ALLQ.push({id:t.n+'-'+i, n:t.n, q:r[0], a:r[1], w:r.slice(2,5), x:!!r[5] || !!t.x})));
+const QBY = {}; ALLQ.forEach(q => (QBY[q.n] = QBY[q.n] || []).push(q));
+const RANKS = ['Tranzistor','Hradlo','Klopný obvod','Registr','Sčítačka','ALU','Řadič','Jádro','Procesor','Server','Cluster','Superpočítač'];
+
+/* ---------------- state ---------------- */
+const KEY = 'maturita-deska-v1';
+function def(){ return {xp:0, box:{}, seen:{}, oral:{}, best:{survival:0}, match:{}, days:[], mute:false}; }
+function load(){ try{ const r = localStorage.getItem(KEY); if(r){ const o = JSON.parse(r); return Object.assign(def(), o); } }catch(e){} return def(); }
+let S = load();
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+function today(){ const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function markDay(){ const t = today(); if(!S.days.includes(t)){ S.days.push(t); if(S.days.length>400) S.days = S.days.slice(-400); } }
+function streak(){
+  const set = new Set(S.days); let d = new Date(); let c = 0;
+  const fmt = x => x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+  if(!set.has(fmt(d))) d.setDate(d.getDate()-1);
+  while(set.has(fmt(d))){ c++; d.setDate(d.getDate()-1); }
+  return c;
+}
+function levelOf(xp){ let L = 1; while(xp >= 50*L*(L+1)) L++; return L; }
+function rankOf(L){ return RANKS[Math.min(L-1, RANKS.length-1)]; }
+function addXP(n){
+  if(n<=0) return;
+  const before = levelOf(S.xp); S.xp += n; markDay(); save();
+  const after = levelOf(S.xp);
+  if(after > before){ toast('Úroveň '+after+' · '+rankOf(after)); beep('lvl'); }
+  renderStats();
+}
+function record(id, ok){
+  S.seen[id] = 1;
+  S.box[id] = ok ? Math.min((S.box[id]||0)+1, 5) : 0;
+  markDay(); save();
+}
+function qM(id){ return Math.min(S.box[id]||0, 4)/4; }
+function topicMastery(n){
+  const qs = QBY[n]; let m = 0; qs.forEach(q => m += qM(q.id)); m /= qs.length;
+  const t = T[n]; let o = 0; t.open.forEach((_,i) => o += (S.oral[n+'-'+i]||0)); o /= t.open.length;
+  return 0.75*m + 0.25*o;
+}
+function masteredCount(){ return ALLQ.filter(q => (S.box[q.id]||0) >= 3).length; }
+function wrongPool(){ return ALLQ.filter(q => S.seen[q.id] && (S.box[q.id]||0) === 0); }
+
+/* ---------------- utils ---------------- */
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+function pickWeighted(items, k, wf){
+  const pool = items.map(it => ({it, w:Math.max(0.01, wf(it))})); const out = [];
+  while(out.length < k && pool.length){
+    let tot = 0; pool.forEach(p => tot += p.w);
+    let r = Math.random()*tot, i = 0;
+    for(; i<pool.length; i++){ r -= pool[i].w; if(r <= 0) break; }
+    if(i >= pool.length) i = pool.length-1;
+    out.push(pool[i].it); pool.splice(i,1);
+  }
+  return out;
+}
+const weight = q => S.seen[q.id] ? (6 - (S.box[q.id]||0)) : 4.5;
+function mcq(q){ const opts = shuffle([q.a, ...q.w]); return {id:q.id, n:q.n, text:q.q, opts, correct:opts.indexOf(q.a), ans:q.a, x:q.x}; }
+function ref(n){ return 'U'+String(n).padStart(2,'0'); }
+function pct(x){ return Math.round(x*100)+' %'; }
+let toastT;
+function toast(msg){ toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(()=>toastEl.classList.remove('show'), 2600); }
+
+/* ---------------- sound: POST beeps ---------------- */
+let actx = null;
+function tone(f, d, t0){
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = 'square'; o.frequency.value = f; g.gain.value = 0.035;
+  o.connect(g); g.connect(actx.destination);
+  const s = actx.currentTime + (t0||0); o.start(s); g.gain.setValueAtTime(0.035, s+d-0.02); g.gain.linearRampToValueAtTime(0, s+d); o.stop(s+d);
+}
+function beep(kind){
+  if(S.mute) return;
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if(kind === 'ok') tone(1046, .07);
+    else if(kind === 'bad') tone(196, .38);
+    else if(kind === 'lvl'){ tone(784,.08,0); tone(1046,.08,.11); tone(1318,.14,.22); }
+    else if(kind === 'tick') tone(660, .03);
+  }catch(e){}
+}
+
+/* ---------------- keyboard ---------------- */
+let onKey = null;
+document.addEventListener('keydown', e => {
+  if(e.target && e.target.matches && e.target.matches('textarea, input[type=text]')) return;
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  if(onKey) onKey(e);
+});
+
+/* ---------------- header stats ---------------- */
+function renderStats(){
+  const L = levelOf(S.xp), lo = 50*(L-1)*L, hi = 50*L*(L+1);
+  const p = Math.max(0, Math.min(1, (S.xp-lo)/(hi-lo)));
+  statsEl.innerHTML =
+    '<div class="lvl"><span class="badge">LVL '+L+'</span><div><div class="rank">'+esc(rankOf(L))+'</div><div class="xpbar" title="'+S.xp+' XP"><i style="width:'+(p*100).toFixed(1)+'%"></i></div></div></div>'+
+    '<div class="stat"><b>'+S.xp+'</b> XP</div>'+
+    '<div class="stat">série <b>'+streak()+'</b> '+(streak()===1?'den':(streak()>=2&&streak()<=4?'dny':'dní'))+'</div>'+
+    '<div class="stat"><b>'+masteredCount()+'</b>/'+ALLQ.length+' zvládnuto</div>'+
+    '<button class="iconbtn" id="mute" aria-pressed="'+(!S.mute)+'">'+(S.mute?'zvuk vyp':'zvuk zap')+'</button>';
+  document.getElementById('mute').onclick = () => { S.mute = !S.mute; save(); renderStats(); if(!S.mute) beep('ok'); };
+}
+document.getElementById('home').onclick = () => go('');
+
+/* ---------------- routing ---------------- */
+function go(h){ if(location.hash.replace('#','') === h) route(); else location.hash = h; }
+function route(){
+  onKey = null;
+  const h = location.hash.replace('#','');
+  const m = h.match(/^t(\d+)$/);
+  if(m && T[+m[1]]) renderTopic(+m[1]); else renderBoard();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', route);
+
+/* ---------------- board ---------------- */
+function leds(m){ const on = Math.round(m*5); let s = ''; for(let i=0;i<5;i++) s += '<span class="led'+(i<on?' on':'')+'"></span>'; return s; }
+function renderBoard(){
+  const wp = wrongPool().length;
+  let chips = '';
+  for(let n=1; n<=20; n++){
+    if(!T[n]){
+      chips += '<div class="socket"><span class="ref">'+ref(n)+' · prázdný socket</span><b>Otázka '+n+'</b><span>Podklady k této otázce v balíčku nejsou.</span></div>';
+      continue;
+    }
+    const t = T[n], m = topicMastery(n);
+    chips += '<button class="chip" data-n="'+n+'"><span class="notch"></span><span class="ref">'+ref(n)+'</span><span class="ttl">'+esc(t.t)+'</span>'+
+      '<span class="meta">'+t.q.length+' otázek · '+t.open.length+' ústních</span><span class="leds">'+leds(m)+'<span class="pct">'+pct(m)+'</span></span></button>';
+  }
+  view.innerHTML =
+    '<section class="hero"><div><div class="eyebrow">Maturita · '+NUMS.length+' otázek · '+ALLQ.length+' kvízových otázek</div>'+
+    '<h1>Rozsviť celou desku.</h1><p>Každý čip je jedna maturitní otázka. Kromě kvízů a kartiček tu jsou laboratoře: plánuješ procesy, hýbeš hlavičkou disku, nasouváš bity do 74595, píšeš do registrů STM32 nebo ovládáš unixový terminál. A AI zkoušející tě vyzkouší jako komise.</p></div>'+
+    '<div class="actions">'+
+      '<button class="act" id="a-draw"><b>Losovat otázku</b><span>Jako u maturity. Vylosuješ číslo a jdeš na ústní zkoušení.</span><em>ústní · náhodné téma</em></button>'+
+      '<button class="act" id="a-surv"><b>Přežití</b><span>Mix ze všech témat, dokud nespálíš 3 pojistky.</span><em>rekord '+(S.best.survival||0)+'</em></button>'+
+      '<button class="act" id="a-fix"'+(wp?'':' disabled')+'><b>Opravit chyby</b><span>Otázky, které jsi naposledy pokazil.</span><em>'+wp+' k opravě</em></button>'+
+    '</div></section>'+
+    '<div class="boardhead"><h2>Základní deska</h2><span class="legend">'+leds(.6)+'&nbsp;= zvládnutí tématu</span></div>'+
+    '<div class="grid">'+chips+'</div>';
+  view.querySelectorAll('.chip').forEach(b => b.onclick = () => go('t'+b.dataset.n));
+  document.getElementById('a-draw').onclick = () => runDraw();
+  document.getElementById('a-surv').onclick = () => runSurvival();
+  const fx = document.getElementById('a-fix'); if(wp) fx.onclick = () => runFix();
+  renderStats();
+}
+
+/* ---------------- topic ---------------- */
+function renderTopic(n){
+  const t = T[n], m = topicMastery(n);
+  const done = QBY[n].filter(q => (S.box[q.id]||0) >= 3).length;
+  const oralDone = t.open.filter((_,i) => (S.oral[n+'-'+i]||0) >= .75).length;
+  let modes =
+    '<button class="mode" data-m="quiz"><b>Kvíz</b><span>10 otázek, 3 pojistky. Série správných odpovědí násobí XP.</span><em>klávesy 1–4</em></button>'+
+    '<button class="mode" data-m="cards"><b>Kartičky</b><span>Otázka, otočit, ohodnotit se. Častěji se vrací to, co neumíš.</span><em>mezerník = otočit</em></button>'+
+    '<button class="mode" data-m="match"><b>Spojovačka</b><span>Spoj 6 pojmů s jejich významem co nejrychleji.</span><em>rekord '+(S.match[n]? S.match[n]+' s':'–')+'</em></button>'+
+    '<button class="mode" data-m="oral"><b>Ústní zkouška</b><span>Odpověz nahlas, pak si odškrtej, co jsi řekl z klíčových bodů.</span><em>'+oralDone+'/'+t.open.length+' na 75 %+</em></button>';
+  modes += '<button class="mode ai" data-m="ai"><b>AI zkoušející</b><span>Zkouší tě jako komise: ptá se, hodnotí odpovědi a na konci dá známku.</span><em>ústní · AI</em></button>';
+  const labs = LABS[n] || [];
+  const labHTML = labs.map((l,i) => '<button class="mode lab" data-l="'+i+'"><b>'+esc(l.name)+'</b><span>'+esc(l.desc)+'</span><em>laboratoř</em></button>').join('');
+  if(n === 11) modes += '<button class="mode" data-m="subnet"><b>Subnetting trenažér</b><span>Náhodné IP a prefixy: adresa sítě, broadcast, hosti, maska, wildcard.</span><em>nekonečně příkladů</em></button>';
+  view.innerHTML =
+    '<div class="bench wide"><button class="back" id="back">← Zpět na desku</button>'+
+    '<div class="thead"><div><div class="eyebrow">'+ref(n)+' · maturitní otázka '+n+'</div><h1>'+esc(t.t)+'</h1></div>'+
+    '<div style="text-align:right"><div class="big">'+pct(m)+'</div><div class="muted small mono">'+done+'/'+t.q.length+' kvízových zvládnuto</div></div></div>'+
+    '<div class="mbar"><i style="width:'+(m*100).toFixed(1)+'%"></i></div>'+
+    '<div class="section"><h3>Laboratoř – vyzkoušej si to</h3><div class="modes">'+labHTML+'</div></div>'+
+    '<div class="section"><h3>Učení a zkoušení</h3><div class="modes">'+modes+'</div></div>'+
+    (t.x ? '<p class="xnote">K této otázce nemáš PDF. Obsah je sestavený podle oficiální osnovy maturity.</p>' : '')+
+    '<div class="section"><h3>Co obsahuje otázka u maturity</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
+    '</div>';
+  document.getElementById('back').onclick = () => go('');
+  view.querySelectorAll('.mode.lab').forEach(b => b.onclick = () => { onKey = null; labs[+b.dataset.l].run(n); window.scrollTo(0,0); });
+  view.querySelectorAll('.mode:not(.lab)').forEach(b => b.onclick = () => {
+    const md = b.dataset.m;
+    if(md === 'ai') runAIExam(n);
+    if(md === 'quiz') runTopicQuiz(n);
+    if(md === 'cards') runCards(n);
+    if(md === 'match') runMatch(n);
+    if(md === 'oral') runOral(n);
+    if(md === 'subnet') runSubnet();
+  });
+  renderStats();
+}
+
+/* ---------------- quiz engine ---------------- */
+function runQuiz(cfg){
+  // cfg: {title, total|null, lives|null, next(i)->q, record, back(), again(), onEnd(score)}
+  let i = 0, score = 0, combo = 0, bestCombo = 0, hp = cfg.lives, xp = 0, cur = null, answered = false;
+  const marks = []; const wrongs = [];
+  function fuses(){ if(cfg.lives == null) return ''; let s = '<div class="fuses" title="Pojistky">'; for(let k=0;k<cfg.lives;k++) s += '<span class="fuse'+(k>=hp?' blown':'')+'"></span>'; return s+'</div>'; }
+  function segs(){
+    if(!cfg.total) return '<span class="lbl">otázka '+(i+1)+' · skóre '+score+'</span>';
+    let s = '<div class="segs">'; for(let k=0;k<cfg.total;k++) s += '<i class="'+(marks[k]||(k===i?'cur':''))+'"></i>'; return s+'</div>';
+  }
+  function next(){
+    if((cfg.total && i >= cfg.total) || (cfg.lives != null && hp <= 0)) return finish();
+    cur = cfg.next(i); if(!cur) return finish();
+    answered = false; render();
+  }
+  function render(){
+    view.innerHTML =
+      '<div class="bench"><button class="back" id="back">← Ukončit</button>'+
+      '<div class="qtop">'+segs()+'<div class="row" style="gap:14px">'+fuses()+'<span class="combo">'+(combo>1?'×'+combo+' série':'')+'</span></div></div>'+
+      '<div class="qsrc">'+esc(cfg.title)+(cur.n?' · '+ref(cur.n)+' '+esc(T[cur.n].t):'')+(cur.x?' · <span class="xtag">doplněno z osnovy, mimo tvoje PDF</span>':'')+'</div>'+
+      '<div class="qtext">'+esc(cur.text)+'</div>'+(cur.code?'<pre class="code">'+esc(cur.code)+'</pre>':'')+
+      '<div class="opts">'+cur.opts.map((o,k) => '<button class="opt" data-k="'+k+'"><span class="k">'+(k+1)+'</span><span>'+esc(o)+'</span></button>').join('')+'</div>'+
+      '<div class="fb" id="fb"></div>'+
+      '<div class="kbdhint">1–4 odpověď · Enter další otázka</div></div>';
+    document.getElementById('back').onclick = () => finish(true);
+    view.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(+b.dataset.k));
+    onKey = e => {
+      if(!answered && /^[1-4]$/.test(e.key)){ e.preventDefault(); answer(+e.key-1); }
+      else if(answered && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); next(); }
+    };
+  }
+  function answer(k){
+    if(answered) return; answered = true;
+    const ok = k === cur.correct;
+    if(cfg.record && cur.id) record(cur.id, ok);
+    let gain = 0;
+    if(ok){ combo++; bestCombo = Math.max(bestCombo, combo); score++; gain = 10 + Math.min(combo-1, 5)*2; xp += gain; beep('ok'); }
+    else { combo = 0; if(hp != null) hp--; wrongs.push(cur); beep('bad'); }
+    marks[i] = ok ? 'ok' : 'bad';
+    i++;
+    if(gain) addXP(gain); else renderStats();
+    view.querySelectorAll('.opt').forEach((b,j) => { b.disabled = true; if(j === cur.correct) b.classList.add('ok'); else if(j === k) b.classList.add('bad'); });
+    const qtop = view.querySelector('.qtop'); qtop.innerHTML = segs()+'<div class="row" style="gap:14px">'+fuses()+'<span class="combo">'+(combo>1?'×'+combo+' série':'')+'</span></div>';
+    const fb = document.getElementById('fb');
+    const last = (cfg.total && i >= cfg.total) || (cfg.lives != null && hp <= 0);
+    fb.innerHTML = '<span class="msg '+(ok?'ok':'bad')+'">'+(ok?'Správně · +'+gain+' XP':'Špatně · správně je zvýrazněno')+'</span><button class="btn" id="nx">'+(last?'Výsledky':'Další')+'<span class="kbd">Enter</span></button>';
+    document.getElementById('nx').onclick = next;
+    document.getElementById('nx').focus({preventScroll:true});
+    if(!ok) aiExplainButton(cur, fb);
+  }
+  function finish(aborted){
+    onKey = null;
+    if(cfg.onEnd) cfg.onEnd(score);
+    const answeredN = marks.filter(Boolean).length;
+    if(aborted && answeredN === 0){ cfg.back(); return; }
+    view.innerHTML =
+      '<div class="bench"><div class="eyebrow">'+esc(cfg.title)+'</div><h1 style="font-size:30px;margin-top:6px">'+
+      (cfg.lives != null && hp <= 0 ? 'Pojistky spálené' : (score === answeredN && answeredN ? 'Čistý průchod' : 'Hotovo'))+'</h1>'+
+      '<div class="result"><div class="tile"><div class="v">'+score+'/'+answeredN+'</div><div class="l">správně</div></div>'+
+      '<div class="tile"><div class="v">+'+xp+'</div><div class="l">XP</div></div>'+
+      '<div class="tile"><div class="v">×'+bestCombo+'</div><div class="l">nejdelší série</div></div></div>'+
+      (cfg.extra ? cfg.extra(score) : '')+
+      (wrongs.length ? '<div class="section"><h3>Na tohle se podívej</h3><div class="wronglist">'+wrongs.map(w => '<div><b>'+esc(w.text)+'</b><span>'+esc(w.ans)+'</span></div>').join('')+'</div></div>' : '')+
+      '<div class="row" style="margin-top:22px"><button class="btn" id="again">Znovu<span class="kbd">Enter</span></button><button class="btn ghost" id="bk">Zpět</button></div></div>';
+    document.getElementById('again').onclick = cfg.again;
+    document.getElementById('bk').onclick = cfg.back;
+    onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); cfg.again(); } };
+    window.scrollTo(0,0);
+  }
+  next();
+}
+
+function runTopicQuiz(n){
+  const qs = pickWeighted(QBY[n], Math.min(10, QBY[n].length), weight).map(mcq);
+  runQuiz({title:'Kvíz', total:qs.length, lives:3, record:true, next:i => qs[i],
+    back:() => renderTopic(n), again:() => runTopicQuiz(n)});
+}
+function runSurvival(){
+  const recent = [];
+  runQuiz({title:'Přežití · mix', total:null, lives:3, record:true,
+    next:() => {
+      const pool = ALLQ.filter(q => !recent.includes(q.id));
+      const q = pickWeighted(pool, 1, weight)[0];
+      recent.push(q.id); if(recent.length > 60) recent.shift();
+      return mcq(q);
+    },
+    onEnd:s => { if(s > (S.best.survival||0)){ S.best.survival = s; save(); toast('Nový rekord: '+s); } },
+    extra:() => '<p class="muted mono small">Rekord: '+(S.best.survival||0)+'</p>',
+    back:() => renderBoard(), again:() => runSurvival()});
+}
+function runFix(){
+  const pool = shuffle(wrongPool()).slice(0, 15).map(mcq);
+  if(!pool.length){ renderBoard(); return; }
+  runQuiz({title:'Oprava chyb', total:pool.length, lives:null, record:true, next:i => pool[i],
+    back:() => go(''), again:() => { if(wrongPool().length) runFix(); else { toast('Všechny chyby opravené'); go(''); } }});
+}
+
+/* ---------------- subnetting ---------------- */
+function ip2s(x){ x = x>>>0; return [x>>>24,(x>>>16)&255,(x>>>8)&255,x&255].join('.'); }
+function maskOf(p){ return p === 0 ? 0 : (0xFFFFFFFF << (32-p))>>>0; }
+function ri(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+function genSubnet(){
+  const ps = [8,16,19,20,21,22,23,24,24,25,25,26,26,27,27,28,28,29,30];
+  const p = ps[ri(0, ps.length-1)];
+  const base = [ () => ((192<<24)|(168<<16)|(ri(0,255)<<8)|ri(1,254))>>>0,
+                 () => ((10<<24)|(ri(0,255)<<16)|(ri(0,255)<<8)|ri(1,254))>>>0,
+                 () => ((172<<24)|(ri(16,31)<<16)|(ri(0,255)<<8)|ri(1,254))>>>0 ][ri(0,2)]();
+  const ip = base, mask = maskOf(p), net = (ip & mask)>>>0, size = Math.pow(2, 32-p), bc = (net + size - 1)>>>0;
+  const types = ['net','bc','hosts','mask','wild','first','last'];
+  const ty = types[ri(0, types.length-1)];
+  const nb = (q) => { const m = maskOf(q); return [(ip & m)>>>0, ((ip & m)>>>0) + Math.pow(2,32-q) - 1]; };
+  let text, ans, cands;
+  const cidr = ip2s(ip)+'/'+p;
+  const fmtN = v => v.toLocaleString('cs-CZ');
+  switch(ty){
+    case 'net': text = 'Jaká je adresa sítě pro '+cidr+'?'; ans = ip2s(net);
+      cands = [ip2s(bc), ip2s(net+1), ip2s(nb(Math.min(p+1,31))[0] === net ? net + size/2 : nb(Math.min(p+1,31))[0]), ip2s(nb(Math.max(p-1,1))[0] === net ? (net - size)>>>0 : nb(Math.max(p-1,1))[0]), ip2s(net+size), ip2s(ip)]; break;
+    case 'bc': text = 'Jaká je broadcast adresa pro '+cidr+'?'; ans = ip2s(bc);
+      cands = [ip2s(net), ip2s(bc-1), ip2s(nb(Math.min(p+1,31))[1]), ip2s(nb(Math.max(p-1,1))[1]), ip2s(bc+size), ip2s((bc|255)>>>0)]; break;
+    case 'hosts': text = 'Kolik použitelných adres hostů má síť s prefixem /'+p+'?'; ans = fmtN(size-2);
+      cands = [fmtN(size), fmtN(size-1), fmtN(size/2-2), fmtN(size*2-2), fmtN(size+2)]; break;
+    case 'mask': text = 'Jaká maska odpovídá prefixu /'+p+'?'; ans = ip2s(mask);
+      cands = [ip2s(maskOf(p+1)), ip2s(maskOf(p-1)), ip2s(maskOf(p+2)), ip2s(maskOf(p-2)), ip2s(~mask)]; break;
+    case 'wild': text = 'Jaká je wildcard maska pro prefix /'+p+'?'; ans = ip2s(~mask);
+      cands = [ip2s(mask), ip2s(~maskOf(p+1)), ip2s(~maskOf(p-1)), ip2s(~maskOf(p+2))]; break;
+    case 'first': text = 'Jaká je první použitelná adresa hosta pro '+cidr+'?'; ans = ip2s(net+1);
+      cands = [ip2s(net), ip2s(net+2), ip2s(bc-1), ip2s(bc)]; break;
+    default: text = 'Jaká je poslední použitelná adresa hosta pro '+cidr+'?'; ans = ip2s(bc-1);
+      cands = [ip2s(bc), ip2s(bc-2), ip2s(net+1), ip2s(net)]; break;
+  }
+  const ws = []; shuffle(cands).forEach(c => { if(c !== ans && !ws.includes(c) && ws.length < 3) ws.push(c); });
+  let guard = 0; while(ws.length < 3 && guard++ < 50){ const c = ty === 'hosts' ? fmtN(ri(1, 4000)) : ip2s((net + ri(1, 4096))>>>0); if(c !== ans && !ws.includes(c)) ws.push(c); }
+  const opts = shuffle([ans, ...ws]);
+  return {id:null, n:11, text, opts, correct:opts.indexOf(ans), ans};
+}
+function runSubnet(){
+  runQuiz({title:'Subnetting', total:10, lives:null, record:false, next:() => genSubnet(),
+    extra:() => '<p class="muted small">Postup: síť = IP AND maska · broadcast = IP OR wildcard · hosti = 2<sup>32−prefix</sup> − 2 · blok = 256 − poslední oktet masky.</p>',
+    back:() => renderTopic(11), again:() => runSubnet()});
+}
+
+/* ---------------- flashcards ---------------- */
+function runCards(n){
+  const cards = pickWeighted(QBY[n], Math.min(12, QBY[n].length), weight);
+  let i = 0, known = 0, flipped = false, xp = 0;
+  function render(){
+    if(i >= cards.length) return end();
+    const c = cards[i]; flipped = false;
+    view.innerHTML = '<div class="bench"><button class="back" id="back">← Ukončit</button>'+
+      '<div class="qtop"><span class="lbl">kartička '+(i+1)+'/'+cards.length+' · umím '+known+'</span><span class="lbl">'+ref(n)+' '+esc(T[n].t)+'</span></div>'+
+      '<div class="card" id="card" tabindex="0" role="button" aria-label="Otočit kartičku"><div class="card-in">'+
+        '<div class="face front"><span class="h">Otázka</span><div class="t">'+esc(c.q)+'</div><span class="muted small">Řekni si odpověď nahlas, pak otoč.</span></div>'+
+        '<div class="face backf"><span class="h">Odpověď</span><div class="t">'+esc(c.a)+'</div></div>'+
+      '</div></div>'+
+      '<div class="row" id="rate"><button class="btn" id="flip">Otočit<span class="kbd">mezerník</span></button></div>'+
+      '<div class="kbdhint">mezerník otočit · 1 nevěděl jsem · 2 věděl jsem</div></div>';
+    document.getElementById('back').onclick = () => end(true);
+    const card = document.getElementById('card');
+    card.onclick = flip; document.getElementById('flip').onclick = flip;
+    onKey = e => {
+      if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); if(!flipped) flip(); }
+      else if(flipped && e.key === '1'){ rate(false); }
+      else if(flipped && e.key === '2'){ rate(true); }
+    };
+  }
+  function flip(){
+    if(flipped) return; flipped = true;
+    document.getElementById('card').classList.add('flip');
+    document.getElementById('rate').innerHTML = '<button class="btn red" id="no">Nevěděl jsem<span class="kbd">1</span></button><button class="btn green" id="yes">Věděl jsem<span class="kbd">2</span></button>';
+    document.getElementById('no').onclick = () => rate(false);
+    document.getElementById('yes').onclick = () => rate(true);
+  }
+  function rate(ok){
+    record(cards[i].id, ok);
+    if(ok){ known++; xp += 5; addXP(5); beep('ok'); } else { beep('tick'); renderStats(); }
+    i++; render();
+  }
+  function end(aborted){
+    onKey = null;
+    if(aborted && i === 0){ renderTopic(n); return; }
+    view.innerHTML = '<div class="bench"><div class="eyebrow">Kartičky · '+ref(n)+'</div><h1 style="font-size:30px;margin-top:6px">Balíček prošlý</h1>'+
+      '<div class="result"><div class="tile"><div class="v">'+known+'/'+i+'</div><div class="l">věděl jsem</div></div><div class="tile"><div class="v">+'+xp+'</div><div class="l">XP</div></div><div class="tile"><div class="v">'+pct(topicMastery(n))+'</div><div class="l">zvládnutí tématu</div></div></div>'+
+      '<div class="row"><button class="btn" id="again">Další balíček<span class="kbd">Enter</span></button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>';
+    document.getElementById('again').onclick = () => runCards(n);
+    document.getElementById('bk').onclick = () => renderTopic(n);
+    onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); runCards(n); } };
+  }
+  render();
+}
+
+/* ---------------- matching ---------------- */
+function runMatch(n){
+  const pairs = shuffle(T[n].terms).slice(0, 6);
+  const L = shuffle(pairs.map((p,i) => ({i, s:p[0]}))), R = shuffle(pairs.map((p,i) => ({i, s:p[1]})));
+  let selL = null, selR = null, done = 0, mistakes = 0; const t0 = Date.now(); let timer;
+  view.innerHTML = '<div class="bench"><button class="back" id="back">← Ukončit</button>'+
+    '<div class="qtop"><span class="lbl">'+ref(n)+' · spoj pojem s významem</span><span class="lbl" id="clock">0,0 s · chyby 0</span></div>'+
+    '<div class="match"><div class="col">'+L.map(x => '<button class="tile-b term" data-side="L" data-i="'+x.i+'">'+esc(x.s)+'</button>').join('')+'</div>'+
+    '<div class="col">'+R.map(x => '<button class="tile-b" data-side="R" data-i="'+x.i+'">'+esc(x.s)+'</button>').join('')+'</div></div>'+
+    '<div class="kbdhint">Klikni na pojem vlevo a pak na jeho význam vpravo (nebo naopak).</div></div>';
+  const clock = document.getElementById('clock');
+  timer = setInterval(() => { clock.textContent = ((Date.now()-t0)/1000).toFixed(1).replace('.',',')+' s · chyby '+mistakes; }, 100);
+  document.getElementById('back').onclick = () => { clearInterval(timer); renderTopic(n); };
+  view.querySelectorAll('.tile-b').forEach(b => b.onclick = () => {
+    if(b.classList.contains('done')) return;
+    const side = b.dataset.side;
+    view.querySelectorAll('.tile-b[data-side="'+side+'"]').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    if(side === 'L') selL = b; else selR = b;
+    if(selL && selR){
+      const a = selL, c = selR; selL = selR = null;
+      if(a.dataset.i === c.dataset.i){
+        [a,c].forEach(x => { x.classList.remove('sel'); x.classList.add('done'); x.disabled = true; });
+        done++; beep('ok');
+        if(done === pairs.length) finish();
+      } else {
+        mistakes++; beep('bad');
+        [a,c].forEach(x => { x.classList.remove('sel'); x.classList.add('err'); });
+        setTimeout(() => [a,c].forEach(x => x.classList.remove('err')), 450);
+      }
+    }
+  });
+  function finish(){
+    clearInterval(timer);
+    const secs = Math.round((Date.now()-t0)/100)/10;
+    const xp = Math.max(6, 30 - mistakes*4);
+    let rec = false;
+    if(!S.match[n] || secs < S.match[n]){ S.match[n] = secs; rec = true; save(); }
+    addXP(xp);
+    setTimeout(() => {
+      view.innerHTML = '<div class="bench"><div class="eyebrow">Spojovačka · '+ref(n)+'</div><h1 style="font-size:30px;margin-top:6px">'+(rec?'Nový rekord':'Spojeno')+'</h1>'+
+        '<div class="result"><div class="tile"><div class="v">'+String(secs).replace('.',',')+' s</div><div class="l">čas</div></div><div class="tile"><div class="v">'+mistakes+'</div><div class="l">chyby</div></div><div class="tile"><div class="v">+'+xp+'</div><div class="l">XP</div></div></div>'+
+        '<div class="row"><button class="btn" id="again">Znovu<span class="kbd">Enter</span></button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>';
+      document.getElementById('again').onclick = () => runMatch(n);
+      document.getElementById('bk').onclick = () => renderTopic(n);
+      onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); runMatch(n); } };
+    }, 350);
+  }
+}
+
+/* ---------------- oral exam ---------------- */
+function runOral(n, drawn){
+  const t = T[n]; let i = 0; const results = []; let xpTot = 0;
+  function intro(){
+    view.innerHTML = '<div class="bench"><button class="back" id="back">← Zpět</button>'+
+      '<div class="eyebrow">'+(drawn?'Vylosováno · ':'')+'Ústní zkouška · '+ref(n)+'</div><h1 style="font-size:clamp(24px,3.4vw,32px);margin-top:6px">'+n+'. '+esc(t.t)+'</h1>'+
+      '<div class="section"><h3>Zadání otázky</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
+      '<p class="muted small" style="max-width:62ch;margin-top:18px">Dostaneš '+t.open.length+' podotázek. U každé odpověz nahlas nebo si napiš poznámky, pak si odkryj klíčové body a poctivě odškrtej, co jsi zmínil.</p>'+
+      '<div class="row" style="margin-top:16px"><button class="btn" id="go">Začít zkoušení<span class="kbd">Enter</span></button></div></div>';
+    document.getElementById('back').onclick = () => drawn ? go('') : renderTopic(n);
+    document.getElementById('go').onclick = ask;
+    onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); ask(); } };
+  }
+  function ask(){
+    if(i >= t.open.length) return end();
+    const o = t.open[i];
+    view.innerHTML = '<div class="bench"><button class="back" id="back">← Ukončit</button>'+
+      '<div class="qtop"><span class="lbl">podotázka '+(i+1)+'/'+t.open.length+'</span><span class="lbl">'+ref(n)+' '+esc(t.t)+'</span></div>'+
+      '<div class="qtext">'+esc(o.q)+'</div>'+
+      '<label class="muted small mono" for="oral-notes">Tvoje odpověď (nepovinné, klidně jen nahlas)</label>'+
+      '<textarea class="notes" id="oral-notes" placeholder="Piš body, na které si vzpomeneš…"></textarea>'+
+      '<div id="kpwrap"></div>'+
+      '<div class="row" id="orow" style="margin-top:14px"><button class="btn" id="reveal">Ukázat klíčové body</button></div></div>';
+    document.getElementById('back').onclick = () => end(true);
+    document.getElementById('reveal').onclick = reveal;
+    onKey = null;
+  }
+  function reveal(){
+    const o = t.open[i];
+    document.getElementById('kpwrap').innerHTML = '<div class="section" style="margin-top:16px"><h3>Odškrtej, co jsi zmínil</h3><div class="kp">'+
+      o.k.map((k,j) => '<label><input type="checkbox" id="kp-'+j+'"><span>'+esc(k)+'</span></label>').join('')+'</div></div>';
+    document.getElementById('orow').innerHTML = '<button class="btn" id="eval">Vyhodnotit</button>';
+    document.getElementById('eval').onclick = evaluate;
+  }
+  function evaluate(){
+    const o = t.open[i]; const boxes = view.querySelectorAll('.kp input');
+    let c = 0; boxes.forEach(b => { if(b.checked) c++; });
+    const r = c / o.k.length, id = n+'-'+i;
+    S.oral[id] = Math.max(S.oral[id]||0, r); save();
+    const xp = c*5; xpTot += xp; if(xp) addXP(xp);
+    beep(r >= .6 ? 'ok' : 'bad');
+    results.push({q:o.q, r});
+    i++; ask();
+  }
+  function end(aborted){
+    onKey = null;
+    if(aborted && !results.length){ drawn ? go('') : renderTopic(n); return; }
+    const avg = results.reduce((s,x) => s+x.r, 0) / results.length;
+    const grade = avg >= .85 ? 1 : avg >= .7 ? 2 : avg >= .5 ? 3 : avg >= .3 ? 4 : 5;
+    view.innerHTML = '<div class="bench"><div class="eyebrow">Ústní zkouška · '+ref(n)+'</div><h1 style="font-size:30px;margin-top:6px">Odhad známky: '+grade+'</h1>'+
+      '<div class="result"><div class="tile"><div class="v">'+pct(avg)+'</div><div class="l">pokrytí bodů</div></div><div class="tile"><div class="v">+'+xpTot+'</div><div class="l">XP</div></div><div class="tile"><div class="v">'+pct(topicMastery(n))+'</div><div class="l">zvládnutí tématu</div></div></div>'+
+      '<div class="wronglist">'+results.map(x => '<div style="border-left-color:'+(x.r>=.75?'var(--ok)':x.r>=.4?'var(--warn)':'var(--bad)')+'"><b>'+esc(x.q)+'</b><span class="mono" style="color:var(--silk-dim)">'+pct(x.r)+'</span></div>').join('')+'</div>'+
+      '<div class="row" style="margin-top:22px"><button class="btn" id="again">Zkoušet znovu</button><button class="btn ghost" id="draw">Losovat další</button><button class="btn ghost" id="bk">Na desku</button></div></div>';
+    document.getElementById('again').onclick = () => runOral(n, drawn);
+    document.getElementById('draw').onclick = () => runDraw();
+    document.getElementById('bk').onclick = () => go('');
+    window.scrollTo(0,0);
+  }
+  intro();
+}
+
+/* ---------------- draw (losování) ---------------- */
+function runDraw(){
+  const target = NUMS[Math.floor(Math.random()*NUMS.length)];
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  view.innerHTML = '<div class="bench"><button class="back" id="back">← Zpět</button><div class="eyebrow" style="text-align:center">Losování maturitní otázky</div><div class="drum" id="drum">--</div><div class="drawn" id="drawn"></div></div>';
+  document.getElementById('back').onclick = () => go('');
+  const drum = document.getElementById('drum');
+  let k = 0; const steps = reduce ? 0 : 18;
+  function spin(){
+    if(k < steps){ drum.textContent = String(NUMS[Math.floor(Math.random()*NUMS.length)]); beep('tick'); k++; setTimeout(spin, 40 + k*k*1.1); }
+    else { drum.textContent = String(target); beep('lvl'); show(); }
+  }
+  function show(){
+    document.getElementById('drawn').innerHTML = '<h2>'+esc(T[target].t)+'</h2><p class="muted small mono" style="margin-top:6px">'+pct(topicMastery(target))+' zvládnuto</p>'+
+      '<div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="oral">Ústní zkouška<span class="kbd">Enter</span></button><button class="btn ghost" id="aix">AI zkoušející</button><button class="btn ghost" id="quiz">Rychlý kvíz</button><button class="btn ghost" id="again">Losovat znovu</button></div>';
+    document.getElementById('oral').onclick = () => runOral(target, true);
+    document.getElementById('quiz').onclick = () => runTopicQuiz(target);
+    document.getElementById('aix').onclick = () => runAIExam(target);
+    document.getElementById('again').onclick = () => runDraw();
+    onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); runOral(target, true); } };
+  }
+  spin();
+}
+
+/*LABS*/
+window.__md = {LABS, T, renderTopic, runAIExam};
+/* ---------------- boot ---------------- */
+renderStats();
+route();
+})();
+</script>

@@ -1,0 +1,411 @@
+20. Typy a charakteris.
+rozhrání (Konstrukční uspořádání PC)
+01 Rozhraní EIDE
+Složení, Komunikační módy,
+a) Vznik,
+Principy zapojování
+02 Rozhraní Seriál ATA
+a) Typy, Charakteristika, Rychlosti
+03
+NCQ, Staggered Spin-Up, Port multiplier,
+Port selektor, Hot swap
+04 eSATA, mSATA, M.2
+a) porovnání o přenosové rychlosti o konektory
+05 Technologie AHCI a NVMe
+06 Rozhraní USB
+a) Verze, Konektory, Přenosové rychlosti,
+Kompatibilita
+20. Typy a charakteristika rozhrání
+Rozhraní a jejich role
+Rozhraní slouží k zajištění přenosu dat a komunikace mezi zařízeními v počítači. Mezi hlavní
+rozhraní pro připojení úložišť patří PATA (IDE) a EIDE, které byly později nahrazeny SATA.
+Rozhraní PATA (IDE)
+PATA (Parallel ATA, původně označováno jako IDE – Integrated Drive Electronics) je
+paralelní 16bitové rozhraní pro připojení pevných disků a optických mechanik k základní
+desce.
+Používá 40žilový plochý kabel (tzv. "kšanda").
+Maximálně dvě zařízení na jednom kabelu (Master/Slave).
+Pro připojení se využívají napájecí konektory Molex.
+Přenosová rychlost závisí na použité verzi ATA.
+Výpočet přenosové rychlosti (příklad pro ATA 100):
+Datová šířka: 16 bitů = 2 bajty
+Efektivní frekvence: 25 MHz (DDR – zdvojený přenos) → 50 MHz
+Výpočet: 50 MHz × 2 B = 100 MB/s
+Nevýhody PATA:
+Paralelní přenos dat způsobuje rušení a interferenci na vysokých frekvencích.
+Omezená délka kabelů (max. 46 cm).
+Nutnost jumperů pro manuální nastavení master/slave.
+Verze ATA
+Max. kapacita
+Přenosová rychlost
+Další vlastnosti
+ATA 1
+512 MB
+PIO 0-2, DMA 0-2
+První standard
+ATA 2 (EIDE)
+8 GB
+PIO 0-4, DMA 0-2
+Rozšíření kapacity
+ATA 3
+128 GB
+PIO 0-4, DMA 0-2
+Podpora SMART (Self-Monitoring)
+ATA 4
+128 GB
+UDMA 0-2
+Podpora ATAPI CD-ROM
+ATA 5
+128 GB
+UDMA 0-4 (66 MB/s)
+80žilový kabel pro UDMA 4+
+ATA 6
+144 PB
+UDMA 0-5 (100 MB/s)
+LBA 48bit addressing
+ATA 7
+144 PB
+UDMA 0-6 (133 MB/s)
+SATA 1.0 jako součást standardu
+Rozhraní EIDE (Enhanced IDE)
+EIDE (Enhanced Integrated Drive Electronics) je rozšířená verze IDE (ATA-2) vyvinutá firmou
+Western Digital, která:
+Zvyšuje přenosové rychlosti oproti standardnímu IDE.
+Přidává podporu DMA a ATAPI zařízení (např. CD-ROM mechaniky).
+Rozšiřuje maximální kapacitu disků.
+Komunikační módy EIDE:
+1. PIO (Programmed Input/Output) – Přenos dat přes procesor, vysoké zatížení CPU.
+2. DMA (Direct Memory Access) – Přímý přenos dat do paměti, nižší zatížení CPU.
+20. Typy a charakteristika rozhrání
+IDE kabely a připojení:
+40žilový kabel – starší standard, přenosová rychlost do 33 MB/s.
+80žilový kabel – nutný pro UDMA 4 a vyšší, snižuje elektromagnetické rušení (každý
+druhý vodič je zemnící).
+IDE konektory:
+Napájecí konektor (Molex).
+Jumpery – určují, zda je disk Master/Slave.
+Master-Slave Cable Select:
+BIOS určuje hlavní a podřízené zařízení podle pozice na kabelu:
+Černý konektor → Master
+Šedý konektor → Slave
+Modrý konektor → Připojení na základní desku
+Rozhraní FDD (Floppy Disk Drive)
+FDD je rozhraní pro připojení disketových mechanik (floppy disků) k počítači. Dříve bylo
+široce používáno pro ukládání malého množství dat, ale dnes je již zastaralé.
+Používá 34pinový kabel pro přenos dat mezi počítačem a disketovou mechanikou.
+Přenosová rychlost: Velmi nízká, obvykle 500 KB/s.
+Disketové mechaniky byly používány především k zálohám a instalacím software před
+nástupem CD/DVD a USB médií.
+Rozhraní SCSI (Small Computer System Interface)
+SCSI je vysokorychlostní paralelní rozhraní, které se používá především pro připojení disků,
+tiskáren a dalších periferií ve serverech a pracovních stanicích. Podporuje až 15 zařízení na
+jednom rozhraní.
+Typy a verze SCSI:
+SCSI je známé pro svou vysokou flexibilitu a rozšiřitelnost.
+Ultra320 SCSI – přenosová rychlost až 320 MB/s.
+Ultra640 SCSI – přenosová rychlost až 640 MB/s.
+(Číslo ve verzi udává maximální přenosovou rychlost v MB/s.)
+Přednosti SCSI:
+Podpora více zařízení na jednom kabelu.
+Nízká latence a vysoká stabilita přenosu.
+Rozšířený adresovací prostor, což je ideální pro datová centra.
+Nevýhody SCSI:
+Vyšší cena oproti alternativám jako IDE nebo SATA.
+Komplexita konfigurace a zapojení
+Rozhraní SATA (Serial ATA)
+SATA je moderní sériové rozhraní pro připojení pevného disku, SSD nebo optických
+mechanik. V porovnání s PATA přináší významné výhody v podobě vyšší přenosové
+rychlosti, nižšího elektromagnetického rušení a tenčích kabelů.
+20. Typy a charakteristika rozhrání
+Výhody SATA:
+Používá 1bitovou datovou šířku, což snižuje šířku kabelu a umožňuje vyšší frekvence
+přenosu.
+Větší flexibilita a jednoduchost v zapojení, než u paralelního PATA.
+Možnost zvýšit frekvenci rozhraní, což dovoluje přenášet vyšší množství dat
+sériovým způsobem.
+Verze SATA:
+SATA I (SATA/150)
+Maximální rychlost: 150 MB/s (1,5 Gb/s)
+Používá 10bitové kódování pro přenos dat.
+Frekvence rozhraní: 1500 MHz (1 bit na takt).
+SATA III
+SATA II (SATA/300)
+Maximální rychlost: 300 MB/s
+Vylepšená verze SATA I, s nižšími latencemi a lepšími vlastnostmi pro dohled nad
+přenosem dat.
+SATA III (SATA/600)
+Maximální rychlost: 600 MB/s
+Nejnovější verze, která podporuje SSD disky a jejich vysoké přenosové rychlosti.
+Rozhraní eSATA (External SATA)
+eSATA je verze SATA určená pro externí zařízení, která nabízí plnou kompatibilitu s interními
+SATA disky a poskytuje jejich plný výkon i v externím prostředí.
+Charakteristika eSATA:
+Nízké zatížení CPU během přenosu dat (na rozdíl od USB 2.0).
+Podpora SMART pro sledování zdraví disků.
+Konektor eSATA je robustnější než interní SATA, což umožňuje časté připojování a
+odpojování.
+Zarovnání konektoru je optimalizováno pro více zasunutí (až 500 zasunutí oproti
+běžnému SATA s 50 zasunutí).
+Maximální délka kabelu: Až 2 metry.
+Výhody eSATA:
+Poskytuje výkon SATA pro externí disky, což je výhodné
+pro velkokapacitní přenosy.
+Vyšší spolehlivost než u USB nebo IEEE1394 (FireWire).
+eSATA
+Rozhraní mSATA (Mini SATA)
+mSATA je miniaturizovaná verze SATA, která byla oznámena v roce 2009. Používá se hlavně
+pro malé zařízení jako jsou laptopy, tablety nebo ultratenké PC.
+Charakteristika mSATA:
+Stejný výkon jako SATA (přenosové rychlosti jsou
+300 MB/s pro mSATA II a 600 MB/s pro mSATA III).
+Rozdíl spočívá v menší velikosti konektoru, což je
+ideální pro kompaktní zařízení.
+mSATA
+20. Typy a charakteristika rozhrání
+SATA Express
+Kombinuje výhody SATA a PCI Express do jednoho rozhraní.
+Teoretická rychlost 1 GB/s jedním směrem díky PCIe linkám.
+Každý konektor SATA Express obsahuje:
+Dva SATA 6 Gb/s porty
+Dvě linky PCI Express
+Pro komunikaci disku se systémem je nutný speciální SATA Express kabel, který
+umožňuje připojení buď přes SATA, nebo PCIe.
+Technologie se neuchytila a je dnes považována za mrtvou, protože ji plně nahradil slot
+M.2.
+SATA M.2
+Moderní a univerzální rozhraní pro SSD disky, které se postupně stalo standardem.
+Podporuje čtveřici PCIe linek, dvojici SATA 6 Gb/s kanálů, USB a PCM audio.
+K rozpoznání konkrétních funkcí je nutné klíčování konektoru (různé typy klíčů B, M
+apod.).
+Významně vyšší rychlosti než SATA Express, především díky přímému propojení s PCIe
+sběrnicí.
+Druh
+Maximální rychlost
+SATA I (včetně eSATA)
+1,5 Gb/s (150 MB/s)
+SATA 3 (včetně eSATA)
+3,0 Gb/s (300 MB/s)
+SATA 6 (včetně eSATA)
+6,0 Gb/s (600 MB/s)
+M.2 SATA a mSATA
+Stejná jako SATA 3 & 6
+M.2 PCIe (přes SATA)
+1,5 Gb/s (150 MB/s)
+M.2 PCIe (přes NVMe)
+3,5 Gb/s (3500 MB/s)
+Technologie SATA II a SATA III
+SATA II a SATA III přinesly významné technologické pokroky, které zvyšují výkon, efektivitu a
+spolehlivost. NCQ zlepšuje práci s daty, Hot Swap umožňuje snadnou výměnu disků,
+Staggered Spin-Up chrání napájecí zdroj, Port Selector zajišťuje redundanci a Port Multiplier
+umožňuje rozšíření úložiště.
+Native Command Queuing (NCQ)
+Optimalizace řazení požadavků na čtení/zápis dat.
+Nechává řadič disku rozhodnout o nejefektivnějším pořadí operací.
+Minimalizuje počet otáček ploten a přesunů hlaviček, čímž zvyšuje rychlost a snižuje
+opotřebení.
+Výrazné zlepšení výkonu při náhodném čtení/zápisu oproti starším SATA
+technologiím.
+Použitelné pouze u pevných disků (HDD), u SSD nemá smysl kvůli rozdílnému
+způsobu práce s daty.
+20. Typy a charakteristika rozhrání
+Hot Swap
+Umožňuje připojit nebo odpojit disk za chodu počítače, aniž by bylo nutné jej
+restartovat.
+Operační systém disk rozpozná automaticky a může s ním ihned pracovat.
+Vyžaduje podporu ze strany základní desky a řadiče.
+Důležité pro servery a datová úložiště, kde je třeba rychle vyměňovat disky bez
+výpadku systému.
+Staggered Spin-Up
+Postupné rozběhnutí disků po startu počítače.
+Minimalizuje okamžité zatížení napájecího zdroje, když se rozbíhá více HDD současně.
+Snižuje riziko přetížení zdroje při startu, což je klíčové v serverových řešeních s více
+disky.
+Port Selector
+Umožňuje připojit jeden disk ke dvěma řadičům.
+Zajišťuje redundanci – pokud jeden řadič selže, druhý převezme kontrolu a zajistí
+dostupnost dat.
+Klíčová funkce pro datová centra a servery, kde je třeba minimalizovat riziko výpadku.
+Port Multiplier
+Umožňuje připojit více disků k jednomu řadiči SATA.
+Řadič dokáže obsloužit několik disků najednou, což zlepšuje rozšiřitelnost úložného
+systému.
+Efektivní v NAS systémech nebo jiných úložištích s omezeným počtem SATA portů.
+20. Typy a charakteristika rozhrání
+Technologie AHCI (Advanced Host Controller Interface)
+AHCI je hardwarové rozhraní, které umožňuje moderní komunikaci mezi softwarem a SATA
+zařízeními.
+Funkce AHCI:
+Je to mezivrstva mezi čipsetem a SATA diskem, která řídí operace disků na úrovni,
+kterou starší PATA řadiče nedokázaly.
+Podporuje pokročilé funkce SATA, jako NCQ a Hot Swap, což umožňuje vyšší výkon a
+flexibilitu při práci s disky.
+Nejde o součást standardu SATA, ale často je s ním používán pro zlepšení výkonu.
+Režimy a zpětná kompatibilita:
+SATA řadiče mohou pracovat ve třech režimech:
+IDE režim → emuluje starší rozhraní PATA (omezená podpora, max. 4 zařízení).
+AHCI režim → plná podpora moderních funkcí SATA.
+RAID režim → umožňuje spojení více disků do pole pro vyšší výkon či redundanci.
+PCI IDE podporuje hlavní a vedlejší kanál s maximálně dvěma zařízeními na kanál.
+Technologie NVMe (Non-Volatile Memory Express)
+NVMe je moderní rozhraní pro SSD disky, které využívají flash paměť. Bylo navrženo
+speciálně pro SSD, aby odstranilo omezení starých protokolů, jako je AHCI.
+Hlavní výhody NVMe oproti SATA/AHCI:
+Vyšší přenosová rychlost – 7× vyšší propustnost než SATA SSD.
+Nižší latence – až 3× menší zpoždění díky přímé komunikaci mezi SSD a CPU.
+Odstranění zpoždění řadiče – SSD komunikuje přímo s procesorem přes PCIe
+sběrnici.
+Vysoká paralelizace – umožňuje zpracování více požadavků současně, což vede k
+rychlejším operacím čtení/zápisu.
+NVMe je tedy přímo optimalizované pro moderní SSD, zatímco AHCI bylo původně
+vyvinuto pro starší mechanické disky a proto ho NVMe výrazně překonává.
+SAS (Serial Attached SCSI)
+SAS je sériová verze staršího paralelního rozhraní SCSI, které je určeno pro výkonné
+serverové disky.
+Vysoká spolehlivost a rychlost – navrženo pro nepřetržitý provoz v datových centrech.
+Datová propustnost až 4,8 GB/s.
+Maximální rychlost 12 Gb/s.
+Podobný konektor jako SATA, ale SAS zařízení nejsou kompatibilní se SATA řadiči.
+SAS disky jsou určené pro servery a podnikové nasazení, kde je kladen důraz na
+spolehlivost a vysokou propustnost.
+FireWire (IEEE 1394)
+FireWire je vysokorychlostní sériová sběrnice, kterou vyvinula společnost Apple pro
+připojení externích zařízení.
+Používal se pro externí pevné disky, kamery a profesionální audio zařízení.
+Maximální přenosová rychlost 800 Mb/s (FireWire 800).
+Většinou nahrazen USB 3.0 a Thunderbolt, které nabízejí vyšší rychlosti a širší
+kompatibilitu.
+FireWire byl kdysi konkurencí USB, ale postupně vymizel kvůli nižší adopci a vyšším nákladům
+na implementaci.
+20. Typy a charakteristika rozhrání
+IEEE 1394
+USB – Universal Serial Bus
+USB je univerzální sériové rozhraní určené pro přenos dat, napájení zařízení a komunikaci
+mezi periferiemi a počítačem.
+Obecné vlastnosti USB
+Sériové rozhraní – data se přenáší bit po bitu po jednom vodiči.
+Platformově nezávislé – podporováno v různých operačních systémech a zařízeních.
+Přenos dat v reálném čase – využívá synchronní i asynchronní režimy.
+Napájení přes USB – některá zařízení mohou být napájena přímo z USB konektoru
+(např. flash disky, myši, klávesnice).
+Komunikační vzdálenost do 5 metrů – využívá kroucenou dvojlinku k eliminaci rušení.
+Možnost připojení až 127 zařízení – s využitím maximálně 7 HUBů.
+Architektura USB
+Vrstvená hvězdicová architektura
+Komunikace je řízena přes USB rozbočovače (HUBy).
+HUBy fungují i jako repeatery, zesilují signál.
+Řízená sběrnice
+Hostitelský řadič (PC) inicializuje všechny přenosy.
+USB zařízení mezi sebou přímo nekomunikují, vždy přes hostitele.
+Plug & Play
+USB zařízení lze připojit za chodu bez restartu systému.
+Pokud je ovladač dostupný, instaluje se automaticky.
+Konektory USB
+Typ A – standardní konektor pro připojení periferií.
+Typ B – běžně se používá u tiskáren a některých skenerů.
+Mini USB – dříve u fotoaparátů, některých telefonů a přenosných disků.
+Micro USB – využíván u mobilních zařízení, dnes nahrazen USB-C.
+USB-C – oboustranný konektor s vyšší přenosovou rychlostí a větším výkonem.
+20. Typy a charakteristika rozhrání
+Pin
+Barva
+Funkce
+1
+Červená
++5V (napájení)
+2
+Bílá
+Data-
+3
+Zelená
+Data+
+4
+Černá
+GND (zem)
+Verze USB
+USB 1.x (1996)
+Rychlosti:
+Low Speed: 1,5 Mb/s
+Full Speed: 12 Mb/s
+Half duplex – data mohou pouze odesílat nebo přijímat, ne současně.
+Konektory: USB-A, USB-B
+USB 2.0 (2000)
+Rychlost až 480 Mb/s (reálně max. 280 Mb/s).
+Half duplex (stejně jako USB 1.x).
+Zpětná kompatibilita s USB 1.x.
+Nové konektory: Mini USB, Micro USB.
+USB 3.0 (2008)
+Teoretická propustnost až 4,8 Gb/s (reálně max 2–3 Gb/s).
+Full duplex – současné odesílání i příjem dat.
+8 vodičů:
+6 datových
+2 napájecí
+Zpětná kompatibilita s USB 2.0 (starší zařízení fungují v pomalejším režimu).
+Maximální proud: 900 mA.
+Napájení USB
+Hub dodává napětí v rozsahu 4,75 – 5,25 V.
+Standardní zařízení USB odebírá max. 100 mA, ale některá (např. pevné disky) vyžadují
+více.
+Organizace USB sběrnice
+Jeden hlavní řadič (master) – PC řídí veškerou komunikaci.
+Zařízení může zahájit přenos jen po vyzvání hostitele.
+USB 1.0 a 2.0 jsou half duplex (nelze přenášet současně).
+USB 3.0 je full duplex (současné odesílání a přijímání).
+Kompatibilita USB
+USB 2.0 zařízení fungují v USB 3.0 konektorech (ale nevyužijí vyšší rychlost).
+USB 3.0 konektory nelze vždy zapojit do USB 2.0 portů, záleží na typu konektoru.
+Zpětná kompatibilita je zajištěna tím, že USB 3.0 konektory obsahují piny pro starší verze.
+20. Typy a charakteristika rozhrání
+Thunderbolt – vysokorychlostní rozhraní pro připojení periferií
+Vyvinuto společností Intel ve spolupráci s Apple.
+Spojuje PCI Express a DisplayPort do jednoho sériového rozhraní.
+Umožňuje připojení externích grafických karet, monitorů, disků a dalších zařízení.
+Podporuje přenos dat, videa i napájení přes jeden kabel.
+Specifikace Thunderbolt
+Thunderbolt 1 (2011)
+Propustnost: 10 Gb/s na kanál (celkem 20 Gb/s).
+Používá konektor Mini DisplayPort.
+Podporuje řetězení až 6 zařízení.
+Thunderbolt 2 (2013)
+Propustnost: 20 Gb/s (sloučením dvou kanálů 10 Gb/s).
+Používá stejný konektor jako Thunderbolt 1.
+Podpora 4K monitorů.
+Thunderbolt 3 (2015)
+Propustnost až 40 Gb/s.
+Přechod na USB-C konektor (zpětně kompatibilní s USB 3.1/3.2).
+Napájení až 100 W (přes USB Power Delivery).
+Možnost připojení externích GPU (eGPU).
+Thunderbolt 4 (2020)
+Zajišťuje minimální propustnost 40 Gb/s (stejně jako TB3, ale bez kompromisů).
+Plná podpora USB4 (Thunderbolt 3 byl volitelně kompatibilní).
+Podpora dvou 4K monitorů nebo jednoho 8K monitoru.
+Vyšší bezpečnost díky ochranným funkcím DMA.
+Další vlastnosti Thunderboltu
+Možnost řetězení až 7 zařízení na jeden port.
+Nízká latence – odezva pouze 8 ns.
+Maximální napájení 10 W (u TB3 a TB4 až 100 W přes USB PD).
+Maximální délka kabelu 3 m pro měděné kabely, delší s optickými.
+Podpora přenosu obrazu, audia a dat současně.
+Vlastnost
+Thunderbolt 3/4
+USB 3.2
+USB4
+Rychlost
+40 Gb/s
+20 Gb/s
+40 Gb/s
+Konektor
+USB-C
+USB-C
+USB-C
+Podpora videa
+Ano (DP 1.4)
+Omezená
+Ano
+Podpora řetězení
+Ano
+Ne
+Ano
+Napájení
+Až 100 W
+Až 100 W
+Až 100 W

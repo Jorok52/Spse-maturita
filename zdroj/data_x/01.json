@@ -1,0 +1,389 @@
+{
+"n": 1,
+"t": "Programovací jazyk C",
+"x": 1,
+"outline": [
+"Datové typy, definice vs. inicializace, přetypování",
+"Standardní vstupy a výstupy",
+"Řídicí struktury: větvení a cykly",
+"Práce s polem: jednorozměrné, dvourozměrné; načtení, výpis, manipulace",
+"Algoritmy třídění pole",
+"Funkce: popis, definice, tělo, prototyp, s parametrem i bez",
+"Struktury a ukazatele",
+"Práce se soubory: typy, deklarace, přístupové funkce",
+"Knihovny"
+],
+"q": [
+[
+"Kolik bajtů má typ char?",
+"1",
+"2",
+"4",
+"8"
+],
+[
+"Jaký formátový specifikátor má int v printf?",
+"%d",
+"%f",
+"%c",
+"%s"
+],
+[
+"Jaký specifikátor použiješ pro double ve scanf?",
+"%lf",
+"%f",
+"%d",
+"%ld"
+],
+[
+"Rozdíl mezi definicí a inicializací proměnné?",
+"Definice vyhradí paměť, inicializace jí navíc přiřadí počáteční hodnotu",
+"Inicializace vyhradí paměť, definice jen určí datový typ proměnné",
+"Definice proběhne až při běhu programu, inicializace při překladu",
+"Obojí je totéž, jen inicializace se píše pouze u globálních proměnných"
+],
+[
+"Co vypíše printf(\"%d\", 7 / 2);?",
+"3",
+"3.5",
+"4",
+"3,5"
+],
+[
+"Jak získáš 3.5 z 7 / 2?",
+"Přetypováním: (double)7 / 2",
+"Zápisem (int)7 / 2 – přetypuje se výsledek",
+"Operátorem %: 7 % 2 vrátí desetinnou část",
+"Nijak, v C celočíselné dělení vždy zaokrouhlí"
+],
+[
+"Co dělá operátor %?",
+"Zbytek po celočíselném dělení",
+"Vypočítá procentní podíl dvou čísel",
+"Vrátí celou část po dělení (podíl)",
+"Umocní levý operand na pravý operand"
+],
+[
+"Proč se ve scanf píše & před proměnnou?",
+"Předává se adresa proměnné, kam se má zapsat",
+"Je to logický AND, který proměnnou vynuluje",
+"Označuje, že proměnná je pouze pro čtení",
+"Převádí načtený text na číslo podle formátu"
+],
+[
+"Který cyklus proběhne vždy alespoň jednou?",
+"do-while",
+"while (s podmínkou na začátku)",
+"for se třemi částmi v hlavičce",
+"foreach přes všechny prvky pole"
+],
+[
+"Co dělá break v cyklu?",
+"Okamžitě ukončí cyklus",
+"Přeskočí na další iteraci",
+"Ukončí program",
+"Nic"
+],
+[
+"Co dělá continue?",
+"Přeskočí zbytek těla a pokračuje další iterací",
+"Okamžitě ukončí celý cyklus a pokračuje za ním",
+"Vrátí se z funkce, ve které cyklus běží",
+"Restartuje cyklus znovu od první iterace"
+],
+[
+"Bez čeho \"propadne\" větev ve switch do další?",
+"Bez break",
+"Bez default",
+"Bez case",
+"Bez return"
+],
+[
+"Jaký index má první prvek pole?",
+"0",
+"1",
+"−1",
+"Libovolný"
+],
+[
+"Jak deklaruješ pole 10 celých čísel?",
+"int a[10];",
+"int a(10);",
+"array int a = 10;",
+"int[10] a"
+],
+[
+"Jak se přistupuje k prvku 2D pole m na řádku i a sloupci j?",
+"m[i][j]",
+"m[i,j]",
+"m(i)(j)",
+"m[i+j]"
+],
+[
+"Princip bubble sortu?",
+"Opakovaně porovnává sousední prvky a prohazuje je, větší „probublávají“ na konec",
+"V každém kroku vybere minimum ze zbytku pole a přesune ho na začátek",
+"Rozdělí pole na poloviny, každou seřadí zvlášť a nakonec je slévá",
+"Bere prvky jeden po druhém a vkládá je na správné místo v seřazené části"
+],
+[
+"Princip select sortu (výběrem)?",
+"V každém kroku najde minimum ze zbytku a prohodí ho na začátek zbytku",
+"Opakovaně porovnává sousední prvky a prohazuje je, dokud nejsou seřazené",
+"Rozdělí pole podle pivota na menší a větší prvky a rekurzivně pokračuje",
+"Každý další prvek vloží na správné místo do už seřazené části pole"
+],
+[
+"Složitost bubble sortu v nejhorším případě?",
+"O(n²)",
+"O(n)",
+"O(log n)",
+"O(n log n)"
+],
+[
+"Co je prototyp funkce?",
+"Deklarace hlavičky funkce (návratový typ, jméno, parametry) před použitím",
+"Tělo funkce s příkazy, které se vykonají při volání, uzavřené ve složených závorkách",
+"Volání funkce s konkrétními hodnotami parametrů v main",
+"Komentář nad funkcí popisující, co funkce vrací"
+],
+[
+"Co vrací funkce typu void?",
+"Nic",
+"0",
+"NULL",
+"Ukazatel"
+],
+[
+"Jak se v C předávají parametry funkcím?",
+"Hodnotou – změnu originálu umožní předání ukazatele",
+"Vždy odkazem – funkce mění přímo původní proměnné",
+"Přes globální proměnné, parametry slouží jen pro čtení",
+"Kopií ukazatele – předávají se vždy jen adresy"
+],
+[
+"Co obsahuje ukazatel?",
+"Adresu v paměti",
+"Hodnotu proměnné",
+"Jméno proměnné",
+"Typ proměnné"
+],
+[
+"Co dělá operátor * u ukazatele (dereference)?",
+"Zpřístupní hodnotu na adrese, kam ukazatel ukazuje",
+"Vynásobí adresu velikostí datového typu ukazatele",
+"Vytvoří nový ukazatel a přidělí mu volnou paměť",
+"Vypíše adresu, na kterou ukazatel právě ukazuje"
+],
+[
+"Co dělá operátor &?",
+"Vrátí adresu proměnné",
+"Provede logický AND obou operandů",
+"Zpřístupní hodnotu na adrese (dereference)",
+"Posune bity proměnné o jedno místo doleva"
+],
+[
+"Jak se přistupuje k položce struktury přes ukazatel p?",
+"p->polozka",
+"p.polozka",
+"*p->polozka",
+"p::polozka"
+],
+[
+"Co je struct?",
+"Uživatelský datový typ seskupující položky různých typů",
+"Pole, které smí obsahovat jen prvky stejného typu",
+"Funkce, která vrací víc hodnot najednou",
+"Knihovna se standardními datovými typy jazyka C"
+],
+[
+"Kterou funkcí otevřeš soubor?",
+"fopen",
+"open_file",
+"fread jen",
+"fclose"
+],
+[
+"Jaký typ má proměnná pro práci se souborem?",
+"FILE *",
+"file",
+"int",
+"char *"
+],
+[
+"Co znamená režim \"a\" ve fopen?",
+"Připisování na konec souboru",
+"Otevření pouze pro čtení od začátku",
+"Přepsání souboru – starý obsah se smaže",
+"Binární čtení bez převodu konců řádků"
+],
+[
+"Co vrátí fopen, když se soubor nepodaří otevřít?",
+"NULL",
+"0 bajtů",
+"−1",
+"EOF"
+],
+[
+"Rozdíl textového a binárního souboru?",
+"Textový ukládá znaky (čitelné), binární přímo bajty v paměťové podobě",
+"Žádný – oba ukládají data jako znaky ASCII, liší se jen příponou souboru",
+"Binární soubor jde jen číst, do textového jen zapisovat",
+"Textový soubor ukládá bajty, binární jen čitelné znaky"
+],
+[
+"Kterou funkcí zapíšeš formátovaný text do souboru?",
+"fprintf",
+"printf",
+"fputsc",
+"write_text"
+],
+[
+"Ve které knihovně je printf a scanf?",
+"stdio.h",
+"stdlib.h",
+"math.h",
+"string.h"
+],
+[
+"Ve které knihovně je strlen a strcpy?",
+"string.h",
+"stdio.h",
+"ctype.h",
+"stdlib.h"
+],
+[
+"Ve které knihovně je malloc a rand?",
+"stdlib.h",
+"stdio.h",
+"math.h",
+"string.h"
+],
+[
+"Kterou funkcí uvolníš paměť z malloc?",
+"free",
+"delete",
+"release",
+"clear"
+]
+],
+"terms": [
+[
+"int",
+"Celé číslo, %d"
+],
+[
+"double",
+"Desetinné číslo, %lf"
+],
+[
+"char",
+"Znak, 1 B, %c"
+],
+[
+"printf",
+"Formátovaný výstup"
+],
+[
+"scanf",
+"Formátovaný vstup (s &)"
+],
+[
+"do-while",
+"Proběhne aspoň jednou"
+],
+[
+"break",
+"Ukončí cyklus"
+],
+[
+"Prototyp",
+"Hlavička funkce před použitím"
+],
+[
+"Ukazatel",
+"Proměnná s adresou"
+],
+[
+"->",
+"Položka struktury přes ukazatel"
+],
+[
+"fopen",
+"Otevření souboru, FILE *"
+],
+[
+"fclose",
+"Zavření souboru"
+],
+[
+"stdio.h",
+"Vstup/výstup"
+],
+[
+"string.h",
+"Práce s řetězci"
+],
+[
+"Bubble sort",
+"Prohazování sousedů"
+]
+],
+"open": [
+{
+"q": "Popiš datové typy v C, definici, inicializaci a přetypování.",
+"k": [
+"Základní typy: char, int, short, long, float, double (+ unsigned)",
+"Definice vyhradí paměť, inicializace přiřadí počáteční hodnotu",
+"Implicitní a explicitní přetypování (double)x",
+"Celočíselné dělení 7/2 = 3"
+]
+},
+{
+"q": "Vysvětli standardní vstup a výstup a řídicí struktury.",
+"k": [
+"printf/scanf, formátové specifikátory %d %f %lf %c %s, & ve scanf",
+"if/else, switch (case, break, default)",
+"Cykly for, while, do-while",
+"break a continue"
+]
+},
+{
+"q": "Popiš práci s polem a algoritmy třídění.",
+"k": [
+"Deklarace int a[10], indexy od 0, 2D pole m[i][j]",
+"Načtení a výpis cyklem",
+"Bubble sort – prohazování sousedů, O(n²)",
+"Select sort – výběr minima; případně insert sort"
+]
+},
+{
+"q": "Popiš funkce v C.",
+"k": [
+"Definice: návratový typ, jméno, parametry, tělo",
+"Prototyp před main",
+"Funkce bez parametrů / s parametry, void",
+"Předávání hodnotou, změna přes ukazatel, return"
+]
+},
+{
+"q": "Vysvětli struktury a ukazatele.",
+"k": [
+"struct seskupuje položky různých typů, přístup tečkou",
+"Ukazatel obsahuje adresu, & a * (dereference)",
+"p->polozka",
+"Ukazatele a pole, dynamická paměť malloc/free"
+]
+},
+{
+"q": "Popiš práci se soubory a knihovny.",
+"k": [
+"Textové vs. binární soubory",
+"FILE *f = fopen(\"x.txt\",\"r\"), kontrola NULL, fclose",
+"Režimy r, w, a (+ b)",
+"fprintf, fscanf, fgets, fputs, fread, fwrite",
+"Knihovny stdio.h, stdlib.h, string.h, math.h"
+]
+}
+]
+}

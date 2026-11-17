@@ -1,0 +1,412 @@
+{
+"n": 14,
+"t": "Organizační struktura HDD (Windows)",
+"outline": [
+"Rozdělení disku: MBR, EPT, GPT – typy, rozdíly, souvislost s instalací OS",
+"Struktura PaT a EPT, program DiskEdit",
+"Programy pro správu disků: Acronis Disk Director, Paragon Partition Manager",
+"Adresování CHS a LBA, souvislost s BIOS a UEFI při bootování",
+"EFI System Partition – vznik, obsah, bootování a instalace",
+"RAID, dynamické svazky"
+],
+"q": [
+[
+"Pořadí přípravy disku?",
+"LLF (výrobce) → rozdělení na oddíly → vysokoúrovňové formátování",
+"Vysokoúrovňové formátování → LLF → rozdělení na oddíly",
+"Rozdělení na oddíly → LLF (výrobce) → souborový systém",
+"Souborový systém → rozdělení na oddíly → LLF"
+],
+[
+"Velikost MBR?",
+"512 B",
+"4 kB",
+"64 B",
+"1 MB"
+],
+[
+"Kde leží MBR?",
+"V prvním sektoru disku (CHS 0,0,1)",
+"Na konci disku jako záloha",
+"V oddílu EFI ve FAT32",
+"V čipu BIOSu na desce"
+],
+[
+"Kolik B zabírá zaváděcí kód v MBR?",
+"446 B",
+"512 B",
+"64 B",
+"2 B"
+],
+[
+"Kolik B zabírá tabulka oddílů (PaT) v MBR?",
+"64 B (4 × 16 B)",
+"446 B (4 × 111 B)",
+"128 B (4 × 32 B)",
+"16 B (1 × 16 B)"
+],
+[
+"Boot signatura MBR?",
+"0x55AA",
+"0x80",
+"0xFFFF",
+"0x07"
+],
+[
+"Max. počet oddílů v MBR?",
+"4 primární, nebo 3 primární + 1 rozšířený",
+"128 primárních oddílů bez rozšířeného",
+"2 primární a 2 rozšířené",
+"Neomezeně logických oddílů"
+],
+[
+"Max. velikost oddílu/disku u MBR?",
+"2 TB (32bit LBA)",
+"9,4 ZB (64bit LBA)",
+"128 GB (28bit LBA)",
+"16 TB (40bit LBA)"
+],
+[
+"Příznak aktivního (bootovacího) oddílu?",
+"0x80",
+"0x55AA",
+"0x07",
+"0x00"
+],
+[
+"Kód typu oddílu NTFS?",
+"07h",
+"80h",
+"0Bh",
+"83h"
+],
+[
+"Co je EPT?",
+"Tabulka logických disků v rozšířeném oddílu (řetězený seznam)",
+"Záložní tabulka GPT uložená na konci disku pro obnovu po poškození",
+"Záloha MBR v posledním sektoru oddílu",
+"Typ souborového systému pro logické disky"
+],
+[
+"Jak jsou propojeny EPT tabulky?",
+"Jednosměrně vázaný seznam – každá ukazuje na další",
+"Stromem – hlavní EPT ukazuje na všechny ostatní",
+"Polem čtyř ukazatelů uloženým v MBR",
+"Nejsou propojeny, každá stojí samostatně"
+],
+[
+"Kdy vzniká MBR?",
+"Při instalaci prvního OS / nástrojem (diskpart)",
+"Při výrobě disku během nízkoúrovňového formátování (LLF)",
+"Při každém spuštění počítače BIOSem",
+"Při defragmentaci systémového oddílu"
+],
+[
+"Co dělá zaváděcí kód MBR?",
+"Najde aktivní oddíl a předá řízení jeho boot recordu",
+"Spustí BIOS, provede POST a nastaví pořadí bootovacích zařízení",
+"Naformátuje aktivní oddíl",
+"Zkontroluje operační paměť"
+],
+[
+"Co je POST?",
+"Power-On Self Test – test HW po zapnutí",
+"Typ oddílu pro zavaděč systému",
+"Zavaděč Windows na aktivním oddílu",
+"Boot signatura na konci MBR"
+],
+[
+"GPT je součástí standardu…",
+"UEFI",
+"BIOS",
+"MBR",
+"FAT"
+],
+[
+"Kolik primárních oddílů podporuje GPT?",
+"128",
+"4",
+"16",
+"256"
+],
+[
+"Adresování GPT?",
+"64bit LBA",
+"CHS",
+"32bit LBA",
+"16bit"
+],
+[
+"Kde je záložní kopie GPT?",
+"Na konci disku",
+"V MBR v prvním sektoru",
+"V EFI System Partition",
+"Nikde, GPT zálohu nemá"
+],
+[
+"Max. velikost disku GPT (teoreticky)?",
+"9,4 ZB",
+"2 TiB",
+"128 PB",
+"16 EB"
+],
+[
+"Které Windows nepodporují GPT bootování?",
+"Windows XP a starší 32bit",
+"Windows 10 (64bit)",
+"Windows 11",
+"Windows Server 2019"
+],
+[
+"K čemu je DiskEdit?",
+"Nízkoúrovňová editace sektorů (MBR, PaT, EPT) v HEX",
+"Defragmentace a optimalizace disku včetně MBR a PaT",
+"Čištění registrů a dočasných souborů",
+"Konverze FAT ↔ NTFS bez ztráty dat"
+],
+[
+"Jak zobrazuje DiskEdit sektory?",
+"RAW mode – HEX a ASCII",
+"Jako stromovou strukturu adresářů",
+"Jen jako text bez binárních dat",
+"Jako grafickou mapu obsazení"
+],
+[
+"Který nástroj umí převádět FAT32 ↔ NTFS bez formátování?",
+"Paragon Partition Manager",
+"Acronis Disk Director",
+"CCleaner",
+"Defraggler"
+],
+[
+"Jak spustit Správu disků ve Windows?",
+"diskmgmt.msc",
+"regedit.exe",
+"msconfig.exe",
+"devmgmt.msc"
+],
+[
+"Nový disk musí být před vytvořením oddílů…",
+"Inicializován jako MBR nebo GPT",
+"Defragmentován a otestován",
+"Zašifrován pomocí BitLockeru",
+"Zapojen do pole RAID"
+],
+[
+"RAID 0 je…",
+"Striping – rychlost, žádná ochrana dat",
+"Zrcadlení – kopie na dva disky",
+"Striping s rozdělenou paritou",
+"Dvojitá parita – přežije 2 disky"
+],
+[
+"RAID 1 je…",
+"Zrcadlení, kapacita 50 %",
+"Striping, kapacita 100 %",
+"Distribuovaná parita, kapacita (n−1)",
+"Hammingův kód, nízká kapacita"
+],
+[
+"RAID 5 – minimum disků a kapacita?",
+"3 disky, (n−1)",
+"2 disky, 50 %",
+"4 disky, (n−2)",
+"3 disky, 100 %"
+],
+[
+"RAID 6 přežije výpadek…",
+"Dvou disků",
+"Jednoho disku",
+"Žádného",
+"Všech"
+],
+[
+"Proč je RAID 10 odolnější než 0+1?",
+"Zrcadlí páry a pak prokládá – přežije víc výpadků v různých párech",
+"Má navíc paritu rozloženou mezi všechny disky, takže zvládne i výpadek celého páru",
+"Potřebuje víc disků (minimálně 6)",
+"Je rychlejší, protože nepoužívá zrcadlení"
+],
+[
+"Čím chrání data RAID 2?",
+"Hammingovým kódem",
+"Paritou na jednom disku",
+"Zrcadlením",
+"Ničím"
+],
+[
+"Problém RAID 3 a 4?",
+"Dedikovaný paritní disk je úzké hrdlo",
+"Nemají žádnou ochranu dat proti výpadku",
+"Využitelná kapacita je jen 50 %",
+"Potřebují minimálně 8 disků"
+],
+[
+"Výhoda HW RAID oproti SW RAID?",
+"Vlastní procesor a cache, nezatěžuje CPU, hot-swap",
+"Je levnější, protože nepotřebuje řadič ani vlastní paměť",
+"Nepotřebuje žádný řadič ani ovladač",
+"Řídí ho operační systém pomocí CPU"
+],
+[
+"Rozložený (spanned) svazek ve Windows…",
+"Spojuje více disků do jednoho svazku (až 32)",
+"Zrcadlí data na druhý disk (jako RAID 1)",
+"Je vždy jen na jednom fyzickém disku",
+"Prokládá data s paritou (jako RAID 5)"
+],
+[
+"Zrcadlený dynamický svazek odpovídá…",
+"RAID 1",
+"RAID 0",
+"RAID 5",
+"RAID 6"
+],
+[
+"Co je ESP (EFI System Partition)?",
+"Speciální oddíl ve FAT32, ze kterého UEFI načítá zavaděče OS",
+"Rozšířený oddíl v MBR, který obsahuje logické disky propojené přes EPT",
+"Záložní kopie tabulky GPT na konci disku",
+"Oddíl pro swap a hibernaci systému"
+],
+[
+"Jaký souborový systém musí mít ESP?",
+"FAT32",
+"NTFS",
+"exFAT",
+"ext4"
+],
+[
+"Co obsahuje ESP?",
+"Zavaděče a boot manažery, např. /EFI/BOOT/bootx64.efi",
+"Uživatelské dokumenty, nastavení profilu a stažené soubory",
+"Tabulku FAT a kopii hlavního adresáře",
+"Registr Windows a body obnovení systému"
+],
+[
+"Proč UEFI nenabootuje z oddílu NTFS?",
+"UEFI čte zavaděč jen z FAT32 (ESP)",
+"NTFS je pro UEFI příliš rychlý",
+"Na NTFS nejdou uložit soubory .efi",
+"UEFI neumí pracovat s disky GPT"
+]
+],
+"terms": [
+[
+"MBR",
+"512 B, 446 kód + 64 PaT + 0x55AA"
+],
+[
+"PaT",
+"4 záznamy po 16 B"
+],
+[
+"EPT",
+"Řetěz tabulek logických disků"
+],
+[
+"GPT",
+"128 oddílů, 64bit LBA, záloha na konci"
+],
+[
+"0x80",
+"Aktivní oddíl"
+],
+[
+"DiskEdit",
+"HEX editace sektorů"
+],
+[
+"Acronis DD",
+"Správa oddílů, obnova MBR, defrag"
+],
+[
+"Paragon PM",
+"Konverze FAT↔NTFS"
+],
+[
+"RAID 0",
+"Striping"
+],
+[
+"RAID 1",
+"Zrcadlení"
+],
+[
+"RAID 5",
+"Distribuovaná parita, n−1"
+],
+[
+"RAID 6",
+"Dvě parity, n−2"
+],
+[
+"RAID 10",
+"Zrcadlené páry + striping"
+],
+[
+"Spanned volume",
+"Více disků v jednom svazku"
+]
+],
+"open": [
+{
+"q": "Popiš rozdělení disku pomocí MBR a EPT.",
+"k": [
+"Důvody dělení: organizace, více OS, bezpečnost, zálohy",
+"Postup: LLF → oddíly → formátování FS",
+"MBR 512 B v CHS 0,0,1: 446 B kód + 64 B PaT + 0x55AA",
+"Max. 4 primární nebo 3+1 rozšířený, max. 2 TB",
+"EPT: logické disky v rozšířeném oddílu jako vázaný seznam"
+]
+},
+{
+"q": "Porovnej MBR a GPT a popiš bootování.",
+"k": [
+"GPT: UEFI, 64bit LBA, 128 oddílů, 9,4 ZB, záloha na konci disku",
+"MBR: BIOS, 32bit LBA, 4 oddíly, 2 TiB",
+"Boot: BIOS/UEFI → POST → boot pořadí → MBR/EFI loader → zavaděč OS",
+"Zaváděcí kód najde aktivní oddíl (0x80) a předá řízení",
+"GPT bootování vyžaduje 64bit OS + UEFI (ne XP)"
+]
+},
+{
+"q": "Popiš PaT, EPT a práci v DiskEditu.",
+"k": [
+"PaT: 4 × 16 B – typ (07h NTFS), boot flag 80h, CHS + LBA začátku/konce, velikost",
+"EPT: záznam logického disku + ukazatel na další EPT",
+"DiskEdit (Norton): fyzický/logický mód, RAW HEX/ASCII",
+"Úprava typů, aktivního příznaku, obnova oddílů"
+]
+},
+{
+"q": "Popiš programy pro správu disků.",
+"k": [
+"Acronis Disk Director: oddíly bez ztráty dat, obnova MBR, ztracené oddíly, defragmentace",
+"Paragon Partition Manager: oddíly, konverze FAT16↔FAT32↔NTFS, image, záchrana",
+"Windows Správa disků (diskmgmt.msc): zmenšit/rozšířit svazek, inicializace MBR/GPT",
+"CCleaner, TuneUp, Defraggler"
+]
+},
+{
+"q": "Popiš RAID a dynamické svazky.",
+"k": [
+"SW RAID (CPU) vs. HW RAID (řadič, cache, hot-swap, BBU)",
+"RAID 0 striping, 1 zrcadlení, 0+1 a 10 (min. 4)",
+"RAID 2 Hamming, 3/4 dedikovaná parita",
+"RAID 5 (min 3, n−1), RAID 6 (min 4, n−2)",
+"Dynamické svazky: jednoduchý, rozložený (32 disků), zrcadlený, RAID 5"
+]
+},
+{
+"q": "Vysvětli EFI System Partition a její souvislost s bootováním a instalací.",
+"k": [
+"ESP = oddíl ve FAT32 na disku s GPT",
+"Obsahuje zavaděče a boot manažery (/EFI/BOOT/bootx64.efi, Windows Boot Manager)",
+"UEFI boot manager najde ESP a spustí zavaděč",
+"NTFS UEFI nepřečte – instalační USB musí být FAT32",
+"Vzniká při instalaci OS na GPT disk v UEFI režimu"
+]
+}
+]
+}

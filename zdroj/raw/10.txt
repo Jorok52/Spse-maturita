@@ -1,0 +1,507 @@
+10. Komunikace a
+rozdělení datových sítí
+pojmy a značky používané při
+01 Základní
+návrhu datových sítí
+a) PAN, LAN, MAN, WAN
+b) ISP, IoT, QoS
+c) IP adresa vs. MAC adresa
+02 Způsoby komunikace v datových sítí
+a) Unicast, Multicast, Anycast, Broadcast
+03 Topologie datových sítí
+a) Sběrnice, kruh, hvězda, strom
+04 Popis protokolů
+a) CSMA/CD, CSMA/CA, Token Ring
+05 Kabeláž
+a) 10Base5, 10Base2, 10BaseT
+b) Přímý vs. křížený kabel
+06 ISO/OSI model
+a) Základní rozdělení a charakteristika vrstev
+průchodu dat v síti od odesilatele k
+b) Popis
+příjemci v rámci vrstev - (de)encapsulation
+c) Srovnání TCP/IP modelem
+10. Komunikace a rozdělení datových sítí
+Základní pojmy a značky používané při návrhu datových sítí
+1. Typy počítačových sítí podle rozsahu
+PAN (Personal Area Network)
+Osobní síť pro krátké vzdálenosti (do 10 m).
+Slouží k propojení osobních zařízení (PC, mobil, notebook, chytré hodinky).
+Nejčastěji využívá Bluetooth, USB, NFC nebo Wi-Fi Direct.
+LAN (Local Area Network)
+Místní síť pokrývající malé oblasti (domácnost, škola, firma).
+Přenosová rychlost 100 Mbps až 10 Gbps.
+Využívá kabelové (Ethernet, optika) i bezdrátové připojení (Wi-Fi).
+Umožňuje sdílení dat, tiskáren a internetového připojení.
+MAN (Metropolitan Area Network)
+Síť pokrývající celé město nebo větší městskou oblast.
+Spojuje více LAN sítí pomocí optických vláken.
+Příklad: metropolitní internetové sítě, vysokorychlostní připojení mezi školami a
+úřady.
+WAN (Wide Area Network)
+Síť pokrývající rozsáhlé geografické oblasti (státy, kontinenty).
+Využívá optické kabely, satelity a rádiové vlny.
+Příkladem je Internet, propojení poboček nadnárodních firem.
+2. Další klíčové pojmy
+ISP (Internet Service Provider)
+Poskytovatel internetového připojení pro domácnosti a firmy.
+Nabízí služby jako DSL, optické připojení, mobilní internet.
+Příklady: O2, Vodafone, T-Mobile.
+IoT (Internet of Things)
+Síť propojených chytrých zařízení, která mezi sebou sdílí data.
+Patří sem chytré telefony, senzory, auta, domácí spotřebiče.
+Zařízení pracují samostatně a mohou být řízena vzdáleně (např. chytrá
+domácnost).
+QoS (Quality of Service)
+Technologie pro řízení síťového
+provozu a zajištění kvality
+přenosu.
+Nastavuje priority pro jednotlivé
+typy provozu (např. VoIP vs.
+stahování souborů).
+Ovlivňuje latenci (zpoždění),
+jitter a ztrátovost paketů.
+Opakem je Best Effort, kdy síť
+neposkytuje žádné záruky
+kvality.
+10. Komunikace a rozdělení datových sítí
+Síťová karta – NIC (Network Interface Controller)
+Hardwarová komponenta umožňující připojení zařízení k síti.
+Označovaná také jako síťová karta (Network Card).
+Převádí digitální data z počítače do podoby přenositelné síťovým médiem (např.
+Ethernet, Wi-Fi).
+Může být integrovaná na základní desce nebo samostatná (PCIe, USB).
+Moderní síťové karty podporují rychlosti 1 Gbps až 400 Gbps a některé obsahují
+hardwarovou akceleraci síťového provozu.
+DHCP (Dynamic Host Configuration Protocol)
+Protokol dynamického přidělování IP adres v síti.
+Zajišťuje automatické přidělení IP adresy, masky sítě, výchozí brány a DNS
+serverů při připojení zařízení k síti.
+DHCP server spravuje rozsah dostupných adres a přiřazuje je klientům.
+Omezuje ruční konfiguraci a minimalizuje konflikty IP adres.
+Příkaz pro kontrolu DHCP konfigurace: ipconfig /all
+HTTP (HyperText Transfer Protocol)
+Aplikační protokol pro přenos webových stránek mezi klientem a serverem.
+Používá port 80 a funguje na principu request-response (požadavek-odpověď).
+HTTP/1.1 – klasický textový protokol s hlavičkami požadavků.
+HTTP/2 – binární protokol umožňující multiplexování (současné odesílání více
+požadavků).
+HTTPS (HyperText Transfer Protocol Secure) – šifrovaná varianta HTTP s
+využitím TLS/SSL na portu 443.
+FTP (File Transfer Protocol)
+Protokol určený pro přenos souborů mezi klientem a serverem.
+Používá porty 20 a 21 – data přenáší přes port 20, ovládání probíhá přes port 21.
+Může pracovat ve dvou režimech:
+Active Mode – server se připojuje zpět na klienta.
+Passive Mode – klient otevírá spojení na server (prochází firewally).
+FTPS (FTP Secure) – šifrovaná varianta využívající TLS/SSL.
+SFTP (SSH File Transfer Protocol) – bezpečnější přenos přes SSH (port 22).
+DNS (Domain Name System)
+Hierarchický systém doménových jmen realizovaný DNS servery a protokolem.
+Překládá doménová jména (např. google.com) na IP adresy a naopak.
+DNS dotazy jsou zpracovávány v hierarchii:
+Root servery → TLD servery (.com, .org) → Autoritativní DNS servery.
+Funguje na portu 53 (UDP/TCP).
+Typické záznamy v DNS:
+A (Address Record) – IPv4 adresa domény.
+AAAA – IPv6 adresa domény.
+MX (Mail Exchange) – záznam pro e-mailový server.
+CNAME (Canonical Name) – alias pro jinou doménu.
+10. Komunikace a rozdělení datových sítí
+IP adresa (Internet Protocol Address)
+Jednoznačný identifikátor síťového zařízení v dané síti.
+Funguje na 3. vrstvě OSI modelu.
+Existují dva hlavní formáty:
+IPv4 – 32bitový formát (např. 192.168.1.1), max. 4,3 miliardy adres.
+IPv6 – 128bitový formát (např. 2001:db8::ff00:42:8329), umožňuje téměř
+neomezený počet adres.
+IP adresy lze zobrazit pomocí příkazu: ipconfig /all
+MAC adresa (Media Access Control Address)
+Jednoznačný identifikátor síťového zařízení, přiřazený síťové kartě při výrobě.
+Pracuje na 2. vrstvě OSI modelu (Data Link Layer).
+48bitový formát, zapisovaný jako šestice hexadecimálních dvojic:
+Např. 00:1A:2B:3C:4D:5E
+První 2 nebo 3 dvojice označují výrobce (OUI – Organizationally Unique Identifier).
+Nelze ji změnit (může být softwarově maskovaná).
+MAC adresu lze zjistit pomocí příkazu: getmac /v /fo list
+Default Gateway (Výchozí brána)
+IP adresa nejbližšího routeru, který zajišťuje připojení k jiné síti (např. k internetu).
+Pokud cílová IP adresa neodpovídá žádnému zařízení v místní síti, paket se posílá
+na výchozí bránu.
+Používá se hlavně pro komunikaci mezi různými sítěmi (např. LAN ↔ WAN).
+Standardní rozsah výchozích bran v domácích sítích:
+192.168.0.1 nebo 192.168.1.1
+Výchozí bránu určuje poskytovatel internetového připojení (ISP).
+Způsoby komunikace v datových sítích
+UNICAST
+Komunikace mezi dvěma konkrétními síťovými
+zařízeními (point-to-point).
+Jedno zařízení (odesílatel) posílá data přímo
+druhému zařízení (příjemci).
+Typické pro běžné internetové připojení, kdy klient
+komunikuje se serverem (např. načítání webových
+stránek, e-mail, VoIP).
+BROADCAST
+Jeden odesílatel posílá data všem zařízením v dané
+síti (one-to-all).
+Paket je odeslán na broadcastovou adresu (např.
+255.255.255.255 pro IPv4).
+Příklad: DHCP – Zařízení žádá DHCP server o
+přidělení IP adresy.
+10. Komunikace a rozdělení datových sítí
+MULTICAST
+Odesílatel posílá data vybrané skupině zařízení
+(one-to-many).
+Data se posílají pouze těm zařízením, která se k
+určité multicastové skupině přihlásila.
+Efektivnější než broadcast, protože data
+nezasahují všechny uzly v síti.
+Příklad:
+Online rádio – Zvukový stream je odesílán
+pouze uživatelům, kteří si zapnuli konkrétní
+stanici.
+Videokonference – Přenos probíhá jen mezi
+účastníky schůzky.
+IPTV (Internetová televize)
+ANYCAST
+Jeden odesílatel komunikuje s nejbližším
+dostupným uzlem (one-to-nearest).
+Paket je poslán do skupiny potenciálních
+příjemců, ale komunikace probíhá jen s tím
+nejbližším (z hlediska směrování).
+Zvyšuje efektivitu a snižuje latenci síťového
+provozu.
+DNS servery – Dotazy na 8.8.8.8 (Google DNS)
+jsou směrovány na nejbližší server Google.
+Typ komunikace
+Počet příjemců
+Příklad použití
+Unicast
+1
+Webové stránky, e-mail, VoIP
+Broadcast
+Všichni v síti
+ARP, DHCP, NetBIOS
+Multicast
+Vybraná skupina
+IPTV, rádio, videokonference
+Anycast
+Nejbližší dostupný
+server
+DNS, CDN, DDoS ochrana
+10. Komunikace a rozdělení datových sítí
+Topologie sítí
+Topologie počítačové sítě určuje uspořádání a propojení jednotlivých síťových prvků – jako
+jsou počítače, servery, switche, routery a kabeláž. Jinými slovy, topologie popisuje, jakým
+způsobem jsou zařízení ve fyzickém i logickém prostoru navzájem spojena.
+Typy topologií podle úrovně:
+Fyzická topologie
+Popisuje skutečné, fyzické rozložení sítě – tedy jak a kde jsou zařízení fyzicky
+umístěna a propojena kabely nebo bezdrátově.
+Např. jestli jsou kabely vedeny do jednoho bodu (hvězda) nebo za sebou (sběrnice).
+Ovlivňuje instalaci, údržbu a fyzickou odolnost sítě.
+Logická topologie
+Popisuje, jak data v síti skutečně proudí, bez ohledu na fyzické propojení.
+Např. může být fyzicky hvězdicová topologie, ale logicky kruhová (např. u FDDI nebo
+Token Ring).
+Ovlivňuje způsob řízení komunikace, předcházení kolizím apod.
+Základní topologie sítí
+Topologie – sběrnice (Bus Topology)
+Všechna zařízení jsou připojena k jednomu společnému přenosovému médiu (typicky
+koaxiální kabel nebo UTP v pasivním režimu).
+Každá stanice „poslouchá“ přenosovou linku a přijímá jen data určená jí.
+Signál se šíří oběma směry, dokud nedosáhne koncových terminátorů (ty zabraňují
+odrazům signálu).
+Výhody:
+Nízké náklady na kabeláž, jednoduchá instalace.
+Vhodné pro malé sítě (např. domácnosti v 90. letech).
+Nevýhody:
+Nízká odolnost – pokud dojde k poruše kabelu, síť je nefunkční.
+Kolize dat při současném vysílání více stanic.
+Nízká škálovatelnost – přidávání zařízení zvyšuje zatížení.
+10. Komunikace a rozdělení datových sítí
+Topologie – kruh (Ring Topology)
+Každé zařízení (uzel) je připojeno ke dvěma sousedním zařízením, čímž tvoří uzavřený
+kruh.
+Data se přenášejí v jednom směru pomocí tokenu (kontrolního rámce).
+Pouze stanice držící token může v daný moment vysílat, čímž se eliminuje riziko kolizí.
+Výhody:
+Deterministická komunikace – každý uzel má svou šanci vysílat.
+Vhodné pro reálné časové systémy.
+Nevýhody:
+Citlivost na přerušení kruhu – selhání jednoho uzlu nebo spojení může způsobit kolaps
+celé sítě, pokud není redundance.
+Technologie jako FDDI používají dvojitý kruh (dual-ring), aby se zvýšila odolnost.
+Topologie – hvězda (Star Topology)
+Všechna zařízení jsou připojena k centrálnímu uzlu (např. switch nebo hub).
+V současnosti nejčastěji používaná topologie v domácnostech i malých firmách.
+Výhody:
+Vysoká spolehlivost – selhání jedné stanice neovlivní ostatní.
+Snadné rozšiřování – lze snadno přidávat další zařízení.
+Jednoduchá diagnostika a údržba.
+Nevýhody:
+Citlivost na výpadek centrálního uzlu – při jeho selhání padá celá síť.
+Vyšší nároky na kabeláž oproti sběrnici.
+10. Komunikace a rozdělení datových sítí
+Topologie – strom (Tree Topology)
+Jedná se o hierarchické rozšíření hvězdicové topologie.
+Základ tvoří kořenový uzel, ke kterému se připojují další větve – aktivní síťové prvky
+(např. další switche).
+Výhody:
+Modularita – lze síť dobře škálovat (vhodné pro rozsáhlé podnikové sítě).
+Lokalizace poruch – výpadek v jedné větvi neohrozí celou síť.
+Podporuje logické dělení sítě (např. VLANy).
+Nevýhody:
+Závislost na páteřních spojích – jejich selhání může způsobit velké problémy.
+Složitější návrh a správa.
+Topologie
+Výhody
+Nevýhody
+Vhodné použití
+Sběrnice
+Jednoduchá, levná
+Náchylná k poruchám, kolize
+Malé a dočasné sítě
+Kruh
+Bez kolizí, řízený přenos
+Citlivost na výpadky
+Speciální sítě s
+garantovaným přenosem
+Hvězda
+Spolehlivá, snadná údržba
+Výpadek centrálního uzlu
+Domácnosti, kanceláře
+Strom
+Rozšiřitelnost, hierarchie
+Složitost, závislost na uzlech
+Větší podnikové sítě
+10. Komunikace a rozdělení datových sítí
+Popis síťových protokolů používaných ve fyzické vrstvě
+CSMA/CD (Carrier Sense Multiple Access with Collision Detection)
+Používá se v kabelových sítích Ethernet. Jde o metodu řízení přístupu k médiu, která řeší
+kolize, když více zařízení vysílá současně.
+Poslouchání sítě – zařízení před odesláním dat kontroluje, zda je médium volné.
+Pokud je volné, zařízení začne vysílat.
+Pokud dojde ke kolizi, vysílání se zastaví a je odeslán tzv. JAM signál informující ostatní
+zařízení o kolizi.
+Zařízení čekají náhodně dlouhou dobu (backoff algoritmus) a pak se pokusí znovu vysílat.
+Opakování procesu, dokud se data nepodaří úspěšně odeslat.
+Typy CSMA/CD
+Non-persistent – pokud je médium obsazené, zařízení čeká náhodně dlouhou dobu a pak
+znovu kontroluje.
+1-persistent – zařízení okamžitě začne vysílat, jakmile je médium volné.
+p-persistent – pokud je médium volné, zařízení vysílá s pravděpodobností "p", jinak čeká
+další slot času.
+CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)
+Používá se v bezdrátových sítích (Wi-Fi), kde nelze detekovat kolize jako v Ethernetu.
+Zařízení poslouchá médium, zda není obsazené.
+Pokud je volné, čeká náhodně dlouhou dobu (backoff period) a poté začne vysílat.
+Použití RTS/CTS mechanismu (Request to Send / Clear to Send)
+Odesílatel vyšle RTS (Request to Send).
+Příjemce odpoví CTS (Clear to Send), pokud je médium volné.
+Odesílatel pak začne přenos.
+Pokud není CTS přijato, zařízení čeká a zkouší znovu.
+CSMA/CA minimalizuje kolize, ale zvyšuje latenci kvůli čekání na potvrzení.
+Token Ring
+Starší metoda řízení přístupu k síti, kde se využívá speciální rámec token, který označuje
+právo vysílat.
+V síti existuje jeden token, který se přenáší mezi uzly.
+Uzly si token předávají – pouze zařízení s tokenem může vysílat.
+Přenos dat
+Odesílatel připojí data k tokenu a pošle je cíli.
+Cílový uzel data přečte a označí je jako přijatá.
+Odesílatel potvrdí příjem a uvolní token pro další použití.
+Ztracený token – pokud se token ztratí (např. kvůli poruše), aktivní monitor (AM)
+vygeneruje nový token.
+Výhody a nevýhody Token Ring
+Žádné kolize (každý vysílá pouze při držení tokenu).
+Deterministická latence (vhodné pro průmyslové sítě).
+Pomalejší než Ethernet (vyšší režie).
+Náročnější na správu (monitorování tokenu)
+Token Ring byl nahrazen Ethernetem, protože Ethernet je levnější, jednodušší a nabízí
+vyšší rychlosti.
+10. Komunikace a rozdělení datových sítí
+10. Komunikace a rozdělení datových sítí
+Kabeláž v počítačových sítích
+Typy kabelů
+Přímý kabel (Straight-through cable)
+Používá se pro propojení:
+PC – switch/HUB
+Router – switch/HUB
+Standardní kabel pro běžná
+připojení mezi síťovými zařízeními
+a koncovými stanicemi.
+Křížený kabel (Crossover cable)
+Používá se pro propojení:
+Router – router
+PC – router
+PC – PC
+Switch/hub – switch/hub
+Obsahuje křížené vodiče pro přímé propojení dvou stejných zařízení.
+Standardy ethernetové kabeláže
+Ethernet 10Base5 ("Thick Ethernet")
+Používá tlustý koaxiální kabel (průměr 10 mm) s impedancí 50 Ω.
+Přenosová rychlost 10 Mbit/s.
+Přenos signálu v základním pásmu (Baseband).
+Maximální délka segmentu 500 m.
+Možnost připojení až 100 stanic pomocí odboček vyříznutých do kabelu.
+Nevýhody: široký, neforemný, drahý, vyžaduje použití transceiveru.
+Ethernet 10Base2 ("Thin Ethernet")
+Používá tenký koaxiální kabel (průměr 0,5 cm) se stejnou impedancí 50 Ω.
+Maximální délka segmentu 200 m.
+Transceiver je integrován do síťové karty.
+Používá konektor T pro minimalizaci odboček.
+Flexibilnější než 10Base5, ale postupně nahrazován kroucenou dvojlinkou.
+Ethernet 10BaseT (Twisted Pair Ethernet)
+Používá kroucenou dvojlinku (TP – Twisted Pair).
+Využívá hvězdicovou/stromovou topologii.
+Maximální délka kabelu mezi zařízením a switchem je 100 m.
+Řízení přístupu ke sdílenému médiu:
+CSMA/CD – detekce kolizí v kabelovém ethernetu.
+Jednoduchý přechod mezi různými typy kabeláže.
+Režimy provozu:
+Half-duplex – používá dva páry TP (vysílání a příjem odděleně).
+Full-duplex – umožňuje současný přenos oběma směry (při použití switchovaného
+ethernetu).
+14. ISO/OSI MODEL
+ISO/OSI MODEL
+Vznik koncem 70. let organizací ISO (International Organization for Standardization).
+Definuje 7 vrstev komunikace v síti, což umožňuje lepší interoperabilitu mezi
+zařízeními různých výrobců.
+Princip: Každá vrstva vykonává specifickou úlohu a komunikuje pouze s vrstvami
+sousedními.
+1.Fyzická vrstva (Physical Layer) – Přenos bitů přes fyzické médium (kabely, rádiové
+vlny).
+2.Linková vrstva (Data Link Layer) – Řízení přístupu k přenosovému médiu, detekce
+chyb. Pracuje zde MAC adresa.
+3.Síťová vrstva (Network Layer) – Směrování dat mezi sítěmi, IP adresy, směrování
+paketů.
+4.Transportní vrstva (Transport Layer) – Řízení toku dat, kontrola chyb, protokoly
+TCP/UDP.
+5.Relační vrstva (Session Layer) – Navázání, udržení a ukončení relací mezi aplikacemi.
+6.Prezentační vrstva (Presentation Layer) – Kódování, šifrování a komprese dat.
+7.Aplikační vrstva (Application Layer) – Přímá interakce s uživatelskými aplikacemi
+(HTTP, FTP, DNS, DHCP).
+TCP/IP Model
+Starší než OSI, původně vyvinutý pro ARPANET (předchůdce internetu).
+Zjednodušený přístup k síťové komunikaci – má 4 vrstvy místo 7.
+Použití: Prakticky celý internet a moderní sítě běží na TCP/IP modelu.
+Vrstvy:
+Network Access Layer (spojuje Fyzickou + Linkovou vrstvu OSI)
+Řeší fyzický přenos a přístup k síti.
+Internet Layer (odpovídá Síťové vrstvě OSI)
+Směrování paketů, IP adresace (IPv4, IPv6).
+Transport Layer
+(odpovídá Transportní
+vrstvě OSI)
+Kontrola přenosu
+dat, TCP a UDP
+protokoly.
+Application Layer
+(spojuje Aplikační,
+Prezentační a Relační
+vrstvu OSI)
+Přímá komunikace
+s aplikacemi,
+protokoly jako
+HTTP, FTP, DNS,
+DHCP.
+10. Komunikace a rozdělení datových sítí
+Popis průchodu dat datovou sítí – od odesílatele k příjemci v rámci jednotlivých
+vrstev
+Proces zapouzdření (Encapsulation)
+Každá vrstva ISO/OSI modelu obaluje data vlastními informacemi (hlavičkami a někdy i
+patičkami), aby zajistila správné doručení a zpracování dat.
+Komunikace mezi sousedními vrstvami probíhá pomocí PDU (Protocol Data Unit):
+Obsahují řídicí informace specifické pro danou vrstvu.
+Jsou zapsány v hlavičce daného PDU.
+Každá vrstva má své specifické označení PDU (např. segment, paket, rámec).
+Popis funkcí jednotlivých vrstev
+Aplikační, Prezentační, Relační vrstva
+Pracují s uživatelskými daty (např. e-mail, HTTP komunikace).
+Data jsou předána transportní vrstvě.
+Transportní vrstva
+Zajišťuje vytvoření virtuálního okruhu mezi odesílatelem a příjemcem.
+Synchronizuje komunikaci mezi zařízeními.
+Rozděluje data na segmenty
+Každý segment je přesně označen (číslování segmentů).
+Obsahuje hlavičku s protokolem TCP nebo UDP.
+Síťová vrstva
+Adresování a směrování paketů mezi sítěmi (např. pomocí IP adres).
+Přidání vlastní hlavičky, která obsahuje síťové informace (IP adresy).
+Vzniká paket (datagram), který putuje sítí ke správnému cíli.
+Linková vrstva
+Zajišťuje přenos rámců mezi dvěma zařízeními v rámci stejné sítě.
+Přidává hlavičku a patičku s MAC adresami.
+Vzniká rámec, který obsahuje kompletní informaci pro doručení v lokální síti.
+Fyzická vrstva
+Převádí rámce na jednotlivé bity (0 a 1).
+Zajišťuje fyzický přenos dat přes médium (např. elektrické signály v kabelu, rádiové
+vlny u Wi-Fi).
+Shrnutí průchodu dat jednotlivými vrstvami
+Aplikační vrstva → uživatelská data
+Transportní vrstva → segmenty (TCP/UDP)
+Síťová vrstva → pakety (IP)
+Linková vrstva → rámce (MAC)
+Fyzická vrstva → bity
+Každá vrstva přidává svou hlavičku (a případně patičku), čímž dochází k postupnému
+zapouzdření dat. Na straně příjemce se tento proces obrátí a jednotlivé vrstvy data rozbalují až
+po původní uživatelská data.
+10. Komunikace a rozdělení datových sítí
+Deencapsulation – Odpouzdření
+Fyzická vrstva
+Přijímá signál z přenosového média.
+Rozhoduje, zda jde o logickou 0 nebo 1 (převod signálu na digitální data).
+Jakmile se vytvoří logická skupina bitů, předává ji linkové vrstvě.
+Linková vrstva
+Rekonstruuje rámec z přijatých bitů.
+Zjišťuje MAC adresu cílového zařízení.
+Provádí kontrolu integrity dat pomocí kontrolního součtu CRC:
+Pokud součty souhlasí, rámec je platný, vyjme se paket a předá síťové vrstvě.
+Pokud součty nesouhlasí, rámec se zahodí.
+Síťová vrstva
+Z paketu se zjistí IP adresa cíle.
+Pokud odpovídá cílovému zařízení, vyjme se segment a odstraní se IP hlavička.
+Paket je předán transportní vrstvě.
+Transportní vrstva
+Znovu sestavuje datový proud z jednotlivých segmentů.
+Potvrzuje přijatá data odesílateli (pokud používá TCP).
+Předává čistá data aplikační vrstvě.
+Relační, Prezentační, Aplikační vrstva
+Přijatá data jsou dekódována a zpracována.
+Výsledná informace je zobrazena uživateli (např. otevření webové stránky, zobrazení emailu).
+schéma zapouzdření a odpouzdření dat
+10. Komunikace a rozdělení datových sítí
+Srovnání OSI a TCP/IP modelu
+Vrstva (OSI)
+Vrstva (TCP/IP)
+Funkce
+7. Aplikační
+4. Aplikační
+Práce s daty pro uživatele (HTTP, FTP,
+SMTP)
+6. Prezentační
+⬆ Sloučena v aplikační
+Kódování, šifrování, komprese
+5. Relační
+⬆ Sloučena v aplikační
+Navazování a správa spojení
+4. Transportní
+3. Transportní
+TCP/UDP – přenos dat, řízení spojení
+3. Síťová
+2. Internetová
+IP adresace, směrování (IP, ICMP)
+2. Linková (spojová)
+1. Síťový přístup (Network Access)
+Přenos rámců v rámci sítě (Ethernet,
+MAC)
+1. Fyzická
+⬇ Součást síťového přístupu
+Přenos signálu (kabel, Wi-Fi, elektrický
+signál)
+Hlavní rozdíly:
+OSI má 7 vrstev, TCP/IP má jen 4 funkční vrstvy.
+TCP/IP model slučuje aplikační, prezentační a relační vrstvu do jedné.
+OSI je teoretický model, TCP/IP je prakticky používaný v internetu.
+TCP/IP vznikl dříve než OSI a slouží jako základ dnešní komunikace (např. internet).

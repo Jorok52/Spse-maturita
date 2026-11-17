@@ -1,0 +1,378 @@
+{
+"n": 19,
+"t": "Sběrnice – typy a charakteristika",
+"outline": [
+"Pojem sběrnice, typy a charakteristika paralelních sběrnic",
+"ISA, PCI, AGP, PCI-X: konektor, datová šířka, frekvence, přenosová rychlost",
+"PCI Express: princip, datový pár, link, označení, kompatibilita",
+"Verze PCIe: kódování, přenosové rychlosti, souvislost s chipsetem"
+],
+"q": [
+[
+"Tři skupiny vodičů sběrnice?",
+"Řídicí, adresové, datové",
+"Napájecí, zemnicí, stínicí",
+"Sériové, paralelní, USB",
+"TX, RX, CLK"
+],
+[
+"Co určuje šířka adresové sběrnice?",
+"Max. počet adresovatelných míst",
+"Rychlost přenosu dat za sekundu",
+"Počet připojitelných zařízení",
+"Napájecí napětí sběrnice"
+],
+[
+"Co přenáší CS (Chip Select)?",
+"Výběr (aktivaci) konkrétního zařízení",
+"Data mezi zařízeními",
+"Hodinový signál pro všechna zařízení",
+"Adresu paměťové buňky"
+],
+[
+"Příklad paralelní interní sběrnice?",
+"PCI, ISA",
+"USB, FireWire",
+"PCIe, SATA",
+"RS-232, I²C"
+],
+[
+"FSB propojuje…",
+"CPU a severní most",
+"Disky a jižní most",
+"GPU a monitor",
+"USB a CPU"
+],
+[
+"Čím byla FSB nahrazena?",
+"DMI, HyperTransport (AMD), QPI (Intel)",
+"USB 3.0 a Thunderbolt",
+"ISA a EISA (rozšířená verze ISA)",
+"SATA a SAS"
+],
+[
+"Kdy vznikla ISA?",
+"1984 (rozšíření sběrnice IBM PC)",
+"1996 (slot pro grafiku od Intelu)",
+"2004 (nástupce PCI)",
+"1975 (první mikropočítače)"
+],
+[
+"Datová a adresní šířka ISA?",
+"16 b data, 24 b adresa (16 MB)",
+"32 b data, 32 b adresa (4 GB)",
+"8 b data, 16 b adresa (64 kB)",
+"64 b data, 32 b adresa (4 GB)"
+],
+[
+"Frekvence a rychlost ISA?",
+"8 MHz, max. 8 MB/s",
+"33 MHz, max. 133 MB/s",
+"66 MHz, max. 266 MB/s",
+"133 MHz, max. 1 GB/s"
+],
+[
+"Nevýhoda ISA?",
+"Ruční konfigurace IRQ a DMA, konflikty",
+"Je sériová, a proto pomalá",
+"Je moc rychlá pro tehdejší CPU",
+"Nepodporuje zvukové ani síťové karty"
+],
+[
+"EISA je…",
+"32bit rozšíření ISA, 8 MHz, až 33 MB/s, zpětně kompatibilní",
+"Slot pro grafické karty od Intelu z roku 1996 (předchůdce AGP)",
+"Sériová sběrnice s diferenciálními páry",
+"Nástupce PCIe pro servery s 64 b šířkou"
+],
+[
+"PCI je…",
+"Paralelní half-duplex, Plug & Play, 32/64 b",
+"Sériová full-duplex sběrnice s linkami",
+"Sběrnice určená jen pro grafické karty",
+"Externí sběrnice pro připojení periferií"
+],
+[
+"Frekvence PCI?",
+"33 nebo 66 MHz",
+"8 nebo 16 MHz",
+"133 nebo 266 MHz",
+"2,5 nebo 5 GHz"
+],
+[
+"Propustnost PCI 32 b / 33 MHz?",
+"133 MB/s",
+"266 MB/s",
+"8 MB/s",
+"1 GB/s"
+],
+[
+"Propustnost PCI 32 b / 66 MHz?",
+"266 MB/s",
+"133 MB/s",
+"533 MB/s",
+"33 MB/s"
+],
+[
+"Má PCI oddělené vodiče pro adresy a data?",
+"Ne – adresa se pošle na začátku transakce (multiplex)",
+"Ano, má zvlášť adresní a datové vodiče, proto je rychlejší",
+"Jen 64bitová verze má oddělené vodiče",
+"Jen PCI-X má oddělené vodiče pro adresy"
+],
+[
+"PCI-X oproti PCI?",
+"64 b, až 133 MHz, pro servery, kompatibilní s PCI",
+"Sériová verze PCI s linkami jako PCIe",
+"Varianta PCI jen pro grafické karty",
+"Pomalejší a úspornější verze pro notebooky"
+],
+[
+"Kdo a kdy vyvinul AGP?",
+"Intel, 1996",
+"IBM, 1984",
+"AMD, 2004",
+"Microsoft, 2000"
+],
+[
+"Proč AGP není sběrnice, ale slot?",
+"Připojí jen jedno zařízení (grafiku)",
+"Je sériový, a proto se nepočítá",
+"Nepřenáší data, jen napájení",
+"Je externí a připojuje se kabelem"
+],
+[
+"Šířka AGP?",
+"32 bitů",
+"64 bitů",
+"16 bitů",
+"1 bit"
+],
+[
+"Poslední verze AGP?",
+"AGP 8×",
+"AGP 4×",
+"AGP 16×",
+"AGP 2×"
+],
+[
+"PCIe je…",
+"Sériová, full-duplex, point-to-point",
+"Paralelní, half-duplex, sdílená všemi zařízeními",
+"Sériová, half-duplex, sdílená sběrnice",
+"Paralelní, full-duplex, point-to-point"
+],
+[
+"Co obsahuje jedna lane PCIe?",
+"2 diferenciální páry – TX a RX",
+"1 vodič pro data oběma směry",
+"16 vodičů – po jednom na bit",
+"4 páry – 2 pro data, 2 pro hodiny"
+],
+[
+"Rozdíl lane a link?",
+"Lane = jedna linka, link = celé spojení z více lanes",
+"Je to totéž, jen lane je starší název pro link",
+"Link = 1 vodič, lane = celé spojení",
+"Lane = fyzický slot, link = karta"
+],
+[
+"Rychlost PCIe 1.0 na lane jedním směrem?",
+"250 MB/s",
+"500 MB/s",
+"1 GB/s",
+"2 GB/s"
+],
+[
+"Rychlost PCIe 3.0 na lane?",
+"≈ 1 GB/s",
+"250 MB/s",
+"4 GB/s",
+"500 MB/s"
+],
+[
+"Rychlost PCIe 4.0 x16 obousměrně?",
+"64 GB/s",
+"32 GB/s",
+"16 GB/s",
+"128 GB/s"
+],
+[
+"Rychlost PCIe 6.0 x16 obousměrně?",
+"256 GB/s",
+"128 GB/s",
+"64 GB/s",
+"512 GB/s"
+],
+[
+"O kolik roste rychlost s každou generací PCIe?",
+"2×",
+"1,5×",
+"4×",
+"10 %"
+],
+[
+"Typické použití PCIe x4?",
+"NVMe SSD, řadiče",
+"Herní grafické karty",
+"Tunery a malé síťovky",
+"Klávesnice a myši"
+],
+[
+"Co se stane s kartou x1 ve slotu x16?",
+"Funguje na rychlosti x1",
+"Nefunguje, slot ji nepozná",
+"Zrychlí se na rychlost x16",
+"Poškodí se kvůli vyššímu napětí"
+],
+[
+"Co je Root Complex?",
+"Hlavní řadič PCIe propojující sběrnici s CPU a RAM",
+"Koncové zařízení, např. grafická karta",
+"Přepínač, který větví sběrnici do více cest",
+"Most, který převádí PCIe na USB nebo PCI"
+],
+[
+"Co je PCIe Switch?",
+"Rozbočovač – větví sběrnici do více cest",
+"Hlavní řadič propojený s CPU a RAM",
+"Koncové zařízení (SSD nebo GPU)",
+"Napájecí obvod slotu PCIe"
+],
+[
+"Co je PCIe Bridge?",
+"Převod mezi PCIe a jinou sběrnicí (PCI, USB…)",
+"Hlavní řadič PCIe v procesoru (Root Complex) propojený s RAM",
+"Grafická karta ve slotu x16",
+"Kabel mezi dvěma sloty PCIe"
+],
+[
+"Co je Endpoint?",
+"Koncové zařízení (GPU, SSD, síťovka)",
+"Hlavní řadič (Root Complex)",
+"Přepínač (Switch) sběrnice",
+"Most (Bridge) na jinou sběrnici"
+],
+[
+"Která verze PCIe nebyla zpětně kompatibilní s 1.0 kvůli napětí?",
+"PCIe 2.1",
+"PCIe 3.0",
+"PCIe 2.0",
+"PCIe 4.0"
+],
+[
+"Typické použití PCIe x8?",
+"Některé profesionální GPU a AI akcelerátory",
+"Tunery, malé zvukové karty a USB řadiče",
+"Klávesnice, myši a čtečky",
+"Výhradně herní grafické karty"
+],
+[
+"Co je Hot-Plugging u PCIe?",
+"Připojení/odpojení zařízení za chodu (u některých verzí)",
+"Přetaktování linky za běhu systému podle aktuální zátěže zařízení",
+"Zdvojení počtu lanes ve slotu",
+"Chlazení slotu ventilátorem karty"
+]
+],
+"terms": [
+[
+"ISA",
+"16b, 8 MHz, 8 MB/s, 1984"
+],
+[
+"EISA",
+"32b, 8 MHz, 33 MB/s"
+],
+[
+"PCI",
+"32/64b, 33/66 MHz, 133 MB/s"
+],
+[
+"PCI-X",
+"64b, 133 MHz, servery"
+],
+[
+"AGP",
+"Slot pro grafiku, Intel 1996"
+],
+[
+"PCIe",
+"Sériová, full-duplex, lanes"
+],
+[
+"Lane",
+"TX + RX diferenciální páry"
+],
+[
+"Link",
+"Spojení z více lanes"
+],
+[
+"Root Complex",
+"Řadič PCIe ↔ CPU/RAM"
+],
+[
+"Endpoint",
+"Koncové zařízení"
+],
+[
+"PCIe 1.0",
+"250 MB/s na lane"
+],
+[
+"PCIe 3.0",
+"1 GB/s na lane"
+],
+[
+"PCIe 4.0",
+"2 GB/s na lane"
+],
+[
+"PCIe 5.0",
+"4 GB/s na lane"
+]
+],
+"open": [
+{
+"q": "Vysvětli pojem sběrnice a její parametry.",
+"k": [
+"Vodiče propojující CPU, RAM, I/O",
+"Řídicí (CLK, CS, CE, R/W), adresové, datové",
+"Paralelní vs. sériové, interní vs. externí",
+"Parametry: frekvence, šířka, propustnost, přístupová doba",
+"FSB → DMI, HyperTransport, QPI"
+]
+},
+{
+"q": "Popiš sběrnice ISA, EISA, PCI, PCI-X a AGP.",
+"k": [
+"ISA: 1984, 16b data/24b adresa, 8 MHz, 8 MB/s, ruční IRQ/DMA",
+"EISA: 32b, 8 MHz, 33 MB/s",
+"PCI: paralelní half-duplex, P&P, 32/64b, 33/66 MHz, 133/266 MB/s",
+"PCI-X: 64b, 133 MHz, servery",
+"AGP: Intel 1996, slot pro 1 GPU, 32b, 66 MHz+, pipelining, 8× poslední"
+]
+},
+{
+"q": "Vysvětli princip PCI Express.",
+"k": [
+"Sériová, full-duplex, point-to-point",
+"Lane = 2 diferenciální páry TX/RX; link = spojení",
+"x1, x4, x8, x16, x32",
+"Root Complex, Switch, Bridge, Endpoint",
+"Hot-plug, QoS, zpětná kompatibilita (x1 do x16)"
+]
+},
+{
+"q": "Popiš verze PCIe a jejich rychlosti.",
+"k": [
+"1.0: 250 MB/s na lane, x16 8 GB/s",
+"2.0: 500 MB/s, 3.0: 1 GB/s, 4.0: 2 GB/s, 5.0: 4 GB/s, 6.0: 8 GB/s (x16 256 GB/s)",
+"Každá generace 2×",
+"2.1 nekompatibilní s 1.0 (napětí)",
+"PCIe 4.0+ pro NVMe, AI, GPU; řadič v CPU/chipsetu"
+]
+}
+]
+}

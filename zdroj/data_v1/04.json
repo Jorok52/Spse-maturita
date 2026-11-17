@@ -1,0 +1,438 @@
+{
+"n": 4,
+"t": "Přenos dat, rozdělení paměti a organizace",
+"outline": [
+"Sériový vs. paralelní přenos",
+"Připojení s otevřeným kolektorem (vytvoření sběrnice)",
+"Připojení s třístavovým zesilovačem (vytvoření sběrnice)",
+"Sběrnice I2C, SPI, RS-232, IEEE 1284, USB",
+"Rozdělení pamětí v PC, RWM vs. ROM",
+"Organizace paměti: kapacita, hloubka, délka slova, paměťová mapa"
+],
+"q": [
+[
+"Proč se trh přesouvá k sériovému přenosu?",
+"Paralelní trpí rušením a skew mezi vodiči při vyšších frekvencích a délkách",
+"Sériový přenos potřebuje víc vodičů, a proto je odolnější",
+"Paralelní obvody jsou dražší na výrobu čipů než sériové, a proto je výrobci opouštějí",
+"Sériový přenos nepotřebuje žádnou synchronizaci ani hodiny"
+],
+[
+"Co je skew u paralelního přenosu?",
+"Rozdílné časování (zpoždění) mezi vodiči",
+"Přeslech mezi sousedními kabely v jednom svazku",
+"Krátká ztráta napájení na jednom z vodičů",
+"Chyba parity zjištěná na konci přenosu"
+],
+[
+"Čím byl nahrazen PATA?",
+"SATA",
+"SCSI",
+"USB 1.0",
+"FireWire"
+],
+[
+"Čím byl nahrazen paralelní port IEEE 1284?",
+"USB",
+"SATA",
+"PCI",
+"RS-232"
+],
+[
+"Výstup s otevřeným kolektorem tvoří…",
+"NPN tranzistor s emitorem na zemi",
+"Dva komplementární tranzistory (push-pull)",
+"Operační zesilovač zapojený jako komparátor",
+"Relé spínající výstup proti napájení"
+],
+[
+"Proč otevřený kolektor potřebuje pull-up rezistor?",
+"Bez něj je výstup v log. 1 nedefinovaný (visí)",
+"Aby omezil proud tekoucí do země při log. 0",
+"Aby zrychlil přenos a zkrátil hrany signálu",
+"Aby výstup mohl přejít do stavu vysoké impedance"
+],
+[
+"Co je drátová logika (wired AND) u otevřeného kolektoru?",
+"Pokud kterýkoli výstup dá 0, celá sběrnice je 0",
+"Sběrnice je v 1, když kterýkoli výstup dá 1",
+"Napětí všech výstupů se na sběrnici sčítají",
+"Výstupy se na sběrnici navzájem negují"
+],
+[
+"Která sběrnice používá otevřený kolektor?",
+"I²C",
+"SPI",
+"PCIe",
+"USB 3.0"
+],
+[
+"Třetí stav třístavového výstupu je…",
+"Vysoká impedance (Hi-Z) – odpojení od sběrnice",
+"Zkrat výstupu na zem (logická 0 s velkým proudem)",
+"Poloviční napětí 2,5 V mezi logickou 0 a 1",
+"Neplatná data, která přijímač musí zahodit"
+],
+[
+"Čím se řídí třístavový výstup?",
+"Signálem OE (Output Enable)",
+"Pull-up rezistorem připojeným k napájení",
+"Hodinovým signálem CLK na každé hraně",
+"Paritním bitem přidaným k datům"
+],
+[
+"Northbridge propojuje…",
+"CPU, GPU a RAM",
+"USB, HDD a zvukovku",
+"Síť a BIOS",
+"Jen klávesnici"
+],
+[
+"Která sběrnice je jednosměrná (z CPU)?",
+"Adresní",
+"Datová",
+"Řídicí",
+"Sériová I²C"
+],
+[
+"Příklad lokální sběrnice?",
+"FSB / QPI / DMI",
+"USB / SATA / M.2",
+"PCIe / AGP / PCI",
+"RS-232 / LPT / PS/2"
+],
+[
+"Přenosová rychlost (propustnost) se udává v…",
+"bit/s",
+"Hz",
+"bitech",
+"sekundách"
+],
+[
+"Half duplex znamená…",
+"Oba směry, ale ne současně",
+"Data tečou pouze jedním směrem",
+"Oba směry současně po dvou párech",
+"Přenos jen při zapnutém potvrzování"
+],
+[
+"Kolik vodičů má I²C a jak se jmenují?",
+"2 – SDA a SCL",
+"4 – SCLK, MOSI, MISO, CS",
+"3 – TX, RX, GND",
+"8 datových"
+],
+[
+"Kdo vyvinul I²C?",
+"Philips (dnes NXP)",
+"Motorola (dnes NXP)",
+"Intel a Microsoft",
+"IBM pro sběrnici PC"
+],
+[
+"Rychlost I²C ve standard mode?",
+"100 kb/s",
+"12 Mb/s",
+"480 Mb/s",
+"115 200 Bd"
+],
+[
+"START podmínka I²C?",
+"SDA přejde 1→0, zatímco SCL je v 1",
+"SCL přejde 1→0, zatímco SDA je v 1",
+"SDA přejde 0→1, zatímco SCL je v 1",
+"Oba vodiče SDA i SCL přejdou do 0"
+],
+[
+"Kolik bitů má adresa I²C (běžně) + co následuje?",
+"7 bitů + R/W bit",
+"8 bitů + paritní bit",
+"10 bitů + ACK bit",
+"16 bitů bez R/W"
+],
+[
+"ACK = 0 u I²C znamená…",
+"Potvrzení příjmu",
+"Chybu, přenos se opakuje",
+"Konec celého přenosu",
+"Požadavek na čtení dat"
+],
+[
+"Kdo vyvinul SPI?",
+"Motorola",
+"Philips",
+"Intel",
+"Microsoft"
+],
+[
+"Vodiče SPI?",
+"SCLK, MOSI, MISO, SS/CS",
+"SDA, SCL + společná zem",
+"D+, D−, VCC, GND",
+"TX, RX, RTS, CTS"
+],
+[
+"MISO znamená…",
+"Data ze slave do mastera",
+"Data z mastera do slave",
+"Hodinový signál od mastera",
+"Výběr konkrétního slave"
+],
+[
+"Nevýhoda SPI?",
+"Každý slave potřebuje vlastní CS vodič",
+"Je pomalejší než I²C, max. 100 kb/s",
+"Je jen half duplex, ne full duplex",
+"Potřebuje pull-up rezistory na všech vodičích"
+],
+[
+"RS-232 je…",
+"Sériová, asynchronní, full duplex, bod–bod",
+"Synchronní multi-master sběrnice s adresami",
+"Paralelní rozhraní s 8 datovými vodiči",
+"Half duplex sběrnice až pro 127 zařízení"
+],
+[
+"Max. rychlost a vzdálenost RS-232 dle podkladů?",
+"115 200 Bd a 15 m",
+"480 Mb/s a 5 m",
+"100 kb/s a 1 m",
+"1 Mb/s a 100 m"
+],
+[
+"Softwarové řízení toku u RS-232?",
+"XON/XOFF",
+"RTS/CTS",
+"ACK/NACK",
+"DREQ/DACK"
+],
+[
+"Datový rámec RS-232?",
+"Start bit (0), 7–8 datových bitů, volitelná parita, 1–2 stop bity (1)",
+"Adresa zařízení, R/W bit, data a ACK po každém bajtu, nakonec STOP podmínka",
+"Preambule, MAC adresy, data a kontrolní součet CRC",
+"Jen 8 datových bitů bez start a stop bitů"
+],
+[
+"Max. délka kabelu LPT (IEEE 1284)?",
+"5 m (ideálně do 2 m)",
+"15 m (ideálně do 10 m)",
+"100 m s kroucenou dvojlinkou",
+"50 cm kvůli rušení"
+],
+[
+"RS-485 oproti RS-422 umožňuje…",
+"Více zařízení na sběrnici (až 32)",
+"Vyšší napětí a delší kabel než RS-422",
+"Bezdrátový přenos mezi zařízeními",
+"Paralelní přenos po 8 vodičích"
+],
+[
+"Max. počet zařízení na USB sběrnici?",
+"127",
+"32",
+"15",
+"255"
+],
+[
+"Rychlost USB 2.0?",
+"480 Mb/s",
+"12 Mb/s",
+"5 Gb/s",
+"100 Mb/s"
+],
+[
+"Které USB je první full duplex?",
+"USB 3.0 (8 vodičů)",
+"USB 2.0 (4 vodiče)",
+"USB 1.0 (Full Speed)",
+"USB 1.1 (12 Mb/s)"
+],
+[
+"SRAM se používá jako…",
+"Cache (L1, L2, L3)",
+"Operační paměť (RAM)",
+"Paměť pro BIOS",
+"Vyrovnávací paměť disku"
+],
+[
+"Proč DRAM potřebuje refresh?",
+"Kondenzátor se samovolně vybíjí (a čtením se vybije)",
+"Protože se buňky při čtení přehřívají a ztrácejí obsah",
+"Kvůli UV záření, které maže obsah",
+"Protože je to ROM a nedá se jinak přepsat"
+],
+[
+"Proč se u DRAM adresa posílá na dvakrát (RAS/CAS)?",
+"Šetří počet vodičů/pinů",
+"Zrychlí se tím přístup ke každé buňce",
+"Umožňuje to kontrolu chyb paritou",
+"Je to nutné kvůli obnovování (refresh)"
+],
+[
+"Kolik tranzistorů má typická SRAM buňka?",
+"6",
+"1",
+"2",
+"12"
+],
+[
+"NoRAM paměti jsou například…",
+"FIFO (fronta) a LIFO (zásobník)",
+"SRAM a DRAM (statická a dynamická)",
+"ROM a PROM (pevné paměti)",
+"Flash a EEPROM (mazatelné)"
+],
+[
+"Jak se maže EPROM?",
+"UV světlem (celá najednou)",
+"Elektricky, po jednotlivých bajtech",
+"Nijak, je jen jednorázově zapisovatelná",
+"Silným magnetem přiloženým k čipu"
+],
+[
+"Která ROM se maže elektricky po jednotlivých bajtech?",
+"EEPROM",
+"EPROM",
+"Mask ROM",
+"PROM"
+],
+[
+"Kapacita paměti = …",
+"hloubka × délka datového slova",
+"počet adres × taktovací frekvence",
+"počet čipů × napájecí napětí",
+"hloubka paměti ÷ délka datového slova"
+],
+[
+"Kolik adresních vodičů potřebuje paměť s 2048 místy?",
+"11 (A0–A10)",
+"8 (A0–A7)",
+"12 (A0–A11)",
+"2048 (jeden na místo)"
+],
+[
+"Co znamená zápis 16k (2k × 8)?",
+"2048 míst po 8 bitech = 16 kbit",
+"16k míst po 2 bitech = 32 kbit",
+"2 kB po 16 bitech = 32 kbit",
+"8 čipů po 2k bitech = 16 kbit"
+]
+],
+"terms": [
+[
+"Otevřený kolektor",
+"0 nebo odpojeno, nutný pull-up"
+],
+[
+"Tristate",
+"0, 1, nebo Hi-Z"
+],
+[
+"I²C",
+"SDA + SCL, half duplex, 100 kb/s"
+],
+[
+"SPI",
+"SCLK, MOSI, MISO, CS, full duplex"
+],
+[
+"RS-232",
+"Asynchronní bod–bod, COM port"
+],
+[
+"IEEE 1284",
+"Paralelní port LPT"
+],
+[
+"USB 2.0",
+"480 Mb/s"
+],
+[
+"USB 3.0",
+"5 Gb/s full duplex"
+],
+[
+"SRAM",
+"Klopný obvod, cache"
+],
+[
+"DRAM",
+"Kondenzátor, refresh"
+],
+[
+"EPROM",
+"Mazání UV světlem"
+],
+[
+"EEPROM",
+"Elektrické mazání po bajtech"
+],
+[
+"Hloubka paměti",
+"Počet adresovatelných míst"
+],
+[
+"Délka slova",
+"Bity na jedné adrese"
+]
+],
+"open": [
+{
+"q": "Porovnej sériový a paralelní přenos.",
+"k": [
+"Sériový: bity postupně po jedné lince (USB, SATA, SPI, Ethernet)",
+"Paralelní: více bitů najednou po více vodičích (ISA, PATA, SCSI, PCI)",
+"Paralelní trpí rušením, skew, krátké vzdálenosti",
+"Trend: sériový (LPT→USB, PATA→SATA)"
+]
+},
+{
+"q": "Vysvětli otevřený kolektor a třístavový výstup a jak tvoří sběrnici.",
+"k": [
+"OC: NPN tranzistor, emitor na GND, pull-up 4,7–10 kΩ",
+"Drátová logika wired AND – kdokoli stáhne do 0",
+"OC: I²C, odolnost proti kolizím",
+"Tristate: 0/1/Hi-Z řízené OE",
+"Jen jeden výstup aktivní, ostatní Hi-Z – systémové sběrnice, RAM"
+]
+},
+{
+"q": "Popiš I²C a SPI.",
+"k": [
+"I²C: Philips, SDA+SCL, synchronní, half duplex, multi-master, OC + pull-up, 100 kb/s",
+"I²C: START, 7b adresa + R/W, ACK, data MSB→LSB, STOP",
+"SPI: Motorola, SCLK/MOSI/MISO/CS, full duplex, 1 master",
+"SPI rychlejší (až desítky Mb/s), ale CS pro každý slave"
+]
+},
+{
+"q": "Popiš RS-232, IEEE 1284 a USB.",
+"k": [
+"RS-232: asynchronní, full duplex, bod–bod, 115 200 Bd, 15 m, D-Sub",
+"Rámec: start bit, data, parita, stop bity; RTS/CTS nebo XON/XOFF",
+"IEEE 1284 (LPT): paralelní, 8 datových vodičů, do 5 m, tiskárny",
+"USB: hvězda, 127 zařízení, plug&play, 1.0 12 Mb/s, 2.0 480 Mb/s, 3.0 5 Gb/s full duplex"
+]
+},
+{
+"q": "Rozděl paměti a popiš SRAM a DRAM.",
+"k": [
+"RWM (závislé na napájení): SRAM, DRAM, NoRAM (FIFO, LIFO)",
+"ROM (nezávislé): Mask ROM, PROM, EPROM (UV), EEPROM, Flash",
+"SRAM: bistabilní klopný obvod, 6 tranzistorů, bez refreshe, 1–20 ns, cache",
+"DRAM: kondenzátor + tranzistor, refresh, RAS/CAS, 10–70 ns, operační paměť"
+]
+},
+{
+"q": "Vysvětli organizaci paměti a paměťovou mapu.",
+"k": [
+"Hloubka N = počet míst (slov)",
+"Délka slova n = bity na adrese (šířka datové sběrnice)",
+"Kapacita = N × n",
+"Počet adresních vodičů p = log₂(N)",
+"Příklad 2k × 8: 2048 míst, A0–A10"
+]
+}
+]
+}

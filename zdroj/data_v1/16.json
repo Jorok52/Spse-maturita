@@ -1,0 +1,429 @@
+{
+"n": 16,
+"t": "Zdroje, BIOS, UEFI, bootování",
+"outline": [
+"Typy zdrojů PC, konektory, zapojení, napětí, signály",
+"BIOS a jeho součásti, upgrade",
+"UEFI a rozdíly v bootování",
+"Nastavení HW konfigurace (Setup)",
+"Výběr a zavedení OS, instalace OS přes UEFI"
+],
+"q": [
+[
+"Která napětí dává ATX zdroj?",
+"±3,3 V, ±5 V, ±12 V",
+"±1,5 V, ±9 V, ±24 V",
+"Jen +230 V (střídavé)",
+"±3,3 V, ±48 V, +5 VSB"
+],
+[
+"Jak se zapíná AT zdroj?",
+"Hardwarově vypínačem na 230 V",
+"Softwarově signálem PS_ON z desky",
+"Přes USB po připojení klávesnice",
+"Z BIOSu po stisku klávesy DEL"
+],
+[
+"Hlavní napájecí konektor desky (ATX)?",
+"20/24 pinů",
+"Dva 6pin P8 a P9",
+"15pin",
+"4pin Molex"
+],
+[
+"Tolerance +12 V dle ATX?",
+"±5 % (11,40–12,60 V)",
+"±10 % (10,80–13,20 V)",
+"±1 % (11,88–12,12 V)",
+"±20 % (9,60–14,40 V)"
+],
+[
+"K čemu je konektor ATX12V (4/8pin)?",
+"Dodatečné napájení CPU a jeho regulátorů",
+"Napájení pevných disků a mechanik",
+"Dodatečné napájení grafické karty",
+"Napájení ventilátorů a podsvícení"
+],
+[
+"Jaká napětí má MOLEX?",
+"+5 V (červený) a +12 V (žlutý) + 2× GND",
+"+3,3 V (oranžový) a +5 V (červený) + GND",
+"Jen +12 V (žlutý) + 3× GND",
+"+5 V (červený) a −5 V (bílý) + 2× GND"
+],
+[
+"Kolik pinů má SATA Power a jaká napětí?",
+"15 pinů; 3,3 V, 5 V, 12 V",
+"4 piny; jen 5 V a 12 V",
+"6 pinů; jen 12 V pro motor",
+"24 pinů; 3,3 V, 5 V, 12 V"
+],
+[
+"Kolik W dodá 6pin PCIe?",
+"75 W",
+"150 W",
+"225 W",
+"300 W"
+],
+[
+"Kolik W dodá 8pin PCIe?",
+"150 W",
+"75 W",
+"225 W",
+"600 W"
+],
+[
+"Nový konektor ATX 3.0 pro grafiky?",
+"12VHPWR",
+"Berg 4pin",
+"MOLEX 4pin",
+"EPS 8pin"
+],
+[
+"Signál 5VSB (fialový)…",
+"Drží +5 V v pohotovosti pro softwarové zapnutí",
+"Ze desky do zdroje zapíná všechny hlavní větve",
+"Hlásí desce, že jsou všechna napětí stabilní",
+"Je to zem (GND) pro řídicí signály desky"
+],
+[
+"Signál PS_ON (zelený)…",
+"Ze desky do zdroje – zapne hlavní větve",
+"Zdroj hlásí desce, že napětí jsou v toleranci",
+"Drží +5 V v pohotovosti pro zapnutí po síti",
+"Měří teplotu zdroje a řídí ventilátor"
+],
+[
+"Signál PW_OK (šedý)…",
+"Zdroj hlásí desce, že napětí jsou stabilní → začne POST",
+"Ze desky do zdroje – zapne hlavní větve napájení",
+"Drží +5 V v pohotovosti, když je PC vypnuté",
+"Po stisku tlačítka vymaže nastavení v paměti CMOS"
+],
+[
+"Při jaké zátěži má zdroj nejlepší účinnost?",
+"50–75 %",
+"5–10 %",
+"100 %",
+"Nezáleží"
+],
+[
+"Účinnost zdrojů s certifikací 80 PLUS?",
+"80–90 %",
+"50 %",
+"99 %",
+"30–40 %"
+],
+[
+"Aktivní PFC koriguje účiník…",
+"Nad 0,9 pomocí tranzistorů a kondenzátorů",
+"Pouze cívkou na vstupu, bez aktivních součástek",
+"Nekoriguje vůbec, jen filtruje špičky ze sítě",
+"Snižuje účiník na 0,5 kvůli úspoře energie"
+],
+[
+"Pasivní PFC používá…",
+"Cívku na vstupu (pasivní součástky)",
+"Tranzistory a řídicí obvod",
+"Mikroprocesor s firmwarem",
+"Záložní baterii (UPS)"
+],
+[
+"Ochrana OVP je proti…",
+"Přepětí",
+"Nadproudu",
+"Přehřátí",
+"Zkratu"
+],
+[
+"Ochrana OTP je proti…",
+"Přehřátí",
+"Přepětí",
+"Přetížení výkonu",
+"Zkratu"
+],
+[
+"Ochrana SCP je proti…",
+"Zkratu",
+"Přehřátí",
+"Přepětí",
+"Nadproudu"
+],
+[
+"Kde je BIOS uložen?",
+"EPROM / dnes Flash ROM na desce",
+"Na systémovém disku v MBR",
+"V operační paměti RAM",
+"V paměti CMOS s baterií"
+],
+[
+"Co dělá POST?",
+"Testuje HW po zapnutí, chyby hlásí beep kódy",
+"Nainstaluje operační systém z disku",
+"Naformátuje systémový disk při chybě",
+"Přetaktuje procesor podle teploty"
+],
+[
+"Co obsahuje CMOS paměť?",
+"Data nastavení Setupu (napájená baterií CR2032)",
+"Program BIOSu, jeho ovladače a testy POST (v SRAM)",
+"Zavaděč operačního systému",
+"Tabulku oddílů a kopii MBR"
+],
+[
+"Jak resetovat CMOS?",
+"Jumper Clear CMOS nebo vyjmutí baterie",
+"Přeinstalovat operační systém",
+"Vyměnit pevný disk za nový",
+"Při startu podržet klávesu F12"
+],
+[
+"Výrobci BIOSu?",
+"AMI, Award, Phoenix",
+"Intel, AMD, NVIDIA",
+"Microsoft, Apple, Google",
+"Gigabyte, Corsair, ASUS"
+],
+[
+"Co je DUAL BIOS?",
+"Dva čipy – hlavní a záložní pro případ poškození",
+"Dva Setupy – jeden pro BIOS, druhý pro UEFI",
+"Kombinace BIOS + UEFI na jednom čipu",
+"Dvě paměti CMOS pro dva uživatele"
+],
+[
+"Co je ESCD?",
+"Konfigurace systémových zařízení uložená v CMOS",
+"Typ BIOSu od firmy Phoenix s rozšířenou konfigurací",
+"Zavaděč operačního systému v MBR",
+"Bootovací oddíl ve formátu FAT32"
+],
+[
+"Na jaké architektuře je klasický BIOS?",
+"16bit (adresuje max. 1 MB)",
+"64bit (adresuje až 16 EB)",
+"32bit (adresuje max. 4 GB)",
+"8bit (adresuje max. 64 kB)"
+],
+[
+"Fáze bootu UEFI v pořadí?",
+"PEI → DXE → BDS → TSL",
+"DXE → PEI → TSL → BDS",
+"POST → MBR → OS",
+"BDS → PEI → DXE"
+],
+[
+"Co dělá fáze DXE?",
+"Paralelně inicializuje zbývající HW (síť, disky, USB)",
+"Inicializuje CPU, RAM a chipset jako první",
+"Vybírá boot zařízení podle nastavených priorit",
+"Zavádí bootloader OS a předává mu řízení"
+],
+[
+"Co dělá fáze BDS?",
+"Vybírá boot zařízení podle priorit",
+"Inicializuje operační paměť a procesor",
+"Paralelně spouští ovladače zařízení",
+"Ověřuje digitální podpisy zavaděčů"
+],
+[
+"Co je Secure Boot?",
+"Ověřuje digitální podpisy bootloaderu a ovladačů",
+"Heslo pro přístup do nastavení Setupu a pro spuštění systému",
+"Hardwarové šifrování celého disku",
+"Rychlý start bez testování hardwaru"
+],
+[
+"Co je CSM?",
+"Legacy režim UEFI pro starší OS (emulace BIOSu)",
+"Ochrana zdroje proti přepětí a zkratu",
+"Typ oddílu pro zavaděč systému",
+"Kontrolní součet obrazu firmwaru"
+],
+[
+"Na jakém FS musí být ESP oddíl?",
+"FAT32",
+"NTFS",
+"exFAT",
+"ext4"
+],
+[
+"Typický UEFI zavaděč 64bit?",
+"bootx64.efi",
+"ntldr",
+"io.sys",
+"grub.cfg"
+],
+[
+"Kde je zavaděč u BIOS bootu?",
+"V MBR",
+"V ESP",
+"V CMOS",
+"V RAM"
+],
+[
+"Ve které záložce Setupu nastavíš pořadí bootování?",
+"Boot",
+"Main",
+"Security",
+"Power"
+],
+[
+"Kde nastavíš Wake-on-LAN?",
+"Power / APM",
+"Boot",
+"Main",
+"Exit"
+],
+[
+"Supervisor password umožňuje…",
+"Plný přístup do Setupu a změny",
+"Jen používat PC, do Setupu nesmí",
+"Nic, slouží jen jako záloha",
+"Jen bootovat z USB disku"
+],
+[
+"Jak se jmenují nástroje pro flash UEFI?",
+"EZ Flash, M-Flash, Q-Flash",
+"CCleaner, TuneUp, Defraggler",
+"DiskEdit, Acronis, Paragon",
+"regedit, msconfig, diskpart"
+],
+[
+"Ve které záložce Setupu najdeš XMP profily pamětí?",
+"Performance / OC / Ai Tweaker",
+"Boot / Fast Boot",
+"Security / Password",
+"Exit / Save Changes"
+],
+[
+"Co je Chassis Intrusion (záložka Security)?",
+"Detekce otevření skříně",
+"Ochrana zdroje proti přepětí",
+"Rychlý start bez testu HW",
+"Šifrování disku čipem TPM"
+],
+[
+"Které funkce má BIOS?",
+"POST, zavedení OS, komunikace HW–SW, Setup, API pro OS",
+"Jen formátování disku a kontrola vadných sektorů při startu",
+"Jen ovládání ventilátorů a měření teplot",
+"Správa uživatelských účtů a jejich hesel"
+]
+],
+"terms": [
+[
+"5VSB",
+"Standby +5 V (fialový)"
+],
+[
+"PS_ON",
+"Zapnutí zdroje (zelený)"
+],
+[
+"PW_OK",
+"Napětí stabilní (šedý)"
+],
+[
+"MOLEX",
+"4pin, 5 V + 12 V"
+],
+[
+"SATA Power",
+"15pin, 3,3/5/12 V"
+],
+[
+"6pin PCIe",
+"75 W"
+],
+[
+"8pin PCIe",
+"150 W"
+],
+[
+"OCP/OVP/OPP/OTP/SCP",
+"Ochrany zdroje"
+],
+[
+"POST",
+"Test HW po zapnutí"
+],
+[
+"CMOS",
+"Nastavení, baterie CR2032"
+],
+[
+"DUAL BIOS",
+"Záložní čip"
+],
+[
+"PEI",
+"UEFI: CPU, RAM, chipset"
+],
+[
+"DXE",
+"UEFI: ovladače paralelně"
+],
+[
+"Secure Boot",
+"Ověřování podpisů"
+],
+[
+"ESP",
+"FAT32 oddíl se zavaděči"
+],
+[
+"CSM",
+"Legacy BIOS režim"
+]
+],
+"open": [
+{
+"q": "Popiš zdroje PC, konektory, napětí a signály.",
+"k": [
+"Převod 230 V AC na ±3,3/±5/±12 V DC",
+"AT (P8+P9, HW vypínač) vs. ATX (20/24pin, PS_ON); ATX 3.0 12VHPWR",
+"Tolerance ±5 % (−12 V ±10 %)",
+"Konektory: ATX12V/EPS, Molex, Berg, SATA 15pin, PCIe 6pin 75 W / 8pin 150 W",
+"Signály 5VSB, PS_ON, PW_OK"
+]
+},
+{
+"q": "Jaké parametry a ochrany má zdroj?",
+"k": [
+"Výkon 200–1500 W, proudy na větvích, stabilita",
+"Účinnost nejlepší při 50–75 %, 80 PLUS",
+"Účiník, aktivní a pasivní PFC",
+"Ochrany OCP, OVP, OPP, OTP, SCP"
+]
+},
+{
+"q": "Popiš BIOS, jeho součásti a upgrade.",
+"k": [
+"Firmware ve Flash ROM: POST, Setup, boot loader, API, ovladače",
+"CMOS + baterie, reset jumperem",
+"Výrobci AMI, Award, Phoenix; DUAL BIOS",
+"Start: inicializace, ESCD, POST, ovladače, boot zařízení, předání OS",
+"Upgrade: typ desky, stáhnout, záloha, Q/EZ/M-Flash, restart"
+]
+},
+{
+"q": "Porovnej UEFI a BIOS, popiš bootování UEFI.",
+"k": [
+"UEFI: 32/64bit, standard, GUI s myší, GPT 9,4 ZB, Secure Boot, síť, CSM",
+"BIOS: 16bit, 1 MB, MBR 2,2 TB, jen klávesnice",
+"Fáze PEI → DXE → BDS → TSL",
+"BIOS: POST → MBR → zavaděč; UEFI: boot manager → ESP (FAT32) → bootx64.efi"
+]
+},
+{
+"q": "Popiš nastavení Setupu a instalaci OS přes UEFI.",
+"k": [
+"Klávesy DEL, F1, F2, F10",
+"Main, Advanced, OC/Ai Tweaker (XMP), Security (hesla, TPM, Secure Boot), Power (S3, WoL), Boot, Exit",
+"Load Setup Defaults / Clear CMOS",
+"Instalace: FAT32 USB s /EFI/BOOT/bootx64.efi, boot order, případně EFI Shell (fs0:, cd EFI\\BOOT)"
+]
+}
+]
+}

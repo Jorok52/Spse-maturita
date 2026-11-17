@@ -1,0 +1,414 @@
+18. Sockety, chlazení,
+chipset (Konstrukční uspořádání PC)
+struktura, popis jednotlivých
+01 Vnitřní
+částí základní desky
+02 Chipset
+03
+Typy a charakteristiky socketů Intel a
+AMD
+04
+Vliv zátěže a taktovací frekvence na
+spotřebu
+05 TDP a návrh chlazení
+06
+Typy a charakteristika chlazení procesoru,
+princip fungování Heatpipe
+TCC, EIST, Inteligent Power
+07 Technologie
+Capatibility, Cool’n’Quiet, Turbo boost
+18. Sockety, chlazení, chipset
+18. Sockety, chlazení, chipset
+18. Sockety, chlazení, chipset
+Základní deska (Motherboard)
+Základní deska je centrální komponenta PC, která propojuje všechny ostatní součásti a
+umožňuje jejich koordinovanou činnost. Poskytuje elektrické napájení, přenos dat mezi
+součástmi a fyzické rozhraní pro připojení komponent.
+Klíčové prvky základní desky:
+1. Sockety (CPU soket)
+Slouží k upevnění a propojení procesoru (CPU) se základní deskou
+Typ socketu určuje kompatibilitu s procesorem (např. Intel LGA 1700, AMD AM5)
+2. Paměťové sloty
+Sloty pro operační paměť (RAM). Moderní standard je DDR4 nebo DDR5
+Typ a kapacita RAM ovlivňují výkon počítače
+2×16 GB DDR5 RAM v dual-channel konfiguraci zlepší výkon oproti single-channel
+zapojení
+3. Non-volatile paměť (Flash ROM)
+Obsahuje firmware, např. BIOS nebo modernější UEFI, který umožňuje základní
+konfiguraci systému a zavedení operačního systému
+4. CLK generátor
+Produkuje hodinový signál, který synchronizuje činnost CPU, RAM a dalších komponent
+5. Sloty pro rozšiřující karty
+Například PCI Express sloty (x16, x8, x4, x1) umožňují připojení grafických karet, sítových
+adaptérů apod.
+6. Napájecí konektory
+Zajišťují přenos energie ze zdroje (PSU) do základní desky a dalších komponent
+Například 24pinový konektor ATX pro základní desku a 8pinový EPS pro CPU
+7. Konektory předního panelu
+Připojují ovládací prvky skříně, jako je tlačítko zapnutí/vypnutí, reset, LED indikátory
+8. Baterie
+Malá knoflíková baterie (CR2032) napájí obvod RTC (Real-Time Clock) a uchovává
+nastavení BIOS/UEFI
+9. Konektory pro periferie
+USB porty, audio jacky, HDMI, DisplayPort a další konektory slouží k připojení myši,
+klávesnice, monitorů apod.
+10. SATA konektory
+Slouží k připojení úložišť, jako jsou HDD a SSD disky. Moderní alternativa je M.2 slot pro
+NVMe SSD
+11. I/O řadič
+Řídí vstupy a výstupy periferií, jako jsou klávesnice, myš a disky
+12. Sběrnice
+AGP, ISA (dříve), PCIe (moderní). Zajišťují komunikaci mezi komponentami
+18. Sockety, chlazení, chipset
+Chipset
+Chipset je klíčový logický obvod základní desky, který řídí komunikaci mezi procesorem
+(CPU) a ostatními komponentami PC, jako jsou operační paměť (RAM), grafická karta (GPU),
+disky a periferní zařízení. Zajišťuje efektivní přenos dat mezi jednotlivými částmi systému.
+Integrované řadiče v čipsetu generují řídicí signály na základě zpracovaných instrukcí.
+Komunikace probíhá přes sběrnice, které jsou uspořádány hierarchicky podle rychlosti,
+od nejrychlejší (např. PCIe) po pomalejší (např. ISA)
+Obsahuje mosty pro propojení různých sběrnic:
+Severní most (North Bridge)
+Jižní most (South Bridge)
+Typy čipových sad:
+1. Čipová sada se severním a jižním
+mostem:
+Používaná v dřívějších PC
+(např. Intel čipsety řady 800)
+2. Čipová sada s integrovaným řadičem
+paměti v CPU:
+Moderní architektura, kde řadič paměti
+a severní most jsou přímo integrovány
+do CPU (např. AMD Ryzen, Intel Core
+od 8. generace)
+3. Čipová sada s integrovaným severním
+mostem:
+Čipsety, kde byl severní most nahrazen modernějšími přístupy (např. Intel Z690)
+Severní most (North Bridge)
+Hlavní funkce:
+Řídí komunikaci mezi procesorem, operační pamětí a grafickou kartou
+Býval označován jako MCH (Memory Controller Hub)
+Udržuje rychlou komunikaci s procesorem pomocí Front Side Bus (FSB)
+Klíčové vlastnosti:
+Šířka FSB: 64 bitů
+Přenosová kapacita závisí na taktovací frekvenci (např. 400 MHz FSB dokáže přenést až
+3,2 GB/s)
+Propojení s jižním mostem prostřednictvím sběrnice DMI (Direct Media Interface)
+Během 1 CLK dokáže přenést data 4x
+V případě víceprocesorového systému sdílejí CPU sběrnici FSB
+Nemožnost komunikace CPU přímo mezi sebou
+Snížení přenosové rychlosti
+18. Sockety, chlazení, chipset
+Jižní most (South Bridge)
+Hlavní funkce:
+Zajišťuje komunikaci mezi základní deskou a periferními zařízeními.
+Obsahuje řadiče disků (ATA, SATA, RAID) a rozhraní (USB, PS/2)
+Klíčové vlastnosti:
+Pomalejší než severní most, vhodný pro méně náročné operace
+Umožňuje připojení zvukových karet, BIOS paměti, síťových adaptérů
+Řídí sběrnici PCIe (pro připojení dalších zařízení)
+Propojení se severním mostem přes DMI sběrnici
+Moderní základní desky nahrazují jižní most moderními řadiči integrovanými přímo v čipsetu,
+což snižuje složitost.
+Čipové sady s integrovaným řadičem operační paměti (OP)
+Tento typ čipových sad přinesl významné změny v konstrukci základních desek a přenosu
+dat:
+Severní most dostal nové označení IOH (Input/Output Hub), protože některé jeho
+původní funkce byly přesunuty jinam.
+Řadič operační paměti (Memory Controller) byl přesunut z IOH přímo do procesoru
+(CPU).
+FSB sběrnice (Front Side Bus) byla nahrazena moderní sběrnicí Quick Path Interconnect
+(QPI), která umožňuje rychlejší a efektivnější komunikaci.
+Výhody této architektury:
+Rychlejší komunikace: QPI umožňuje přenos dat rychlostí až 25,6 GB/s (např. Intel Xeon
+procesory).
+Odolnost proti chybám: Díky integraci je přenos spolehlivější.
+Lepší kompatibilita s OP: Přímé napojení procesoru na operační paměť umožňuje
+efektivnější přístup.
+Lepší chlazení: Snížení potřeby externího chlazení severního mostu.
+Vyšší teplo: Přesun řadiče paměti do CPU zvyšuje množství tepla produkovaného
+procesorem, což vyžaduje výkonnější chlazení CPU (např. heatpipe nebo vodní
+chlazení).
+Quick Path Interconnect (QPI):
+Charakteristika:
+Umožňuje přímou komunikaci mezi více procesory (důležité u serverových desek).
+Full duplex: Současný přenos dat oběma směry (2x20 bitů)
+Konfigurace:
+Jeden IOH může obsahovat dvě QPI.
+Pokud se využívá jeden IOH, každé CPU má vlastní QPI.
+U systémů s dvěma IOH má každé CPU vlastní IOH, což zvyšuje výkon a kapacitu.
+Příklad z praxe:
+Intel Xeon procesory v serverech využívají QPI ke komunikaci mezi jednotlivými procesory a
+zajišťují vysokou propustnost dat v aplikacích náročných na výkon, jako jsou databáze nebo
+virtuální stroje.
+18. Sockety, chlazení, chipset
+Čipové sady s plně integrovaným severním mostem
+Moderní architektura čipových sad integruje nejen řadič operační paměti, ale také řadič
+grafické karty (GPU sběrnice) přímo do procesoru. To dále zjednodušuje konstrukci
+základních desek.
+Základní deska již neobsahuje severní most, ale nový prvek: PCH (Platform
+Controller Hub).
+PCH zastává funkci jižního mostu a zajišťuje komunikaci mezi CPU a
+periferiemi.
+Propojení s procesorem zajišťuje sběrnice DMI (Direct Media Interface), která
+nabízí vysokorychlostní přenos dat (např. až 4 GB/s u DMI 3.0).
+Výhody této architektury:
+Zjednodušení návrhu základních desek.
+Zvýšení výkonu díky přímému propojení CPU s GPU a operační pamětí.
+Snížení latencí při přenosu dat mezi procesorem a periferiemi.
+Typy a charakteristika socketů Intel a AMD
+Socket (patice):
+Socket je konektor na základní desce, do kterého se instaluje procesor (CPU).
+Umožňuje fyzické připojení procesoru k základní desce a propojení s dalšími
+komponentami přes čipovou sadu.
+Každý socket je kompatibilní pouze s určitými procesory – určuje například typ
+procesoru, jeho generaci a podporované technologie.
+Slot: Historická varianta socketu, do kterého se procesor zasouval (např. Slot 1 u Intel
+Pentium II).
+Typy socketů podle výrobců:
+Sockety Intel
+Intel používá především technologii LGA (Land Grid Array), kde jsou kontakty na základní
+desce v podobě plošek, zatímco procesor má kontaktní piny. Tato technologie je
+považována za spolehlivější a odolnější.
+Příklady socketů Intel:
+LGA 1151:
+Podporuje procesory Intel Skylake, Kaby Lake a Coffee Lake (např. Core i3, i5, i7, i9).
+Byl používán u 6., 7., 8. a 9. generace procesorů Intel.
+Příklad: Základní deska ASUS Z170 podporuje tento socket.
+LGA 2011:
+Podporuje výkonné procesory Intel Core i7 a Xeon pro servery.
+Typicky využíván u high-end desek pro výpočetně náročné úkoly.
+LGA 1150:
+Kompatibilní s procesory Intel Haswell a Broadwell.
+Byl populární v sestavách pro běžné uživatele a hráče.
+LGA 1155:
+Pro procesory Sandy Bridge a Ivy Bridge (např. Intel Core i5-2500K).
+18. Sockety, chlazení, chipset
+LGA 1366:
+Pro starší high-end procesory Intel (např. Core i7-900 series).
+LGA 1156:
+Pro procesory Nehalem a Westmere (např. Core i5-750).
+Sockety AMD
+AMD tradičně využívá PGA (Pin Grid Array), kde má procesor piny a socket otvory. Výhodou
+je snadnější výroba a nižší náklady. V posledních letech však AMD začíná využívat i LGA,
+zejména u high-end procesorů.
+Příklady socketů AMD:
+Socket AM4:
+Podporuje procesory AMD Ryzen (Zen, Zen+, Zen 2, Zen 3) a některé APU.
+Jeden z nejdéle používaných socketů, díky dlouhodobé kompatibilitě AMD.
+Socket FM2+:
+Pro APU řady Kaveri a Godavari (procesory s integrovanou grafikou).
+Používán v cenově dostupných sestavách.
+Socket AM3+, AM3, AM2, AM2+:
+Používány pro procesory řady AMD Phenom, Athlon a FX.
+Příkladem je procesor AMD FX-8350 pro socket AM3+.
+FUNKCE
+INTEL (LGA)
+AMD (PGA/LGA)
+TECHNOLOGIE:
+LGA (Land Grid Array) –
+plošky
+PGA (Pin Grid Array) –
+piny, nově i LGA
+CHLAZENÍ:
+Vyžaduje specifické chladiče
+Kompatibilita chladičů je
+vyšší (AM4 má jednotné
+upevnění)
+TDP (Thermal Design
+Power)
+Typicky nižší (efektivnější
+chlazení)
+Vyšší TDP u high-end
+procesorů (vyšší výkon
+na úkor tepla)
+18. Sockety, chlazení, chipset
+TDP a návrhy chlazení
+Thermal Design Power (TDP):
+Udává maximální množství tepelné energie (watt), které zařízení, například procesor
+nebo grafická karta, generuje při plné zátěži.
+Používá se pro určení výkonu chladiče potřebného k udržení bezpečné teploty
+komponent.
+Vyšší TDP: Vyžaduje výkonnější chlazení (větší chladič nebo pokročilejší technologie).
+Nižší TDP: Snazší chlazení a menší energetické nároky.
+Typy chlazení podle způsobu přenosu tepla:
+1. Pasivní chlazení
+Funguje bez použití ventilátoru – teplo je odváděno pouze díky přirozenému
+proudění vzduchu a tepelným vlastnostem materiálů.
+Vlastnosti:
+Kovová žebra z mědi nebo hliníku zvětšují plochu pro efektivní přenos tepla do
+okolí.
+Vyžaduje aplikaci teplovodivé pasty mezi chladičem a procesorem, aby se
+eliminovaly vzduchové mezery.
+Heatpipe technologie – trubičky naplněné kapalnou látkou, která zlepšuje přenos
+tepla na velké vzdálenosti.
+Výhody: Bez hluku, nízká spotřeba energie.
+Nevýhody: Omezený výkon, nevhodné pro komponenty s vysokým TDP.
+Příklad: Pasivní chladiče procesorů s TDP do 30 W nebo chlazení u pasivních
+grafických karet.
+2. Aktivní chlazení:
+Používá ventilátory k aktivnímu proudění vzduchu. Nejčastější řešení pro procesory,
+grafické karty a zdroje.
+Vlastnosti:
+Ventilátor vytváří „tunely“, které vedou čerstvý vzduch do skříně a odvádějí
+ohřátý vzduch ven.
+Ventilátory jsou napájeny a regulovány základní deskou.
+Typy ventilátorů:
+3-pinové ventilátory:
+Konstantní napětí.
+Otáčky nejsou přímo řízeny deskou, ale kvalitní ventilátory umožňují vlastní
+regulaci podle teploty.
+4-pinové ventilátory (PWM):
+Pulzně řízené – základní deska automaticky reguluje otáčky podle aktuální
+teploty.
+Levnější varianta než 3pinové regulované ventilátory.
+Výhody: Vysoká účinnost, dostupná cena.
+Nevýhody: Vyšší hlučnost.
+18. Sockety, chlazení, chipset
+3. Pasivní chlazení
+a. Vodní chlazení:
+Využívá kapalinu jako médium pro přenos tepla. Kapalina (obvykle destilovaná
+voda s aditivy) odvádí teplo od CPU/GPU k radiátorům, kde se ochladí ventilátory.
+Vlastnosti:
+Komponenty: pumpa, blok chladiče, hadice, radiátor, ventilátory.
+Může být uzavřené (AIO – All In One) nebo otevřené (custom loop).
+Výhody: Tichý provoz, vysoká účinnost.
+Nevýhody: Vyšší cena, složitější instalace, riziko úniku kapaliny.
+b. Extrémní chlazení:
+Používá se u přetaktování nebo v laboratorních podmínkách.
+Metody:
+Chlazení tekutým dusíkem (LN2): Chladí procesor na teploty pod -100 °C.
+Chlazení oxidem uhličitým (CO2): Použití suchého ledu.
+Chlazení tekutým kovem: Vysoce efektivní médium pro přenos tepla (např.
+slitiny gallia).
+Výhody: Extrémní účinnost.
+Nevýhody: Náklady, složitost, krátká doba použití.
+Příklad: LN2 se často používá při soutěžích v přetaktování.
+TDP (W)
+Doporučené chlazení
+Příklad použití
+< 30 W
+Pasivní chlazení
+Pasivní grafické karty,
+nízkovýkonné
+procesory
+30–95 W
+Aktivní vzduchové chlazení
+Mainstream CPU (Intel
+Core i5, AMD Ryzen 5)
+95–200 W
+Výkonné aktivní chlazení
+nebo uzavřené vodní
+chlazení (AIO)
+High-end CPU (Intel
+Core i9, AMD Ryzen 9)
+> 200 W
+Custom vodní chlazení nebo
+extrémní metody
+Přetaktování, servery,
+workstations
+18. Sockety, chlazení, chipset
+HEAT PIPE (Pasivní chlazení)
+Princip funkce:
+Heat pipe je uzavřená kovová trubice naplněná pracovní kapalinou (např. čpavkem,
+vodou nebo alkoholem).
+Slouží k efektivnímu přenosu tepla mezi zdrojem tepla (např. procesor) a chladičem.
+Mechanismus:
+Odpařování:
+Jeden konec trubice (výparník) je v kontaktu se zdrojem tepla.
+Pracovní kapalina se zahřívá, odpařuje a mění se na páru.
+Přenos tepla:
+Pára proudí směrem k chladnějšímu místu trubice (kondenzátoru), což je část
+propojená s chladičem.
+Pohyb par je umožněn rozdílem tlaků mezi výparníkem (vyšší tlak) a
+kondenzátorem (nižší tlak).
+Kondenzace:
+Na konci trubice pára kondenzuje zpět na kapalinu, čímž předá své teplo chladiči.
+Návrat kapaliny:
+Kondenzovaná kapalina se díky kapilárním silám v porézním materiálu (tzv. knot)
+vrací zpět k výparníku, kde cyklus začíná znovu.
+Výhody:
+Funguje v libovolné orientaci, protože návrat kapaliny zajišťují kapilární síly (ne
+vyžadovaný sklon jako u termosifonu).
+Vysoká účinnost přenosu tepla na krátké vzdálenosti.
+Nízká hmotnost a kompaktní rozměry.
+pasivní chlazení využívající
+heat pipe technologii
+18. Sockety, chlazení, chipset
+VLASTNOST
+HEAT PIPE
+DVOUFÁZOVÝ
+TERMOSIFON
+Princip pohybu
+kapaliny:
+Kapilární síly (knot
+zajišťuje návrat
+kondenzátu)
+Gravitace (nutný
+výškový rozdíl).
+Účinnost
+přenosu tepla:
+Vysoká účinnost, vhodné
+pro menší oblasti.
+Vyšší účinnost při
+odvodu tepla z velmi
+malých oblastí.
+Pracuje v jakékoli poloze.
+Nutná neměnná
+orientace (výparník
+musí být níže).
+Počítače (CPU, GPU),
+spotřební elektronika.
+Průmyslové
+chlazení, náročné
+aplikace s vysokým
+teplem.
+Orientace
+zařízení:
+Aplikace:
+Tepelná ochrana procesoru
+1. Význam:
+CPU produkuje během provozu značné množství tepla, které musí být spolehlivě
+odváděno.
+Selhání chlazení může vést k přehřátí, což může trvale poškodit procesor.
+2. Technologie tepelné ochrany:
+TCC (Thermal Control Circuit):
+Aktivuje se při dosažení kritické teploty.
+Vkládá nulové cykly do provozu CPU, což snižuje zátěž a produkci tepla.
+Obsahuje tepelnou diodu, která monitoruje teplotu a reguluje otáčky ventilátoru.
+Aktivuje CPU throttling, což snižuje napětí a frekvenci CPU, čímž klesá teplota.
+EIST (Enhanced Intel Speed Technology):
+Dynamicky mění taktovací frekvenci a napětí CPU podle aktuální zátěže.
+Šetří energii a snižuje produkci tepla, když CPU není plně zatíženo.
+18. Sockety, chlazení, chipset
+TCC (Thermal Control Circuit):
+Aktivuje se při dosažení kritické teploty.
+Vkládá nulové cykly do provozu CPU, což snižuje zátěž a produkci tepla.
+Obsahuje tepelnou diodu, která monitoruje teplotu a reguluje otáčky ventilátoru.
+Aktivuje CPU throttling, což snižuje napětí a frekvenci CPU, čímž klesá teplota.
+EIST (Enhanced Intel Speed Technology):
+Dynamicky mění taktovací frekvenci a napětí CPU podle aktuální zátěže.
+Šetří energii a snižuje produkci tepla, když CPU není plně zatíženo.
+Intelligent Power Capability:
+Inteligentní správa spotřeby.
+Napájí pouze ty části CPU, které jsou momentálně potřebné, což snižuje spotřebu
+a produkci tepla.
+Cool’n’Quiet (AMD):
+Funguje podobně jako EIST od Intelu.
+Dynamicky upravuje frekvenci a napětí CPU podle aktuální zátěže.
+Turbo Boost (Intel):
+Umožňuje jednotlivým jádrům CPU pracovat rychleji, než je jejich základní
+frekvence.
+Zvyšuje výkon v jedno i více vláknových operacích, pokud to tepelný limit a
+spotřeba dovolují.
+Vliv zátěže a taktovací frekvence na spotřebu:
+1. Přetaktování:
+Zvyšuje taktovací frekvenci CPU nad standardní hodnoty.
+Výrazně zvyšuje spotřebu a produkci tepla.
+2. Spotřeba a zdroj:
+Při přetaktování je nutné zajistit dostatečně výkonný zdroj s rezervou.
+Vyšší frekvence znamená vyšší spotřebu, což může klást nároky na chlazení i
+napájení.
+3. Výdej tepla:
+S rostoucí frekvencí se zvyšuje generované teplo, což vyžaduje účinnější chlazení,
+například aktivní chlazení nebo vodní okruhy.

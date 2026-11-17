@@ -1,0 +1,188 @@
+{
+ "2": {
+  "outline_add": [
+   "Řadič a ALU",
+   "Konfigurace projektu a práce v prostředí Keil uVision 5"
+  ],
+  "q": [
+   [
+    "V jakém prostředí se na SPŠE programuje STM32F4?",
+    "Keil uVision 5",
+    "Arduino IDE",
+    "Visual Studio Code",
+    "Eclipse"
+   ],
+   [
+    "Co se v Keilu vybírá při zakládání projektu?",
+    "Cílový mikrořadič (např. STM32F407VG) a komponenty (CMSIS, startup)",
+    "Operační systém počítače, verzi překladače a jazyk prostředí (C nebo Python)",
+    "Grafickou kartu a rozlišení simulátoru",
+    "Typ disku, na který se program nahraje"
+   ],
+   [
+    "Přes co se program nahrává do kitu STM32F4 Discovery?",
+    "ST-LINK (SWD)",
+    "Sériový port COM",
+    "USB flash disk",
+    "Bluetooth"
+   ],
+   [
+    "Co musíš udělat jako první, aby fungoval port GPIO?",
+    "Povolit jeho hodiny v RCC->AHB1ENR",
+    "Nastavit výstupní hodnotu v registru ODR",
+    "Zavolat printf pro inicializaci konzole",
+    "Restartovat kit a znovu nahrát program"
+   ]
+  ],
+  "open": [
+   {
+    "q": "Popiš konfiguraci projektu a práci v Keil uVision 5.",
+    "k": [
+     "Nový projekt, výběr čipu STM32F407VG",
+     "Komponenty CMSIS Core a Device Startup",
+     "Options for Target – debugger ST-LINK",
+     "Build (F7), Download (F8), ladění",
+     "V kódu: RCC->AHB1ENR, MODER, ODR/IDR"
+    ]
+   }
+  ]
+ },
+ "12": {
+  "outline_add": [
+   "Systémové proměnné",
+   "Vrstvy systému"
+  ],
+  "q": [
+   [
+    "Vrstvy UNIXu od hardwaru nahoru?",
+    "HW → jádro → shell (a systémová volání) → aplikace",
+    "Aplikace → HW → jádro → shell",
+    "Shell → HW → aplikace → jádro (systémová volání)",
+    "HW → aplikace → jádro → shell"
+   ],
+   [
+    "Co obsahuje proměnná $HOME?",
+    "Cestu k domovskému adresáři uživatele",
+    "Seznam adresářů, kde se hledají programy",
+    "Jméno počítače v síti (hostname)",
+    "Cestu ke kořenovému adresáři systému"
+   ],
+   [
+    "Co obsahuje proměnná $PATH?",
+    "Seznam adresářů, kde shell hledá spustitelné programy",
+    "Cestu k domovskému adresáři přihlášeného uživatele",
+    "Jméno aktuálně přihlášeného uživatele",
+    "Cestu k aktuálnímu pracovnímu adresáři"
+   ],
+   [
+    "Jak vypíšeš hodnotu proměnné USER?",
+    "echo $USER",
+    "print USER",
+    "cat USER",
+    "show $USER"
+   ],
+   [
+    "Jak vypíšeš všechny proměnné prostředí?",
+    "env (nebo printenv)",
+    "ls -env",
+    "cat /env",
+    "set --list"
+   ]
+  ],
+  "open": [
+   {
+    "q": "Popiš vrstvy UNIXu a systémové proměnné.",
+    "k": [
+     "HW → jádro (procesy, paměť, FS, ovladače) → shell / systémová volání → aplikace",
+     "Proměnné prostředí: $HOME, $PATH, $USER, $SHELL, $PWD",
+     "Výpis echo $PATH, env, nastavení export PROM=hodnota",
+     "Skripty: read, if [ ] then fi, proměnné $1…"
+    ]
+   }
+  ]
+ },
+ "16": {
+  "outline_add": [
+   "CSM, Secure Boot, TPM – popis a princip"
+  ],
+  "q": [
+   [
+    "Co je TPM?",
+    "Bezpečnostní čip pro bezpečné uložení šifrovacích klíčů a ověření integrity bootu",
+    "Typ napájecího zdroje s aktivní korekcí účiníku a ochranami",
+    "Typ operační paměti s opravou chyb (ECC) určený pro servery a pracovní stanice",
+    "Režim CSM, který emuluje starý BIOS pro starší systémy"
+   ],
+   [
+    "K čemu Windows využívá TPM?",
+    "BitLocker (šifrování disku), Windows Hello, ověření bootu (Win 11 vyžaduje TPM 2.0)",
+    "Přetaktování procesoru a pamětí přes profily XMP a ukládání nastavení ventilátorů v UEFI",
+    "Řízení ventilátorů podle teploty procesoru",
+    "Zpracování zvuku a ovladače zvukové karty"
+   ],
+   [
+    "Jak spolu souvisí Secure Boot a TPM?",
+    "Secure Boot ověřuje podpisy zavaděčů, TPM měří a ukládá stav bootu a chrání klíče",
+    "Nijak nesouvisí, jsou to dva názvy pro tutéž funkci zabezpečení, kterou řídí BIOS",
+    "TPM po zapnutí Secure Boot vypne, aby nedocházelo ke konfliktu",
+    "Secure Boot je součástí zdroje a TPM chrání proti přepětí"
+   ],
+   [
+    "Proč při zapnutém CSM nefunguje Secure Boot?",
+    "CSM emuluje legacy BIOS boot, který podpisy neověřuje",
+    "CSM vypne čip TPM a tím i ověřování podpisů",
+    "CSM je určen jen pro disky NVMe bez podpisů",
+    "Funguje vždy, CSM a Secure Boot se nevylučují"
+   ]
+  ],
+  "open": [
+   {
+    "q": "Vysvětli CSM, Secure Boot a TPM.",
+    "k": [
+     "CSM: legacy režim – emuluje BIOS pro starší OS a MBR",
+     "Secure Boot: ověřuje digitální podpisy bootloaderu a ovladačů, chrání proti bootkitům",
+     "TPM: čip (dnes často fTPM v CPU) – klíče, měření bootu, BitLocker, Windows 11 (TPM 2.0)",
+     "Secure Boot vyžaduje UEFI režim bez CSM"
+    ]
+   }
+  ]
+ },
+ "1": {
+  "outline_add": [
+   "Standardní vstupy a výstupy (printf, scanf)",
+   "Algoritmy třídění pole",
+   "Práce se soubory"
+  ],
+  "q": [
+   [
+    "Proč se ve scanf píše & před proměnnou?",
+    "Předává se adresa proměnné, kam se má zapsat",
+    "Je to logický AND, který proměnnou vynuluje",
+    "Označuje, že proměnná je pouze pro čtení",
+    "Převádí načtený text na číslo podle formátu"
+   ],
+   [
+    "Princip bubble sortu?",
+    "Opakovaně porovnává sousední prvky a prohazuje je, větší „probublávají“ na konec",
+    "V každém kroku vybere minimum ze zbytku pole a přesune ho na začátek",
+    "Rozdělí pole na poloviny, každou seřadí zvlášť a nakonec je slévá",
+    "Bere prvky jeden po druhém a vkládá je na správné místo v seřazené části"
+   ],
+   [
+    "Kterou funkcí otevřeš soubor?",
+    "fopen",
+    "open_file",
+    "fread jen",
+    "fclose"
+   ],
+   [
+    "Co vrátí fopen, když se soubor nepodaří otevřít?",
+    "NULL",
+    "0 bajtů",
+    "−1",
+    "EOF"
+   ]
+  ],
+  "open": []
+ }
+}

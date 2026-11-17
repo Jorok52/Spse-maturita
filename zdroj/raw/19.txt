@@ -1,0 +1,277 @@
+19. Typy a charakteris.
+sběrnic (Konstrukční uspořádání PC)
+sběrnice, typy a charakteristika
+01 Pojem
+paralelních sběrnic
+02
+Charakteristiky sběrnic ISA, PCI, AGP,
+PCI-X
+datová šířka, taktovací
+a) Konektor,
+frekvence, přenosová rychlost
+03 Sběrnice PCI express
+a) Princip fungování, datový pár, link, označení,
+kompatibilita
+04 Verze a charakteristiky PCI-express
+přenosové rychlosti, souvislost s
+a) Kódování,
+chipset
+19. Typy a charakteristika sběrnic
+Sběrnice – základní pojem
+Sběrnice je systém signálových vodičů, který propojuje hlavní komponenty počítače –
+procesor (CPU), operační paměť (RAM), vstupně-výstupní zařízení (I/O), grafickou kartu,
+síťovou kartu, řadič disku a další periférie. Umožňuje přenos dat, adres a řídicích signálů
+mezi těmito součástmi.
+Typy vodičů sběrnice
+Řídicí vodiče
+Zajišťují řízení komunikace mezi jednotlivými součástmi.
+Přenášejí signály jako:
+CLK (Clock) – hodinový signál synchronizující činnost komponent.
+CS (Chip Select) – aktivuje konkrétní zařízení na sběrnici.
+CE (Chip Enable) – povoluje činnost vybraného zařízení.
+MEM Read/Write – řídí čtení a zápis do paměti.
+Adresové vodiče
+Přenášejí adresy paměťových buněk nebo I/O zařízení, na které se má přenést
+požadovaná data.
+Šířka adresové sběrnice určuje maximální počet adresovatelných míst.
+Typicky označované jako A+, A- (pozitivní a negativní signál).
+Datové vodiče
+Přenášejí samotná data mezi komponentami.
+Počet vodičů datové sběrnice určuje, kolik bitů lze přenést současně během jednoho
+taktu.
+Označované jako D+, D- (pozitivní a negativní signál).
+Rozdělení sběrnic
+Podle způsobu přenosu dat:
+Paralelní sběrnice – přenášejí více bitů současně (např. PCI, PCI-X, ISA).
+Sériové sběrnice – přenášejí data po jednom bitu za čas (např. USB, PCI-Express).
+Podle umístění v systému:
+Interní sběrnice – propojují hlavní komponenty uvnitř základní desky (např. ISA, PCI).
+Externí sběrnice – slouží k připojení periferních zařízení (např. USB, FireWire).
+Základní parametry sběrnic
+Frekvence
+Maximální frekvence, na které může sběrnice pracovat.
+Ovlivňuje rychlost přenosu dat mezi komponentami.
+Šířka sběrnice
+Udává počet paralelních vodičů, které se používají k přenosu dat.
+Čím více vodičů, tím větší objem dat může být přenesen současně.
+Rychlost přenosu dat (propustnost)
+Určuje množství dat, které mohou být přeneseny za jednotku času.
+Závisí na kombinaci frekvence a šířky sběrnice.
+Přístupová doba
+Střední doba čekání na uvolnění sběrnice a zahájení přenosu.
+19. Typy a charakteristika sběrnic
+Architektura sběrnice v počítači
+Systémová sběrnice – FSB (Front Side Bus)
+Nejdůležitější a nejrychlejší sběrnice celého PC.
+Fyzická obousměrná datová sběrnice, která propojuje CPU a severní můstek
+(Northbridge).
+Přenáší všechny klíčové informace – instrukce, data, adresy mezi procesorem a RAM,
+grafickou kartou a dalšími zařízeními.
+FSB byla u starších PC klíčová, ale dnes ji nahradily modernější architektury jako Direct
+Media Interface (DMI), HyperTransport (AMD) nebo QPI (Intel QuickPath Interconnect).
+Charakteristika paralelních sběrnic
+PCI (Peripheral Component Interconnect)
+Paralelní, half-duplexní sběrnice – může přenášet data oběma směry, ale ne
+současně.
+Na rozdíl od ISA nemá oddělené vodiče pro adresy a data – adresa se posílá na
+začátku každé transakce.
+Plug & Play podpora – automatická detekce a konfigurace připojených zařízení.
+32bitová adresní sběrnice, šířka přenosu 32 nebo 64 bitů.
+Frekvence 33 MHz nebo 66 MHz.
+Propustnost:
+133 MB/s (32bit, 33 MHz)
+266 MB/s (32bit, 66 MHz)
+PCI je starší standard, dnes je nahrazen PCIe (PCI Express), který využívá sériový
+přenos a vyšší rychlosti.
+PCI-X (Peripheral Component Interconnect Extended)
+Vylepšená verze PCI, určená pro serverové a pracovní stanice.
+Širší datová sběrnice (64 bitů) → vyšší propustnost.
+Maximální frekvence 133 MHz (oproti 66 MHz u PCI).
+Kompatibilní se staršími PCI kartami, ale nabízí vyšší výkon.
+Dnes už je PCI-X zastaralé a bylo nahrazeno PCI Express (PCIe).
+19. Typy a charakteristika sběrnic
+některé sloty
+podporují obě
+varianty (univerzální
+karty).
+odpovídající PCI
+sloty pro jednotlivé
+karty.
+64bitové PCI sloty
+jsou delší než
+32bitové.
+Modré šipky (32 bitů) a červené
+šipky (64 bitů) ukazují, jak jsou karty
+zasunuty do slotů.
+Univerzální karty (podporující 3,3V i
+5V) mohou být vloženy do různých
+slotů.
+ISA (Industry Standard Architecture)
+Vznik v roce 1984 jako rozšíření 8bitové sběrnice pro IBM PC.
+16bitová datová sběrnice (starší verze 8bitová).
+24bitová adresní sběrnice → podporuje max 16 MB RAM.
+Paralelní přenos s nízkou propustností.
+Frekvence 8 MHz → rychlost max 8 MB/s.
+Nevýhody: pomalá, nutná manuální konfigurace IRQ a DMA, konflikty zařízení.
+Použití: dříve pro zvukové karty, síťové karty, řadiče disků (dnes zastaralá).
+EISA (Extended ISA)
+Nástupce MCA, zachovává zpětnou kompatibilitu s ISA.
+32bitová sběrnice → vyšší výkon oproti ISA.
+Podporuje přenos 8/16/32bitových dat.
+Sběrnice je synchronní, frekvence 8 MHz (kvůli kompatibilitě s ISA).
+Teoretická rychlost: až 33 MB/s.
+Dva řádky kontaktů (místo jednoho u ISA) → více signálů, lepší možnosti rozšíření.
+Konstrukčně stejně velká jako ISA, ale má navíc 59 kontaktů pro rozšíření funkcí.
+ISA slot (jeden
+řádek kontaktů).
+EISA slot (dvě úrovně
+kontaktů pro ISA i EISA
+karty).
+19. Typy a charakteristika sběrnic
+AGP (Accelerated Graphics Port)
+Vyvinuta firmou Intel v roce 1996 jako specializovaný slot pro grafické karty.
+Hlavní výhoda: oddělený přímý kanál mezi grafickou kartou a CPU → nezatěžuje PCI
+sběrnici.
+Technicky není sběrnice, ale slot, protože umožňuje připojení pouze jednoho zařízení.
+Šířka datové sběrnice: 32 bitů (stejně jako PCI).
+Frekvence: 66 MHz (AGP 1×), pozdější verze až 133 MHz a 266 MHz.
+Přenosová rychlost: závisí na verzi AGP (viz tabulka níže).
+AGP podporuje tzv. "pipelining", což umožňuje efektivnější přenos dat než PCI.
+AGP 8× byla poslední verze, poté ji zcela nahradil PCI Express (PCIe).
+Dnes už je AGP zastaralé → moderní grafické karty využívají PCIe x16, které nabízí výrazně
+vyšší propustnost a škálovatelnost.
+19. Typy a charakteristika sběrnic
+19. Typy a charakteristika sběrnic
+PCI EXPRESS (PCIe) – Moderní vysokorychlostní sběrnice
+PCI Express (PCIe) je vysoce výkonná sériová sběrnice, která nahradila AGP a starší PCI.
+Používá se především pro grafické karty, SSD disky (NVMe), síťové karty a další výkonná
+zařízení.
+Sériová komunikace: místo paralelního přenosu (jako u PCI) používá dvojici
+diferenciálních vodičů pro TX (odesílání) a RX (příjem).
+Full-duplex: současný přenos dat v obou směrech.
+Modulární šířka sběrnice: škálovatelná podle potřeby zařízení (x1, x4, x8, x16, x32).
+Vyšší přenosová rychlost: každá novější generace zdvojnásobuje rychlost oproti
+předchozí
+Efektivnější přenos: používá point-to-point spojení, kde má každé zařízení vlastní
+vyhrazenou linku – na rozdíl od sdílené PCI sběrnice.
+Architektura a princip přenosu
+Lanes (datové linky) - základní jednotka přenosu
+Každý PCIe slot má určitý počet "lanes" (datových linek), kde každá lane obsahuje:
+2 diferenciální páry vodičů → jeden pár pro TX, druhý pro RX
+Jedna lane (PCIe x1) přenáší až 250 MB/s v jednom směru (PCIe 1.0)
+Vyšší varianty (x4, x8, x16, x32) mají více linek → násobně
+Například PCIe x16 (používané u GPU) má 16 linek, což umožňuje rychlejší komunikaci
+s CPU a RAM.
+Generace
+Přenosová rychlost na lane
+(jedním směrem)
+Přenosová rychlost x16
+(obousměrně) - PROPUSTNOST
+PCIe 1.0
+250 MB/s
+8 GB/s
+PCIe 2.0
+500 MB/s
+16 GB/s
+PCIe 3.0
+1 GB/s
+32 GB/s
+PCIe 4.0
+2 GB/s
+64 GB/s
+PCIe 5.0
+4 GB/s
+128 GB/s
+PCIe 6.0
+8 GB/s
+256 GB/s
+19. Typy a charakteristika sběrnic
+Od PCIe 2.0 dále → každá nová generace zdvojnásobuje propustnost.
+PCIe 4.0 a vyšší jsou klíčové pro NVMe SSD disky, AI výpočty a herní grafické karty.
+Typy slotů a použití
+Slot
+Použití
+PCIe x1
+Tunery, malé síťové a zvukové karty
+PCIe x4
+Řadiče, NVMe SSD disky
+PCIe x8
+Některé profesionální GPU, AI akcelerátory
+PCIe x16
+Herní a profesionální grafické karty
+PCIe x32
+Specializovaný hardware (málo používané)
+PCIe sloty jsou zpětně kompatibilní → např. karta x1 může být vložena do slotu x16, ale
+poběží na x1 rychlosti.
+Výhody PCIe oproti starým sběrnicím
+Vyšší rychlost a propustnost (násobně vyšší než PCI a AGP).
+Škálovatelnost (1, 4, 8, 16 linek) podle potřeby zařízení.
+Menší latence díky přímému spojení mezi zařízeními a CPU.
+Zpětná kompatibilita – nové verze podporují starší zařízení (ale s omezením rychlosti).
+Menší spotřeba energie a vyšší efektivita přenosu.
+PCIe je dnes dominantní standard pro grafické karty, SSD, síťové karty a další výkonná
+zařízení. Sběrnice se neustále vyvíjí – PCIe 6.0 už nabízí 256 GB/s obousměrně na x16 slotu!
+Budoucnost: PCIe 7.0 je ve vývoji → očekává se ještě vyšší propustnost pro AI a
+datacentra.
+Shrnutí pro lepší pochopení:
+Lane = jednotlivá datová linka (2 diferenciální páry vodičů, TX a RX)
+Link = celé spojení mezi zařízeními (obsahuje více lanes)
+PCIe x16 slot obsahuje 16 lanes
+19. Typy a charakteristika sběrnic
+Komunikace po sběrnici PCI Express
+Struktura přenosu
+PCI Express nepoužívá tradiční sběrnicovou topologii, kde zařízení sdílejí přenosové
+pásmo.
+Místo toho využívá point-to-point propojení, kde každé zařízení komunikuje přímo s
+řadičem nebo přepínačem přes vyhrazené dráhy (lane).
+Tím se eliminuje kolize dat a umožňuje vyšší přenosové rychlosti.
+Linky (Lanes)
+Každé spojení se skládá z jedné nebo více linek (x1, x2, x4, x8, x16, x32).
+Každá linka obsahuje dva plně duplexní kanály (příjem a odesílání současně).
+Rychlost je určena počtem linek a verzí PCIe (např. PCIe 4.0 x16 dosahuje až 32 GB/s).
+Struktura sběrnice PCI Express
+Root Complex (RC)
+Hlavní řadič sběrnice, propojuje PCIe sběrnici s procesorem a operační pamětí.
+Řídí konfiguraci a přidělování zdrojů pro připojená zařízení.
+Switch (přepínač)
+Funguje jako rozbočovač, umožňuje větvení sběrnice do více cest.
+Může směrovat data mezi zařízeními bez nutnosti komunikace s procesorem.
+Bridge (most)
+Převádí komunikaci mezi PCI Express a jinými sběrnicemi (např. PCI, PCI-X, USB,
+Thunderbolt).
+Endpoint (koncové zařízení)
+Jakékoliv zařízení, které komunikuje
+přes PCIe (např. grafická karta, SSD
+disk, síťová karta).
+Endpointy mohou být aktivní
+(zařízení, které zahajuje komunikaci)
+nebo pasivní (zařízení odpovídající
+na požadavky).
+Další vlastnosti PCI Express
+Hot-Plugging – některé
+verze PCIe umožňují
+připojení a odpojení
+zařízení za chodu.
+QoS (Quality of Service) –
+PCIe podporuje prioritizaci
+provozu, což je klíčové pro
+datová centra.
+Backward Compatibility –
+novější generace PCIe jsou
+zpětně kompatibilní se
+staršími verzemi (zařízení
+nižší generace fungují na
+pomalejší rychlosti).
+19. Typy a charakteristika sběrnic
+Kompatibilita PCI Express
+PCI Express 2.0 je zpětně kompatibilní s PCIe 1.0.
+PCI Express 2.1 není zpětně kompatibilní s PCIe 1.0 kvůli změně napájecího napětí.
+PCI Express 3.0 je zpětně kompatibilní se staršími verzemi.
+Karty určené pro PCIe x1 lze fyzicky vložit do libovolného širšího slotu PCIe (x2, x4, x8,
+x16), ale využijí jen svoji maximální šířku.
+Rozdíl mezi PCI, PCI-X a PCI Express
+PCI a PCI-X jsou paralelní sběrnice, přenášejí data ve vícebitových blocích a pracují v
+half-duplexním režimu (data mohou téct jen jedním směrem v daném okamžiku).
+PCI Express je sériová sběrnice, kde každý link (lane) přenáší data oběma směry
+současně (full-duplex).
+PCI-X je vylepšená verze PCI, určená primárně pro rozšiřující karty a servery.

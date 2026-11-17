@@ -1,0 +1,429 @@
+7. Synchronizace
+procesů
+01 Problém Producent vs. Konzument
+02 Kritická sekce
+a) Charakteristika
+b) Podmínky kritické sekce, ošetření
+c) Aktivní a pasivní čekání
+04 Sdílený prostředek
+05 Řešení kritické sekce
+a) Zákaz přerušení, Zamykací
+proměnná, Přesné střídání,
+Petersonovo řešení, Atomická
+instrukce, Sleep() a Wakeup(),
+Semafory a transakce
+06 Klasické synchronizační problémy
+7. Synchronizace procesů
+Problém Producent vs. Konzument
+Tento problém patří mezi klasické synchronizační problémy v informatice, kdy dva
+procesy – producent a konzument – sdílí společný prostředek, například buffer. Producent
+vkládá data do tohoto bufferu, zatímco konzument je odebírá. Hlavním úkolem
+synchronizace je zajistit, aby producent ani konzument nezpůsobovali konflikty při
+přístupu ke společnému prostředku, například:
+Producent nemůže vkládat data do bufferu, pokud je buffer plný
+Konzument nemůže odebírat data z bufferu, pokud je buffer prázdný
+Na obrázku je znázorněn proces synchronizace producenta a konzumenta při práci s
+proměnnou count, která reprezentuje počet položek v bufferu:
+Počítadlo (Counter): Proměnná count sleduje počet položek v bufferu. Zpočátku má
+hodnotu 3.
+Procesy (Producent a Konzument):
+Producent zvyšuje hodnotu počítadla (count++), což simuluje přidání dat do
+bufferu.
+Konzument snižuje hodnotu počítadla (count--), což simuluje odebrání dat z
+bufferu.
+Přepnutí kontextu: Po každém provedení instrukce může dojít k přepnutí kontextu mezi
+producentem a konzumentem, což představuje přenos řízení procesoru na jiný proces.
+Tabulka:
+Zobrazuje kroky, kterými prochází producent a konzument.
+Producent čte hodnotu count, inkrementuje ji a zapisuje zpět. Totéž dělá konzument,
+ale dekrementuje hodnotu.
+Při přepnutí kontextu může dojít k situaci, kdy oba procesy pracují se stejnou hodnotou
+count (např. count = 3), což vede k nekonzistentním výsledkům.
+Graf:
+Znázorňuje vývoj hodnoty count při střídání kontextů. Hodnoty count nejsou správně
+synchronizované, protože producent a konzument nemají ošetřený přístup k
+proměnné.
+Důsledky:
+Nekonzistentní data: Bez správného ošetření přístupu k bufferu a proměnné count se
+mohou výsledky lišit od očekávaných.
+Možnost uváznutí: Pokud procesy nejsou správně synchronizované, může dojít k
+blokování nebo uváznutí (deadlocku).
+7. Synchronizace procesů
+Doplňující vysvětlení:
+IPS (Inter-process Synchronization): Synchronizace mezi procesy je nezbytná pro
+správný chod více procesů využívajících společné zdroje.
+Assembler: V reálných systémech není inkrementace nebo dekrementace otázkou
+jediné instrukce, ale několika operací. Toto zvyšuje riziko závodních podmínek (race
+conditions).
+Producent: Generuje data do vyrovnávací paměti s konečnou kapacitou (buffer)
+Konzument: Z této paměti data odebírá
+Buffer: Společná paměť slouží k výměně dat
+Schéma bufferu:
+Buffer má pevnou kapacitu, například n = 10.
+Proměnné in a out reprezentují aktuální pozici, kam producent zapisuje, a odkud konzument čte.
+Proměnná pocitadlo sleduje počet aktuálně uložených prvků v bufferu.
+Algoritmus synchronizace:
+Producent:
+Producent v cyklu kontroluje, zda je buffer plný (pocitadlo = n).
+Pokud buffer není plný:
+Zapisuje data do bufferu na pozici in.
+Posune ukazatel in o 1 (modulo n zajistí kruhový přístup).
+Zvýší hodnotu pocitadlo o 1.
+Konzument:
+Konzument v cyklu kontroluje, zda je buffer prázdný (pocitadlo = 0).
+Pokud buffer není prázdný:
+Čte data z bufferu na pozici out.
+Posune ukazatel out o 1 (opět modulo n).
+Sníží hodnotu pocitadlo o 1.
+Detailní popis binárního kódu:
+Ukazuje implementaci operací producenta a konzumenta v registrech procesoru:
+Producent:
+Načte hodnotu pocitadlo do registru1.
+Inkrementuje registr1 a uloží ho zpět jako aktualizovanou hodnotu pocitadlo.
+7. Synchronizace procesů
+Konzument:
+Načte hodnotu pocitadlo do registru2.
+Dekrementuje registr2 a uloží ho zpět jako aktualizovanou hodnotu pocitadlo.
+Zásadní pravidla:
+Pokud je buffer plný (pocitadlo = n), nemůže producent přidat další data, dokud
+konzument neodebere alespoň jedno.
+Pokud je buffer prázdný (pocitadlo = 0), nemůže konzument odebrat data, dokud
+producent nějaká nevygeneruje.
+Problémy a jejich řešení:
+Závodní podmínky (Race Conditions):
+Bez synchronizace by producent i konzument mohli současně přistupovat k
+proměnné pocitadlo, což by vedlo k nekonzistenci.
+Řešení: Použití semaforů, mutexů nebo jiných synchronizačních mechanismů.
+Deadlock (Uváznutí):
+Pokud oba procesy čekají na podmínky, které nemohou být splněny (např. plný
+buffer a prázdný buffer současně).
+Řešení: Korektní návrh algoritmu, který zaručí, že procesy vždy pokračují.
+Kritická sekce
+Kritická sekce (Critical Section) je část strojového kódu programu, kde dochází k přístupu
+ke sdíleným prostředkům, jako jsou například proměnné nebo paměť. Pokud do této sekce
+vstoupí více procesů nebo vláken současně, může dojít k chybám, jako je nekonzistentní
+stav dat. Kritická sekce tedy vyžaduje speciální ošetření, aby se zabránilo konfliktům mezi
+procesy.
+Podmínky pro správnou kritickou sekci:
+1. Vyloučení souběhu (Mutual Exclusion): Žádné dva procesy nebo vlákna nesmí být
+současně uvnitř stejné kritické sekce.
+2. Nezávislost na počtu CPU: Řešení kritické sekce musí fungovat bez ohledu na počet
+procesorů v systému.
+3. Žádné nekonečné čekání (Progress): Žádný proces nesmí čekat na vstup do kritické
+sekce nekonečně dlouho.
+4. Nepřítomnost blokování (Bounded Waiting): Proces mimo kritickou sekci nesmí
+blokovat jiný proces, který se snaží do této sekce vstoupit.
+Řešení kritické sekce – Metody:
+Softwarové řešení na aplikační úrovni:
+Řešení je plně v režii programátora a je realizováno pomocí logiky kódu.
+Programátor vytváří podmínky (např. pomocí semaforů nebo zámků), které
+zajistí, že pouze jeden proces může vstoupit do kritické sekce.
+Používá tzv. aktivní čekání, což znamená, že proces neustále testuje podmínky
+pro vstup.
+Hardwarové řešení:
+Hardwarová podpora umožňuje řešení na úrovni procesoru.
+Používají se speciální instrukce procesoru, jako je např. Test-and-Set nebo
+Compare-and-Swap.
+7. Synchronizace procesů
+Zajišťuje vzájemné vyloučení (mutual exclusion), ale stále spoléhá na aktivní
+čekání.
+Softwarové řešení zprostředkované operačním systémem:
+Jádro operačního systému (kernel) poskytuje mechanismy pro správu kritické
+sekce.
+Používá se pasivní čekání, kde proces, který čeká na vstup, je uspán (např.
+pomocí volání funkce Sleep) a není aktivní, dokud není probuzen jiným
+procesem.
+Aktivní čekání:
+Proces neustále testuje proměnnou nebo podmínku, zda může vstoupit do kritické
+sekce. Tento přístup je neefektivní, protože spotřebovává procesorový čas.
+Pasivní čekání:
+Proces se uspí a čeká, dokud není probuzen jiným procesem. Pasivní čekání šetří
+systémové zdroje, protože proces nevyužívá CPU, dokud není potřeba.
+Řešení kritické sekce
+S aktivním čekáním
+Proces, který vstoupí do kritické sekce, zakáže všechna přerušení (interrupce) na
+procesoru.
+Po opuštění kritické sekce proces opět povolí přerušení.
+Výhody:
+Jednoduchá implementace.
+Efektivní pro systémy s jedním procesorem.
+Nevýhody:
+Pokud proces nepovolí přerušení zpět, může systém zcela zkolabovat.
+Nevhodné pro víceprocesorové systémy, protože procesy na jiných procesorech
+mohou ignorovat zákaz přerušení a vstoupit do kritické sekce.
+Zamykací proměnná
+Kritickou sekci chrání tzv. zamykací proměnná (např. lock), která je sdílená mezi procesy.
+Inicializace: Na začátku je nastavena na hodnotu 0 (volno).
+Proces, který chce vstoupit do kritické sekce, tuto proměnnou testuje:
+Pokud má hodnotu 0, proces nastaví hodnotu na 1 a vstoupí do kritické sekce.
+Pokud je již hodnota 1, proces čeká (tzv. busy waiting).
+Problém:
+Závodní podmínky (Race Condition): Pokud dva procesy testují lock proměnnou ve
+stejném okamžiku, oba mohou získat přístup ke kritické sekci.
+Tento problém činí řešení nestabilním.
+7. Synchronizace procesů
+Přesné střídání
+Zlepšuje zamykací proměnnou použitím další proměnné turn, která určuje, který proces
+má povolení vstoupit do kritické sekce.
+Fungování:
+Každý proces testuje hodnotu turn:
+Pokud odpovídá jeho ID (např. turn = 0 pro proces P₀), vstoupí do kritické sekce.
+Po opuštění kritické sekce nastaví turn na ID druhého procesu.
+Proces, který nemá povolení, čeká, dokud se turn nezmění.
+Problémy:
+Závislost na rychlosti procesů:
+Pokud jeden proces tráví více času mimo kritickou sekci, druhý může čekat, i když
+je kritická sekce volná.
+Toto řešení porušuje podmínky kritické sekce (progres a bounded waiting).
+7. Synchronizace procesů
+Petersonovo řešení
+Softwarové řešení kritické sekce s aktivním čekáním (busy waiting).
+Funguje pro dvě vlákna nebo procesy.
+Zajišťuje splnění podmínek kritické sekce (vzájemné vyloučení, progres, bounded waiting).
+Proměnné:
+turn: Určuje, který proces má aktuálně přednost vstupu do kritické sekce.
+interested[N]: Pole (hodnoty 0 nebo 1) sledující zájem jednotlivých procesů o vstup do
+kritické sekce.
+Funkce enterCS(int process)
+Nastavení zájmu o kritickou sekci:
+Proces nastaví interested[process] = 1 → značí svůj zájem o kritickou sekci.
+Určení druhého procesu:
+int otherProcess = 1 - process (pro proces 0 bude druhý proces 1 a naopak).
+Přednostní nastavení:
+Proces nastaví turn = process, což dává druhému procesu možnost počkat.
+Aktivní čekání:
+Proces opakovaně testuje podmínky:
+turn == process (má přednostní přístup).
+interested[otherProcess] == 1 (druhý proces má zájem o vstup).
+Pokud je podmínka splněná, proces čeká.
+Funkce leave(int process)
+Uvolnění kritické sekce:
+Proces nastaví interested[process] = 0, čímž odstraní svůj zájem o kritickou sekci.
+Přednosti Petersonova řešení:
+Zajišťuje vzájemné vyloučení, minimalizuje konflikty mezi dvěma procesy, funguje
+pouze pro dva procesy.
+7. Synchronizace procesů
+Atomická instrukce
+Atomické instrukce jsou hardwarově zajištěné operace, které nelze přerušit nebo rozdělit.
+Používají se k implementaci synchronizace mezi procesy a k ochraně kritických sekcí.
+Příklady funkcí:
+enter_cs (vstup do kritické sekce):
+Kopíruje hodnotu proměnné lock do registru procesoru a nastaví ji na 1.
+Pokud je lock nenulový (tzn. kritická sekce je obsazená), vzniká aktivní čekání.
+leave_cs (opouštění kritické sekce):
+Nastaví hodnotu proměnné lock na 0, čímž odemkne přístup do kritické sekce pro
+ostatní procesy.
+Klíčové vlastnosti:
+Proběhne jako jediná operace (nedělitelná):
+To znamená, že žádný jiný proces nemůže měnit hodnotu sdílené proměnné, dokud
+atomická operace neskončí.
+Nutná hardwarová podpora:
+Procesor pro provádění atomických instrukcí uzamkne přístup k datové sběrnici
+(zajištění konzistence).
+Problémy:
+Aktivní čekání:
+Proces neustále testuje stav lock, což
+způsobuje zbytečné zatížení procesoru.
+Prioritizace procesů:
+Procesy s nízkou prioritou mohou být
+zablokovány procesy s vyšší prioritou.
+Např.:
+Proces H (vysoká priorita) je v kritické
+sekci, proces L (nízká priorita) čeká.
+Pokud H znovu vstoupí do kritické sekce
+dřív, než L, L se nikdy nedostane dovnitř.
+Producent vs. Konzument – sleep/wakeup
+Pokud konzument zjistí, že count == 0, a
+rozhodne se uspat (sleep), může se stát, že v
+mezikroku (mezi testováním hodnoty a
+uspáním) producent přidá novou položku.
+Konzument přejde do spánku, i když je již
+položka v bufferu → ztráta signálu a systém
+zamrzne.
+7. Synchronizace procesů
+7. Synchronizace procesů
+Semafory
+Semafory jsou synchronizační nástroj používaný pro řízení přístupu procesů do kritických
+sekcí (KS). Zajišťují, že více procesů nebude najednou vykonávat operace na sdílených
+zdrojích.
+Poskytován OS: Funkčnost semaforu zajišťuje jádro operačního systému.
+Použití:
+Před vstupem do KS (kritické sekce).
+Při opouštění KS, aby mohl jiný proces vstoupit.
+Operace jsou atomické: Musí být provedeny celé, bez přerušení.
+Cíl: Zabránit tomu, aby více procesů současně pracovalo na sdílených datech.
+Obecný semafor
+Je implementován jako datová struktura obsahující dvě hlavní složky:
+Čítač (value): Reprezentuje počet „povolení“ k přístupu.
+Fronta čekajících procesů: Uchovává procesy, které čekají na přístup k semaforu.
+Operace na semaforu
+INIT: Inicializace semaforu na určitou hodnotu (1 značí jeden povolený přístup).
+Musí být provedena před jakýmkoliv použitím semaforu.
+WAIT: Snižuje hodnotu čítače (value--).
+Pokud čítač dosáhne hodnoty menší než nula (value < 0), proces je: blokován,
+přidán do fronty čekajících procesů.
+SIGNAL: Zvyšuje hodnotu čítače (value++).
+Pokud je ve frontě čekající proces, je odblokován a pokračuje ve vykonávání.
+Struktura semaforu:
+value: Sleduje, kolik procesů může
+současně přistupovat ke kritické sekci.
+list: Odkazuje na seznam procesů
+čekajících před semaforem.
+WAIT
+Čítač (value) se sníží o 1.
+Pokud je hodnota menší než 0, proces se
+zařadí do fronty (block).
+SIGNAL
+Čítač (value) se zvýší o 1.
+Pokud fronta není prázdná, probudí se
+proces z fronty (wakeup).
+Kódová část:
+Ukazuje příklad struktury semaforu
+(typedef struct).
+Demonstruje implementaci funkcí wait a
+signal:
+V wait se proces zařadí do fronty,
+pokud nemá povolení.
+V signal se proces probudí, pokud
+čeká ve frontě.
+Atomická operace zajišťuje, že změna hodnoty semaforu (value)
+a úprava fronty čekajících jsou vždy dokončeny bez přerušení,
+aby nedošlo k chybám nebo ztrátě signálu.
+7. Synchronizace procesů
+Binární semafor
+Binární semafor je speciální typ semaforu, který může nabývat pouze dvou hodnot:
+0 – Kritická sekce (KS) je obsazena, další procesy čekají.
+1 – Kritická sekce je volná, proces může vstoupit.
+Využití:
+Synchronizace dvou procesů nebo vlákna.
+Zabránění současnému přístupu k sdílenému zdroji.
+Implementace (MUTEX - Mutual Exclusion):
+Lock (zámek): Kontroluje, zda je přístup do kritické sekce povolen. Pokud není, proces je
+zařazen do fronty semaforu a uspán.
+Unlock (odemčení): Uvolňuje kritickou sekci a umožňuje dalšímu procesu ve frontě
+přístup.
+Atomické operace zaručují, že nebude přerušena kontrola ani nastavení stavu.
+Lock:
+Pokud je semafor již nastaven (kritická sekce obsazena), identifikace procesu je uložena
+do fronty čekajících procesů.
+Proces se suspenduje (uspí) do doby, než bude zdroj dostupný.
+Unlock:
+Zkontroluje frontu:
+Pokud není prázdná, uvolní proces z fronty.
+Pokud prázdná je, nastaví semafor na hodnotu 1 (volný zdroj).
+Mechanismus přístupu:
+Proces volá funkci lock → Zjistí stav semaforu:
+Není nastaven (volno): Přepne semafor na 0 a vstoupí do KS.
+Je nastaven (obsazeno): Zařadí se do fronty čekajících procesů.
+Po opuštění KS proces volá unlock, které buď uvolní proces z fronty, nebo ponechá
+semafor nastavený na 1.
+Technické komplikace (problémy semaforů)
+Deadlock (zablokování):
+Vzniká, když dva nebo více procesů čeká na událost, kterou musí vyvolat jiný
+proces.
+Příklad: Proces A čeká na uvolnění prostředku procesem B, ale proces B čeká na
+prostředek procesem A.
+Starvation (vyhladovění):
+Některé procesy nedostanou nikdy přístup ke sdílenému zdroji, protože jiné procesy
+stále upřednostňují přístup.
+Live Lock (aktivní zablokování):
+Procesy se snaží vyřešit konflikt, ale navzájem si blokují pokusy o přístup (neustálé
+přepínání mezi stavy bez efektu).
+Inverze priorit:
+Proces s vysokou prioritou čeká, zatímco proces s nízkou prioritou drží prostředek.
+Příklad: Proces H (high) čeká na sdílený prostředek, který blokuje proces L (low).
+Pokud dojde k přerušení procesem M, proces L nedokončí práci a H zůstane
+zablokovaný.
+7. Synchronizace procesů
+Procesy: Čísla (11, 110, 587) představují procesy, které se snaží vstoupit do kritické sekce.
+Fronta semaforu: Ukládá procesy, které čekají na přístup do kritické sekce.
+Binární semafor:
+Stav zelené kontrolky znamená, že kritická sekce je volná.
+Proces "587" aktuálně získává přístup voláním funkce lock.
+Procesy "11" a "110" čekají ve frontě.
+Kritická sekce: Proces "587" je uvnitř a využívá zdroj chráněný semaforem.
+Fronta semaforu: Procesy "11" a "110" stále čekají.
+Binární semafor: Stav červené kontrolky indikuje, že kritická sekce je obsazená.
+Unlock: Jakmile proces "587" dokončí činnost, přejde semafor na zelenou a proces "11" se
+odblokuje (přesune z fronty semaforu do stavu „READY“).
+Klasické synchronizační problémy
+Producent vs. Konzument
+Tento problém se zaměřuje na situaci, kdy producent vytváří data a ukládá je do
+omezeného bufferu, zatímco konzument tato data odebírá.
+Omezená velikost bufferu:
+Přeplnění: Pokud je buffer plný, producent musí čekat, dokud konzument
+neodebere data.
+Vyprázdnění: Pokud je buffer prázdný, konzument musí čekat, dokud producent
+nevytvoří nová data.
+Řešení:
+Synchronizace pomocí semaforů (pro počítání volných a obsazených míst) a
+mutexu (pro ochranu sdílených dat).
+Čtenáři vs. Písaři
+Tento problém řeší situaci, kdy více procesů (čtenáři a písaři) přistupuje ke sdíleným
+datům.
+Hlavní výzva: zajištění správné koordinace, aby se zabránilo nekonzistentnosti dat.
+Varianty priorit:
+Přednost pro čtenáře:
+Výhoda: Více čtenářů může číst současně, pokud žádný písař nepíše.
+Nevýhoda: Hrozí stárnutí písařů – pokud stále přicházejí noví čtenáři, písaři
+mohou čekat nekonečně dlouho.
+Pravidla:
+Čtenář nemusí čekat, pokud žádný písař právě nepíše.
+Pokud písař píše, čtenáři musí čekat.
+7. Synchronizace procesů
+Řešení:
+Kombinace semaforů a mutexů pro řízení přístupu k datům a počtu aktivních
+čtenářů.
+Spící holič
+Tento problém modeluje situaci v holičství s jedním holičem, jedním křeslem a
+omezeným počtem míst v čekárně.
+Pravidla:
+Holič:
+Spí, pokud nejsou žádní zákazníci.
+Po obsloužení zákazníka zkontroluje čekárnu.
+Pokud nikdo není, znovu usne.
+Zákazník:
+Pokud přijde a holič je volný, vzbudí ho.
+Pokud je holič zaneprázdněn, jde do čekárny.
+Pokud je čekárna plná, odejde.
+Hlavní výzvy:
+Deadlock (mimočasová kolize):
+Holič jde zkontrolovat čekárnu právě ve chvíli, kdy zákazník míří k němu.
+Minou se a oba zjistí, že nikdo není na svém místě.
+Výsledek: Holič usne, i když je zákazník v čekárně.
+Race Condition:
+Pokud zákazník a holič současně kontrolují stav čekárny, může dojít k
+nekonzistenci.
+Řešení:
+Semafory: Pro kontrolu dostupnosti míst v čekárně a synchronizaci mezi
+zákazníkem a holičem.
+Mutex: Pro zajištění, že holič a zákazník nebudou současně měnit stav čekárny
+.
+Večeřící filozofové
+Modeluje situaci, kdy pět filozofů střídavě přemýšlí a jí. Ke konzumaci jídla potřebují
+dvě vidličky (levá, pravá), které sdílí se svými sousedy.
+Podmínky:
+Vidličky jsou sdílené prostředky mezi sousedními filozofy.
+Filozofové nesmí večeřet zároveň, pokud by se museli podělit o stejnou vidličku.
+Hlavní výzva:
+Deadlock: Všichni filozofové zvednou jednu vidličku a čekají na druhou, což vede
+k zablokování systému.
+Starvation: Někteří filozofové nemusí nikdy dostat příležitost jíst, pokud ostatní
+neustále získávají vidličky.
+7. Synchronizace procesů
+Řešení:
+Semafory: Každá vidlička je reprezentována semaforem.
+Mechanismus:
+Filozof nejprve čeká (čekací operace na semaforu) na jednu vidličku, poté na
+druhou.
+Po dojezení obě vidličky odloží (signalizuje semafory), aby je mohli použít
+ostatní.
+Prevence deadlocku:
+Jeden filozof změní pořadí, ve kterém zvedá vidličky.
+Filozof může vzít vidličku pouze tehdy, pokud má obě k dispozici.
+Možnost omezit počet filozofů u stolu na 4.
+Asymetrické řešení – liché filozofy donutíme brát vidličky v jiném pořadí než
+sudé.
+Synchronizační operace:
+cekej(tycka(i)) – filozof čeká na dostupnost vidličky.
+signal(tycka(i)) – filozof uvolní vidličku po dojezení.

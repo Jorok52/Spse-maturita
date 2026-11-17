@@ -1,0 +1,735 @@
+6. Operační sytém &
+plánování procesů
+01 Charakteristika operačního systému
+02 Typy jader operačního systému
+03 Proces vs. Vlákno
+a) Charakteristika, PCB, TCB
+04 Přepínání kontextů
+05 Plánovače OS
+a) Preemptivní a nepreemptivní plánování
+06 Plánovací algoritmy
+a) FCFS, SJF, SRTF, RR, PS, MFQS
+6. Operační systém & plánování procesů
+Operační systém (OS)
+Operační systém je základní software počítače, který zajišťuje komunikaci mezi
+hardwarem a uživatelskými programy. Je to prostředník mezi fyzickými komponentami
+počítače a aplikacemi, které uživatel používá.
+Funkce operačního systému:
+Správa procesoru (CPU) – přidělování procesorového času běžícím úlohám.
+Správa operační paměti (RAM) – efektivní přidělování a uvolňování paměti pro běžící
+procesy.
+Obsluha virtuální paměti a vnější paměti – používání stránkování a swapování pro
+rozšíření dostupné paměti.
+Správa uživatelského rozhraní – zajištění komunikace mezi uživatelem a hardwarem
+pomocí GUI (grafické rozhraní) nebo CLI (příkazový řádek).
+Operační systém se zavádí do operační paměti RAM při startu počítače (bootování) a
+zůstává aktivní až do jeho vypnutí.
+Struktura operačního systému:
+OS se skládá z několika klíčových komponent:
+1. Jádro (Kernel) – základní část operačního systému, která řídí interakci mezi hardwarem
+a softwarem.
+2. Ovladače zařízení – programy umožňující komunikaci mezi OS a hardwarem (např.
+ovladače tiskárny, grafické karty).
+3. Příkazový procesor – interpretuje a vykonává příkazy uživatele v CLI.
+4. Grafická nadstavba (GUI) – umožňuje interakci s OS pomocí ikon, oken a grafických
+prvků.
+5. Podpůrné programy – nástroje pro správu systému (např. správce souborů,
+diagnostické nástroje).
+Jádro operačního systému (Kernel):
+Jádro OS je hlavní komponenta zodpovědná za správu systémových prostředků a
+komunikaci mezi softwarem a hardwarem.
+Vlastnosti jádra:
+Je prvním programem, který se zavádí do paměti při startu počítače.
+Pracuje v privilegovaném režimu (kernel mode), kde má neomezený přístup k
+hardware.
+Poskytuje systémové volání (system calls) – umožňuje aplikacím komunikovat s OS.
+Druhy systémových volání:
+Kernel Interface – přímé volání pomocí specializovaných instrukcí
+procesoru.
+Library Interface – využívání funkcí systémových knihoven pro přístup k
+jádru.
+6. Operační systém & plánování procesů
+Typy jader operačních systémů
+Monolitické jádro
+Všechny služby OS běží ve stejném adresním prostoru (vysoká efektivita, ale menší
+bezpečnost).
+Obsahuje správu paměti, souborový systém, síťovou komunikaci a inter-procesovou
+komunikaci.
+Chyba v jedné části jádra může způsobit pád celého systému.
+Představitelé: MS-DOS, Windows 95/98, Mac OS do verze 8.6.
+Vylepšení monolitického jádra: Dynamické nahrávání modulů
+Umožňuje zavádět moduly bez restartu (např. ovladače USB zařízení).
+Moduly běží v režimu jádra, což může vést k chybám nebo bezpečnostním
+problémům.
+Mikro jádro (Microkernel)
+Mikrojádro minimalizuje svou velikost a obsahuje pouze základní služby, jako jsou:
+Správa CPU (přepínání procesů, plánování)
+Správa operační paměti
+Správa vstupně-výstupních operací (I/O)
+Meziprocesová komunikace (IPC – Inter-Process Communication)
+Všechny ostatní služby (souborový systém, síťová komunikace, ovladače zařízení) nejsou
+součástí jádra a běží jako samostatné procesy v uživatelském režimu.
+Výhody mikrojádra:
+Jednodušší programování – díky rozdělení na samostatné logické komponenty.
+Flexibilita – umožňuje měnit služby bez zásahu do jádra (možnost více implementací
+současně).
+Bezpečnost a stabilita – chyba v jedné službě neohrozí celý systém (běží izolovaně).
+Nevýhody mikrojádra:
+Vysoká režie meziprocesové komunikace (IPC) – OS musí mezi službami neustále
+přenášet data, což snižuje výkon.
+Představitelé: Minix, Symbian OS
+6. Operační systém & plánování procesů
+Hybridní jádro (Hybrid Kernel)
+Hybridní jádro kombinuje prvky monolitického a mikrojádra. Používá mikrojádrovou
+architekturu, ale zároveň některé služby (např. ovladače zařízení, správu procesů)
+ponechává v jádru pro vyšší výkon.
+Vyšší výkon než mikrojádro – klíčové služby běží v jádře, což eliminuje režii IPC.
+Flexibilita – umožňuje lepší rozšiřitelnost systému oproti monolitickému jádru.
+Nevýhoda: Nemůže za běhu zavádět nové moduly jako moderní monolitická jádra.
+Představitelé: Windows NT (Windows XP, 7, 10, 11), Mac OS X
+Exo jádro (Exokernel)
+Exokernel je experimentální koncept jádra, který nabízí extrémně nízkou úroveň abstrakce
+a ponechává většinu správy systému aplikacím.
+Nezajišťuje žádné komplexní služby (např. souborový systém, síťovou komunikaci).
+Poskytuje přímý přístup k hardwaru – aplikace si mohou samy rozhodovat, jak s ním
+pracovat.
+Zaměřuje se na bezpečné sdílení prostředků, ale jinak ponechává řízení nad hardwarem
+aplikacím.
+Výhoda: Maximální výkon – žádné vrstvy mezi aplikací a hardwarem.
+Nevýhoda: Velmi náročné programování – vývojáři musí sami implementovat mnoho
+funkcí.
+Představitelé: AE GIS, Nemesis (využívá se pro výzkum na univerzitách).
+Nano jádro (Nanokernel)
+Nanokernel je ještě menší než mikrojádro – obsahuje pouze minimální sadu instrukcí pro
+správu hardwaru.
+Všechny služby (např. správu paměti, ovladače) řeší samostatné procesy.
+Používá se v specializovaných embedded systémech.
+Představitelé: Experimentální projekty v oblasti vestavěných systémů.
+Shrnutí typů jader:
+6. Operační systém & plánování procesů
+Typ jádra
+Výhody
+Nevýhody
+Příklady OS
+Monolitické
+Vysoký výkon, přímý
+přístup k HW
+Chyba v jednom
+subsystému může
+shodit celý systém
+MS-DOS, Windows
+95/98, staré verze
+Mac OS
+Mikrojádro
+Stabilita, bezpečnost,
+modularita
+Vysoká režie
+meziprocesové
+komunikace
+Minix, Symbian OS
+Hybridní jádro
+Vyšší výkon než
+mikrojádro, flexibilita
+Nemožnost
+dynamického
+zavádění modulů
+Windows NT, Mac
+OS X
+Exokernel
+Maximální výkon,
+přímý přístup k HW
+Složitá
+implementace, nízká
+abstrakce
+AE GIS, Nemesis
+Nanokernel
+Extrémně malá
+velikost, vhodné pro
+embedded systémy
+Omezená
+funkcionalita,
+složitost vývoje
+Experimentální
+systémy
+6. Operační systém & plánování procesů
+RTOS – Real-Time Operating System (Operační systém reálného času)
+RTOS je speciální typ operačního systému navržený tak, aby poskytoval přesně časově
+omezené reakce na události. Používá se v kritických aplikacích, kde je nutné dokončit úkoly
+v přesně definovaném čase, například v průmyslové automatizaci, medicínských zařízeních
+nebo leteckých systémech.
+Základní principy RTOS
+Supersmyčka (Super Loop) – nejjednodušší způsob ovládání jednoduchých vestavěných
+systémů.
+Obsahuje globální proměnné a běží v nekonečné smyčce.
+Každý krok musí čekat, než na něj přijde řada → nízká efektivita u složitějších systémů.
+Používá se tam, kde není potřeba přesné časování.
+Scheduler (krátkodobý plánovač) – řídí provádění úloh v RTOS.
+Většina úloh (tzv. tasky) běží paralelně, ale jsou řízeny plánovačem tak, aby byly
+splněny časové požadavky.
+RTOS musí poskytovat garanci, že úloha bude provedena ve stanoveném čase.
+Rozdíl mezi běžným OS a RTOS:
+Běžné operační systémy (Windows, Linux, macOS) se soustředí na maximalizaci
+výkonu a efektivní multitasking, ale nezaručují přesný čas provedení úloh.
+RTOS garantuje, že úloha bude vždy dokončena v pevně daném časovém limitu, což
+je zásadní pro kritické systémy.
+Typy RTOS
+Hard RTOS (Striktní RTOS)
+Přísně garantuje, že všechny úlohy budou dokončeny ve stanoveném čase.
+Použití: Letecké systémy, zdravotnické přístroje (např. kardiostimulátory), jaderné
+elektrárny.
+Soft RTOS (Měkké RTOS)
+Snaží se splnit časové požadavky, ale ne vždy garantuje přesný čas dokončení.
+Pokud systém zpracuje úlohu s menším zpožděním, stále funguje správně.
+Použití: Streamování videa, telekomunikace, některé automobilové systémy.
+Firm RTOS (Kompromisní RTOS)
+Hybrid mezi Hard a Soft RTOS.
+Mírné zpoždění může být tolerováno, ale nesmí být příliš velké.
+Použití: Robotika, průmyslové řízení.
+Výhody RTOS
+Task Scheduling (Plánování úloh)
+Tasky jsou aktivovány pouze při potřebě, čímž zvyšují výkon systému.
+Multitasking
+Paralelní provádění více úloh současně, každá úloha má přesně definovanou prioritu.
+Deterministické chování
+Události a přerušení jsou zpracovány ve vymezeném čase bez nepředvídatelných
+zpoždění.
+Efektivní využití paměti
+Každý task má vlastní vyhrazený zásobník, což umožňuje předvídatelné řízení paměti.
+Vysoká spolehlivost a stabilita
+6. Operační systém & plánování procesů
+Použití RTOS
+Embedded systémy (vestavěné systémy) – řízení chytrých zařízení (chytré hodinky,
+domácí automatizace).
+Robotika – řízení robotických ramen, autonomních vozidel.
+Automatizace průmyslu – výrobní linky, CNC stroje.
+Elektronická měření – osciloskopy, laboratorní přístroje.
+Telekomunikace – síťové přepínače, směrovače.
+Mikrokontroléry a mikropočítače – Arduino, Raspberry Pi s RTOS pro přesné řízení.
+Příklad RTOS – RTX Keil
+RTX Keil je oblíbený real-time operační systém pro mikrokontroléry ARM.
+Task Scheduling – aktivuje úlohy jen v případě potřeby, aby zlepšil výkon.
+Multitasking – umožňuje běh více úloh současně.
+Deterministické chování – události jsou zpracovány přesně načas.
+Efektivní využití paměti – každý task má vyhrazený paměťový prostor.
+Shrnutí RTOS vs. běžné OS
+Vlastnost
+RTOS
+Běžný OS (Windows,
+Linux, macOS)
+Hlavní cíl
+Přesně načasované reakce
+Maximální výkon a
+multitasking
+Zaručený čas provedení
+úlohy
+Ano
+Ne
+Deterministické chování
+Ano
+Ne
+Použití
+Průmysl, embedded
+systémy, zdravotnictví,
+robotika
+Počítače, servery, mobilní
+zařízení
+Efektivní plánování úloh
+Ano
+Ano, ale bez garance
+načasování
+Multitasking
+Ano
+Ano
+Paměťová efektivita
+Vysoká
+Střední až nízká
+6. Operační systém & plánování procesů
+Procesy v operačním systému
+Proces je běžící instance programu, která je načtená v operační paměti a vykonává se
+procesorem.
+Program je statický soubor obsahující instrukce (např. EXE soubor).
+Proces je dynamický – obsahuje běžící strojový kód a data, která se mění během
+vykonávání.
+Jeden program může běžet ve více procesech současně, přičemž každý proces může
+pracovat s jinými daty (např. více oken prohlížeče).
+Správu procesů zajišťuje operační systém (OS), který procesům přiděluje systémové
+prostředky (CPU, RAM, I/O zařízení).
+Struktura procesu v OS
+Proces je v OS definován pomocí několika klíčových prvků:
+PID (Process ID) – jedinečný identifikátor procesu v systému.
+Programový kód – sada strojových instrukcí, které proces vykonává.
+Obsah registrů CPU – zahrnuje čítač instrukcí (PC – Program Counter) a adresu zásobníku.
+Data procesu – dynamická data v operační paměti (alokovaná proměnná, zásobník, halda).
+Každý proces má vlastní adresní prostor v paměti, takže nemůže přistupovat k paměti jiných
+procesů (ochrana paměti).
+Správa procesů v OS
+OS řídí běh procesů a zajišťuje jejich správné vykonávání pomocí následujících mechanismů:
+Process Management (Správa procesů)
+Zajišťuje vytváření, plánování a ukončování procesů.
+Umožňuje uživateli spravovat procesy (Task Manager ve Windows, ps v Linuxu).
+Přepínání kontextů (Context Switching)
+Procesor přepíná mezi běžícími procesy, uložením stavu aktuálního procesu a
+načtením stavu jiného.
+Náročná operace, protože OS musí uložit a načíst všechny registry, stavy paměti a
+zásobník.
+Přepínání kontextů vedlo ke vzniku vláken, které umožňují efektivnější sdílení
+prostředků mezi procesy.
+Dispatcher (Plánovač procesů)
+Rozhoduje, který proces dostane přístup k CPU, a to podle plánovacího algoritmu
+(např. FIFO, Round Robin, Prioritní plánování).
+Správa paměti
+Každý proces má vlastní přidělenou paměť.
+OS spravuje alokaci a dealokaci paměti procesům.
+Meziprocesová komunikace (IPC – Inter Process Communication)
+Procesy mezi sebou musí komunikovat (např. sdílením paměti, pomocí rour (pipes)
+nebo zpráv).
+6. Operační systém & plánování procesů
+Životní cyklus procesu (Stavy procesu)
+Stav procesu
+Popis
+NEW (nový proces)
+Proces je vytvořen (uživatelem
+nebo OS), ale ještě nezačal
+běžet.
+READY (připravený)
+Proces čeká na přidělení
+procesoru (je připraven ke
+spuštění).
+RUN (běžící)
+Proces je aktuálně vykonáván
+procesorem.
+WAIT (čekající)
+Proces čeká na dokončení I/O
+operace nebo jiného procesu.
+END (ukončený)
+Proces byl dokončen nebo
+ukončen uživatelem/OS.
+Přechody mezi stavy:
+NEW → READY (OS proces vytvoří a umístí do fronty).
+READY → RUN (proces dostane CPU a začne běžet).
+RUN → WAIT (čekání na I/O operaci, signál atd.).
+WAIT → READY (po dokončení I/O operace proces čeká na CPU).
+RUN → END (proces se dokončí nebo je ukončen).
+6. Operační systém & plánování procesů
+Řídicí blok procesu (PCB - Process Control Block)
+PCB (Process Control Block) je datová struktura v jádře operačního systému, která uchovává
+všechny klíčové informace o běžícím procesu. Každý proces v systému má svůj vlastní PCB,
+který slouží k jeho správě a sledování.
+Vlastnosti PCB:
+Unikátnost – Každý proces má svůj vlastní PCB.
+Ochrana dat – PCB je uložen v chráněné oblasti paměti, aby k němu neměly přístup jiné
+procesy.
+Uložení v jádře OS – Obvykle se nachází v paměťovém prostoru jádra OS, často na začátku
+zásobníku jádra.
+Obsah PCB (Co všechno obsahuje?)
+Ukazatel (Pointer)
+Odkazuje na další PCB – umožňuje správu víceprocesového systému.
+Stav procesu (Process State)
+Informace o tom, v jakém stavu se proces nachází (např. READY, RUN, WAIT, END).
+Identifikátor procesu (PID - Process ID)
+Každý proces má své unikátní číslo (PID), pod kterým ho OS identifikuje.
+Program Counter (PC)
+Ukládá adresu následující instrukce, která se má vykonat.
+Pokud je proces přerušen, OS si zde uloží aktuální pozici, aby mohl pokračovat.
+Registry CPU
+Uchovávají aktuální hodnoty registrů procesoru, jako např. akumulátor, indexové
+registry, ukazatel zásobníku.
+Při přepnutí procesu se hodnoty uloží do PCB a při návratu se obnoví.
+Limit paměti (Memory Limits)
+Adresa paměťového prostoru procesu, včetně bázové adresy a limitu paměti, který
+proces může používat.
+Seznam otevřených souborů (Open Files Table)
+Proces může pracovat se soubory – PCB obsahuje
+seznam všech otevřených souborů a vstupněvýstupních zařízení, které proces používá.
+Další informace
+Priorita procesu – Některé procesy mají vyšší
+prioritu (např. systémové procesy).
+Časová kvanta – Jak dlouho mohl proces běžet
+před přepnutím.
+Statistiky běhu – Např. kdy proces naposledy
+běžel, jak dlouho běžel.
+Jednoduchá analogie:
+PCB je jako "kartotéka procesů" – pro každý
+proces existuje složka, kde jsou uloženy všechny
+jeho důležité informace. Když se proces přepne
+nebo ukončí, OS se podívá do jeho "složky" a ví, co
+s ním dělat.
+6. Operační systém & plánování procesů
+Vlákno (Thread)
+Vlákno (thread) je lehká jednotka vykonávání v rámci procesu, která sdílí stejný paměťový
+prostor jako ostatní vlákna daného procesu. Vlákno samo o sobě nemůže existovat nezávisle –
+vždy je součástí nějakého procesu.
+Klíčové vlastnosti vlákna
+Odlehčená verze procesu – má vlastní stav a registr, ale sdílí kód a paměť s jinými vlákny v
+rámci jednoho procesu.
+Rychlejší než procesy – přepínání mezi vlákny je méně náročné než přepínání mezi
+procesy, protože vlákna sdílejí paměť, zatímco procesy mají každé vlastní.
+Nižší režie OS – OS nemusí znovu alokovat paměť a další zdroje, když přepíná mezi vlákny v
+jednom procesu.
+Použití ve vícejádrových systémech – umožňuje současné zpracování úloh v rámci
+jednoho procesu na více jádrech CPU.
+Životní cyklus vlákna
+Vlákno prochází stejnými stavy jako proces:
+1. NEW (Nové) – Vytvoření vlákna, inicializace.
+2. READY (Připravené) – Čeká na přidělení CPU.
+3. RUNNING (Běžící) – Vlákno právě vykonává instrukce.
+4. WAITING (Čekající) – Blokováno na vstup/výstup nebo synchronizaci.
+5. TERMINATED (Ukončené) – Dokončilo svůj běh nebo bylo násilně ukončeno.
+Ukládání vláken – TCB (Thread Control Block)
+Každé vlákno má svůj TCB (Thread Control Block), což je datová struktura v jádře OS, podobně
+jako PCB u procesů.
+Co obsahuje TCB?
+TID (Thread ID) – Jedinečný identifikátor vlákna.
+Ukazatel na PCB – Vlákno je vždy součástí určitého procesu.
+Program Counter (PC) – Adresa následující instrukce vlákna.
+Stav vlákna – READY, RUNNING, WAITING...
+Registry CPU – Uchovávají stav CPU při přepnutí mezi vlákny.
+Typy vláken:
+Vlákna na úrovni jádra (Kernel-Level Threads)
+Spravuje je přímo OS, tedy jádro operačního systému.
+OS ví o všech vláknech a může je plánovat jednotlivě.
+Mohou běžet paralelně na vícejádrových procesorech.
+Nevýhoda: Přepínání mezi vlákny vyžaduje volání jádra OS, což znamená větší režii.
+Použití: Například v systémových službách, ovladačích, paralelním zpracování dat.
+Vlákna na uživatelské úrovni (User-Level Threads)
+OS o nich neví – spravuje je uživatelský program.
+Extrémně rychlé přepínání mezi vlákny – není třeba volat OS.
+Plná kontrola programátora nad správou vláken.
+Nevýhoda: Vlákna nejsou viditelná pro OS, takže OS přiděluje CPU celému procesu, ne
+jednotlivým vláknům.
+Nelze tedy plně využít vícejádrový procesor!
+6. Operační systém & plánování procesů
+Použití:
+Vykreslování grafiky (např. jeden thread vykresluje, druhý provádí výpočty).
+Aplikace jako Excel (výpočty běží v jednom vlákně, zatímco grafické vykreslování v
+jiném).
+Vlákno vs. Proces – Jaký je rozdíl?
+Vlastnost
+Proces
+Vlákno
+Paměťový prostor
+Každý proces má
+vlastní
+Vlákna sdílejí paměť
+procesu
+Vytvoření
+Pomalé – OS alokuje
+nový prostor
+Rychlé – využívá
+existující paměť
+Přepnutí kontextu
+Drahé – nutné
+přepnout celý stav
+procesu
+Levné – OS přepíná
+pouze registry
+Běh na více jádrech
+Ano – OS rozděluje
+procesy mezi jádra
+Jen u kernel-level
+vláken
+Synchronizace
+Snazší (nezávislé
+procesy)
+Nutná
+synchronizace mezi
+vlákny
+Shrnutí – Proč používat vlákna?
+Nižší spotřeba paměti – více vláken v jednom procesu sdílí stejný paměťový prostor.
+Rychlejší přepínání než mezi procesy – není třeba přepínat celý kontext.
+Lepší výkon na více jádrech – kernel-level vlákna mohou běžet paralelně.
+Ideální pro víceúlohové aplikace – např. hry, webové servery, databáze.
+Nevýhody:
+Synchronizace vláken je složitější (sdílí paměť, může docházet ke kolizím).
+U user-level vláken není plná podpora pro vícejádrové procesory (OS vidí jen proces, ne
+vlákna).
+Klíčová analogie:
+Proces = Firma – Má svůj
+majetek, zaměstnance,
+organizaci.
+Vlákno = Zaměstnanec –
+Pracuje v rámci firmy, sdílí její
+zdroje, ale vykonává specifické
+úkoly.
+OS = Manažer – Rozhoduje,
+který zaměstnanec (vlákno)
+bude pracovat kdy a jak dlouho.
+6. Operační systém & plánování procesů
+Vlákno na úrovni jádra OS (Kernel-Level Threads)
+Vlákna na úrovni jádra jsou spravována přímo operačním systémem. Každé vlákno má svůj
+vlastní stav a registr, ale sdílí paměť a prostředky procesu, ke kterému patří.
+OS řídí všechna vlákna – jádro spravuje plánování a přepínání mezi vlákny.
+Vícejádrové využití – jeden proces může běžet na více jádrech CPU současně.
+Nezávislost vláken – volání služeb OS neblokuje ostatní vlákna procesu.
+Složitější správa – jádro OS musí udržovat informace o všech vláknech.
+Plánování na úrovni vláken – CPU čas je rozdělován jednotlivým vláknům, ne procesu jako
+celku.
+Použití vláken
+Obsluha periferií
+1 vlákno pro komunikaci s hardwarem.
+2 vlákna pro interakci s uživatelem.
+Servery – pro každého připojeného uživatele
+je vytvořeno samostatné vlákno.
+Výhody vláken
+Menší režie – nižší náklady na přepínání mezi
+vlákny oproti procesům.
+Rychlejší výpočty a odezvy – umožňuje souběžné
+zpracování úloh.
+Efektivní využití systému – CPU je lépe vytíženo,
+minimalizace prostojů.
+Snazší komunikace – vlákna sdílejí stejný paměťový prostor, není třeba meziprocesová
+komunikace (IPC).
+Paralelní běh – více vláken může běžet současně na více jádrech.
+Lepší organizace kódu – zjednodušuje programování víceúlohových aplikací.
+Nevýhody vláken
+Omezený počet vláken – hardware a OS mají limity na maximální počet současně běžících
+vláken.
+Složitější programování – nutné řešit synchronizaci a přístup ke sdíleným prostředkům
+(např. race conditions, deadlocky).
+Vlastnost
+PCB (Process Control Block)
+TCB (Thread Control Block)
+Úroveň správy
+Proces
+Vlákno
+Identifikátor
+PID (Process ID)
+TID (Thread ID)
+Obsahuje
+Informace o celém procesu
+Informace o jednotlivém
+vláknu
+Paměť
+Spravuje paměť procesu
+Vlákna sdílí paměť procesu
+Odkaz na proces
+Neobsahuje
+Obsahuje ukazatel na PCB
+6. Operační systém & plánování procesů
+Přepínání kontextů
+Přepínání kontextu je operace, která přepíná běžící kontext jednoho procesu na druhý.
+Probíhá několikrát za sekundu v řádu nanosekund.
+Je součástí všech multitaskingových operačních systémů.
+Přepnutí kontextu nastává při obsluze přerušení nebo změně režimu (např. přechod z
+privilegovaného režimu jádra do uživatelského režimu).
+O přepnutí se stará dispatcher, který funguje na základě plánovače (scheduleru).
+Přepínání musí být extrémně rychlé, aby uživatel nepoznal zpoždění nebo „zamrznutí“
+systému.
+Pro uživatele se zdá, že všechny procesy běží současně, i když ve skutečnosti se střídají.
+Přepnutí může probíhat:
+Softwarově (SW) → Přesnější, ale pomalejší.
+Hardwarově (HW) → Rychlejší, ale méně přesné.
+1. Běh procesu P₀
+Proces P₀ je spuštěn a běží.
+Po určité době dojde k přerušení nebo změně plánování.
+2. Uložení kontextu P₀
+Operační systém uloží aktuální stav procesu P₀ (registry, stav procesoru, paměťový
+kontext).
+Proces P₀ přechází do stavu "idle" (neaktivní).
+3. Předání kontextu P₁
+OS obnoví kontext procesu P₁ (načte jeho uložený stav).
+Proces P₁ začíná běžet.
+4. Uložení kontextu P₁ a přepnutí zpět na P₀
+Po určité době dojde opět k přepnutí kontextu zpět na proces P₀.
+Tento cyklus se neustále opakuje a OS efektivně spravuje běh více procesů.
+6. Operační systém & plánování procesů
+Důležité informace z obrázku
+Přepínání mezi procesy probíhá prostřednictvím privilegovaných instrukcí.
+Kontexty se ukládají a načítají z PCB (Process Control Block).
+Uživatel vidí iluzi souběžného běhu všech procesů, ale reálně se střídají velmi rychle.
+Plánovače (Scheduler)
+Plánovače jsou klíčové komponenty v multitaskingových operačních systémech, které
+rozhodují o tom, který proces nebo vlákno dostane CPU a na jak dlouho. Plánovače mohou být
+rozděleny na krátkodobé, střednědobé a dlouhodobé, v závislosti na frekvenci a typu
+plánovacích rozhodnutí.
+Krátkodobý plánovač (Short-term scheduler)
+Rychlost: Krátkodobý plánovač, známý také jako CPU scheduler, pracuje velmi rychle.
+Fronty: Využívá dvě hlavní fronty:
+Fronta připravených procesů (Ready Queue) – Fronta, kam jsou zařazeny všechny
+procesy připravené k běhu a čekající na přidělení CPU.
+Fronta I/O operací (I/O Queue) – Obsahuje procesy, které čekají na dokončení I/O
+operací.
+Zpracování a situace v krátkodobém plánování:
+Procesy mohou požadovat I/O operace, což je dočasně vyřadí z CPU fronty do I/O
+fronty.
+Proces může během svého běhu vytvořit potomka, což obvykle vyvolá systémové
+volání FORK.
+Pokud není žádný proces ve frontě připravených, CPU zůstává nečinné.
+Přerušení může způsobit, že běžící proces je pozastaven a OS přepne na jiný proces
+podle plánovací strategie.
+Cyklus běhu procesů (podle diagramu):
+1. Fronta připravených procesů – Procesy čekají na přidělení CPU.
+2. Procesor – Vykonává instrukce aktuálního procesu.
+3. Operace I/O – Procesy vstupující do I/O fronty čekají na dokončení externích operací.
+4. Obsluha přerušení – Reakce na externí nebo interní události může způsobit přepnutí
+kontextu.
+5. Potomek pracuje – Procesy, které byly vytvořeny, pokračují v běhu nezávisle.
+6. Vytvoření potomka – Systémové volání FORK umožňuje procesům vytvořit nové procesy.
+7. Čekání na přerušení – Procesy mohou být pozastaveny, zatímco čekají na vyřešení
+přerušení.
+6. Operační systém & plánování procesů
+Střednědobý plánovač (Mid-Term Scheduler)
+Střednědobý plánovač je součást operačních systémů, která zajišťuje správu paměti a procesů
+na vyšší úrovni než krátkodobý plánovač. Jeho úkolem je reagovat na změny v paměťových
+požadavcích běžících procesů a optimalizovat využití systémových zdrojů.
+Taktický plánovač: Reaguje na změny ve využití paměti běžícími procesy.
+Swapování: V případě, že procesy vyžadují více paměti, než je dostupné, střednědobý
+plánovač může rozhodnout o dočasném odložení některých méně prioritních procesů na
+disk (swapování), aby uvolnil paměť pro náročnější procesy.
+Vrácení procesů do paměti: Odložené procesy mohou být později vráceny zpět do
+operační paměti, když to systémové zdroje dovolí.
+Nové stavy procesů v rámci střednědobého plánování:
+Odložený čekající (Swap Wait): Stav, ve kterém je proces dočasně uložen na disk a čeká na
+možnost být znovu načten do operační paměti.
+Odložený připravený (Swap Ready): Proces, který je uložen na disku, ale je připraven být
+kdykoli rychle načten zpět do operační paměti a pokračovat ve zpracování.
+Diagram a popis procesu:
+Start: Proces začíná ve frontě připravených procesů.
+Dočasné uložení procesu na disk: Pokud procesor a operační paměť jsou plně vytíženy a je
+nutné uvolnit prostor, některé procesy jsou dočasně uloženy na disk.
+Fronta připravených procesů: Zde čekají procesy na své znovunačtení do paměti, když to
+bude možné.
+Procesor: Zde probíhá zpracování procesů, které jsou aktuálně v operační paměti.
+Operace I/O a Fronta operací I/O: Procesy mohou vyžadovat I/O operace, které jsou
+spravovány odděleně.
+Konec: Proces je dokončen a jeho zdroje jsou uvolněny.
+6. Operační systém & plánování procesů
+Dlouhodobý Plánovač (Long-Term Scheduler)
+Dlouhodobý plánovač, známý také jako strategický plánovač, je klíčový prvek ve správě
+procesů v operačních systémech. Jeho hlavní úlohou je rozhodovat, které procesy budou
+přijaty do systému pro další zpracování.
+Strategická role: Dlouhodobý plánovač rozhoduje o tom, kdy a které procesy budou přijaty
+do systému z "externí" čekací oblasti do skutečného běhu na CPU. Toto rozhodování je
+založeno na různých faktorech, včetně dostupnosti systémových zdrojů, priorit procesů a
+požadovaných I/O operací.
+Aktivace: Jeho aktivace je poměrně pomalá s intervaly v jednotkách desítek sekund, což
+umožňuje pečlivé rozhodování o celkovém zatížení a efektivitě systému.
+Vyvažování zatížení: Dlouhodobý plánovač zajišťuje optimální vyvážení mezi I/Ointenzivními a CPU-intenzivními úlohami, což umožňuje systému efektivně spravovat
+dostupné zdroje.
+Využití v systémech:
+RTOS (Real-Time Operating Systems): Ve vysoce specializovaných systémech jako jsou
+RTOS, kde je potřeba pečlivě balancovat požadavky v reálném čase, je dlouhodobý
+plánovač kriticky důležitý pro udržení systémové předvídatelnosti a spolehlivosti.
+Běžné operační systémy: V systémech jako Windows, MacOS a Linux je role dlouhodobého
+plánovače často minimalizována nebo plně integrována do střednědobého a krátkodobého
+plánování z důvodu dynamiky a interaktivnosti moderních aplikací.
+Sedmistavový diagram procesů:
+Diagram ukazuje komplexní přehled o tom, jak procesy procházejí různými stavy v systému, od
+jejich vytvoření, přes různé fáze čekání a zpracování, až po ukončení:
+Nový: Proces je vytvořen.
+Odložený připravený a Odložený čekající: Stavy reprezentující procesy, které byly dočasně
+odloženy na disk nebo do jiného úložiště v důsledku rozhodnutí dlouhodobého plánovače.
+Připravený: Proces je připraven být spuštěn.
+Běžící: Proces aktuálně běží na procesoru.
+Čekající: Proces čeká na dostupnost zdrojů nebo dokončení I/O operací.
+Ukončený: Proces byl dokončen nebo ukončen.
+6. Operační systém & plánování procesů
+Plánovače (Scheduler)
+Plánování procesoru je klíčová součást operačních systémů, která řídí, jaký proces obdrží
+procesorový čas a kdy. Je důležité pro efektivní a spravedlivé využití CPU mezi různými
+běžícími procesy.
+Typy plánování
+1. Preemptivní plánování (Preemptive scheduling):
+Kontrola: Operační systém má plnou kontrolu nad CPU a může procesu kdykoliv
+procesor odebrat.
+Mechanismus: Dochází k tomu při uplynutí přidělené doby na CPU, což je vyvoláno
+přerušením časovače.
+Výhody:
+Zabraňuje zamrznutí systému, protože žádný proces nemůže zadržovat CPU příliš
+dlouho.
+Zajišťuje rychlejší dobu odpovědi pro více procesů.
+Nevýhody:
+Složitější implementace a nutnost hardwarové podpory.
+Příklady systémů: Mac OS X, Linux.
+2. Nepreemptivní plánování (Non-preemptive scheduling):
+Kontrola: OS nemá plnou kontrolu nad CPU; musí počkat, až proces CPU sám uvolní.
+Charakteristika: Procesy běží do svého dokončení nebo do vyvolání I/O operace.
+Výhody:
+Jednodušší implementace.
+Stabilita v uzavřených systémech, kde jsou procesy a jejich chování dobře známé.
+Nevýhody:
+Může dojít k zamrznutí systému, pokud procesy neuvolňují CPU.
+Příklady systémů: Starší verze systémů Windows.
+6. Operační systém & plánování procesů
+Plánovací algoritmy
+First-Come, First-Serve = FCFS
+FCFS je jedním z nejjednodušších plánovacích algoritmů používaných v operačních
+systémech. Tento algoritmus přiděluje procesorový čas procesům na základě jejich pořadí
+příchodu do fronty, bez ohledu na jejich délku nebo jiné charakteristiky.
+Nepreemptivní: Jakmile proces začne běžet, bude pokračovat, dokud neskončí nebo
+nedojde k blokaci z důvodu I/O operace.
+Důsledky: Dlouhé procesy mohou blokovat krátké, což vede k tvorbě kolon a zvyšuje
+průměrnou dobu čekání pro všechny procesy.
+Použití: Vzhledem k jeho jednoduchosti a nedostatkům se FCFS často nepoužívá v
+interaktivních nebo real-time systémech.
+Výpočet metrik v plánovacím algoritmu FCFS:
+AT (Arriving Time): Čas, kdy proces dorazí do systému.
+BT (Burst Time): Délka trvání procesu.
+CT (Completion Time): Čas, kdy proces skončí.
+TAT (Turn Around Time): Doba obrátky, která je rozdílem mezi dobou ukončení a dobou
+příchodu procesu (TAT = CT - AT).
+WT (Waiting Time): Doba, po kterou musel proces čekat ve frontě na spuštění (WT = TAT BT).
+VT (Visiting Time): Čas, kdy se proces poprvé objevil na procesoru. V rámci FCFS by se VT
+rovnalo času, kdy proces začal běžet poprvé po svém příchodu.
+Shortest Job First = SJF
+SJF je typ plánovacího algoritmu, který se zaměřuje na minimalizaci čekací doby tím, že
+nejprve zpracovává procesy s nejkratší požadovanou dobou CPU. Tento algoritmus je
+nepreemptivní, což znamená, že jednou zahájený proces běží až do svého dokončení, aniž by
+byl přerušen.
+Selektivní: Proces s nejkratším časem trvání (Burst Time) je vybrán k dalšímu zpracování.
+Efektivita: Teoreticky optimalizuje celkový čas čekání, protože kratší úlohy jsou dokončeny
+rychleji.
+Hladovění (Starvation): Dlouhotrvající procesy mohou být opakovaně přeskočeny, což
+vede k jejich hladovění.
+Potřeba předvídání: Vyžaduje znalost doby trvání všech příchozích procesů, což může být
+v praxi obtížné.
+6. Operační systém & plánování procesů
+Shortest Remaining Time First = SRTF
+SRTF je preemptivní varianta plánovacího algoritmu Shortest Job First (SJF). Zaměřuje se na
+zpracování procesů s nejkratším zbývajícím časem trvání na CPU. Tento přístup snižuje
+průměrnou dobu čekání pro kratší úlohy a zabraňuje vzniku kolon.
+Preemptivní: Proces může být kdykoliv přerušen, pokud přijde nový proces s kratší
+zbývající dobou trvání.
+Efektivní pro kratší úlohy: Zajišťuje, že kratší procesy jsou zpracovány před delšími, což
+minimalizuje čekací dobu.
+Vyhlaďování dlouhých procesů: Dlouhé procesy mohou být často přerušeny, což může
+vést k jejich hladovění (nedostatek CPU času).
+Priority Scheduling = PS
+Priority Scheduling je typ preemptivního plánování, kde každý proces má přiřazenou prioritu,
+a procesy s vyšší prioritou (nižší číselná hodnota) jsou zpracovány před procesy s nižší
+prioritou. Tento algoritmus je efektivní v prostředích, kde je důležitá reaktivita na důležité
+úlohy.
+Prioritní hodnoty: Každý proces je přiřazen číselný prioritní index, kde nižší číslo značí vyšší
+prioritu.
+Preemptivnost: Proces s nižší prioritou může být kdykoliv přerušen procesem s vyšší
+prioritou, který přichází do systému.
+Hladovění: Procesy s nižší prioritou mohou trpět hladověním, pokud jsou neustále
+přeskočeny vyššími prioritami.
+6. Operační systém & plánování procesů
+Round Robin = RR
+Round Robin je jedním z nejběžnějších preemptivních plánovacích algoritmů využívaných v
+time-sharing systémech. Jeho hlavním cílem je zajistit spravedlivé rozdělení procesorového
+času mezi všechny procesy, přidělením každému procesu časové kvantum (time slice).
+Časové kvantum: Každý proces dostane pevně stanovený čas, během kterého může
+běžet. Po uplynutí tohoto času je proces přerušen a plánovač přidělí CPU dalšímu
+procesu ve frontě.
+Férovost: Všem procesům je přidělován CPU čas rovnoměrně.
+Prevence hladovění: Díky rotaci procesů a pravidelnému přidělování času nehrozí, že by
+některé procesy byly zanedbány.
+Dynamická fronta: Procesy jsou udržovány v kruhové frontě a po vyčerpání svého kvanta
+jsou umístěny na konec této fronty.
+6. Operační systém & plánování procesů
+Multilevel Feedback Queue Scheduler = MFQS
+Multilevel Feedback Queue Scheduler je pokročilý plánovací algoritmus, který kombinuje
+více úrovní front s různými pravidly pro zpracování procesů. Tento plánovač je navržen tak,
+aby flexibilně reagoval na různé typy požadavků procesů, přičemž umožňuje dynamické
+přizpůsobení priority a časového kvanta.
+Víceúrovňové fronty: Procesy jsou zařazeny do různých front podle priority, která se
+může měnit na základě chování procesu.
+Rozdílná časová kvanta: Každá fronta má přiřazeno své vlastní časové kvantum, které
+obvykle roste s klesající prioritou fronty.
+Feedback mechanismus: Procesy mohou být přesunuty do vyšší nebo nižší priority fronty
+na základě jejich chování, např. pokud proces vyčerpá své časové kvantum, může být
+přesunut do nižší priority fronty.
+Kombinace RR a FCFS: Nižší priority fronty mohou používat metody plánování jako Round
+Robin nebo First-Come, First-Serve.

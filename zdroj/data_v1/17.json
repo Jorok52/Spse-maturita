@@ -1,0 +1,423 @@
+{
+"n": 17,
+"t": "Typy pamětí a jejich funkce",
+"outline": [
+"ROM, BIOS, CMOS, RAM, DRAM, SDRAM, DDR–DDR4: provedení, moduly, datové šířky, rychlosti, přenos dat",
+"Cache (HW, SW) – princip činnosti",
+"Časování paměti (latence) a Dual Channel",
+"Logická struktura operační paměti (konvenční, UMA, XMS)"
+],
+"q": [
+[
+"Kde je uložen BIOS?",
+"Ve Flash (dříve ROM/EPROM) paměti",
+"V paměti CMOS s baterií",
+"Na systémovém disku v MBR",
+"V cache procesoru L2"
+],
+[
+"Co obsahuje CMOS?",
+"Jen konfigurační data (boot pořadí, čas, hesla)",
+"Program BIOSu a ovladače základních zařízení",
+"Části operačního systému pro rychlý start",
+"Vyrovnávací paměť (cache) pro procesor"
+],
+[
+"Jak CMOS uchová data po vypnutí?",
+"Lithiová baterie CR2032",
+"Je to Flash, nepotřebuje napájení",
+"Velký kondenzátor na desce",
+"Neuchová, data se ztratí"
+],
+[
+"Které čtení je destruktivní?",
+"Čtení z DRAM",
+"Čtení ze SRAM",
+"Čtení z ROM",
+"Čtení z Flash"
+],
+[
+"Jak často se typicky obnovuje řádek DRAM?",
+"Cca každých 64 ms",
+"Cca každou sekundu",
+"Cca každých 64 ns",
+"Nikdy, není potřeba"
+],
+[
+"Co znamená DDR?",
+"Přenos na náběžné i sestupné hraně taktu",
+"Dva paměťové moduly v jednom balení",
+"Dvojnásobné napájecí napětí oproti SDR",
+"Dvoukanálový režim (Dual Channel)"
+],
+[
+"Napětí SDR SDRAM?",
+"3,3 V",
+"2,5 V",
+"1,8 V",
+"1,5 V"
+],
+[
+"Napětí DDR?",
+"2,5 V",
+"3,3 V",
+"1,8 V",
+"1,2 V"
+],
+[
+"Napětí DDR2?",
+"1,8 V",
+"2,5 V",
+"1,5 V",
+"1,2 V"
+],
+[
+"Napětí DDR3?",
+"1,5 V",
+"1,8 V",
+"2,5 V",
+"3,3 V"
+],
+[
+"Kolik pinů má DIMM DDR?",
+"184",
+"168",
+"240",
+"288"
+],
+[
+"Kolik pinů má DIMM DDR2/DDR3?",
+"240",
+"184",
+"288",
+"168"
+],
+[
+"Kolik pinů má DIMM DDR4/DDR5?",
+"288",
+"240",
+"260",
+"204"
+],
+[
+"Kolik pinů má SDRAM DIMM?",
+"168",
+"184",
+"72",
+"240"
+],
+[
+"Datová šířka DIMM?",
+"64 bitů",
+"32 bitů",
+"128 bitů",
+"8 bitů"
+],
+[
+"Datová šířka SIMM?",
+"32 bitů",
+"64 bitů",
+"16 bitů",
+"128 bitů"
+],
+[
+"DDR-200: reálný takt?",
+"100 MHz",
+"200 MHz",
+"400 MHz",
+"50 MHz"
+],
+[
+"Propustnost DDR-200 (PC-1600)?",
+"1600 MB/s (200 MHz × 8 B)",
+"200 MB/s (200 MHz × 1 B)",
+"3200 MB/s (400 MHz × 8 B)",
+"800 MB/s (100 MHz × 8 B)"
+],
+[
+"Propustnost DDR3-1600?",
+"12 800 MB/s (PC3-12800)",
+"1600 MB/s (PC3-1600)",
+"6400 MB/s (PC3-6400)",
+"25 600 MB/s (PC3-25600)"
+],
+[
+"Prefetch DDR2?",
+"4n",
+"2n",
+"8n",
+"16n"
+],
+[
+"Prefetch DDR3?",
+"8n",
+"4n",
+"2n",
+"1n"
+],
+[
+"I/O buffer DDR3-1600 při jádru 200 MHz?",
+"800 MHz",
+"200 MHz",
+"400 MHz",
+"1600 MHz"
+],
+[
+"QDR znamená…",
+"4 přenosy za takt (oddělené kanály čtení a zápis)",
+"4 paměťové moduly zapojené do čtyř kanálů",
+"Kapacita 4 GB na jeden paměťový čip",
+"Čtyři napájecí napětí pro jednotlivé banky"
+],
+[
+"Paměťový bank musí odpovídat…",
+"Šířce datové sběrnice CPU (např. 64 b)",
+"Velikosti systémového disku (např. 512 GB)",
+"Počtu jader procesoru (např. 8)",
+"Frekvenci grafického procesoru"
+],
+[
+"Z jaké paměti je HW cache?",
+"SRAM",
+"DRAM",
+"Flash",
+"EEPROM"
+],
+[
+"Co je cache hit?",
+"Požadovaná data jsou už v cache",
+"Požadovaná data v cache nejsou",
+"Chyba čtení vyrovnávací paměti",
+"Přepsání řádku cache novými daty"
+],
+[
+"Která cache je rozdělená na instrukce a data?",
+"L1 (L1i, L1d)",
+"L2 (sdílená)",
+"L3 (L3i, L3d)",
+"SW cache v RAM"
+],
+[
+"Která cache je sdílená mezi jádry?",
+"L3",
+"L1",
+"L2 vždy",
+"Žádná"
+],
+[
+"Co je SW cache?",
+"OS drží často používaná data z disku v RAM",
+"Rychlá paměť SRAM uvnitř procesoru",
+"Vyrovnávací paměť grafické karty",
+"Registr pro mezivýsledky ALU"
+],
+[
+"Časování 9-9-9-24 odpovídá…",
+"tCL – tRCD – tRP – tRAS",
+"tRAS – tRP – tRCD – tCL",
+"CL – CL – CL – takt",
+"Napětí"
+],
+[
+"Co je tCL?",
+"CAS latence – takty od výběru sloupce po data",
+"Zpoždění mezi výběrem řádku a sloupce",
+"Doba na přepnutí na jiný řádek",
+"Minimální doba, kdy je řádek aktivní"
+],
+[
+"Co je tRCD?",
+"Zpoždění mezi výběrem řádku (RAS) a sloupce (CAS)",
+"CAS latence – počet taktů od výběru sloupce po první data",
+"Doba deaktivace řádku (precharge)",
+"Perioda obnovování (refresh) řádku"
+],
+[
+"Co je tRP?",
+"Doba na deaktivaci řádku před přístupem k jinému",
+"CAS latence – takty od sloupce po data",
+"Minimální doba, kdy je řádek aktivní",
+"Zpoždění mezi výběrem řádku a sloupce"
+],
+[
+"Co je tRAS?",
+"Minimální doba, po kterou je řádek aktivní",
+"Zpoždění mezi výběrem řádku a sloupce",
+"Doba na deaktivaci řádku před dalším",
+"Perioda obnovování (refresh) celé paměti"
+],
+[
+"Šířka sběrnice v Dual Channel?",
+"128 bitů (2 × 64)",
+"64 bitů (1 × 64)",
+"256 bitů (4 × 64)",
+"96 bitů (3 × 32)"
+],
+[
+"Reálný přínos Dual Channel?",
+"Cca 10–30 %",
+"Přesně 100 %",
+"0 %",
+"500 %"
+],
+[
+"Podmínka Dual Channel?",
+"Podpora čipsetu, správné sloty, stejné moduly",
+"Jen jeden modul v libovolném slotu",
+"Moduly s různou frekvencí a kapacitou",
+"SSD disk připojený přes NVMe"
+],
+[
+"Rozsah konvenční paměti?",
+"0 – 640 kB",
+"640 kB – 1 MB",
+"Nad 1 MB",
+"0 – 1 MB"
+],
+[
+"Co je UMA?",
+"Horní oblast 640 kB – 1 MB (BIOS, video, HW)",
+"Paměť nad 1 MB, přístupná po ovladači",
+"Vyrovnávací paměť mezi CPU a RAM",
+"Konvenční paměť 0–640 kB pro DOS"
+],
+[
+"Co je XMS?",
+"Paměť nad 1 MB, přístup po zavedení ovladače (HIMEM.SYS)",
+"Konvenční paměť do 640 kB pro DOS a BIOS, přístupná bez jakýchkoli ovladačů",
+"Video paměť grafické karty v oblasti UMA",
+"Paměť ROM s BIOSem na konci prvního MB"
+],
+[
+"Jaký modul odpovídá DDR-266?",
+"PC-2100",
+"PC-1600",
+"PC-2700",
+"PC-3200"
+],
+[
+"Jaký modul odpovídá DDR-400?",
+"PC-3200",
+"PC-2700",
+"PC-1600",
+"PC-6400"
+]
+],
+"terms": [
+[
+"CMOS",
+"Nastavení, baterie"
+],
+[
+"BIOS",
+"Program pro start HW"
+],
+[
+"Flash ROM",
+"Kde je uložen BIOS"
+],
+[
+"SRAM",
+"Klopný obvod, cache"
+],
+[
+"DRAM",
+"Kondenzátor, refresh, RAS/CAS"
+],
+[
+"SDR",
+"1 přenos na takt, 3,3 V"
+],
+[
+"DDR",
+"2 přenosy, 2,5 V, 184 pin"
+],
+[
+"DDR2",
+"4n prefetch, 1,8 V"
+],
+[
+"DDR3",
+"8n prefetch, 1,5 V"
+],
+[
+"tCL",
+"CAS latence"
+],
+[
+"tRCD",
+"RAS → CAS"
+],
+[
+"tRP",
+"Precharge řádku"
+],
+[
+"tRAS",
+"Min. aktivní řádek"
+],
+[
+"UMA",
+"640 kB – 1 MB"
+],
+[
+"XMS",
+"Nad 1 MB"
+]
+],
+"open": [
+{
+"q": "Popiš paměti PC a jejich souvislosti (ROM, BIOS, CMOS, RAM).",
+"k": [
+"Volatilní (SRAM, DRAM, NRAM FIFO/LIFO) vs. nevolatilní (ROM, PROM, EPROM, EEPROM, Flash)",
+"BIOS = program uložený ve Flash; čte nastavení z CMOS",
+"CMOS: SRAM + baterie CR2032, hesla, boot, čas; Clear CMOS",
+"Parametry: kapacita, přístupová doba, propustnost, destruktivnost čtení, MTBF"
+]
+},
+{
+"q": "Popiš SRAM a DRAM.",
+"k": [
+"SRAM: 6 tranzistorů, klopný obvod, 1–20 ns, cache, bez refreshe",
+"DRAM: tranzistor + kondenzátor, RAS/CAS, 10–70 ns, destruktivní čtení",
+"Refresh po řádcích cca 64 ms"
+]
+},
+{
+"q": "Popiš SDRAM a DDR až DDR4, moduly a výpočet propustnosti.",
+"k": [
+"SDR (3,3 V, 168 pin), DDR (2,5 V, 184), DDR2 (1,8 V, 240, 4n), DDR3 (1,5 V, 240, 8n), DDR4 (288)",
+"DIMM 64 b, SIMM 32 b, SO-DIMM pro notebooky",
+"SDR/DDR/QDR přenosy",
+"Propustnost = efektivní frekvence × 8 B (DDR-200 = PC-1600)",
+"Paměťové banky dle šířky sběrnice CPU"
+]
+},
+{
+"q": "Vysvětli cache (HW a SW).",
+"k": [
+"SW cache: OS drží data disku v RAM",
+"HW cache: SRAM mezi CPU a RAM",
+"Cache hit vs. miss",
+"L1 (v jádru, split i/d), L2, L3 (sdílená)"
+]
+},
+{
+"q": "Vysvětli časování pamětí a Dual Channel.",
+"k": [
+"Formát tCL-tRCD-tRP-tRAS (např. 9-9-9-24)",
+"tCL nejdůležitější",
+"Dual Channel: 2 × 64 = 128 b, reálně +10–30 %",
+"Podmínky: čipset, sloty A1+B1, stejné moduly; existuje triple/quad"
+]
+},
+{
+"q": "Popiš logickou strukturu operační paměti.",
+"k": [
+"Konvenční 0–640 kB (DOS, BIOS)",
+"UMA 640 kB–1 MB (384 kB, video BIOS, VGA 0xA0000)",
+"XMS nad 1 MB, HIMEM.SYS, moderní OS"
+]
+}
+]
+}

@@ -1,0 +1,645 @@
+16. Zdroje PC, Bios,
+UEFI, proces bootování
+zdrojů PC a jejich charakteristika,
+01 Typy
+konektory, zapojování, napětí, signály
+02
+BIOS a jeho součásti, možnosti
+uprgradu
+03 UEFI a rozdíly v bootování
+04
+Nastavení HW konfigurace (setup), popis a
+vysvětlení nejdůležitějších nastavení
+výběru a zavedení OS, instalace OS
+05 Proces
+přes UEFI
+16. Zdroje
+Zdroje
+Napájí všechny součásti PC
+Převádí střídavé napětí 230 V na stejnosměrné napětí těchto hodnot:
++- 3,3 V – port AGP, paměti, chipset
++- 5 V – mechaniky, sběrnice
++- 12 V – ventilátory, sériové porty
+Obsahuje ventilátor, který odvádí teplo ze zdroje i ze skříně PC
+Důležitým parametrem je hlučnost a maximální výkon
+uváděný ve Wattech
+Má pojistku, která jej při zkratu uvnitř
+PC odpojí
+Vyrábí se ve formátu ATX (BTX), což
+umožnuje SW vypnutí PC
+Impulzní zdroj nikdy nezapínat naprázdno
+Výrobci zdrojů: Gigabyte, Corsair, SilverStone
+PC zdroj musí zabezpečit napětí v určitém rozsahu,
+nesmí poklesnout pod stanovený limit ani
+při maximální maximálním zatížení zdroje
+AT
+ATX
+Napětí
++-5V, +-12V
++-5V, +-12V a 3,3V
+Konektory vedoucí
+do zákl. Desky
+Dva 6 pinové P8 a P9,
+černýma k sobě
+20 pinové main power
++4 pinový PW +12V
+AUX power
+Zapínání
+HW – přímo 220V
+SW – pomocí PS_ON
+ATX 3.0
++ 12VHPWR konektor
+Tolerance výstupních napětí:
+Výstupní napětí
+Tolerance
+Minimální napětí [V]
+Maximální napětí [V]
++12VDC
++-5%
++11,40V
++12,60V
++5VDC
++-5%
++4,75V
++5,25V
++3.3VDC
++-5%
++3,14V
++3,47V
+-12V
++-10%
+-10,80V
+-13,20V
+16. Zdroje
+Konektory
+Proti obrácení polarity jsou konektory klíčované anebo mají zkosené hrany
+Hlavní napájecí konektor:
+20 nebo 24 pinů
+Slouží pro připojení napájení k základní desce
+ATX 12V
+4pinový napájecí konektor, poskytující dodatečné napájení pro procesor a
+napěťové regulátory základní desky.
+Napěťové regulátory stabilizují napětí, čímž chrání citlivé komponenty před
+výkyvy proudu
+Pro základní desky a procesory s vyššími požadavky na výkon jsou používány
+rozšířené varianty konektoru
+8pin nebo 4+4pin (dvojitý 4pin)
+Zajišťují dostatečný přísun energie pro výkonné procesory, zejména při
+náročných úlohách, jako jsou hry nebo renderování videí
+4 pinový periferní (MOLEX)
+Tento konektor slouží k napájení pevných disků a optických mechanik v PC
+sestavách. Obsahuje čtyři vodiče:
+2x černý – zem (GND)
+1x červený – +5V (pro napájení obvodů)
+1x žlutý – +12V (pro napájení motorů)
+Původně byl MOLEX používán pro napájení starších 8” a 5,25” disketových
+mechanik. Dodnes se může výjimečně využívat jako dodatečné napájení pro
+některé starší karty či jiné periferní zařízení, zejména tam, kde je potřeba vyšší
+proudové zatížení.
+4 pinový Berg (Mini, mini molex)
+Malý napájecí konektor pro 3,5“ disky
+Dnes je považován za zastaralý a byl nahrazen moderními SATA napájecími
+konektory, ale stále se může objevit u některých starších systémů nebo zařízení
+SATA Power
+15pinový konektor, využívaný pro napájení pevných disků (HDD, SSD) a
+optických mechanik
+Poskytuje tři různé úrovně napětí pro napájení různých komponent:
++3,3V – běžně pro nízkoenergetické obvody
++5V – pro standardní obvody a některé starší komponenty
++12V – především pro mechanické části disků, jako jsou motory
+Tento víceúrovňový přístup napětí umožňuje připojit širokou škálu zařízení s
+různými energetickými požadavky
+16. Zdroje
+6pinový PCIe
+Poskytuje dodatečné napájení grafickým kartám, zejména těm s vyšším výkonem,
+které vyžadují více energie, než kolik poskytuje základní deska přes PCIe slot
+Na výstupu může dodávat až 75 W
+Pro výkonnější karty mohou být použity 8pinové nebo dokonce 6+8pinové
+konektory, které umožňují vyšší dodávku energie (až 150 W pro 8pin a 225 W pro
+kombinaci)
+6+2pinový PCIe
+Flexibilní napájecí konektor, který lze použít jako 6pinový nebo 8pinový, určený
+pro grafické karty
+Zajišťuje zpětnou kompatibilitu – lze ho připojit k zařízením, která vyžadují buď
+6pinové, nebo 8pinové připojení
+Skládá se ze dvou částí – 6pinového konektoru a samostatného 2pinového
+modulu
+Tyto části lze zapojit buď samostatně jako 6pin, nebo společně jako 8pin pro
+vyšší energetické nároky
+Jako 6pinový poskytuje až 75 W
+Jako 8pinový může dodávat až 150 W
+24-pin atx main power supply connector
+4pin Berg
+ATX12V
+EPS12V
+PCI-E
+SATA Power
+MOLEX
+16. Zdroje
+Řídící signály
+5VSB
+Vede napětí ze zdroje na základní desku a je zodpovědný za řízení stavu
+pohotovosti počítače (fialový vodič)
+Dodává konstantní napětí +5V, i když jsou všechny ostatní napěťové okruhy
+vypnuté
+Umožňuje elektronické zapnutí počítače (tzv. softwarové zapnutí) bez potřeby
+fyzického stisknutí tlačítka
+Udržuje základní desku pod napětím, což umožňuje přijímat signály z dálkového
+ovládání nebo jiných zařízení pro aktivaci systému
+Bez 5VSB by počítač nemohl přijímat signály pro zapnutí, a to ani v
+pohotovostním režimu, což by ztížilo uživatelskou zkušenost
+PS-ON
+Řídí zapínání napájecího zdroje počítače
+Vede ze základní desky do zdroje a je identifikován zeleným vodičem
+Aktivuje všechny hlavní napěťové okruhy zdroje (+5V, +12V a +3,3V)
+Krátký impuls: Když je signál PS-ON krátkodobě aktivován (např. stiskem tlačítka),
+zdroj se zapne
+Dlouhý impuls: Pokud je tlačítko přidrženo (dlouhý impuls), zdroj se vypne
+SW signál: Může být vydán operačním systémem (OS) na základě programu nebo
+příkazu, což umožňuje softwarové zapnutí nebo vypnutí počítače
+PS-ON je klíčový pro funkci počítače, protože bez něj by nebylo možné aktivovat
+napájecí zdroj a následně zapnout celý systém
+PW_OK
+Informuje základní desku o tom, že napájecí zdroj dodává stabilní napětí a
+všechny napětí dosáhly předepsaných hodnot
+Vede ze zdroje do základní desky a je identifikován šedým vodičem (u starších AT
+zdrojů je to oranžový vodič PW_Good)
+Tento signál je klíčový pro zajištění stability systému, protože CPU a další
+komponenty mohou být resetovány, dokud signál PW_OK není aktivní
+Zajišťuje, že všechny napěťové úrovně (+3.3V, +5V, +12V) jsou na svých správných
+hodnotách, což chrání hardware před poškozením
+Po aktivaci signálu PW_OK začíná počítač provádět POST (Power-On Self-Test),
+což je diagnostický proces, který kontroluje funkčnost základních komponent
+systému před spuštěním operačního systému
+Bez signálu PW_OK by systém nemohl být správně spuštěn, což by vedlo k
+nestabilitě nebo selhání při startu počítače
+16. Zdroje
+Parametry zdrojů
+Výkon od 200 W do 1500 W, což určuje, kolik energie může zdroj dodávat k
+připojeným komponentům.
+Maximální poskytované proudy:
+Napájecí zdroje mají specifikované maximální proudy pro jednotlivé napěťové
+větve (+3.3V, +5V, +12V), což je klíčové pro zajištění dostatečného napájení
+komponentů.
+Stabilita napětí při zátěži:
+Důležitá vlastnost, která zaručuje, že napětí zůstává stabilní i při vysoké zátěži. To
+pomáhá chránit hardware před kolísáním napětí, které může vést k poškození.
+Stabilita napětí při kolísání vstupního napětí (220 V):
+Zdroje by měly udržovat stabilní výstupní napětí i při změnách v přívodním
+napětí (např. poklesy nebo výkyvy), což zajišťuje spolehlivost v různých
+podmínkách.
+Schopnost odfiltrování špiček ze sítě:
+Kvalitní napájecí zdroje mají schopnost odfiltrování přepětí a špiček, které
+mohou pocházet z elektrické sítě, což zvyšuje ochranu připojených zařízení.
+Účinnost zdroje:
+Účinnost zdrojů
+Účinnost napájecího zdroje udává poměr mezi množstvím spotřebované energie a
+energií, která je efektivně přenášena na výstupní svorky zdroje. Zbytek energie se
+vyzařuje v podobě tepla.
+Účinnost je vždy menší než 100%, protože část energie se ztrácí ve formě tepla
+během přeměny.
+Čím vyšší je celková účinnost zdroje, tím menší množství tepla se vyprodukuje do
+okolí, což snižuje riziko přehřátí a zvyšuje životnost komponentů.
+Nejlepší účinnost je dosažena při zatížení v rozmezí 50 – 75%. V této oblasti se zdroj
+chová nejefektivněji a minimalizuje tepelné ztráty
+Pokud je zátěž zdroje nízká, jeho účinnost klesá, což může vést k vyšším ztrátám
+energie a tepla.
+Zdroje s certifikací 80 PLUS mají účinnost v rozmezí 80-90% při různých úrovních
+zatížení, což znamená, že jsou efektivnější a mají nižší provozní náklady.
+Účiník: veličina vyjadřující poměr mezi činným (užitečným) a zdánlivým výkonem v
+elektrickém obvodu, zejména v sinusových signálech.
+16. Zdroje
+Power Factor Correction (PFC):
+PFC se snaží eliminovat rušení a výskyt vyšších harmonických složek, které deformují
+sinusový průběh elektrického napětí a proudu.
+Aktivní PFC:
+Realizace: Používá tranzistory a kondenzátory pro regulaci účiníku.
+Složitost: Komplexní zapojení zahrnující aktivní součástky.
+Účinnost: Dokáže korigovat účiník nad hodnotu 0,9, což znamená, že většina
+energie se efektivně využívá.
+Nevýhoda: Může docházet k rušení od tranzistorů, které lze zmírnit použitím
+odrušovacího kondenzátoru.
+Pasivní PFC:
+Realizace: Obsahuje pouze pasivní součástky (rezistory, kondenzátory, cívky).
+Použití: Využívá cívku na vstupu zdroje k omezení špiček, které zdroj odebírá.
+Cíl: Snaží se upravit sinusový průběh a minimalizovat deformace napětí, což
+vede k lepší účinnosti.
+Ochranné funkce zdroje
+1. OCP (Over Current Protection):
+Účel: Ochrana při nadměrném proudu.
+Funkce: Pokud je překročena nastavená hodnota proudu, zdroj se automaticky
+vypne, aby se předešlo poškození komponent.
+2. OVP (Over Voltage Protection):
+Účel: Ochrana proti přepětí.
+Funkce: Zdroj se odpojí, pokud je na některé větvi dosaženo vyššího napětí, než
+povolují normy a limity.
+3. OPP (Over Power Protection):
+Účel: Ochrana proti přetížení výkonu.
+Funkce: Zdroj se vypne, pokud je překročen maximální výkon stanovený
+výrobcem.
+4. OTP (Over Temperature Protection):
+Účel: Ochrana proti přehřátí.
+Funkce: Pokud teplota zdroje překročí maximální hodnotu, zdroj se vypne, aby se
+zabránilo poškození.
+5. SCP (Short Circuit Protection):
+Účel: Ochrana při zkratu.
+Funkce: Aktivuje se, pokud dojde k zkratu v sekundární části zdroje, což pomáhá
+ochránit zdroj i připojené zařízení.
+16. Bios
+BIOS (Basic Input/Output System)
+BIOS je firmware, tedy sada základních programů uložená v paměti základní desky. Jeho
+hlavním úkolem je inicializace a testování hardwaru při startu počítače, zajištění základní
+komunikace mezi hardwarem a operačním systémem a následné předání řízení
+operačnímu systému.
+Funkce BIOSu:
+Inicializace hardwaru při startu (POST)
+Zavedení operačního systému (Boot Loader)
+Zajištění základní komunikace mezi HW a SW
+Umožnění konfigurace základního systému (SETUP)
+Poskytnutí rozhraní (API) pro komunikaci mezi OS a HW
+Složení BIOSu:
+1. BIOS základní desky
+Uložen v paměti typu EPROM nebo nověji Flash ROM (dovoluje aktualizace BIOSu).
+2. BIOS rozšiřujících karet (např. grafických)
+Vlastní firmware, který se detekuje během POST.
+3. Ovladače základních komponent (drivery)
+Pro klávesnici, disk, obrazovku, apod.
+4. POST (Power-On Self-Test)
+5. SETUP utility
+6. Boot Loader (Zavaděč operačního systému)
+7. API (Application Programming Interface)
+Výrobci BIOSu:
+AMI BIOS (American Megatrends Inc.)
+Award BIOS (nyní součást Phoenix Technologies)
+Phoenix BIOS
+POST – Power-On Self Test
+Test vykonávaný ihned po zapnutí počítače.
+Provede komplexní kontrolu hardwaru – RAM, CPU, GPU, disků atd.
+Prohledá BIOS rozšiřujících karet a vypíše verze jejich firmwaru.
+Zobrazí informace o nalezeném hardwaru (např. RAM, procesor, typ disku).
+Nastaví parametry hardwaru podle údajů uložených v CMOS paměti.
+V případě chyby se zastaví a oznámí problém formou beep kódu nebo zprávy na
+obrazovce.
+Boot Loader – Zavaděč OS
+Součást BIOSu, která zahajuje zavádění operačního systému.
+Hledá v prvním sektoru systémového disku MBR (Master Boot Record).
+Načte MBR do operační paměti a spustí kód, který přesměruje řízení na zavaděcí sektor
+(boot record) aktivního oddílu.
+Ten najde na logickém disku zaváděcí soubory operačního systému a načte je do RAM.
+16. Bios
+Proces ve zkratce:
+BIOS → MBR (v RAM)
+MBR → Boot Record aktivního oddílu
+Boot Record → Zaváděcí soubory OS → spuštění OS
+SETUP (BIOS Setup Utility)
+Program umožňující nastavení parametrů hardwaru.
+Spouští se při startu PC stiskem klávesy (zpravidla DEL, F1, F2, F10 – závisí na výrobci).
+Je uložen v EEPROM/Flash a upravuje data uložená v CMOS paměti.
+Umožňuje nastavit např. pořadí bootování, čas, frekvence CPU, režim SATA disků apod.
+CMOS paměť
+Energeticky závislá paměť na základní desce, udržovaná baterií (obvykle CR2032).
+Neobsahuje programy, pouze data, např. nastavení z BIOS Setupu.
+Data lze smazat:
+Přemostěním jumperu na desce.
+Vyjmutím baterie na několik hodin.
+Pokud dojde k vybití baterie, BIOS se resetuje do výchozího nastavení.
+API – Application Programming Interface
+Programové rozhraní mezi hardwarem a softwarem.
+Umožňuje aplikacím přístup ke službám BIOSu bez přímé komunikace s hardwarem.
+Např. místo přímého řízení klávesnice aplikace využívá službu BIOSu.
+DUAL BIOS
+Základní deska má dva čipy s BIOSem – hlavní a záložní.
+Primární BIOS se používá standardně.
+Sekundární BIOS je záložní – aktivuje se v případě poškození primárního BIOSu (např.
+při nepovedeném flashování).
+Chrání uživatele před nutností servisního zásahu.
+Upgrade BIOSu
+Kdy a proč provádět upgrade BIOSu:
+Provádí se pouze tehdy, pokud:
+Nové komponenty nejsou kompatibilní se stávající verzí BIOSu.
+Dochází k chybám nebo nestabilitě systému.
+Výrobce vydal opravu, zlepšení nebo bezpečnostní aktualizaci.
+Postup aktualizace BIOSu:
+1. Zjištění typu základní desky
+2. Stažení správné verze BIOSu
+3. Zálohování důležitých dat
+4. Provedení aktualizace
+Nejčastěji přímo v rozhraní BIOSu (např. pomocí funkce Q-Flash, EZ-Flash, M-Flash
+apod.).
+Dříve se aktualizace prováděla z DOSu nebo pomocí bootovací flashky.
+5. Restart a kontrola funkčnosti
+Po úspěšném flashnutí BIOSu se systém automaticky restartuje.
+16. Bios
+Start PC (proces BIOSu při zapnutí)
+1. Inicializace hardwaru:
+BIOS prohlédne všechny sloty – např. PCI, AGP, patice CPU, RAM, rozhraní
+SATA/NVMe.
+Z každé komponenty načte informace (např. ID zařízení, kapacitu, verzi firmwaru).
+2. Vytvoření a uložení ESCD:
+Vytvoří tzv. ESCD (Extended System Configuration Data) – konfigurace
+systémových zařízení.
+Uloží je do CMOS paměti, aby nemusel při každém startu znovu zjišťovat konfiguraci.
+3. Provádí se POST (Power-On Self-Test):
+Ověření funkčnosti RAM, CPU, klávesnice, grafiky a dalších základních komponent.
+V případě úspěchu pokračuje proces bootování, v případě chyby zobrazí chybový
+kód/zvuk.
+4. Inicializace ovladačů základních periferií:
+Načtení základních drivrů BIOSu pro klávesnici, zobrazení, diskové jednotky atd.
+5. Zobrazení seznamu hardwaru:
+Na obrazovce se objeví diagnostické informace o CPU, RAM, discích, verzích BIOSu
+apod. (volitelné nastavením v Setupu).
+6. Vyhledání bootovacího zařízení:
+Na základě priorit nastavených v BIOS Setupu, BIOS hledá zařízení s operačním
+systémem (např. SSD, HDD, USB).
+Po nalezení načte zavaděč OS (MBR/GPT, bootloader) do operační paměti.
+7. Předání řízení OS:
+Bootloader následně načte ovladače operačního systému, aby mohly aplikace
+komunikovat přes API s hardwarem.
+16. EUFI
+UEFI (Unified Extensible Firmware Interface)
+UEFI je moderní firmwarové rozhraní, které nahrazuje starší BIOS. Jedná se o specifikaci
+definující softwarové rozhraní mezi operačním systémem a firmwarem hardwaru. Hlavním
+cílem UEFI je odstranit omezení klasického BIOSu a zefektivnit start systému i podporu
+nových technologií.
+Hlavní výhody UEFI oproti BIOSu:
+1. Moderní architektura:
+BIOS je postaven na 16bitovém assembleru – omezení při práci s 64bitovým
+hardwarem.
+UEFI běží v 32bitovém nebo 64bitovém režimu, což umožňuje využít plný výkon
+moderního hardware.
+2. Standardizace:
+BIOS nemá jednotnou specifikaci – každý výrobce implementuje BIOS po svém.
+UEFI je standardizováno (dle UEFI Forum) – zajišťuje konzistenci napříč výrobci a
+zařízeními.
+3. Rychlejší bootování a probouzení:
+Lepší optimalizace boot procesu i obnovení z hibernace (např. na SSD) díky
+paralelní inicializaci HW.
+4. Podpora disků větších než 2,2 TB:
+UEFI podporuje GPT (GUID Partition Table), která umožňuje používat disky až do
+velikosti 9,4 ZB.
+BIOS je omezen MBR tabulkou, která zvládne max. 2,2 TB.
+5. Lepší zabezpečení – Secure Boot:
+Funkce Secure Boot ověřuje digitální podpisy zaváděných součástí (bootloader,
+ovladače).
+Zabraňuje spuštění neautorizovaného kódu – chrání před bootkity a rootkity.
+6. Grafické rozhraní a síťové funkce:
+UEFI může mít uživatelsky přívětivé GUI a podporu ovládání myší.
+Umí bootovat z LAN přes IPv4/IPv6 a využívat pokročilé funkce (např. vzdálený
+management).
+7. Zpětná kompatibilita s BIOSem:
+Legacy BIOS mode (CSM – Compatibility Support Module) umožňuje spouštění
+starších OS a aplikací určených pro klasický BIOS.
+Fáze bootování UEFI:
+1. PEI (Pre-EFI Initialization):
+Inicializuje klíčový hardware:
+CPU, RAM, Chipset
+Připraví systém pro další fázi a detekuje paměťové moduly.
+2. DXE (Driver Execution Environment):
+Inicializuje zbývající hardware – síťové karty, disky, USB atd.
+Na rozdíl od BIOSu probíhá paralelně – rychlejší start.
+3. BDS (Boot Device Selection):
+Na základě priorit určí, odkud se zavede OS.
+4. TSL (Transient System Load):
+Zavede OS bootloader a předá mu řízení.
+16. EUFI
+BIOS vs. UEFI – Srovnání
+Oba představují firmwarové rozhraní mezi hardwarem a operačním systémem, které slouží
+ke spuštění počítače.
+UEFI je však moderní náhrada klasického BIOSu a přináší řadu technických vylepšení.
+Vlastnost
+BIOS
+UEFI
+Vzhled
+Textový, jednoduché
+modro-bílé menu
+Moderní, často grafické GUI, možnost
+ovládání myší
+Ovládání
+Pouze klávesnice
+Klávesnice i myš, podpora scrollování,
+intuitivní rozhraní
+Architektura
+16bit, adresuje max. 1
+MB paměti
+32/64bit, zvládá větší paměti i kapacitu
+disků
+Podpora disků
+Max. 2,2 TB (MBR)
+Až 9,4 ZB (GPT), podpora více disků a více
+oddílů
+Formát oddílů
+MBR – max. 4 primární
+oddíly
+GPT – až 128 primárních oddílů, záloha a
+kontrola integrity
+Zavaděč OS
+V MBR disku –
+jednoduchý boot sector
+ESP oddíl (FAT32) s více zavaděči a boot
+manažery
+Zabezpečení
+Žádná vnitřní ochrana
+Secure Boot – ochrana před malwarem,
+bootkity, neautorizovanými OS
+Bootování
+Pomalejší, lineární
+inicializace
+Rychlé, paralelní inicializace HW,
+efektivnější start
+Kompatibilita
+Starší systémy, jako
+Windows 7 a dříve
+Moderní systémy (Windows 8+, Linux s UEFI
+podporou), ale může emulovat BIOS (CSM)
+16. EUFI
+Rozdíl v bootování: BIOS vs. UEFI
+BIOS bootování:
+1. Spustí se BIOS → inicializuje CPU, RAM, grafiku, I/O.
+2. Provede POST, zkontroluje základní komponenty.
+3. Vyhledá boot sektor (MBR) na vybraném zařízení.
+4. Z MBR zavede zavaděč operačního systému (např. Windows Boot Manager).
+5. Ovladače HW se načítají až po spuštění OS.
+UEFI bootování:
+1. Spustí se UEFI → paralelně inicializuje CPU, RAM, disky, síťové a další zařízení.
+2. UEFI má vlastní vestavěný boot manager.
+3. Vyhledá ESP (EFI System Partition) – speciální oddíl naformátovaný jako FAT32.
+4. Z ESP načte potřebný bootloader (např. bootx64.efi) a předá mu řízení.
+5. Windows (nebo jiný OS) používá UEFI ovladače už od startu (např. pro disky, síť, grafiku).
+Poznámka: UEFI neumí bootovat ze systémů naformátovaných jako NTFS – vyžaduje ESP
+oddíl ve FAT32. Výjimkou jsou některá instalační média.
+16. EUFI
+UEFI – Proces výběru a zavedení operačního systému
+1. Inicializace systému:
+Po zapnutí počítače probíhá základní kontrola:
+Zjištění, zda jsou hlavní komponenty (deska, CPU, RAM) pod napětím a funkční.
+Poté se spustí UEFI firmware, který inicializuje základní hardware.
+2. Načtení boot manageru:
+UEFI firmware načítá boot manager z pevného disku nebo jiného paměťového média.
+Hledá se na ESP oddílu (EFI System Partition), který je formátovaný jako FAT32.
+3. Spuštění zavaděče OS (bootloaderu):
+Boot manager spustí příslušný zavaděč OS, typicky:
+bootx64.efi pro 64bitové systémy.
+grubx64.efi (např. pro Linux).
+Bootloader pak načítá operační systém.
+4. Kontrola digitálních podpisů (Secure Boot):
+Pokud je v UEFI aktivní Secure Boot, systém ověřuje:
+Digitální podpis bootloaderu, jádra OS i ovladačů.
+Nepodepsané komponenty nebo neautorizované OS (např. neoficiální Linux
+distribuce) nebudou spuštěny.
+Cílem je ochrana proti malwaru, bootkitům a rootkitům.
+Pokud některá komponenta není podepsaná platným certifikátem, UEFI zastaví boot proces.
+Instalace OS přes UEFI režim
+1. Příprava instalačního média:
+Používá se USB flash disk nebo DVD, které je:
+Bootovatelné
+Naformátované jako FAT32 (NTFS není podporováno pro boot přes UEFI!)
+Obsahuje správnou UEFI strukturu: např. /EFI/BOOT/bootx64.efi
+2. Nastavení pořadí bootování v UEFI Setupu:
+Po zapnutí počítače se vstoupí do UEFI Setupu (např. klávesou DEL, F2 nebo ESC).
+V sekci Boot order nastavíš jako první zařízení USB/DVD s OS.
+3. Alternativa – ruční spuštění instalace z UEFI Shellu:
+Pokud se instalace nespustí automaticky:
+a. Spusť EFI Shell (z menu UEFI).
+b. Vyber správnou jednotku (např. fs0:).
+c. Přepni se do adresáře: cd EFI\BOOT
+d. Spusť instalační soubor: bootx64.efi
+e. Spustí se instalační program operačního systému.
+16. EUFI
+Nastavení SETUPu v BIOSu
+Přístup do BIOS Setupu:
+Do nastavení BIOSu (tzv. BIOS Setup Utility) se vstupuje po zapnutí počítače stiskem
+speciální klávesy.
+Nejčastější klávesy:
+DEL, F1, F2, F10, případně ESC
+Klávesa se liší podle výrobce základní desky (informace bývá zobrazena při startu PC
+– např. "Press DEL to enter Setup").
+Hlavní záložky a možnosti v BIOS Setupu
+1. Main
+Přehled základních systémových informací:
+Verze BIOSu
+Typ a frekvence procesoru
+Velikost RAM
+Zapnutí/vypnutí Hyper-Threadingu (u CPU Intel)
+2. Advanced
+Rozšířené možnosti konfigurace:
+Aktivace/deaktivace periferií (např. SATA, USB, integrovaná GPU)
+Správa IRQ (přerušení), řadičů a portů
+HW monitoring – teplota CPU, otáčky ventilátorů, napětí
+Nastavení USB režimů (např. USB Legacy Support)
+3. Performance / OC / Ai Tweaker (název závisí na výrobci)
+Možnosti přetaktování:
+Frekvence CPU, RAM, napětí (Vcore, DRAM)
+Nastavení XMP profilů pro paměti
+Monitoring teplot při přetaktování
+4. Security
+Ochrana systému:
+Nastavení uživatelského a administrátorského hesla pro přístup do BIOSu
+Funkce Chassis Intrusion – detekce otevření skříně
+TPM modul, BIOS Lock, Secure Boot (v UEFI)
+5. Power / APM
+Řízení napájení:
+Režimy spánku (S1, S3, S4)
+Wake-on-LAN (probuzení přes síť)
+Nastavení chování po výpadku napájení
+6. Boot
+Nastavení bootování systému:
+Boot priority – pořadí zařízení, ze kterých se má systém zavést (např. SSD, USB, DVD)
+Povolení/zakázání Fast Boot
+UEFI/Legacy Boot mód
+7. Exit
+Možnosti ukončení nastavení:
+Save Changes and Exit – uloží změny a restartuje PC
+Discard Changes and Exit – neuloží změny
+Load Setup Defaults – načte výchozí (tovární) nastavení
+16. EUFI
+Nastavení SETUPu v BIOSu
+Přístup do BIOS Setupu:
+Do nastavení BIOSu (tzv. BIOS Setup Utility) se vstupuje po zapnutí počítače stiskem
+speciální klávesy.
+Nejčastější klávesy:
+DEL, F1, F2, F10, případně ESC
+Klávesa se liší podle výrobce základní desky (informace bývá zobrazena při startu PC
+– např. "Press DEL to enter Setup").
+Hlavní záložky a možnosti v BIOS Setupu
+1. Main
+Přehled základních systémových informací:
+Verze BIOSu
+Typ a frekvence procesoru
+Velikost RAM
+Zapnutí/vypnutí Hyper-Threadingu (u CPU Intel)
+2. Advanced
+Rozšířené možnosti konfigurace:
+Aktivace/deaktivace periferií (např. SATA, USB, integrovaná GPU)
+Správa IRQ (přerušení), řadičů a portů
+HW monitoring – teplota CPU, otáčky ventilátorů, napětí
+Nastavení USB režimů (např. USB Legacy Support)
+3. Performance / OC / Ai Tweaker (název závisí na výrobci)
+Možnosti přetaktování:
+Frekvence CPU, RAM, napětí (Vcore, DRAM)
+Nastavení XMP profilů pro paměti
+Monitoring teplot při přetaktování
+4. Security
+Ochrana systému:
+Nastavení uživatelského a administrátorského hesla pro přístup do BIOSu
+Funkce Chassis Intrusion – detekce otevření skříně
+TPM modul, BIOS Lock, Secure Boot (v UEFI)
+5. Power / APM
+Řízení napájení:
+Režimy spánku (S1, S3, S4)
+Wake-on-LAN (probuzení přes síť)
+Nastavení chování po výpadku napájení
+6. Boot
+Nastavení bootování systému:
+Boot priority – pořadí zařízení, ze kterých se má systém zavést (např. SSD, USB, DVD)
+Povolení/zakázání Fast Boot
+UEFI/Legacy Boot mód
+7. Exit
+Možnosti ukončení nastavení:
+Save Changes and Exit – uloží změny a restartuje PC
+Discard Changes and Exit – neuloží změny
+Load Setup Defaults – načte výchozí (tovární) nastavení
+16. EUFI
+Obnovení výchozího nastavení – Load Setup Defaults
+Používá se při potížích se startem počítače nebo po chybném přetaktování.
+Tato volba nastaví BIOS zpět do výchozího bezpečného stavu.
+Pokud se systém vůbec nespustí, lze nastavení resetovat fyzicky:
+Přemostěním jumperu "Clear CMOS" na základní desce (zkrat na pár sekund).
+Nebo vyjmutím CMOS baterie (CR2032) na několik minut.
+16. EUFI
+Nastavení SETUPu v UEFI
+Vzhled a ovládání:
+UEFI Setup má moderní a uživatelsky přívětivé grafické rozhraní (GUI).
+Ovládání je velmi intuitivní:
+Plná podpora myši i klávesnice.
+Navigace mezi záložkami pomocí klikání, možnost přetahování prvků (např. pořadí
+bootování).
+Hlavní obrazovka obvykle zobrazuje:
+Teploty a napětí komponent.
+Informace o CPU, RAM, frekvenci, verzi UEFI.
+Možnosti přetaktování (OC), boot priority, monitoring a další.
+Upgrade UEFI (tzv. Flash UEFI BIOS):
+Postup:
+1. Zjistit přesný typ základní desky (model a revizi).
+2. Stáhnout nejnovější verzi UEFI firmware ze stránek výrobce.
+3. Uložit soubor s firmwarem na:
+USB flash disk (doporučeno, musí být formátovaný na FAT32).
+Alternativně pevný disk, ale nemusí být vždy detekován.
+4. Spustit UEFI Setup a otevřít funkci pro aktualizaci UEFI:
+Názvy se liší dle výrobce: např. EZ Flash, M-Flash, Q-Flash, Instant Flash apod.
+5. Vybrat médium se souborem a spustit proces aktualizace.
+Zabezpečení – nastavení hesla v BIOS/UEFI
+Sekce: Security
+Zde lze nastavit různá úrovně přístupu pomocí hesel:
+Supervisor Password (Administrátorské heslo):
+Umožňuje přístup do nastavení UEFI Setupu.
+Po zadání tohoto hesla je možné:
+Měnit pokročilá nastavení systému.
+Provádět upgrade firmwaru.
+Povolit nebo zakázat další přístupy.
+User Password (Uživatelské heslo):
+Omezený přístup – uživatel může používat počítač, ale nemá přístup do UEFI Setupu.
+Typicky se používá v kancelářích, školách nebo u rodinných PC jako ochrana proti
+nechtěným změnám.
+Lze nastavit, aby BIOS/UEFI vyžadoval heslo při každém startu nebo pouze při vstupu do
+Setupu.
+16. EUFI

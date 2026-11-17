@@ -1,0 +1,426 @@
+{
+"n": 11,
+"t": "IP adresace a směrování",
+"outline": [
+"Třídní adresování, třídy, vyhrazené adresy",
+"IP a MAC, síťová karta, výchozí brána, broadcast, prefix, maska, VLSM, CIDR",
+"Počet podsítí/hostů, síťová a broadcast adresa, velikost bloku, wildcard maska",
+"Návrh topologie s VLSM",
+"Sumarizace",
+"Směrovač a směrovací tabulka",
+"Statické vs. dynamické směrování",
+"RIP, IGRP, EIGRP, OSPF; Cisco Packet Tracer"
+],
+"q": [
+[
+"Rozsah třídy A?",
+"0.0.0.0 – 127.255.255.255",
+"128.0.0.0 – 191.255.255.255",
+"192.0.0.0 – 223.255.255.255",
+"224.0.0.0 – 239.255.255.255"
+],
+[
+"Rozsah třídy B?",
+"128.0.0.0 – 191.255.255.255",
+"0.0.0.0 – 127.255.255.255",
+"192.0.0.0 – 223.255.255.255",
+"240.0.0.0 – 255.255.255.255"
+],
+[
+"Rozsah třídy C?",
+"192.0.0.0 – 223.255.255.255",
+"128.0.0.0 – 191.255.255.255",
+"224.0.0.0 – 239.255.255.255",
+"10.0.0.0 – 10.255.255.255"
+],
+[
+"K čemu je třída D (224–239)?",
+"Multicast",
+"Experimentální",
+"Velké sítě",
+"Loopback"
+],
+[
+"Třída E (240–255) slouží k…",
+"Experimentálním a rezervním účelům",
+"Multicastovému vysílání (IPTV)",
+"Malým sítím s 254 hosty",
+"Všesměrovému vysílání (broadcast)"
+],
+[
+"Počet hostů v síti třídy C?",
+"254",
+"256",
+"65 534",
+"126"
+],
+[
+"Výchozí maska třídy B?",
+"255.255.0.0 (/16)",
+"255.0.0.0 (/8)",
+"255.255.255.0 (/24)",
+"255.255.240.0 (/20)"
+],
+[
+"Jakými bity začíná třída C?",
+"110",
+"0",
+"10",
+"1110"
+],
+[
+"MAC broadcast adresa?",
+"FF:FF:FF:FF:FF:FF",
+"00:00:00:00:00:00",
+"255.255.255.255",
+"01:00:5E:00:00:00"
+],
+[
+"Broadcast sítě 192.168.1.0/24?",
+"192.168.1.255",
+"192.168.1.0",
+"192.168.1.254",
+"255.255.255.0"
+],
+[
+"Co znamená prefix /32?",
+"Přesně jednu IP adresu",
+"Všechny IP adresy (výchozí trasa)",
+"Celou síť třídy A",
+"Celou síť s 254 hosty"
+],
+[
+"Co je VLSM?",
+"Podsítě s maskou proměnné délky",
+"Pevná maska pro všechny podsítě",
+"Typ VLAN",
+"Směrovací protokol"
+],
+[
+"Který protokol NEpodporuje VLSM?",
+"RIP v1",
+"RIP v2",
+"OSPF",
+"EIGRP"
+],
+[
+"Adresa sítě se zjistí operací…",
+"AND mezi IP a maskou",
+"OR mezi IP a maskou",
+"XOR mezi IP a maskou",
+"NOT nad maskou"
+],
+[
+"Broadcast se zjistí operací…",
+"OR mezi IP a wildcard maskou",
+"AND mezi IP a maskou",
+"XOR mezi IP a maskou",
+"AND mezi IP a wildcard"
+],
+[
+"Wildcard maska k 255.255.255.192?",
+"0.0.0.63",
+"0.0.0.192",
+"255.255.255.63",
+"0.0.0.64"
+],
+[
+"Počet hostů pro /26?",
+"62",
+"64",
+"30",
+"126"
+],
+[
+"Počet hostů pro /27?",
+"30",
+"32",
+"62",
+"14"
+],
+[
+"Počet hostů pro /30?",
+"2",
+"4",
+"0",
+"6"
+],
+[
+"Velikost bloku pro masku 255.255.255.224?",
+"32",
+"224",
+"64",
+"16"
+],
+[
+"Sítě /26 v jednom C bloku začínají na…",
+"0, 64, 128, 192",
+"0, 32, 64, 96",
+"0, 128, 192, 224",
+"0, 26, 52, 78"
+],
+[
+"Broadcast sítě 192.168.1.0/26?",
+"192.168.1.63",
+"192.168.1.64",
+"192.168.1.255",
+"192.168.1.62"
+],
+[
+"Platní hosté sítě 192.168.1.64/26?",
+".65 – .126",
+".64 – .127",
+".65 – .127",
+".1 – .62"
+],
+[
+"Při návrhu VLSM začínáme…",
+"Od největší sítě",
+"Od nejmenší sítě",
+"Náhodně",
+"Od sítí /30"
+],
+[
+"Sumarizace 192.168.0.0/24 až 192.168.3.0/24?",
+"192.168.0.0/22",
+"192.168.0.0/23",
+"192.168.0.0/16",
+"192.168.3.0/22"
+],
+[
+"Proč se dělá sumarizace?",
+"Zmenší směrovací tabulky (1 trasa místo více)",
+"Zvýší počet hostů v každé podsíti",
+"Zašifruje provoz mezi směrovači",
+"Rozdělí síť do více VLAN podle portů"
+],
+[
+"Čím se liší switch od hubu?",
+"Switch posílá jen na cílový port, každý port = vlastní kolizní doména",
+"Hub si pamatuje MAC tabulku, switch posílá data na všechny porty",
+"Switch pracuje na 3. vrstvě a směruje pakety podle IP adres",
+"Hub dělí síť na kolizní domény, switch vytváří jednu společnou"
+],
+[
+"Na které vrstvě pracuje router?",
+"3. síťové",
+"2. linkové",
+"1. fyzické",
+"4. transportní"
+],
+[
+"Co router udělá s paketem bez záznamu ve směrovací tabulce (a bez default route)?",
+"Zahodí ho",
+"Pošle broadcastem",
+"Vrátí odesílateli",
+"Uloží"
+],
+[
+"Co obsahuje záznam směrovací tabulky?",
+"Cílovou síť, výstupní rozhraní (next-hop), metriku",
+"MAC adresy všech klientů v síti a čísla jejich portů",
+"DNS jména a k nim IP adresy",
+"Uživatelská jména a hesla pro přístup"
+],
+[
+"Metrika RIP je…",
+"Počet skoků (hop count)",
+"Šířka pásma linky",
+"Zpoždění (delay)",
+"Cena cesty (cost)"
+],
+[
+"Výhoda statického směrování?",
+"Nízká zátěž CPU, žádná režie na lince, bezpečnost",
+"Automaticky reaguje na výpadky linek a hledá náhradní cestu",
+"Je vhodné hlavně pro velké sítě",
+"Nevyžaduje znalost topologie sítě"
+],
+[
+"Výchozí administrativní vzdálenost statické trasy s next-hop IP?",
+"1",
+"0",
+"90",
+"120"
+],
+[
+"Co dělá parametr permanent u ip route?",
+"Trasa zůstane i při výpadku rozhraní",
+"Trasa se po restartu routeru smaže",
+"Trasa dostane nejvyšší prioritu",
+"Uloží konfiguraci do NVRAM"
+],
+[
+"IGP vs. EGP?",
+"IGP uvnitř autonomního systému, EGP mezi AS (BGP)",
+"IGP mezi autonomními systémy, EGP uvnitř (RIP)",
+"Jsou to dva názvy pro stejnou skupinu protokolů",
+"IGP je pro kabelové sítě, EGP jen pro Wi-Fi"
+],
+[
+"RIP posílá aktualizace…",
+"Celé tabulky každých 30 s",
+"Jen při změně topologie (diferenciálně)",
+"Každých 90 s s metrikou zpoždění",
+"Hello pakety každých 10 s sousedům"
+],
+[
+"Max. počet skoků RIP?",
+"15 (16 = nedosažitelná)",
+"255 (256 = nedosažitelná)",
+"Neomezeně (podle cost)",
+"31 (32 = nedosažitelná)"
+],
+[
+"OSPF je…",
+"Link-state protokol, otevřený standard",
+"Distance-vector protokol od firmy Cisco",
+"Hybridní Cisco protokol s algoritmem DUAL",
+"Exterior Gateway protokol mezi AS (BGP)"
+],
+[
+"Páteřní oblast OSPF?",
+"Area 0 (backbone)",
+"Area 1 (primární)",
+"Area 255 (hraniční)",
+"Žádná, všechny oblasti jsou rovné"
+],
+[
+"Jak často posílá OSPF Hello pakety?",
+"Každých 10 s",
+"Každých 30 s",
+"Každých 90 s",
+"Jen při startu"
+],
+[
+"Jak se volí OSPF Router ID?",
+"Nejvyšší IP adresa rozhraní",
+"Nejnižší MAC adresa rozhraní",
+"Náhodně při každém startu",
+"Podle sériového čísla routeru"
+],
+[
+"EIGRP je…",
+"Hybridní Cisco protokol s algoritmem DUAL",
+"Link-state protokol a otevřený standard (area 0)",
+"Distance-vector protokol s maximem 15 skoků",
+"Exterior Gateway protokol mezi autonomními systémy"
+],
+[
+"IGRP aktualizuje…",
+"Každých 90 s, max. 255 skoků, AD 100",
+"Každých 30 s, max. 15 skoků, AD 120",
+"Jen při změně topologie, algoritmus DUAL",
+"Každých 10 s Hello pakety, metrika cost"
+]
+],
+"terms": [
+[
+"Třída A",
+"0–127, /8"
+],
+[
+"Třída B",
+"128–191, /16"
+],
+[
+"Třída C",
+"192–223, /24"
+],
+[
+"Třída D",
+"Multicast 224–239"
+],
+[
+"Wildcard maska",
+"Negace masky"
+],
+[
+"VLSM",
+"Proměnná délka masky"
+],
+[
+"CIDR",
+"Zápis s lomítkem /prefix"
+],
+[
+"Sumarizace",
+"Sloučení tras do jedné"
+],
+[
+"RIP",
+"Hop count, 30 s, max 15"
+],
+[
+"OSPF",
+"Link-state, area 0, cost"
+],
+[
+"EIGRP",
+"Hybridní Cisco, DUAL"
+],
+[
+"IGRP",
+"Cisco DV, 90 s"
+],
+[
+"AD",
+"Důvěryhodnost trasy"
+],
+[
+"Next-hop",
+"IP dalšího routeru"
+]
+],
+"open": [
+{
+"q": "Popiš třídní adresování a základní pojmy (IP, MAC, maska, prefix, CIDR, VLSM).",
+"k": [
+"IPv4 32 b (0–255 v oktetu), IPv6 128 b hex",
+"Třídy A /8, B /16, C /24, D multicast, E experimentální",
+"MAC 48 b, broadcast FF:FF…; ARP",
+"Maska odděluje NET a HOST část, prefix /n",
+"CIDR – beztřídní zápis; VLSM – různé masky (RIP v2, OSPF, EIGRP)"
+]
+},
+{
+"q": "Jak zjistíš síťovou a broadcast adresu, počet hostů a velikost bloku?",
+"k": [
+"Síť = IP AND maska",
+"Broadcast = IP OR wildcard (negace masky)",
+"Hosté = 2^(nemaskované bity) − 2",
+"Blok = 256 − poslední oktet masky",
+"Sítě na násobcích bloku, broadcast = poslední adresa bloku"
+]
+},
+{
+"q": "Jak navrhneš topologii pomocí VLSM a sumarizaci?",
+"k": [
+"Začni od největší sítě",
+"Blok vyplývá z masky, sítě od 0 na násobcích bloku",
+"Sítě se nesmí překrývat",
+"Sumarizace: více sítí do jedné trasy, např. 4× /24 → /22",
+"Síťová adresa sumarizace = první síť bloku"
+]
+},
+{
+"q": "Popiš směrovač, směrovací tabulku a statické/dynamické směrování.",
+"k": [
+"Router: L3, min. 2 rozhraní, směrovací tabulka",
+"Záznam: cílová síť + maska, rozhraní/next-hop, metrika",
+"Statické: ip route, AD 1 (next-hop) / 0 (rozhraní), permanent; levné, bezpečné, nereaguje na výpadky",
+"Výchozí směrování",
+"Dynamické: protokoly IGP/EGP, vyšší zátěž CPU"
+]
+},
+{
+"q": "Porovnej směrovací protokoly RIP, IGRP, EIGRP a OSPF.",
+"k": [
+"RIP: distance-vector, hop count max 15, 30 s; v1 třídní, v2 VLSM",
+"IGRP: Cisco DV, 90 s, max 255, AD 100, složená metrika",
+"EIGRP: hybridní Cisco, DUAL, aktualizace jen při změně, VLSM",
+"OSPF: link-state, otevřený, area 0, cost, Hello 10 s, Router ID, multicast"
+]
+}
+]
+}

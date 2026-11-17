@@ -1,0 +1,7 @@
+zdroj/app*.html
+zdroj/maturitni-deska*.html
+zdroj/build/__pycache__/
+electron/node_modules/
+electron/dist/
+electron/app.html
+electron/materialy/

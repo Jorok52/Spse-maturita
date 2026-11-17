@@ -1,0 +1,381 @@
+13. Fyzická struktura
+HDD: charakteristiky, technologie
+magnetického záznamu a čtení
+01 Princip
+dat, základní pojmy, charakteristika HDD
+02 Geometrie HDD - stopa, sektor, cylindr
+03 Vystavovací mechanismy, teplotní kalibrace
+04
+Přístupová doba, kódování, prekompenzace,
+ZBR, MTBF, SMART
+výběru a zavedení OS, instalace OS
+05 Proces
+přes UEFI
+13. Fyzická struktura HDD
+Princip magnetického záznamu a čtení dat (fyzická struktura HDD)
+Konstrukce a základní složení disku:
+Samotný disk (plotna) je vyroben z nemagnetického materiálu, jako je:
+hliník
+sklo
+keramika
+Povrch disku je potažen tenkou vrstvou feromagnetického materiálu, který umožňuje
+uchovávání dat pomocí magnetických změn. Nejčastěji:
+oxid železitý (Fe₂O₃)
+často bývá smíchán s oxidem manganu (MnO) nebo oxidem barnatým (BaO) pro
+zlepšení vlastností.
+Tento povrch má vysokou permeabilitu → znamená to, že materiál dobře vede
+magnetické pole a umožňuje tak snadnou změnu magnetizace.
+Magnetické domény:
+Povrch je rozdělen na mikroskopické oblasti zvané magnetické domény.
+Každá doména má určitou orientaci magnetického momentu.
+Informace jsou uloženy jako změny orientace těchto domén:
+orientace domény např. "doleva" = 0
+orientace domény "doprava" = 1
+Princip zápisu dat (TF – thin-film head = tenkovrstvá hlava)
+Zápisová hlava obsahuje elektromagnetickou cívku, která vytváří magnetické pole.
+Cívka má úzkou štěrbinu, která může být vyplněna materiálem s nízkou
+permeabilitou, aby se zabránilo nechtěnému ovlivnění okolních domén.
+Když cívkou protéká elektrický proud, vznikne magnetické pole, které přemagnetizuje
+doménu na disku a tím změní její orientaci.
+Změnou směru proudu v cívce:
+měníme směr magnetického pole → mění se i směr magnetizace domény
+takto se zapisuje binární informace (1 a 0)
+13. Fyzická struktura HDD
+Hysterezní smyčka
+Při zápisu dat na pevný disk se využívá vlastnost feromagnetických materiálů, které si
+dokážou „pamatovat“, jestli byly zmagnetizované jedním nebo druhým směrem. Tomuto
+jevu se říká hystereze a znázorňuje se pomocí hysterezní smyčky.
+Zápisová hlava vytvoří magnetické pole, které změní směr magnetizace v malé části
+povrchu disku – magnetické doméně. Díky hysterezi zůstane tato změna zachovaná i po
+vypnutí magnetického pole, což umožňuje trvalé uložení dat.
+Důležité pojmy:
+Remanence – zbytková magnetizace: data zůstávají uložena i bez napájení.
+Koercitivní síla – velikost magnetického pole, která je potřeba pro přepsání dat.
+Graf ukazuje, jak se chová feromagnetický materiál, když na něj působíme magnetickým
+polem (H). Osa H je síla magnetického pole (např. od zápisové hlavy) a osa B je výsledná
+magnetizace materiálu – tedy jestli si doména „pamatuje“ jedničku nebo nulu.
+0 – výchozí stav
+Tady začínáme, když na materiál nepůsobí žádné magnetické pole (H = 0) a materiál není zmagnetizovaný (B = 0).
+V reálu se ale HDD nikdy nepoužívá ve stavu 0 – vždy je tam nějaká magnetizace z předchozího zápisu.
+E – plná magnetizace jedním směrem (1)
+Když začneme zvyšovat magnetické pole (H doprava), materiál se postupně zmagnetizuje až na maximum (Bs =
+saturační magnetizace).
+Tohle odpovídá tomu, že doména „nese“ například jedničku (1).
+Po vypnutí pole – Br (remanence)
+Když magnetické pole vypneme (H = 0), materiál zůstane částečně zmagnetizovaný – to je bod Br.
+Díky tomu si materiál pamatuje, že tam byla jednička – to je princip trvalého zápisu!
+Přepnutí na nulu – Hc (koercitivní síla)
+Abychom změnili doménu na opačný stav (např. nula), musíme přepólovat materiál.
+To se děje, když použijeme záporné magnetické pole, které dosáhne síly Hc – to je tzv. koercitivní síla.
+Po jejím dosažení se doména přepne na opačný směr → uložíme nulu (0).
+F – opačná saturace
+Pokud budeme záporné pole dál zvyšovat, dostaneme se do opačné saturace (-Bs) – doména je plně magnetizovaná
+opačným směrem.
+Opět, když vypneme pole, zůstane remanentní magnetizace –Br (nula se „pamatuje“).
+Shrnutí (co z toho vyplývá)
+HDD funguje tak, že zápisová hlava mění směr magnetického pole.
+Tím přepíná domény mezi dvěma stavy – 1 a 0.
+Díky hysterezi se tento stav uchová i bez napájení.
+Remanence (Br) = trvalý zápis.
+Koercitivní síla (Hc) = síla potřebná k přepsání dat.
+13. Fyzická struktura HDD
+Princip čtení dat (MR hlava = Magnetorezistivní hlava)
+Moderní disky používají místo klasického principu indukce MR (magnetorezistivní)
+nebo GMR (obří magnetorezistence) čtecí hlavy.
+Jak funguje čtení u MR hlavy:
+MR hlava má magnetorezistivní prvek, který se pohybuje nad záznamovou vrstvou.
+Když tento prvek přechází přes různě zmagnetizované domény, mění se jeho
+elektrický odpor.
+Změna odporu se převádí na změnu elektrického signálu, který elektronika disku
+překládá na digitální hodnoty – tedy 0 a 1.
+Rozdíl oproti zápisu:
+Při zápisu: Proud v cívce vytváří magnetické pole.
+Při čtení: Změny magnetického pole ovlivňují odpor MR prvku → vzniká elektrický
+signál.
+Shrnutí rozdílu mezi hlavami:
+Zápis - TF (Thin-Film): Elektromagnetická cívka mění magnetické pole a přepisuje domény
+Čtení - MR (Magnetorezistivní): Magnetická doména mění odpor MR prvku podle
+orientace pole
+Způsoby magnetického zápisu: LMR vs PMR
+1. Podélný zápis (LMR – Longitudinal Magnetic Recording)
+Bity jsou uloženy vodorovně (podélně) vůči plotně disku.
+Směr magnetizace jednotlivých domén je rovnoběžný s povrchem plotny.
+Používal se ve starších discích – jednoduchá výroba, ale s vývojem nestačil nárokům
+na vyšší hustotu záznamu.
+Nevýhody:
+Při vyšší hustotě záznamu dochází k jevu zvanému paramagnetismus:
+vzájemné magnetické ovlivňování sousedních domén → ztráta stability dat.
+Domény vzájemně interferují, nelze je udržet izolovaně → dochází ke ztrátě
+informace.
+Omezená kapacita: přiblížením domén dochází k nežádoucí demagnetizaci.
+13. Fyzická struktura HDD
+2. Kolmý zápis (PMR – Perpendicular Magnetic Recording)
+Využívá kolmou (svislou) orientaci magnetických domén vůči povrchu disku.
+Umožňuje hustší uložení dat – až 5× vyšší hustotu než LMR.
+Klíčové prvky PMR:
+1. Asymetrický elektromagnet:
+generuje magnetické pole směřující do hloubky záznamové vrstvy, nikoli do šířky,
+tím snižuje rušení mezi sousedními bity.
+2. Stabilizační vrstva:
+nachází se pod záznamovou vrstvou,
+její úkolem je zachytit magnetické pole a stabilizovat svislou magnetizaci.
+Výhody PMR:
+Vyšší hustota zápisu → až pětinásobná kapacita oproti LMR.
+Větší stabilita dat – domény se neovlivňují tak snadno jako při podélném zápisu.
+Využívá se v moderních pevných discích.
+Základní pojmy
+Hustota zápisu
+Udává, kolik bitů lze uložit na jednotku plochy povrchu disku.
+Měří se v bit/palec² (bpi²).
+Čím vyšší hustota, tím větší kapacita disku při stejné velikosti.
+Např. v roce 2012 firma Seagate dosáhla hustoty záznamu 1 Tbit/palec² (technologický
+milník).
+Záznamová vrstva
+Nachází se na povrchu plotny disku.
+Je tvořena feromagnetickým materiálem (např. oxid železitý, CoCrPt sloučeniny).
+Slouží k uchovávání dat změnou orientace magnetických domén.
+Data se zde zapisují i čtou pomocí pohybující se hlavičky.
+Parkování hlaviček
+Proces, kdy se zapisovací/čtecí hlavičky po vypnutí disku "odstaví" z povrchu disku,
+aby nedošlo k poškození.
+13. Fyzická struktura HDD
+Dva způsoby parkování:
+Do středu disku – hlavičky se pomalu dosednou na neaktivní část plotny (na tzv.
+rampu) pomocí vzduchového polštáře.
+Nevýhoda: při nárazu může dojít k poškození záznamové vrstvy.
+Mimo plotny disku – modernější řešení, kdy hlavičky vyjedou a zaparkují vedle disku.
+Výhoda: vyšší bezpečnost proti otřesům.
+Vzduchový polštář
+Velmi tenká vrstva vzduchu, na které se hlavička vznáší nad rotující plotnou.
+Výška vznášení je v řádu mikrometrů (μm) – naprosto přesné vzdálenosti.
+Filtrace vnitřního prostředí HDD:
+Recirkulační filtr – zachytává mikroskopické částečky (např. prach vzniklý třením
+hlavy o disk).
+Barometrický filtr – vyrovnává tlak uvnitř HDD pomocí ventilu, který:
+při změně tlaku nasává nebo vypouští vzduch,
+zajišťuje stabilní vnitřní prostředí, důležité pro funkci vzduchového polštáře.
+Počet otáček za minutu (RPM – Revolutions Per Minute)
+Udává rychlost rotace plotny disku.
+Typické hodnoty: (není potřeba nějak znát)
+Notebooky: 4200 – 5400 ot/min
+Stolní PC: 5400 – 7200 ot/min
+Servery/Workstation: 10000 – 15000 ot/min
+Vyšší RPM = rychlejší přístup k datům, ale také vyšší hluk, teplo a spotřeba.
+Fyzické formátování (Low Level Format – LLF)
+Provádí se výrobcem disku – uživatel LLF běžně neprovádí.
+Vytváří se tzv. nízkoúrovňová struktura disku – rozdělení na stopy, sektory a cylindry.
+Používá se laser a přesné proudy v cívce vystavovacího mechanismu (aktuátor).
+Cílem je:
+kalibrace vystavovacích cívek, přesné nastavení pozic hlaviček, maximální
+přesnost záznamu.
+Charakteristika pevných disků
+HDD je PC zařízení sloužící k trvalému nebo dočasnému ukládání dat.
+Ukládají se zde:
+operační systém (OS)
+programy
+uživatelská data (soubory, dokumenty, multimédia...)
+Data se ukládají pomocí magnetické indukce – změna magnetizace v záznamové
+vrstvě reprezentuje binární informace (1 a 0).
+Výhody:
+Velká kapacita (až v řádech TB)
+Nízká cena za 1 GB
+Nevýhody:
+Mechanické části → náchylnost k poškození při otřesech nebo pádu
+Vyšší spotřeba energie než SSD, hlučnější provoz
+13. Fyzická struktura HDD
+Geometrie HDD
+Geometrie disku popisuje logické a fyzické rozložení dat na plotnách disku. Zahrnuje
+pojmy stopa, sektor, cylindr:
+Stopa (Track)
+Je to soustředná kružnice na povrchu plotny.
+Slouží k záznamu dat při otáčení disku.
+Na každé plotně je tisíce stop, číslují se od obvodu (0) směrem ke středu.
+Moderní parametry:
+Šířka stopy: 30–50 nm
+(limit perpendikulární technologie: ~25 nm)
+Hustota: 30 000 – 50 000 TPI (tracks per inch – stop na palec)
+Sektor (Sector)
+Je to kruhová výseč jedné stopy.
+Představuje nejmenší adresovatelnou jednotku disku.
+Čísluje se proti směru otáčení disku, od 1.
+Struktura sektoru:
+1.Identifikační část – určuje polohu:
+CHS – Cylinder / Head / Sector
+2.Datová část – obvykle 512 B (u novějších disků může být 4096 B – tzv. Advanced
+Format)
+3.CRC (Cyclic Redundancy Check) – zabezpečení integrity dat
+Cylindr (Cylinder)
+Vzniká prolnutím všech stop se stejným průměrem na více plotnách.
+Představuje sadu stop, které jsou v zákrytu nad sebou.
+Např. pokud má disk 4 plotny, jeden cylindr tvoří 4 stopy na stejné pozici na každé
+plotně.
+Vlastnosti:
+Čísluje se od obvodu dovnitř (stejně jako stopy).
+Počet cylindrů = počet stop na jedné plotně.
+13. Fyzická struktura HDD
+Adresování – CHS vs LBA
+CHS (Cylinder – Head – Sector)
+Starší způsob adresace dat na disku podle fyzické geometrie.
+Trojrozměrné číslování:
+C – cylindr
+H – hlavička
+S – sektor
+Každý sektor je určen souřadnicemi CHS.
+Číslování začíná od 001, první sektor na disku obsahuje:
+MBR (Master Boot Record)
+Partition table
+LBA (Logical Block Addressing)
+Modernější způsob adresace, nahrazuje CHS.
+Funguje pomocí lineárního číslování bloků – každý sektor má jedinečné číslo.
+Není třeba znát fyzickou geometrii disku (která už u moderních disků neodpovídá realitě).
+Číslování od 0 – např. CHS 001 = LBA 0
+48bitová LBA adresa = možnost adresovat až 2⁴⁸ bloků, tj. až 128 milionů GB (128 PB)
+Vystavovací mechanismus (aktuátor)
+Zajišťuje pohyb hlavičky nad požadovanou stopu.
+Princip moderního aktuátoru:
+Cívka s vinutím je uložena v permanentním magnetickém poli.
+Změnou proudu v cívce → vznikne magnetická síla, která pohybuje ramenem s hlavičkami.
+Např.:
+proud 2 mA = stopa 0
+proud 4 mA = stopa 1
+Výhody:
+velmi vysoká přesnost a rychlost
+bez mechanického tření → vyšší spolehlivost
+TCAL – Teplotní kalibrace
+Při provozu se disk zahřívá, což způsobuje:
+dilatační změny (roztahování kovových částí)
+nepatrné posunutí polohy hlaviček - mohou se naklánět a třít záznamovou vrstvu
+Řešení:
+Pravidelná kalibrace hlaviček vůči stopám.
+Moderní disky provádí teplotní kalibraci automaticky za chodu.
+Zajišťuje stabilitu přesnosti čtení/zápisu.
+13. Fyzická struktura HDD
+Přístupová doba (Access Time)
+Doba, za kterou je disk schopen najít a pracovat s požadovanými daty.
+Skládá se z:
+1. Vystavovací doba (Seek Time) – čas, než se hlavička přesune nad správnou stopu
+2. Rotační latence – čekání, než se správný sektor dostane pod hlavičku (závisí na RPM)
+3. Přepnutí hlavičky – výběr správné hlavičky, řádově nanosekundy
+Průměrná přístupová doba u HDD: ~8–15 ms
+Největší zpoždění způsobují mechanické části (pohyb hlavičky a otáčení disku).
+Prokládání (Interleaving)
+Kvůli vysoké rychlosti otáčení disku může dojít k tomu, že:
+Po přečtení jednoho sektoru a jeho zpracování se hlavička "nestihne" přesunout na
+další sektor → je už pryč.
+Musí se čekat na další otočku → zpomalení.
+Řešení: Faktor prokládání (Interleave factor)
+Data se nezapisují do po sobě jdoucích sektorů, ale např. do každého n-tého sektoru.
+Faktor 1:n:
+Např. při faktoru 1:3 jsou sektory zapsány takto: 1, 4, 7...
+Po zpracování sektoru 1 je právě nad hlavou sektor 4 → není třeba čekat.
+Zvyšuje efektivitu přenosu dat u pomalejších systémů zpracování (starší řadiče, CPU).
+13. Fyzická struktura HDD
+Kódování dat na pevném disku
+Obecný princip:
+Data jsou na disku reprezentována změnami magnetického toku.
+Změna z kladného na záporný (nebo opačně) = impuls, který je detekován při čtení.
+Přítomnost nebo nepřítomnost impulsu odpovídá binárnímu zápisu (1 a 0).
+Problém nastává u dlouhé řady nul (mezer) → může dojít ke ztrátě synchronizace řadiče.
+Řešení: použití kódovacích metod, které zajišťují pravidelné impulsy kvůli synchronizaci.
+Typy kódování:
+FM
+Jednoduché, ale zastaralé.
+0 → PN (impuls, mezera)
+1 → PP (impuls, impuls)
+Nevýhoda: Příliš mnoho impulsů → nízká hustota záznamu.
+MFM - stačí jen zmínit, není třeba znát dopodrobna
+Snížení počtu impulsů pro vyšší hustotu:
+0 → PN (pokud následuje další 0)
+0 → NN (pokud následuje 1)
+1 → NP
+Úspora až 20 % oproti FM.
+RLL (Run Length Limited)
+Data jsou kódována tak, aby mezi impulsy bylo:
+minimálně 2 a maximálně 7 mezer
+Úspora až 50 % oproti MFM.
+Používá se u starších HDD, ale efektivní.
+PRML, EPRML (Partial Response Maximum Likelihood)
+Moderní pokročilé metody:
+Používají matematické modely a filtry.
+Předpovídají, jaký bit byl pravděpodobně zapsán.
+Vyšší přesnost při vysoké hustotě zápisu.
+Prekompenzace - spíš nezmiňovat, každý má na definici jiný názor
+Problém: Stopy blíže středu disku jsou kratší a hustší, což vede ke slučování
+magnetických bitů → ztráta dat.
+Řadič proto předem upravuje zápis dat tak, aby vliv magnetických polí mezi bity
+nezpůsoboval chyby.
+Umožňuje stabilní záznam i v těsnějším prostředí → bez prekompenzace by byla data ve
+středu disku nestálá.
+ZBR – Zone Bit Recording (Zónový záznam)
+Disk je rozdělen do zón – každá zóna obsahuje různý počet sektorů na stopu.
+Na vnějších stopách (delších) je více sektorů, uvnitř méně.
+Velikost sektorů je všude stejná (např. 512 B), ale jejich počet na stopu se mění.
+Výhoda: vyšší využití prostoru disku, rovnoměrné zatížení.
+13. Fyzická struktura HDD
+MTBF – Mean Time Between Failures
+Střední doba mezi poruchami – ukazuje spolehlivost zařízení.
+Získává se:
+prakticky: provozem více disků až do poruchy → průměr
+simulačně: zátěžové testy a statistika
+Např. hodnota 1 000 000 h MTBF znamená teoreticky 1 porucha na milion hodin provozu.
+Pozor: MTBF neznamená, že disk vydrží milion hodin – je to statistický průměr pro velké
+množství disků.
+SMART – Self Monitoring, Analysis and Reporting Technology
+Monitorovací systém zabudovaný do disku.
+Sleduje vnitřní parametry HDD v reálném čase.
+Umožňuje předvídat poruchy a včas varovat uživatele (např. systémem).
+Předvídatelné chyby (SMART je detekuje):
+Výška hlaviček
+Počet vadných sektorů
+Čas roztočení disku
+Teplota disku
+Nepředvídatelné chyby:
+Výpadek napájení
+Mechanické poškození (např. pád)
+Přehřátí
+Vnější magnetické pole
+SMART data lze zobrazit např. přes programy: CrystalDiskInfo, HDDScan, nebo BIOS/UEFI.
+Moderní záznamové technologie HDD
+SMR – Shingled Magnetic Recording (Šindelový záznam)
+U SMR se magnetické stopy mírně překrývají – podobně jako šindele na střeše.
+Zápisová hlava vytváří širší stopu, než je potřeba ke čtení.
+Stopy se překrývají tak, že se zachová čitelnost, ale zvýší se hustota zápisu.
+Vhodné pro sekvenční zápis dat (např. zálohy, archivy), nevhodné pro častý přepis.
+Výhoda: vyšší kapacita na stejném prostoru
+Nevýhoda: přepis dat v překrytých stopách je pomalý – nutnost přepisovat celé bloky.
+HAMR – Heat-Assisted Magnetic Recording
+Laserem se zahřeje velmi malá oblast záznamové vrstvy → dočasně se sníží její koercitivita
+(odolnost proti změně magnetizace).
+Poté se do zahřátého místa zapisuje pomocí klasické magnetické hlavy.
+Záznamová vrstva je z materiálů, které reagují na magnetické pole pouze při vyšších
+teplotách (např. slitiny železa a platiny).
+Po ochlazení se záznam "uzamkne" → velmi stabilní.
+Výhoda: extrémní hustota zápisu, vysoká odolnost dat
+Nevýhoda: složitá a drahá výroba, vyšší energetické nároky
+Cíl: zdvojnásobení kapacity disků oproti PMR/SMR
+13. Fyzická struktura HDD
+MAMR – Microwave-Assisted Magnetic Recording
+Nahřívá záznamovou oblast pomocí mikrovlnného záření.
+Využívá spin-torque oscilátor, který vytváří lokální vysokofrekvenční pole (GHz) → snižuje
+potřebné magnetické pole pro přepis.
+Funguje při nižších teplotách než HAMR → levnější a spolehlivější na výrobu.
+Výhoda: vysoká hustota zápisu bez potřeby laseru
+Použití: alternativní technologie pro budoucí generace HDD
+Technologie
+Princip
+Výhoda
+Nevýhoda
+SMR
+Překrývání stop
+Vysoká kapacita
+Pomalejší přepis
+HAMR
+Laserové zahřátí místa
+před zápisem
+Velmi vysoká hustota a
+stabilita
+Výroba, teplotní zátěž
+MAMR
+Zahřátí mikrovlnami
+Menší složitost než HAMR
+Vyžaduje speciální řadiče

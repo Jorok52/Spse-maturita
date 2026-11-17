@@ -1,0 +1,455 @@
+{
+"n": 10,
+"t": "Komunikace a rozdělení datových sítí",
+"outline": [
+"PAN, LAN, MAN, WAN; ISP, IoT, QoS; IP vs. MAC adresa",
+"Unicast, multicast, anycast, broadcast",
+"Topologie: sběrnice, kruh, hvězda, strom",
+"CSMA/CD, CSMA/CA, Token Ring",
+"Kabeláž 10Base5, 10Base2, 10BaseT; přímý vs. křížený kabel",
+"ISO/OSI model, (de)enkapsulace, srovnání s TCP/IP"
+],
+"q": [
+[
+"Síť do cca 10 m pro osobní zařízení (Bluetooth, NFC)?",
+"PAN",
+"LAN",
+"MAN",
+"WAN"
+],
+[
+"Síť pokrývající celé město propojující LAN optikou?",
+"MAN",
+"PAN",
+"WAN",
+"VLAN"
+],
+[
+"Příklad WAN?",
+"Internet",
+"Domácí Wi-Fi",
+"Bluetooth sluchátka",
+"Školní učebna"
+],
+[
+"Co je QoS?",
+"Řízení priorit provozu (latence, jitter, ztrátovost)",
+"Poskytovatel internetového připojení (O2, Vodafone, T-Mobile)",
+"Síť propojených chytrých zařízení",
+"Standard kabeláže pro rychlý Ethernet"
+],
+[
+"Opak QoS?",
+"Best Effort",
+"Unicast",
+"Token",
+"Full duplex"
+],
+[
+"Na které vrstvě OSI pracuje MAC adresa?",
+"2. linkové",
+"3. síťové",
+"1. fyzické",
+"4. transportní"
+],
+[
+"Kolik bitů má MAC adresa?",
+"48",
+"32",
+"128",
+"64"
+],
+[
+"Co označuje OUI v MAC adrese?",
+"Výrobce síťové karty",
+"Číslo sítě, do které karta patří",
+"Pořadové číslo portu na switchi",
+"Typ zařízení (PC, tiskárna, router)"
+],
+[
+"Kolik bitů má IPv4 a IPv6?",
+"32 a 128",
+"48 a 64",
+"16 a 32",
+"64 a 256"
+],
+[
+"Příkaz pro zjištění MAC adresy ve Windows?",
+"getmac /v /fo list",
+"ipconfig /renew",
+"tracert 8.8.8.8",
+"netstat -an"
+],
+[
+"Co dělá DHCP?",
+"Automaticky přiděluje IP, masku, bránu a DNS",
+"Překládá doménová jména na IP adresy",
+"Přenáší soubory mezi klientem a serverem",
+"Šifruje webový provoz pomocí TLS"
+],
+[
+"Port HTTP a HTTPS?",
+"80 a 443",
+"21 a 22",
+"53 a 80",
+"25 a 110"
+],
+[
+"FTP používá porty…",
+"20 (data) a 21 (řízení)",
+"22 (SSH) a 23 (Telnet)",
+"80 (data) a 8080 (řízení)",
+"53 (DNS) a 67 (DHCP)"
+],
+[
+"Port DNS?",
+"53",
+"25",
+"67",
+"443"
+],
+[
+"DNS záznam pro IPv6?",
+"AAAA",
+"A",
+"MX",
+"CNAME"
+],
+[
+"DNS záznam pro e-mailový server?",
+"MX",
+"A",
+"CNAME",
+"PTR"
+],
+[
+"Broadcast znamená…",
+"Jeden všem v síti",
+"Jeden jednomu",
+"Jeden skupině",
+"Jeden nejbližšímu"
+],
+[
+"Příklad multicastu?",
+"IPTV, online rádio, videokonference",
+"DHCP žádost o IP adresu",
+"Načtení webové stránky",
+"Dotaz na DNS server 8.8.8.8"
+],
+[
+"Anycast znamená…",
+"Komunikace s nejbližším uzlem ze skupiny",
+"Komunikace se všemi uzly v síti",
+"Komunikace s jedním konkrétním uzlem",
+"Komunikace s přihlášenou skupinou uzlů"
+],
+[
+"Které protokoly používají broadcast?",
+"ARP, DHCP",
+"HTTP, HTTPS",
+"SMTP, POP3",
+"FTP, SSH"
+],
+[
+"Co zabraňuje odrazům signálu ve sběrnicové topologii?",
+"Terminátory na koncích",
+"Switch uprostřed sběrnice",
+"Token předávaný mezi stanicemi",
+"Hub na každém konci kabelu"
+],
+[
+"Jak se vysílá v kruhové topologii?",
+"Vysílá jen stanice s tokenem",
+"Vysílá kdokoli, kdykoli je médium volné",
+"Vše jde přes centrální switch",
+"Každá stanice vysílá broadcastem"
+],
+[
+"Hlavní nevýhoda hvězdy?",
+"Výpadek centrálního uzlu shodí síť",
+"Kolize na společném kabelu",
+"Obtížná diagnostika poruch",
+"Potřebuje málo kabelů, ale je pomalá"
+],
+[
+"Stromová topologie je…",
+"Hierarchické rozšíření hvězdy",
+"Uzavřený kruh s tokenem",
+"Jeden společný koaxiální kabel",
+"Síť bez centrálního uzlu (mesh)"
+],
+[
+"Které FDDI zvyšuje odolnost?",
+"Dvojitý kruh (dual-ring)",
+"Terminátory na obou koncích",
+"Tlustý koaxiální kabel",
+"Hub uprostřed kruhu"
+],
+[
+"CSMA/CD se používá v…",
+"Kabelovém Ethernetu",
+"Bezdrátových sítích Wi-Fi",
+"Sítích Token Ring",
+"Bluetooth (PAN)"
+],
+[
+"Co se pošle při kolizi u CSMA/CD?",
+"JAM signál",
+"Token",
+"CTS rámec",
+"ACK rámec"
+],
+[
+"CSMA/CA kolizím předchází pomocí…",
+"Backoff čekání a RTS/CTS",
+"JAM signálu po zjištění kolize",
+"Tokenu předávaného mezi stanicemi",
+"Terminátorů na koncích vedení"
+],
+[
+"Kdo vygeneruje nový token, když se ztratí?",
+"Aktivní monitor",
+"Switch, ke kterému je kruh připojen",
+"Router s výchozí branou sítě",
+"DHCP server v lokální síti"
+],
+[
+"Max. délka segmentu 10Base5?",
+"500 m",
+"200 m",
+"100 m",
+"1000 m"
+],
+[
+"Max. délka segmentu 10Base2?",
+"200 m",
+"500 m",
+"100 m",
+"50 m"
+],
+[
+"10BaseT používá…",
+"Kroucenou dvojlinku, max. 100 m",
+"Tlustý koaxiální kabel, max. 500 m",
+"Optické vlákno, max. 2 km",
+"Tenký koax s T konektory, max. 200 m"
+],
+[
+"Křížený kabel použijeme pro…",
+"PC – PC, switch – switch, router – router",
+"PC – switch, router – switch, PC – hub",
+"Router – switch, PC – hub, PC – switch",
+"PC – hub, switch – hub, router – switch"
+],
+[
+"Přímý kabel použijeme pro…",
+"PC – switch",
+"PC – PC",
+"Router – router",
+"Switch – switch"
+],
+[
+"Kolik vrstev má ISO/OSI?",
+"7",
+"4",
+"5",
+"6"
+],
+[
+"Která vrstva OSI šifruje a komprimuje?",
+"Prezentační (6)",
+"Relační (5)",
+"Aplikační (7)",
+"Transportní (4)"
+],
+[
+"Která vrstva navazuje a ukončuje relace?",
+"Relační (5)",
+"Transportní (4)",
+"Síťová (3)",
+"Prezentační (6)"
+],
+[
+"PDU transportní vrstvy je…",
+"Segment",
+"Paket",
+"Rámec",
+"Datagram"
+],
+[
+"PDU síťové vrstvy je…",
+"Paket",
+"Segment",
+"Rámec",
+"Bit"
+],
+[
+"PDU linkové vrstvy je…",
+"Rámec",
+"Paket",
+"Segment",
+"Zpráva"
+],
+[
+"Co přidává linková vrstva při zapouzdření?",
+"Hlavičku a patičku s MAC adresami (CRC)",
+"Hlavičku se zdrojovou a cílovou IP adresou",
+"Číslování segmentů a potvrzování TCP",
+"Šifrování a kompresi uživatelských dat"
+],
+[
+"Co se stane s rámcem při nesouhlasu CRC?",
+"Zahodí se",
+"Opraví se",
+"Pošle se dál",
+"Převede se na paket"
+],
+[
+"Kolik vrstev má TCP/IP?",
+"4",
+"7",
+"3",
+"5"
+],
+[
+"Kterou OSI vrstvu odpovídá Internet Layer TCP/IP?",
+"Síťové",
+"Transportní",
+"Linkové",
+"Aplikační"
+],
+[
+"Co je výchozí brána (default gateway)?",
+"IP adresa nejbližšího routeru, přes který jdou pakety mimo místní síť",
+"MAC adresa switche, ke kterému je počítač připojený, a přes který jdou všechny rámce",
+"Adresa DNS serveru, který překládá jména",
+"Broadcast adresa sítě pro zprávy všem zařízením"
+],
+[
+"Typická výchozí brána v domácí síti?",
+"192.168.0.1 nebo 192.168.1.1",
+"255.255.255.0 nebo 255.255.0.0",
+"8.8.8.8 nebo 1.1.1.1",
+"127.0.0.1 nebo 0.0.0.0"
+]
+],
+"terms": [
+[
+"PAN",
+"Osobní síť do 10 m"
+],
+[
+"LAN",
+"Místní síť"
+],
+[
+"MAN",
+"Městská síť"
+],
+[
+"WAN",
+"Rozlehlá síť"
+],
+[
+"Unicast",
+"Jeden → jeden"
+],
+[
+"Broadcast",
+"Jeden → všichni"
+],
+[
+"Multicast",
+"Jeden → skupina"
+],
+[
+"Anycast",
+"Jeden → nejbližší"
+],
+[
+"CSMA/CD",
+"Detekce kolizí, Ethernet"
+],
+[
+"CSMA/CA",
+"Předcházení kolizím, Wi-Fi"
+],
+[
+"Token Ring",
+"Vysílá držitel tokenu"
+],
+[
+"10Base5",
+"Tlustý koax, 500 m"
+],
+[
+"10Base2",
+"Tenký koax, 200 m"
+],
+[
+"10BaseT",
+"Kroucená dvojlinka, 100 m"
+],
+[
+"Segment / paket / rámec",
+"Transportní / síťová / linková"
+]
+],
+"open": [
+{
+"q": "Vysvětli základní pojmy sítí.",
+"k": [
+"PAN (10 m, Bluetooth), LAN, MAN (město, optika), WAN (internet)",
+"ISP, IoT, QoS (priority, latence, jitter) vs. Best Effort",
+"NIC, DHCP, HTTP 80/HTTPS 443, FTP 20/21, DNS 53 (A, AAAA, MX, CNAME)",
+"IP (L3, IPv4 32b, IPv6 128b) vs. MAC (L2, 48b, OUI)",
+"Výchozí brána"
+]
+},
+{
+"q": "Popiš způsoby komunikace v sítích.",
+"k": [
+"Unicast – 1:1, web, e-mail",
+"Broadcast – 1:všichni, 255.255.255.255, ARP, DHCP",
+"Multicast – 1:skupina, IPTV, videokonference",
+"Anycast – 1:nejbližší, DNS 8.8.8.8, CDN"
+]
+},
+{
+"q": "Popiš topologie sítí.",
+"k": [
+"Fyzická vs. logická topologie",
+"Sběrnice: koax, terminátory, levná, kolize, porucha kabelu",
+"Kruh: token, bez kolizí, citlivý na přerušení, FDDI dual-ring",
+"Hvězda: switch, spolehlivá, závislost na centru",
+"Strom: hierarchie, škálovatelnost, VLAN"
+]
+},
+{
+"q": "Popiš CSMA/CD, CSMA/CA a Token Ring.",
+"k": [
+"CSMA/CD: Ethernet, poslech, kolize → JAM, backoff; non/1/p-persistent",
+"CSMA/CA: Wi-Fi, backoff, RTS/CTS",
+"Token Ring: token, žádné kolize, deterministický, aktivní monitor, nahrazen Ethernetem"
+]
+},
+{
+"q": "Popiš kabeláž Ethernetu.",
+"k": [
+"10Base5: tlustý koax 10 mm, 50 Ω, 500 m, 100 stanic, transceiver",
+"10Base2: tenký koax, 200 m, T konektor",
+"10BaseT: kroucená dvojlinka, hvězda, 100 m, CSMA/CD, half/full duplex",
+"Přímý (PC–switch) vs. křížený (stejná zařízení)"
+]
+},
+{
+"q": "Popiš ISO/OSI model, zapouzdření a srovnání s TCP/IP.",
+"k": [
+"7 vrstev: fyzická, linková, síťová, transportní, relační, prezentační, aplikační",
+"Zapouzdření: data → segment → paket → rámec → bity",
+"Odpouzdření: CRC na linkové, IP na síťové, sestavení na transportní",
+"TCP/IP: 4 vrstvy (síťový přístup, internet, transport, aplikace); prakticky používaný, starší (ARPANET)"
+]
+}
+]
+}

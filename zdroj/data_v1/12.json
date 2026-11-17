@@ -1,0 +1,456 @@
+{
+"n": 12,
+"t": "Unix",
+"outline": [
+"Charakteristika systému, srovnání s MS Windows",
+"Adresářová struktura",
+"Uživatelský a programátorský interface: příkazy, roury, skripty, proměnné, vrstvy",
+"Služby Telnet, SSH, FTP, DNS, DHCP",
+"Virtualizace Unixu na MS Windows"
+],
+"q": [
+[
+"Kde vznikl UNIX?",
+"AT&T Bell Labs (Thompson, Ritchie)",
+"Microsoft Research (Gates, Allen)",
+"IBM Watson Lab (Backus)",
+"MIT (Stallman, Torvalds)"
+],
+[
+"V jakém jazyce je UNIX převážně napsán?",
+"C",
+"Assembler",
+"Pascal",
+"Java"
+],
+[
+"Proč je UNIX přenositelný?",
+"Je napsán v C",
+"Má GUI",
+"Je proprietární",
+"Běží jen na x86"
+],
+[
+"Jak UNIX přistupuje k zařízením?",
+"Jako k souborům (např. /dev/sda)",
+"Jako k písmenům jednotek (C:, D:)",
+"Přes registr systému a ovladače",
+"Přes speciální porty v BIOSu"
+],
+[
+"Jakým znakem končí řádky textu v UNIXu?",
+"LF (\\n, 0x0A)",
+"CR+LF (\\r\\n, 0x0D0A)",
+"CR (\\r, 0x0D)",
+"NUL (\\0, 0x00)"
+],
+[
+"Co znamená .. v cestě?",
+"Nadřazený adresář",
+"Aktuální adresář",
+"Kořenový adresář /",
+"Domovský adresář ~"
+],
+[
+"Absolutní cesta začíná…",
+"/ (kořenem)",
+"./ (aktuálním adresářem)",
+"~ (domovským adresářem)",
+"..\\ (nadřazeným adresářem)"
+],
+[
+"Rozlišuje UNIX velikost písmen v názvech?",
+"Ano (file.txt ≠ File.txt)",
+"Ne (file.txt = File.txt)",
+"Jen u adresářů, ne u souborů",
+"Jen u přípon souborů"
+],
+[
+"Adresář s konfiguračními soubory?",
+"/etc",
+"/bin",
+"/var",
+"/dev"
+],
+[
+"Adresář se soubory zařízení?",
+"/dev",
+"/etc",
+"/mnt",
+"/lib"
+],
+[
+"Systémové příkazy pro roota?",
+"/sbin",
+"/bin",
+"/home",
+"/tmp"
+],
+[
+"Kde jsou logy, fronty tiskáren a e-maily?",
+"/var",
+"/tmp",
+"/etc",
+"/usr"
+],
+[
+"Připojovací bod pro externí disky?",
+"/mnt",
+"/dev",
+"/boot",
+"/srv"
+],
+[
+"Co dělá fork()?",
+"Vytvoří kopii procesu (potomka)",
+"Nahradí kód procesu novým programem",
+"Ukončí proces",
+"Čeká na potomka"
+],
+[
+"Co vrací fork() v potomkovi?",
+"0",
+"PID potomka",
+"−1",
+"PID rodiče"
+],
+[
+"Co dělá exec()?",
+"Načte nový program do adresního prostoru procesu",
+"Vytvoří kopii procesu jako nového potomka",
+"Ukončí rodiče a předá řízení potomkovi",
+"Pošle procesu signál k ukončení"
+],
+[
+"Kdy vzniká zombie proces?",
+"Potomek skončil, ale rodič nezavolal wait()",
+"Proces je uspán a čeká na signál od jiného",
+"Proces čeká na dokončení I/O operace",
+"Rodič skončil dřív a potomek běží dál"
+],
+[
+"Rozsah hodnot nice?",
+"−20 (nejvyšší priorita) až +19 (nejnižší)",
+"0 (nejvyšší) až 255 (nejnižší)",
+"1 (nejnižší) až 10 (nejvyšší)",
+"−19 (nejnižší) až +20 (nejvyšší)"
+],
+[
+"Kdo smí zadat zápornou hodnotu nice?",
+"Jen root",
+"Kdokoli",
+"Nikdo",
+"Jen vlastník souboru"
+],
+[
+"Kterým příkazem změníš prioritu běžícího procesu?",
+"renice",
+"nice",
+"kill -9",
+"chmod"
+],
+[
+"Co dělá roura (pipe) |?",
+"Stdout jednoho příkazu posílá na stdin druhého",
+"Přesměruje výstup příkazu do souboru",
+"Spustí oba příkazy na pozadí najednou",
+"Spojí obsah dvou souborů do jednoho"
+],
+[
+"Jak se nazývá řetězec příkazů spojených rourami?",
+"Kolona (pipeline)",
+"Skript (script)",
+"Démon (daemon)",
+"Relace (session)"
+],
+[
+"Operace Dijkstrova semaforu?",
+"P (čekej) a V (uvolni)",
+"GET (čti) a SET (nastav)",
+"OPEN (otevři) a CLOSE (zavři)",
+"PUSH (vlož) a POP (vyber)"
+],
+[
+"Nejrychlejší IPC metoda dle podkladů?",
+"Sdílená paměť (nutná synchronizace)",
+"Signály (asynchronní oznámení)",
+"Sockety přes síťový protokol",
+"Soubory na disku a roury"
+],
+[
+"Signál, který nelze zachytit ani ignorovat?",
+"SIGKILL (kill -9)",
+"SIGTERM (kill -15)",
+"SIGINT (Ctrl+C)",
+"SIGHUP (kill -1)"
+],
+[
+"Ctrl+C posílá signál…",
+"SIGINT",
+"SIGKILL",
+"SIGHUP",
+"SIGTERM"
+],
+[
+"SIGHUP vzniká typicky při…",
+"Zavření terminálu (ukončení relace)",
+"Stisku Ctrl+C v terminálu",
+"Chybě přístupu do paměti",
+"Startu nového procesu"
+],
+[
+"Kde shell hledá spustitelné soubory?",
+"V adresářích v proměnné $PATH",
+"Jen v aktuálním pracovním adresáři",
+"V adresáři /etc s konfigurací",
+"V domovském adresáři uživatele"
+],
+[
+"Co dělá pwd?",
+"Vypíše aktuální adresář",
+"Změní heslo uživatele",
+"Vypíše běžící procesy",
+"Vytvoří nový adresář"
+],
+[
+"Co dělá chmod 755 script.sh?",
+"Nastaví práva rwxr-xr-x",
+"Nastaví práva rw-r--r--",
+"Změní vlastníka na uživatele 755",
+"Spustí skript s prioritou 755"
+],
+[
+"Rozdíl diff a cmp?",
+"diff porovnává po řádcích, cmp po bajtech",
+"Žádný, jsou to aliasy stejného příkazu",
+"cmp porovnává po řádcích, diff po bajtech",
+"diff porovnává jen binární soubory"
+],
+[
+"Rozdíl more a less?",
+"less umí listovat oběma směry",
+"more umí listovat oběma směry",
+"Žádný, less je jen novější název",
+"less ukáže jen první řádek souboru"
+],
+[
+"Port Telnetu?",
+"23",
+"22",
+"21",
+"25"
+],
+[
+"Hlavní problém Telnetu?",
+"Nešifruje – hesla i data jdou v čistém textu",
+"Je pomalý, protože vše komprimuje",
+"Nefunguje přes TCP, jen přes UDP",
+"Nemá příkazovou řádku, jen grafické okno"
+],
+[
+"Port SSH?",
+"22",
+"23",
+"443",
+"21"
+],
+[
+"Které nástroje SSH umí přenášet soubory?",
+"scp, sftp",
+"ftp, tftp",
+"telnet",
+"dig"
+],
+[
+"DHCP používá porty…",
+"UDP 67 (server) a 68 (klient)",
+"TCP 20 (data) a 21 (řízení)",
+"UDP 53 (dotazy) a 54 (odpovědi)",
+"TCP 22 (server) a 23 (klient)"
+],
+[
+"Co je DHCP lease?",
+"Časově omezený pronájem IP adresy",
+"Typ DNS záznamu pro IP adresu",
+"Trvale přidělená statická IP adresa",
+"Šifrovací klíč pro zabezpečení DHCP"
+],
+[
+"Co je daemon?",
+"Program běžící na pozadí bez interakce s uživatelem",
+"Virus, který se skrývá mezi procesy a spouští se při startu",
+"Uživatel root s nejvyššími právy",
+"Typ souboru pro zařízení v /dev"
+],
+[
+"Co musí podporovat CPU pro virtualizaci?",
+"Intel VT-x nebo AMD-V",
+"Hyper-Threading",
+"AVX-512 instrukce",
+"SSE4 instrukce"
+],
+[
+"Freeware nástroj pro virtualizaci?",
+"VirtualBox",
+"VMware Workstation",
+"Parallels",
+"Hyper-V Server Enterprise"
+],
+[
+"K čemu je snapshot ve VM?",
+"Uložení stavu VM pro pozdější návrat",
+"Snímek obrazovky virtuálního stroje",
+"Záloha BIOSu hostitelského počítače",
+"Klon celého disku hostitelského systému"
+],
+[
+"Příkaz pro vytvoření uživatele?",
+"useradd",
+"groupadd",
+"passwd",
+"chmod"
+],
+[
+"Co dělá signál SIGQUIT?",
+"Ukončí proces s výpisem jádra (Ctrl+\\)",
+"Násilně zabije proces bez možnosti zachycení",
+"Pozastaví proces",
+"Restartuje terminál"
+],
+[
+"Co SSH kromě šifrování zajišťuje?",
+"Autentizaci, integritu dat a volitelnou kompresi",
+"Jen přidělení IP adresy klientovi pomocí DHCP",
+"Překlad doménových jmen na adresy",
+"Nic dalšího, jen šifruje přenos"
+],
+[
+"Proč UNIX běží od superpočítačů po PC?",
+"Platformová nezávislost díky napsání v C",
+"Protože je napsaný v assembleru",
+"Protože má jednotné grafické rozhraní",
+"Protože ho vyvíjí Microsoft pro všechny"
+]
+],
+"terms": [
+[
+"/etc",
+"Konfigurace"
+],
+[
+"/dev",
+"Zařízení jako soubory"
+],
+[
+"/bin",
+"Základní příkazy"
+],
+[
+"/sbin",
+"Příkazy pro roota"
+],
+[
+"/var",
+"Logy, proměnná data"
+],
+[
+"fork()",
+"Vytvoří potomka"
+],
+[
+"exec()",
+"Nahradí program"
+],
+[
+"wait()",
+"Rodič čeká na potomka"
+],
+[
+"Zombie",
+"Ukončený, nesklizený proces"
+],
+[
+"nice/renice",
+"Priorita procesu"
+],
+[
+"Pipe |",
+"stdout → stdin"
+],
+[
+"SIGKILL",
+"Nezachytitelné ukončení"
+],
+[
+"Telnet",
+"Port 23, nešifrovaný"
+],
+[
+"SSH",
+"Port 22, šifrovaný"
+],
+[
+"Daemon",
+"Služba na pozadí"
+]
+],
+"open": [
+{
+"q": "Charakterizuj UNIX a porovnej ho s Windows.",
+"k": [
+"Víceuživatelský, víceúlohový, AT&T Bell Labs (Thompson, Ritchie)",
+"Napsán v C → přenositelný",
+"Zařízení jako soubory, silný shell, TCP/IP",
+"vs. Windows: open source vs. proprietární, bezpečnost, nároky",
+"Strom od / vs. písmena jednotek; LF vs. CR+LF"
+]
+},
+{
+"q": "Popiš adresářovou strukturu UNIXu.",
+"k": [
+"Jeden kořen /, adresáře jsou soubory",
+"/bin, /sbin, /etc, /home, /dev, /lib, /tmp, /var, /mnt",
+"Absolutní cesta od /, relativní s . a ..",
+"Rozlišuje velikost písmen, max. 255 znaků"
+]
+},
+{
+"q": "Popiš procesy, roury a IPC v UNIXu.",
+"k": [
+"fork (0 v potomkovi, PID v rodiči), exec, exit, wait",
+"Zombie – nesklizený potomek",
+"nice/renice: −20 až +19, záporné jen root",
+"Roura | a kolona (pipeline)",
+"IPC: semafory P/V, sdílená paměť, signály (SIGINT, SIGKILL, SIGTERM, SIGHUP)"
+]
+},
+{
+"q": "Popiš uživatelské rozhraní, příkazy a skripty.",
+"k": [
+"Shell (bash) – interpret, $PATH",
+"ls, cd, pwd, mkdir, rmdir, cp, mv, rm, cat, more/less, grep, find, chmod, head/tail, diff/cmp, sort",
+"Skript: read, if [ ] then else fi",
+"useradd, passwd, groupadd; služby /etc/init.d, chkconfig, daemony"
+]
+},
+{
+"q": "Popiš síťové služby Telnet, SSH, FTP, DNS, DHCP.",
+"k": [
+"Telnet 23 – nešifrovaný",
+"SSH 22 – šifrování, scp/sftp, tunelování",
+"FTP 20/21 – nešifrovaný; FTPS, SFTP; vsftpd",
+"DNS 53 UDP – hierarchie root → TLD → autoritativní",
+"DHCP UDP 67/68 – IP, maska, brána, DNS, lease"
+]
+},
+{
+"q": "Jak virtualizovat Unix na Windows?",
+"k": [
+"VM na hostitelském OS",
+"Požadavky: VT-x/AMD-V zapnuté v BIOS, RAM 4 GB+, místo na disku",
+"VirtualBox (free), VMware, Parallels, MS Virtual PC",
+"Výhody: izolace, snapshoty; nevýhody: nároky, nižší výkon"
+]
+}
+]
+}

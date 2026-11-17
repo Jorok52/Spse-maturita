@@ -1,0 +1,730 @@
+15. Souborové systémy
+FAT, FAT32, NTFS, exFAT
+01
+Struktura logického disku, číslování
+sektorů, cluster
+02
+Zaváděcí záznam, hlavní adresář, typy
+FAT, struktura podadresářů
+FAT, VFAT 16 a VFAT 32,
+03 Rozdíly
+řešení dlouhých názvů
+04
+Chyby FAT systému (programy k tomu
+určené a způsoby jejich odstraňování)
+odstraňování dat,
+05 Bezpečné
+fragmentace a defregmentace disku
+a vnitřní struktura
+06 Charakteristika
+NTFS, porovnání s FAT
+07
+Metasoubory a jejich funkce, struktura
+logického disku NTFS
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Souborové systémy – základní principy a struktura logického disku
+Souborový systém (file system) je sada pravidel a datových struktur, podle kterých operační
+systém (OS) spravuje a organizuje data uložená na paměťových médiích (např. HDD, SSD,
+USB). Umožňuje ukládání, vyhledávání, čtení, zápis a mazání souborů.
+Bez souborového systému by OS nemohl přistupovat k souborům – viděl by jen
+neuspořádaný tok bitů.
+Název
+Využití
+Omezení / Vlastnosti
+FAT12
+Diskety, velmi malá zařízení
+Max. velikost disku ~32 MB,
+max. 4078 clusterů
+FAT16
+Starší verze DOS a Windows
+Max. velikost 2 GB (někdy až 4
+GB), omezení názvů
+VFAT32 (FAT32)
+Windows 95+
+Max. soubor 4 GB, disk max. 2
+TB, podpora dlouhých názvů
+exFAT
+Flash disky, SDXC
+Moderní náhrada FAT32, větší
+soubory (nad 4 GB), bez
+journalingu
+NTFS
+Windows NT/XP a novější
+Podpora práv, šifrování,
+journaling, větší disky i soubory
+Logický disk je logická jednotka vytvořená na fyzickém médiu (např. oddíl disku). Při
+formátování se vytváří struktura, která umožňuje přístup k datům.
+Rozdělení na dvě hlavní oblasti:
+1. Organizační oblast (system area)
+Obsahuje metadata potřebná pro chod souborového systému.
+Boot Record – Zavaděč OS (např. BIOS/UEFI načítá tento sektor při startu), obsahuje
+informace o rozložení disku a typ souborového systému.
+FAT 1 a FAT 2 – Alokační tabulky (File Allocation Tables):
+Uchovávají informaci o tom, které clustery jsou volné, obsazené nebo poškozené.
+Druhá tabulka slouží jako záloha (pro případ poškození první).
+Root Directory – Hlavní adresář. Obsahuje položky (entry) pro soubory a složky, které jsou
+uloženy na nejvyšší úrovni adresářové struktury.
+Celá tato oblast se vytváří během vysokoúrovňového (logického) formátování pomocí např.
+příkazu format.
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+2. Datová oblast
+Hlavní část disku určená pro ukládání obsahu souborů.
+Clustery – Nejmenší adresovatelná jednotka v souborovém systému. Každý soubor na
+disku zabírá minimálně jeden cluster (i když má jen pár bajtů).
+Např. při velikosti clusteru 4 KB zabere i 1B soubor celý 4KB cluster.
+Čím větší disk, tím větší clustery – což zvyšuje plýtvání místem (tzv. vnitřní
+fragmentace).
+Číslování sektorů
+CHS – Cylindr / Hlava / Sektor
+Starší způsob číslování používaný u klasických rotačních disků (HDD):
+Cylindr – skupina stop přes více ploten.
+Hlava (head) – čtecí/zapisovací hlava pro konkrétní plochu plotny.
+Sektor – nejmenší adresovatelná jednotka, obvykle 512 bajtů.
+Číslování:
+Cylindr i hlava začínají od 0
+Sektor začíná od 1
+Nevýhoda: omezení kvůli BIOSu, neškálovatelné na velké disky.
+LBA – Logical Block Addressing
+Modernější způsob adresování sektorů na disku. Používá se od ATA-2 a je standardem dnes.
+Všechny sektory se číslují sekvenčně od 0, bez ohledu na geometrii disku.
+Každý sektor má 512 B (nebo i 4096 B u moderních disků – tzv. AF/Advanced Format).
+28bitová adresa umožňuje zaadresovat:
+228 = 268435456 × 512B = 137 GB
+Novější verze (např. 48bitové LBA) umožňují přístup ke kapacitám v řádech TB a vyšších.
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Cluster
+Cluster je nejmenší adresovatelná jednotka na logickém disku, kterou může operační
+systém vyčlenit pro uložení souboru nebo adresáře.
+Skládá se z určitého počtu sektorů (typicky 512 B na sektor), např. 1 cluster může mít 4
+sektory → 2048 B.
+Velikost clusteru závisí na:
+velikosti disku
+zvoleném souborovém systému (FAT12, FAT16, FAT32)
+Každý cluster má právě jeden jedinečný záznam v FAT tabulce (slouží jako ukazatel nebo
+stavový záznam).
+Číslování clusterů začíná od čísla 2, protože čísla 0 a 1 jsou rezervována pro interní
+použití.
+Pokud soubor zabírá více clusterů, jejich pořadí určuje právě FAT tabulka – tvoří řetězec.
+Výpočty:
+Celkový počet sektorů:
+Kapacita logického disku / 512 B
+Počet sektorů v 1 clusteru (FAT32):
+Celkový počet sektoru / 232 (v praxi závisí na specifikaci a implementaci OS)
+Boot Record (Zaváděcí záznam)
+Jinak nazývaný Volume Boot Record nebo VBR, případně první sektor logického disku.
+Obsahuje klíčové informace potřebné ke spuštění OS a základní konfiguraci svazku.
+Struktura Boot Recordu:
+1.Spouštěcí kód svazku – krátký program spuštěný BIOSem po zapnutí počítače.
+Hledá aktivní oblast, ze které zavede (bootuje) operační systém.
+2.Blok parametrů disku (BPB – BIOS Parameter Block)
+Obsahuje technické informace o svazku:
+velikost sektorů
+počet sektorů v clusteru
+počet FAT tabulek
+počet záznamů v hlavním adresáři
+celková velikost disku atd.
+Důležité poznámky:
+Boot record se vytváří při rozdělení disku (např. pomocí nástroje fdisk, diskpart).
+Je umístěn na úplném začátku disku – adresa CHS = 0/0/1.
+Je součástí MBR (Master Boot Record) – hlavního zaváděcího záznamu disku.
+Root Directory (Hlavní adresář)
+Kořenový adresář logického disku (např. C:\).
+Obsahuje položky pro soubory a složky uložené v nejvyšší úrovni hierarchie.
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Informace uložené pro každý soubor/adresář:
+Název a přípona (např. AUTOEXEC.BAT)
+Velikost souboru v bajtech
+Datum a čas vytvoření / změny / posledního přístupu
+Atributy:
+Read-only, Hidden, System, Volume label, Subdirectory, Archive
+Číslo 1. clusteru, kde začíná obsah souboru/adresáře
+Kontrolní součet názvu (používá se např. u VFAT pro dlouhé názvy)
+U souborového systému FAT se hlavní adresář nachází za druhou FAT tabulkou (FAT2).
+FAT tabulka – File Allocation Table
+Alokační tabulka, podle které je pojmenován celý souborový systém FAT (FAT12, FAT16,
+FAT32).
+Uchovává informace o stavu a návaznosti jednotlivých clusterů na disku.
+Tabulka je vytvářena při logickém formátování disku (tzv. High Level Format).
+Vlastnosti FAT tabulky:
+Každý cluster má jeden záznam v tabulce.
+Na disku se nachází dvě kopie FAT tabulky – druhá slouží jako záloha (ochrana proti
+poškození).
+Umístění: za Boot Recordem.
+Možné hodnoty záznamů v FAT tabulce:
+Hodnota v záznamu
+Význam
+0000h
+Cluster je volný (neobsazený)
+FFF7h
+Vadný cluster (bad sector)
+XXXXh
+Ukazuje na číslo dalšího clusteru v řetězci
+FFF8h – FFFFh
+EOF – konec souboru
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Typy souborového systému FAT (File Allocation Table)
+Souborový systém FAT má tři základní varianty, které se liší šířkou záznamu v tabulce FAT a
+tím i počtem možných clusterů (tedy maximální velikostí disku/svazku):
+1. FAT12
+12bitové záznamy → max. 2¹² = 4096 clusterů
+Vhodné pro malé paměti – diskety
+Nepodporuje podadresáře
+Omezený počet souborů a malá kapacita (typicky do 32 MB)
+2. FAT16
+16bitové záznamy → max. 2¹⁶ = 65 536 clusterů
+Zavádí podporu podadresářů
+Maximální velikost oddílu: 2–4 GB (záleží na velikosti clusteru)
+Omezené možnosti názvů souborů (viz dále: 8.3 konvence)
+3. FAT32 (VFAT32)
+32bitové záznamy, ale reálně se využívá jen 28 bitů pro adresování clusterů
+Max. počet clusterů: ~268 milionů
+Podpora velkých oddílů – až 2 TB (Windows), teoreticky až 16 TB
+Lepší správa prostoru a výkon
+Zavádí ROOT DIR jako běžný adresář v datové oblasti → není omezen počtem záznamů
+VFAT (Virtual FAT)
+VFAT je rozšíření FAT16 a FAT32, které přineslo podporu dlouhých názvů souborů:
+Odstraňuje omezení 8.3 konvence (8 znaků pro název + 3 pro příponu)
+Umožňuje:
+Dlouhé názvy (až 255 znaků, včetně mezer a malých písmen)
+4 znaky pro příponu
+Zavádí skryté záznamy v adresáři – pro dlouhé názvy se vytvoří více položek (každá
+pojme 13 znaků)
+U VFAT16 je problém: ROOT DIRECTORY má pevnou velikost (512 položek)
+exFAT (Extended File Allocation Table)
+Moderní systém vyvinutý Microsoftem jako náhrada FAT32 pro flash disky, SSD, SDXC karty.
+Vlastnosti:
+Max. velikost svazku: 2⁶⁴ − 1 sektor → až 16 EiB (teoreticky)
+Velké soubory nad 4 GB (což FAT32 neumožňuje)
+Podpora až 255 znaků v názvu souboru
+Používá bitmapu pro správu volného místa → rychlejší alokace
+Možnost označit špatné clustery
+Podpora transakcí (snižuje riziko poškození dat)
+Nevýhoda: bez podpory oprávnění, šifrování (na rozdíl od NTFS)
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Vlastnost
+FAT12/16
+VFAT16
+VFAT32
+Velikost FAT
+záznamu
+12/16 bit
+16 bit
+32 bit (z toho 28 bitů
+využito)
+Podpora
+dlouhých
+názvů
+Ne (jen 8.3)
+Ano (až 255 znaků)
+Ano
+ROOT
+DIRECTORY
+Pevně na začátku, fixní
+délka
+Pevně na začátku, max.
+512 položek
+Přesunut do 2. clusteru
+– bez omezení
+Max. velikost
+souboru
+~2–4 GB
+~2–4 GB
+4 GB / soubor (exFAT
+nemá toto omezení)
+Efektivita
+Nízká
+Střední
+Vyšší
+Řešení dlouhých názvů souborů (LFN – Long File Names)
+FAT12 / FAT16
+Používá tzv. 8.3 konvenci:
+8 znaků pro název souboru
+3 znaky pro příponu
+Např. README.TXT
+VFAT a VFAT32
+Zavádějí LFN (až 255 znaků, včetně mezer a diakritiky)
+Každý dlouhý název je uložen jako více položek adresáře:
+Počet položek = [počet znaků / 13] + 1
+13 znaků na jednu LFN položku, +1 pro klasickou 8.3 verzi názvu
+Každý dlouhý název má i svůj „DOS ekvivalent“ (např. DLOUHE~1.TXT)
+Ve VFAT32 je ROOT DIR přesunut do datové oblasti → neomezený počet záznamů
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Struktura podadresářů ve FAT
+Adresář (adresářová struktura) je speciální soubor, který obsahuje záznamy o souborech a
+podadresářích.
+Root Directory (hlavní adresář)
+Vytváří ho OS nebo uživatel při formátování nebo instalaci systému.
+Umístění:
+U FAT12/16 je root dir umístěn v organizační oblasti, hned za druhou FAT tabulkou.
+U FAT32 (VFAT32) je přesunut do datové oblasti → umožňuje variabilní velikost.
+Má atribut DIR a velikost 0, i když zabírá určitý počet sektorů.
+Není považován za běžný soubor, ale tvoří kořenovou strukturu adresářového stromu.
+Podadresář
+Vytvářen uživatelem nebo systémem při ukládání složek uvnitř root dir nebo jiných
+adresářů.
+Je uložen v datové oblasti, ve volném clusteru, který je vyhledán v FAT tabulce.
+Každý nový podadresář vždy zabere minimálně jeden celý cluster, i když neobsahuje
+žádné další záznamy.
+Po vytvoření adresáře jsou automaticky vloženy dvě speciální položky:
+Název
+Význam
+Kam ukazuje
+.
+Odkaz sám na sebe (aktuální
+adresář)
+Na stejný cluster, kde je adresář
+vytvořen
+..
+Odkaz na nadřazený adresář (o
+úroveň výš)
+Na cluster rodičovského adresáře
+Tyto záznamy umožňují pohyb v adresářové hierarchii (např. pomocí příkazů cd ..).
+Záznam v FAT pro tento cluster se ihned po vytvoření změní z 0 na EOF (konec souboru).
+Záznam souboru na disk (uložení souboru)
+Postup:
+1.OS vyhledá ve FAT tabulce první volný cluster (hodnota 0), kam lze uložit data.
+2.Do tohoto clusteru v datové oblasti se uloží první část souboru.
+3.OS upraví příslušný záznam ve FAT:
+Pokud je soubor menší nebo rovný velikosti jednoho clusteru → zapíše se EOF (např.
+FFF8h).
+Pokud je soubor větší, OS najde další volný cluster, pokračuje v ukládání dat a:
+v FAT zapíše číslo dalšího clusteru do předchozího záznamu,
+proces se opakuje až do konce souboru,
+poslední cluster je označen jako EOF.
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Zápis do adresáře:
+Po dokončení zápisu dat do datové oblasti OS vytvoří záznam v adresáři, který obsahuje:
+Jméno a příponu souboru (v 8.3 nebo LFN formátu)
+Atributy souboru (skrytý, systémový atd.)
+Datum a čas vytvoření / změny
+Velikost souboru v bajtech
+Číslo prvního clusteru, kde soubor začíná
+Shrnutí – klíčové body k zapamatování
+Prvek
+Umístění
+Poznámka
+Root Directory
+Organizační oblast (FAT12/16),
+datová oblast (FAT32)
+Pevná/variabilní velikost
+Podadresář
+Datová oblast
+Zabírá vždy min. 1 cluster, ihned
+obsahuje . a ..
+Záznam ve FAT
+1 záznam na 1 cluster
+Spojuje clustery do řetězců podle
+potřeby
+EOF (End of File)
+Značí poslední cluster souboru
+Typicky FFF8h a vyšší hodnoty
+(záleží na typu FAT)
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Chyby FAT systému
+Ztracený cluster (Lost cluster)
+Ve FAT tabulce není žádný záznam, který by na cluster ukazoval, ale cluster obsahuje
+data.
+Data zůstávají v datové oblasti, ale nejsou „dostupná“ přes žádný soubor.
+Může jít o pozůstatek po špatně ukončeném zápisu nebo pádu systému.
+Překřížený cluster (Cross-linked cluster)
+Na jeden a tentýž cluster ukazují dva různé záznamy ve FAT.
+Dochází ke sdílení jednoho clusteru dvěma soubory, což je chybné – vede k přepsání dat
+jednoho souboru druhým.
+Poškozený FAT
+Vzniká, pokud má soubor alokováno více clusterů, ale některý ukazatel ve FAT:
+ukazuje na neexistující cluster,
+nebo přesahuje velikost disku/oddílu.
+FAT tabulka je nekonzistentní – může dojít ke ztrátě dat nebo chybě při čtení.
+Fragmentace
+Soubor je rozdělen do více nenavazujících clusterů, rozptýlených po různých místech
+disku.
+Fragmentace nevzniká při čtení, ale při častém mazání a ukládání souborů různé velikosti.
+Nevýhody:
+Pomalejší načítání – hlavička disku musí přeskakovat mezi sektory.
+Nižší šance na úspěšné obnovení dat při poškození.
+Vyskytuje se hlavně u HDD (ne u SSD – tam není fyzická hlava).
+Defragmentace
+Proces, kdy se fragmentovaný soubor znovu spojí do jednoho celku – fyzicky se přesune
+na sousední clustery.
+Zlepší se výkon čtení a zápisu.
+Nástroje:
+Vestavěné nástroje OS (např. „Defragmentace a optimalizace jednotek“ ve Windows)
+Specializované nástroje:
+O&O Defrag, Diskeeper, Auslogics Disk Defrag apod.
+U SSD disků se nedoporučuje defragmentovat, protože nemá význam a zkracuje životnost
+paměti (používá se místo toho TRIM).
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Mazání souborů z disku
+1. Vhození do koše (Recycle Bin)
+Soubor není fyzicky odstraněn – jen přesunut do speciální složky „Koš“.
+Lze jej jednoduše obnovit.
+2. Skutečné vymazání (mazání v OS)
+OS při mazání neodstraňuje data z clusteru
+Udělá pouze:
+Přepíše první znak názvu souboru v adresáři znakem E5h – značí „smazaný“ záznam.
+Změní záznamy ve FAT: clustery dříve obsazené tímto souborem se nastaví na 0 =
+volné.
+Data zůstávají v datové oblasti, dokud je nepřepíše jiný soubor.
+Tato data je možné částečně obnovit pomocí nástrojů jako Recuva, Photorec, TestDisk
+apod.
+Bezpečné odstranění dat (skartace)
+Fyzické přepsání dat v clusterech – aby nebylo možné data obnovit.
+Není součástí běžného mazání, provádí se speciálními nástroji.
+Nástroje:
+WipeInfo, DiskWipe, TuneUp Shredder, Eraser
+Metody přepsání:
+Metoda
+Popis
+Rychlá
+1× přepsání (např. nulami) – nedostatečné pro citlivá data
+Bezpečná (DOD 5220.22-M)
+3× přepsání: 00000000, 11111111 (FFh), 10101010 (F6h) → opakovat
+Guttmanova metoda
+35 průchodů s různými vzory – extrémně bezpečná, ale pomalá
+Shrnutí – klíčové pojmy:
+Pojem
+Význam
+Ztracený cluster
+Obsahuje data, ale žádný záznam ve FAT na něj neodkazuje
+Překřížený cluster
+Na jeden cluster ukazují 2 záznamy ve FAT
+Poškozený FAT
+Chybný odkaz v řetězci clusterů
+Fragmentace
+Soubory nejsou fyzicky uloženy za sebou → pomalejší čtení
+Defragmentace
+Přeskládání souborů na disk, aby byly spojité
+Vymazání souboru
+E5h v názvu + clustery označeny jako volné, ale data zůstávají
+Skartace
+Bezpečné přepsání dat, znemožňuje jejich obnovu
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Charakteristika NTFS (New Technology File System)
+Moderní souborový systém vyvinutý firmou Microsoft (od Windows NT). Slouží k organizaci
+dat na logickém disku – stejně jako FAT, ale s mnohem vyššími možnostmi a bezpečností.
+Transakční systém zápisu
+NTFS pracuje s transakcemi – každý zápis je rozdělen na dílčí kroky:
+a.Přenos dat do řadiče disku
+b.Vyhledání volného místa
+c.Samotný zápis dat
+d.Záznam o poloze do systémové tabulky
+Podstata transakce:
+Provádí se buď celá, nebo vůbec.
+Pokud dojde k přerušení (např. výpadek napájení), operace je vrácena zpět (rollback)
+→ nedochází ke ztrátě clusteru jako u FAT.
+Výhody NTFS oproti FAT
+Žurnálování (journaling)
+Každý zápis je zaznamenán do žurnálu ($LogFile).
+Pokud dojde k chybě, systém umí:
+dokončit neúplný zápis,
+nebo zrušit rozpracované změny.
+Přemapování vadných clusterů
+Při zápisu systém automaticky vyhne poškozeným místům.
+Komprese dat
+Podpora automatické komprese souborů/složek bez potřeby externích nástrojů.
+Přístupová práva
+Systém ACL (Access Control List) umožňuje určit:
+kdo smí soubor číst, zapisovat, mazat atd.
+Zabezpečení na úrovni jednotlivých souborů i složek.
+Diskové kvóty
+Možnost omezit velikost dat, které může konkrétní uživatel uložit na disk.
+Šifrování (EFS – Encrypting File System)
+Přímo na úrovni souborového systému (uživatel může zašifrovat soubor/složku).
+Šifrování je neviditelné pro aplikace – data se automaticky dešifrují při čtení.
+Neomezený počet položek v adresáři
+Na rozdíl od FAT není root dir omezen počtem položek.
+Rychlejší vyhledávání
+NTFS funguje jako databázový systém – minimalizuje počet přístupů na disk díky interním
+strukturám.
+Podpora velkých svazků
+MBR (Master Boot Record) podporuje NTFS oddíly až 2 TB.
+GPT (GUID Partition Table) umožňuje až 18 EB (exabajtů).
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+NTFS = Databázová struktura
+Každý soubor/složka má svůj záznam v hlavní tabulce souborů (MFT – Master File Table).
+Po formátování se vytvoří 11 systémových souborů (METADATA):
+Např. $MFT, $Bitmap, $LogFile, $BadClus, $Secure apod.
+NTFS tak spravuje disk jako databázi souborů, ne jako jednoduchý seznam jako FAT.
+Porovnání NTFS vs. FAT:
+Vlastnost
+FAT
+NTFS
+Kompatibilita
+Vysoká (Windows, Linux, macOS)
+Omezená (nativně Windows, Linux:
+čtení/podpora přes ovladače)
+Rok vzniku
+~1977
+~1993
+Transakce
+Ne
+Ano
+Žurnálování
+Ne
+Ano ($LogFile)
+Přístupová práva
+Ne
+Ano (ACL)
+Šifrování
+Ne
+Ano (EFS)
+Komprese
+Ne
+Ano
+Diskové kvóty
+Ne
+Ano
+Maximální velikost
+svazku
+max. 2–4 GB (FAT16), 2 TB (FAT32)
+2 TB (MBR), až 18 EB (GPT)
+Maximální velikost
+souboru
+4 GB (FAT32)
+Prakticky neomezená
+Fragmentace
+Vyšší
+Nižší (lepší alokace)
+Rychlost vyhledávání
+Nižší
+Vyšší
+NTFS poskytuje...
+Význam
+Transakce a žurnálování
+Zajišťují konzistenci i při havárii
+Přístupová práva a šifrování
+Zvýšená bezpečnost dat
+Komprese a diskové kvóty
+Efektivnější využití prostoru
+Databázová struktura (MFT + metadata)
+Rychlý a spolehlivý přístup k datům
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Vnitřní struktura NTFS
+Rozdělení prostoru NTFS svazku
+NTFS strukturuje diskový prostor efektivně a robustně:
+1. část: MFT + rezerva pro její růst
+MFT (Master File Table) – hlavní databáze souborového systému.
+Rezerva cca 12 % disku je ponechána volná (nealokovaná), aby se MFT mohla
+rozšiřovat bez fragmentace.
+2. část: Uživatelova data (soubory)
+Data se ukládají za rezervovaným blokem.
+Uprostřed disku je pro zvýšení spolehlivosti uložena kopie prvních 16 záznamů MFT
+(soubor $MFTMirr), následují další uživatelská data.
+NTFS tak minimalizuje fragmentaci MFT a zajišťuje ochranu struktury systému.
+Umístění MFT
+Ihned za boot sektorem NTFS svazku.
+Bootovací záznam (soubor $BOOT) obsahuje přesné umístění:
+hlavní MFT tabulky
+a její kopie ($MFTMirr)
+MFT – Master File Table
+Základní databázová tabulka, kde je každý soubor na disku reprezentován záznamem
+pevné délky.
+NTFS nemá adresáře jako samostatné objekty – i adresář je jen typ záznamu v MFT.
+Vlastnosti:
+Každý záznam odpovídá 1 souboru nebo složce.
+Obsahuje kompletní metadata:
+jméno souboru
+velikost
+seznam fragmentů
+přístupová práva, časová razítka, atributy
+Struktura:
+Prvních 16 záznamů = metasoubory → systémové, neviditelné, začínají $
+Záznam 0 = popis samotné tabulky $MFT
+Kopie těchto 16 záznamů se ukládá do $MFTMirr (pro případ havárie disku)
+Metasoubory v NTFS
+Metasoubory jsou skryté systémové soubory – nejsou běžně viditelné a používá je pouze OS
+k řízení systému souborů.
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Název
+Význam
+$MFT
+Master File Table – hlavní databáze všech souborů
+$MFTMirr
+Kopie prvních 16 záznamů MFT, umístěná ve středu disku
+$LOGFILE
+Transakční log, záznamy o změnách → slouží pro obnovu po havárii
+$VOLUME
+Obsahuje sériové číslo svazku a čas vytvoření
+$ATTRDEF
+Definice všech možných atributů (např. residentní, indexované...)
+$BITMAP
+Bitmapa obsazení clusterů – 1 = obsazeno, 0 = volný
+.
+Kořenový adresář disku (root)
+$BOOT
+Boot sektor – informace o zavádění systému
+$BADCLUS
+Seznam vadných clusterů – OS je automaticky přeskakuje
+$QUOTA
+Uživatelské kvóty – omezení velikosti dat na uživatele
+$UPCASE
+Tabulka převodu malých na velká písmena – důležité pro porovnání
+Prvek
+Popis
+MFT
+Tabulka všech souborů – každý soubor = 1 záznam
+Rezerva 12 %
+Vyhrazený prostor pro rozšíření MFT → zamezuje fragmentaci
+MFTMirr
+Záloha MFT – jen prvních 16 záznamů
+Metasoubory
+Prvních 16 záznamů v MFT – systémové, začínají $, nejsou viditelné
+$BITMAP
+Mapuje obsazenost clusterů (1 = plný, 0 = volný)
+$LOGFILE
+Transakční žurnál – záznamy operací před jejich dokončením
+$BADCLUS
+Seznam vadných clusterů – systém je ignoruje
+$ATTRDEF
+Definice vlastností souborových atributů
+Shrnutí:
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Registr Windows
+Registr Windows (Windows Registry) je hierarchická databáze, která obsahuje:
+Informace o hardwaru (HW)
+Nastavení uživatelů
+Instalovaný software (SW)
+Konfiguraci systému a aplikací
+Zásadní komponenta OS Windows – načítá se při startu systému a pracuje neustále.
+Velikost a složitost
+Obsahuje desítky tisíc záznamů:
+Běžně 50 000–100 000 klíčů a hodnot.
+Záznamy se ukládají ve formě klíčů, podklíčů a hodnot, podobně jako adresářová struktura.
+Struktura registru
+Organizováno stromově (hierarchicky) do 5 hlavních větví:
+Klíč (větev)
+Popis
+HKEY_CLASSES_ROOT
+Asociace typů souborů s programy, informace o OLE a COM objektech
+HKEY_CURRENT_USER
+Nastavení aktuálně přihlášeného uživatele – pozadí, jazyk, vzhled
+HKEY_LOCAL_MACHINE
+Globální nastavení HW a SW pro všechny uživatele
+HKEY_USERS
+Konfigurace všech uživatelů, kteří mají účet v systému
+HKEY_CURRENT_CONFIG
+Aktuální HW profil, např. připojené tiskárny, rozlišení obrazovky
+Práce s registrem
+Prohlížení a úprava pomocí nástroje Editor registru:
+Spustit: regedit.exe
+Změny v registru mohou ovlivnit chod celého systému – nutná opatrnost.
+Oprava chyb v registru
+Chyby registru mohou způsobovat nestabilitu, pomalý chod nebo chyby systému.
+Používají se specializované nástroje pro vyčištění a opravu:
+TuneUp Utilities
+Norton Utilities
+CCleaner (s opatrností)
+Bod obnovení systému (System Restore Point)
+Bod obnovení je snímek systému – uchovává:
+Informace o systémových souborech
+Nastavení registru
+Ovladače a konfiguraci
+Neukládá uživatelská data (dokumenty, fotky, apod.)
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Vytváření bodů obnovení
+Automaticky každých 7 dní (defaultně)
+Automaticky před následujícími událostmi:
+Instalace nového softwaru
+Aktualizace OS Windows
+Zálohování systému
+Instalace ovladačů (driverů)
+Obnovení systému
+Slouží k návratu systému do předchozího funkčního stavu, pokud:
+byl nainstalován nefunkční software
+nové ovladače způsobují problémy
+systém je nestabilní bez zjevné příčiny
+Obnova nemění osobní soubory (dokumenty, fotky atd.).
+Oblast
+Důležité poznatky
+Registr Windows
+Stromová databáze nastavení HW, SW, uživatelů
+5 hlavních větví
+HKEY_CLASSES_ROOT, CURRENT_USER, LOCAL_MACHINE, USERS,
+CONFIG
+Editor registru
+regedit.exe, práce s klíči a hodnotami
+Čištění registru
+Nástroje jako TuneUp, Norton, CCleaner
+Bod obnovení
+Ukládá systémová nastavení pro návrat při problémech
+Vytváření bodů
+Automaticky každých 7 dní a při instalacích
+Obnova
+Neovlivní osobní data, vrací systémové soubory a nastavení
+Fragmentace (FAT/NTFS)
+Fragmentovaný soubor je takový, který není uložen ve spojitém řetězci clusterů, ale je
+rozdělen do různých částí disku (např. různých cylindrů).
+Typická u klasických HDD, kde čtecí hlava musí přeskakovat mezi sektory → zpomalení
+čtení.
+Vznik:
+Vzniká častým mazáním a zapisováním nových souborů, zejména když:
+nový soubor je větší než dostupné volné místo v sousedních clusterech,
+dojde k opětovnému využití dříve uvolněných fragmentů.
+Nevýhody:
+Pomalejší načítání dat z disku.
+Nižší šance na úspěšné obnovení dat při poruše.
+Zátěž pro diskovou mechaniku (u HDD).
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Defragmentace
+Proces, kdy se fragmentované části souboru přesunou do sousedních (spojených) clusterů.
+Výsledkem je, že:
+soubor leží v souvislé oblasti
+čtení probíhá rychleji a efektivněji.
+Nástroje:
+Vestavěné nástroje ve Windows:
+„Defragmentace a optimalizace jednotek“ (dfrgui.exe)
+Specializované programy:
+O&O Defrag
+Diskeeper
+Auslogics Disk Defrag apod.
+U SSD disků se defragmentace nepoužívá – místo ní se využívá TRIM, protože SSD nemají
+mechanické části a fragmentace neovlivňuje rychlost.
+Mazání souborů z disku (FAT)
+Vhození do koše
+Soubor není smazán, jen přesunut do složky „Koš“ (Recycle Bin).
+Lze jednoduše obnovit.
+Skutečné vymazání v OS:
+1.Přepíše se první znak názvu souboru v adresáři na E5h → značí „smazaný“.
+2.Záznamy ve FAT (řetězec clusterů) se nastaví na 0 → označeny jako volné.
+3.Data zůstávají v datové oblasti, dokud nejsou přepsána novými soubory.
+Takto smazaný soubor je stále možné obnovit, pokud jeho data nebyla přepsána (např. pomocí
+Recuva, TestDisk).
+Bezpečné odstranění dat – skartace
+Trvalé odstranění dat, které znemožní jejich obnovu.
+Neprovádí se běžným mazáním, ale pomocí specializovaných programů:
+WipeInfo, DiskWipe, TuneUp Shredder, Eraser (open-source)
+Jak fungují:
+Vymažou první znak názvu + celý záznam v adresáři
+Přepíší datový obsah několikrát jinými hodnotami (např. nulami, náhodnými vzory)
+Výsledkem je, že ani forenzními nástroji nelze data obnovit.
+Téma
+Hlavní myšlenka
+Fragmentace
+Soubor rozdělen do nesouvislých částí → pomalejší čtení
+Defragmentace
+Spojení částí souboru do jednoho celku → rychlejší čtení
+Vhození do koše
+Soubor je stále fyzicky na disku, jen přesunut do složky
+Mazání v OS (FAT)
+Přepsání E5h, uvolnění FAT, data zůstávají fyzicky na disku
+Skartace dat
+Speciální přepis dat + odstranění všech stop → data trvale zničena
+15. Souborové systémy FAT, FAT32, NTFS, exFAT
+Obecné technické souvislosti – vše souvisí se vším
+Pojem
+Význam a vztah k tématu
+MBR (Master Boot Record)
+Starší způsob rozdělení disku (max. 4 primární oddíly), používá CHS
+adresování
+GPT (GUID Partition Table)
+Novější standard, umožňuje až 128 oddílů, používá LBA adresování
+BIOS
+Tradiční firmware, pracuje s MBR i FAT/NTFS, bez UEFI bootování
+UEFI
+Moderní firmware, vyžaduje GPT a podporuje jen FAT32 pro zavádění
+Pokud máme základní desku s BIOSem, můžeme použít starý MBR a třeba i NTFS. Ale pokud
+máš moderní UEFI, potřebuješ GPT a FAT32, protože UEFI NTFS zavaděč nepřečte.
+Celé to krásně ukazuje, jak se hardwarová architektura, souborové systémy a způsob
+ukládání dat vzájemně ovlivňují. To, jaký firmware máme, určuje, jaké schéma oddílů a
+souborové systémy můžeme použít. A i smazaný soubor nemusí být pryč, dokud ho
+neodstraníme správně – třeba kvůli bezpečnosti, soukromí nebo auditu.

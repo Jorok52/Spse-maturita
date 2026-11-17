@@ -1,0 +1,403 @@
+{
+"n": 8,
+"t": "Řízení operační paměti",
+"outline": [
+"K čemu slouží operační paměť a co v ní je",
+"Souvislá oblast",
+"Přidělování po blocích",
+"Stránkování",
+"Segmentace",
+"Segmentace se stránkováním",
+"Výpadek stránky, pre-cleaning, thrashing",
+"Čisté a špinavé stránky",
+"Algoritmy výměny stránek"
+],
+"q": [
+[
+"Operační paměť je…",
+"Volatilní RWM paměť pro běžící programy a data",
+"Nevolatilní ROM paměť pro firmware a BIOS",
+"Vnější paměť na disku pro trvalé uložení dat",
+"Vyrovnávací paměť uvnitř procesoru (cache)"
+],
+[
+"Co uchovává bázový registr?",
+"Počáteční adresu paměti programu",
+"Maximální velikost paměti programu",
+"Číslo stránky v tabulce stránek",
+"Adresu obslužné rutiny přerušení"
+],
+[
+"Báze 2000, logická adresa 50. Fyzická adresa?",
+"2050",
+"2000",
+"50",
+"1950"
+],
+[
+"K čemu je limitní registr?",
+"Ochrana paměti – zakáže přístup mimo přidělený rozsah",
+"Převádí logickou adresu na fyzickou přičtením k počáteční adrese programu",
+"Uchovává offset uvnitř stránky",
+"Řídí zápis do vyrovnávací paměti"
+],
+[
+"Kolik uživatelských programů je aktivních u souvislé oblasti?",
+"Jeden",
+"Libovolně",
+"Dva",
+"Podle počtu bloků"
+],
+[
+"Co je swapping?",
+"Odložení procesu na disk a nahrazení jiným",
+"Přesun často používaných dat do cache",
+"Defragmentace disku pro rychlejší čtení",
+"Výměna procesu mezi jádry procesoru"
+],
+[
+"Kdo řídí překrývání (overlay)?",
+"Uživatel/program, ne OS",
+"Operační systém (správce paměti)",
+"Jednotka MMU v procesoru",
+"BIOS při zavádění systému"
+],
+[
+"Hlavní nevýhoda přidělování po blocích?",
+"Fragmentace paměti",
+"V paměti smí být jen jeden proces",
+"Vyžaduje jednotku MMU a tabulky",
+"Vede k thrashingu při plné paměti"
+],
+[
+"Jak se nazývá defragmentace operační paměti?",
+"Setřásání (zahuštění) paměti",
+"Swapping (odkládání na disk)",
+"Pre-cleaning (předčištění)",
+"Stránkování na žádost"
+],
+[
+"Který OS používal přidělování po blocích?",
+"MS-DOS",
+"Windows 10",
+"Linux",
+"Mac OS X"
+],
+[
+"First fit umístí proces do…",
+"Prvního dostatečně velkého volného bloku",
+"Nejmenšího bloku, do kterého se vejde",
+"Největšího volného bloku v paměti",
+"Posledního vhodného bloku na konci paměti"
+],
+[
+"Best fit umístí proces do…",
+"Nejmenšího bloku, do kterého se vejde",
+"Prvního bloku, do kterého se vejde",
+"Největšího volného bloku v paměti",
+"Náhodně vybraného volného bloku"
+],
+[
+"Worst fit umístí proces do…",
+"Největšího volného bloku",
+"Nejmenšího vhodného bloku",
+"Prvního vhodného bloku",
+"Posledního vhodného bloku"
+],
+[
+"Při stránkování je fyzická paměť rozdělena na…",
+"Rámce (frames)",
+"Segmenty",
+"Bloky různé velikosti",
+"Sektory"
+],
+[
+"Logická adresa při stránkování se skládá z…",
+"Čísla stránky a offsetu",
+"Báze a limitu segmentu",
+"Selektoru a čísla rámce",
+"Čísla segmentu a sektoru"
+],
+[
+"Kolik bitů má offset při stránce 4 KB?",
+"12",
+"10",
+"16",
+"32"
+],
+[
+"Jaký typ fragmentace stránkování odstraňuje?",
+"Vnější",
+"Vnitřní",
+"Obě",
+"Žádnou"
+],
+[
+"Nevýhoda stránkování?",
+"Vnitřní fragmentace poslední stránky, nutná MMU",
+"Vnější fragmentace mezi stránkami různé délky",
+"Paměť nelze sdílet mezi více procesy",
+"V paměti může běžet jen jeden proces"
+],
+[
+"Co je výpadek stránky (page fault)?",
+"Proces potřebuje stránku, která je na disku, ne v RAM",
+"Poškozená buňka operační paměti, kterou nelze přečíst ani zapsat",
+"Přetečení zásobníku při rekurzivním volání",
+"Chyba čtení disku při načítání souboru"
+],
+[
+"Co se stane při page fault?",
+"Načte se stránka z disku, aktualizuje se tabulka, instrukce se zopakuje",
+"Proces se okamžitě ukončí s chybou",
+"Systém pozastaví všechny procesy, restartuje se a stránku načte znovu z disku",
+"Nic, procesor pokračuje další instrukcí"
+],
+[
+"Segmentace dělí program na…",
+"Logické segmenty různé velikosti (kód, zásobník, konstanty)",
+"Stránky stejné velikosti (např. 4 KB), které se mapují na rámce",
+"Rámce fyzické paměti pevné délky",
+"Sektory po 512 B jako na disku"
+],
+[
+"Co obsahuje tabulka segmentů?",
+"Bázi a limit každého segmentu",
+"Čísla rámců pro každou stránku",
+"Referenční a modifikační bity",
+"PID procesů, které segment sdílí"
+],
+[
+"Segment 0 na adrese 1400 délky 1000, offset 400. Fyzická adresa?",
+"1800",
+"1400",
+"1000",
+"2400"
+],
+[
+"Nevýhoda segmentace?",
+"Vnější fragmentace a náročná alokace",
+"Vnitřní fragmentace poslední stránky",
+"Kód nelze sdílet mezi procesy",
+"Segmenty nemají limit a nejde je chránit"
+],
+[
+"Kolikabitová je logická adresa u segmentace se stránkováním dle podkladů?",
+"48 bitů (selektor 16 + offset…)",
+"32 bitů (selektor 16 + offset 16)",
+"16 bitů (jen offset)",
+"64 bitů (jako u x86-64)"
+],
+[
+"Kolik offsetů má segmentace se stránkováním?",
+"Dva (v segmentu a ve stránce)",
+"Jeden společný pro segment i stránku",
+"Tři (segment, stránka, rámec)",
+"Žádný, používá se jen selektor"
+],
+[
+"Čistá stránka je…",
+"Nemodifikovaná – není ji třeba zapisovat zpět na disk",
+"Změněná stránka, kterou je nutné uložit",
+"Prázdná stránka bez dat, připravená k použití",
+"Stránka jádra, kterou nelze odložit na disk"
+],
+[
+"Špinavá stránka musí…",
+"Být zapsána zpět na disk před uvolněním",
+"Být hned smazána bez uložení",
+"Zůstat v RAM, dokud proces neskončí",
+"Být nejdřív komprimována v paměti"
+],
+[
+"Co je pre-cleaning?",
+"Preventivní zálohování (zápis) stránek, když má systém volné prostředky",
+"Mazání cache procesoru před přepnutím kontextu",
+"Defragmentace operační paměti setřásáním bloků, když má systém zrovna volné prostředky",
+"Formátování swapovacího oddílu při startu"
+],
+[
+"Co je thrashing (výprask)?",
+"Neustálá výměna stránek mezi RAM a diskem – CPU jen spravuje paměť",
+"Přehřátí procesoru při velkém zatížení paměti, kdy se snižuje jeho takt (throttling)",
+"Ztráta dat, když se stránka nestihne uložit",
+"Rychlé přepínání mezi vlákny jednoho procesu"
+],
+[
+"Který algoritmus je teoreticky nejlepší, ale nerealizovatelný?",
+"Optimální",
+"LRU",
+"FIFO",
+"NFU"
+],
+[
+"Co je Beladyho anomálie?",
+"U FIFO víc rámců může zvýšit počet výpadků",
+"U LRU víc rámců vždy sníží počet výpadků",
+"Ztráta referenčního bitu u druhé šance",
+"Přetečení čítače použití u algoritmu NFU"
+],
+[
+"LRU nahrazuje stránku…",
+"Nejméně používanou v minulosti (sleduje čas posledního použití)",
+"Nejdéle v paměti (nejdříve načtenou)",
+"Náhodně vybranou stránku z rámců",
+"S nejnižším čítačem použití – podle toho, kolikrát byla stránka celkem použita"
+],
+[
+"Druhá šance je vylepšení…",
+"FIFO pomocí referenčního bitu",
+"LRU pomocí časových razítek",
+"Optimálního pomocí předpovědi",
+"NFU pomocí čítače použití"
+],
+[
+"Hodinový algoritmus používá…",
+"Ručičku nad kruhovým seznamem a referenční bit",
+"Čítač použití každé stránky, který se pravidelně zvyšuje",
+"Časová razítka posledního přístupu",
+"Náhodný výběr stránky k výměně"
+],
+[
+"NFU nahrazuje stránku…",
+"S nejnižším čítačem použití",
+"Nejstarší načtenou do paměti",
+"Naposledy použitou stránku",
+"Modifikovanou (špinavou) stránku"
+],
+[
+"NUR (NRU) používá bity…",
+"Referenční a modifikační",
+"Paritní a stop",
+"Valid a present",
+"Čítač a časové razítko"
+],
+[
+"Windows XP/7 používají…",
+"Stránkování na žádost",
+"Souvislou oblast",
+"Přidělování po blocích",
+"Overlay"
+]
+],
+"terms": [
+[
+"Bázový registr",
+"Začátek oblasti programu"
+],
+[
+"Limitní registr",
+"Hranice přístupu (ochrana)"
+],
+[
+"Setřásání",
+"Defragmentace RAM"
+],
+[
+"First fit",
+"První vhodný blok"
+],
+[
+"Best fit",
+"Nejmenší vhodný blok"
+],
+[
+"Worst fit",
+"Největší blok"
+],
+[
+"Stránka/rámec",
+"Stejně velké části logické/fyzické paměti"
+],
+[
+"Segment",
+"Logická část různé velikosti"
+],
+[
+"Page fault",
+"Stránka není v RAM"
+],
+[
+"Thrashing",
+"Neustálá výměna stránek"
+],
+[
+"Špinavá stránka",
+"Modifikovaná, nutno zapsat"
+],
+[
+"LRU",
+"Nejdéle nepoužitá"
+],
+[
+"FIFO",
+"Nejstarší, Beladyho anomálie"
+],
+[
+"Hodinový alg.",
+"Ručička + referenční bit"
+]
+],
+"open": [
+{
+"q": "K čemu slouží operační paměť a jak funguje souvislá oblast?",
+"k": [
+"Volatilní RWM, běžící programy a data, rychlejší než disk",
+"Souvislá oblast: část pro OS, zbytek pro 1 program",
+"Bázový registr + logická adresa = fyzická",
+"Limitní registr chrání paměť",
+"Swapping, overlay (řídí program)"
+]
+},
+{
+"q": "Popiš přidělování paměti po blocích.",
+"k": [
+"Více procesů, bloky a díry",
+"Statické vs. dynamické sekce",
+"Fragmentace → setřásání (defragmentace)",
+"MS-DOS",
+"First fit, best fit, last fit, worst fit"
+]
+},
+{
+"q": "Popiš stránkování a stránkování na žádost.",
+"k": [
+"Logická paměť → stránky, fyzická → rámce stejné velikosti",
+"Adresa = číslo stránky + offset (4 KB → 12 b)",
+"Tabulka stránek, MMU",
+"Žádná vnější, ale vnitřní fragmentace",
+"Na žádost: page fault → načtení z disku, aktualizace tabulky, opakování instrukce"
+]
+},
+{
+"q": "Popiš segmentaci a segmentaci se stránkováním.",
+"k": [
+"Segmenty různé velikosti (kód, zásobník, konstanty)",
+"Tabulka segmentů: báze + limit, kontrola offsetu",
+"Výhody: sdílení kódu, žádná vnitřní fragmentace; nevýhody: vnější fragmentace",
+"Kombinace: segment → lineární adresa → stránkovací tabulka (10b indexy) + 12b offset",
+"Selektor 16 b, dva offsety"
+]
+},
+{
+"q": "Vysvětli čisté/špinavé stránky, pre-cleaning a thrashing.",
+"k": [
+"Čistá – nezměněná, nezapisuje se",
+"Špinavá – změněná, zapsat na disk",
+"Pre-cleaning – preventivní zápis ve volném čase",
+"Thrashing – neustálá výměna stránek, řešení více RAM",
+"Swap storm – krátký výprask"
+]
+},
+{
+"q": "Popiš algoritmy výměny stránek.",
+"k": [
+"Optimální – benchmark, nerealizovatelný",
+"FIFO – Beladyho anomálie",
+"LRU – nejdéle nepoužitá",
+"Druhá šance a hodinový – referenční bit",
+"Random, NFU (čítač), NUR (referenční + modifikační bit)"
+]
+}
+]
+}

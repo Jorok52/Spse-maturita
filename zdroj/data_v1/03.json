@@ -1,0 +1,438 @@
+{
+"n": 3,
+"t": "PLD & NPLD",
+"outline": [
+"Charakteristika, vznik a rozdělení PLD",
+"PLA, PAL, GAL, CPLD, FPGA",
+"Makrobuňka vs. logický blok",
+"Vývojové prostředí WebPack, PLD kompilátor",
+"Charakteristika NPLD",
+"Obvody 74164, 74166, 74595, 74573, 74244, 74245, 74688, 74193"
+],
+"q": [
+[
+"Co je PLD?",
+"Číslicový IO, jehož vnitřní strukturu lze uživatelsky naprogramovat",
+"Neprogramovatelný obvod řady 74xx s pevnou funkcí, kterou nelze po výrobě měnit",
+"Typ paměti RAM pro ukládání konfigurace",
+"Analogový zesilovač s programovatelným ziskem"
+],
+[
+"Jak se programuje PLD?",
+"Propojkami (pojistkami) v místech křížení nebo zápisem do EEPROM/Flash buněk",
+"Výměnou hradel přímo na desce plošných spojů a následným přepájením jejich vývodů",
+"Pouze maskou při výrobě, potom už nijak",
+"Pájením drátků mezi vývody jednotlivých hradel"
+],
+[
+"V jakém tvaru se zapisují logické funkce v PLD?",
+"Součet součinů (disjunktivní normální forma)",
+"Součin součtů (konjunktivní normální forma)",
+"Pouze pravdivostní tabulkou bez rovnic",
+"Jen Karnaughovou mapou bez zjednodušení"
+],
+[
+"Nevýhoda PLD?",
+"Nutnost znát HDL jazyk; porucha = výměna celého čipu",
+"Velký počet vývodů a mnoho samostatných součástek",
+"Návrh nelze po naprogramování nikdy změnit",
+"Nižší spolehlivost kvůli velkému množství spojů"
+],
+[
+"Který jazyk pro popis HW připomíná syntaxí C?",
+"Verilog",
+"VHDL",
+"Python",
+"Assembler"
+],
+[
+"Výhoda VHDL?",
+"Otevřený standard, nezávislý na čipu, podporuje simulaci",
+"Je to licencovaný jazyk vázaný na jeden čip",
+"Nepotřebuje syntézu ani simulaci před nahráním",
+"Syntaxí připomíná C a je méně přísný"
+],
+[
+"Jak se dělí PLD podle složitosti?",
+"SPLD a CPLD (+ FPGA)",
+"ROM a RAM podle typu paměti",
+"TTL a CMOS podle technologie",
+"PAL a NPLD podle možnosti programování"
+],
+[
+"PAL má…",
+"Programovatelné pole AND a pevné pole OR",
+"Programovatelné pole AND i pole OR",
+"Pevné pole AND a programovatelné pole OR",
+"Logické bloky s LUT tabulkami a block RAM"
+],
+[
+"PLA má…",
+"Programovatelné pole AND i OR",
+"Programovatelné AND, pevné OR",
+"Pevné pole AND i OR z výroby",
+"Makrobuňky s LUT a D klopnými obvody"
+],
+[
+"Proč je PAL rychlejší než PLA?",
+"Má jednodušší strukturu (pevné OR)",
+"Má víc hradel a širší pole OR",
+"Používá rychlou paměť SRAM pro konfiguraci",
+"Má vlastní generátor hodinového signálu"
+],
+[
+"Čím se GAL liší od PAL?",
+"Lze ho mazat a přeprogramovat (EEPROM)",
+"Je jednorázově programovatelný pojistkami",
+"Obsahuje logické bloky CLB s LUT",
+"Je neprogramovatelný, funkce je daná výrobou"
+],
+[
+"Co tvoří CPLD?",
+"Více SPLD bloků (makrobuněk) propojených interní logikou",
+"Logické bloky CLB s LUT tabulkami propojené globální maticí",
+"Jediné pole AND s pevně zapojeným OR",
+"Posuvné a záchytné registry řady 74xx"
+],
+[
+"Příklad CPLD od Xilinx s nízkou spotřebou?",
+"CoolRunner",
+"Spartan",
+"Virtex",
+"Cyclone"
+],
+[
+"Základní stavební prvek FPGA?",
+"Logický blok CLB",
+"Makrobuňka OLMC",
+"Pojistka AND pole",
+"JK klopný obvod"
+],
+[
+"Co je LUT?",
+"Tabulka (SRAM) implementující logickou funkci",
+"Typ sběrnice mezi logickými bloky",
+"Vstupně-výstupní blok na okraji čipu",
+"Obvod pro řízení hodinového signálu"
+],
+[
+"Co dělá IOB ve FPGA?",
+"Řídí tok dat mezi piny a vnitřní logikou",
+"Násobí čísla pro DSP aplikace",
+"Generuje a distribuuje hodinový signál",
+"Ukládá konfiguraci čipu po vypnutí"
+],
+[
+"Co dělá DCM ve FPGA?",
+"Řídí a distribuuje hodinový signál",
+"Řídí tok dat mezi piny a logikou",
+"Ukládá data jako rychlá block RAM",
+"Porovnává čísla pro adresní dekodér"
+],
+[
+"Proč FPGA potřebuje externí EEPROM?",
+"Uchovává konfiguraci – FPGA se konfiguruje po zapnutí",
+"Slouží jako operační paměť pro softprocesor",
+"Obsahuje BIOS pro start počítače",
+"Chladí čip a ukládá teplotní kalibraci"
+],
+[
+"Co je OLMC?",
+"Makrobuňka – Output Logic Macro Cell",
+"Logický blok FPGA s LUT tabulkou",
+"Typ sběrnice mezi makrobuňkami",
+"Výstupní soubor kompilátoru pro CPLD"
+],
+[
+"Co obsahuje makrobuňka?",
+"Kombinační logiku AND/OR, D-klopný obvod, výstupní logiku",
+"LUT tabulky (SRAM), rychlou block RAM a obvod pro řízení hodinového signálu",
+"Hardwarovou násobičku a obvod PLL",
+"Pouze třístavový budič pro výstupní pin"
+],
+[
+"Kolik součinových termů může mít jedna makrobuňka?",
+"Až 16",
+"Až 2",
+"Až 1024",
+"Neomezeně"
+],
+[
+"Čí je prostředí ISE WebPACK?",
+"Xilinx",
+"Altera",
+"Intel",
+"Lattice"
+],
+[
+"Kterou aplikací se v ISE nahrává bitstream do FPGA?",
+"iMPACT",
+"Project Navigator",
+"Keil",
+"Quartus"
+],
+[
+"Výstupní soubor PLD kompilátoru pro FPGA?",
+".bit (bitstream)",
+".hex (Intel HEX)",
+".jed (JEDEC)",
+".vhd (zdrojový kód)"
+],
+[
+"Starší formát výstupu pro CPLD?",
+".JEDEC (.jed)",
+".bit (bitstream)",
+".bin (binární obraz)",
+".vhd (VHDL kód)"
+],
+[
+"Fáze metodiky návrhu PLD?",
+"Formální zápis → popis problému → simulace → realizace",
+"Simulace → formální zápis → realizace → popis",
+"Programování → test → návrh → simulace",
+"Realizace → simulace → popis → formální zápis"
+],
+[
+"Co je NPLD?",
+"Logický obvod s pevnou funkcí danou výrobou (řada 74xx)",
+"Programovatelné pole AND/OR s pojistkami (programuje se jen jednou)",
+"FPGA bez konfigurační paměti EEPROM",
+"Software pro návrh a simulaci PLD"
+],
+[
+"74164 je…",
+"8bit sériově-paralelní posuvný registr",
+"8bit paralelně-sériový posuvný registr",
+"8bit číslicový komparátor dvou slov",
+"4bit obousměrný čítač s předvolbou"
+],
+[
+"74166 je…",
+"8bit paralelně-sériový posuvný registr",
+"8bit sériově-paralelní posuvný registr",
+"Obousměrný osmibitový budič sběrnice",
+"8bit záchytný registr typu latch"
+],
+[
+"Kolik hodinových pulsů potřebuje 74166 na úplný převod 8 bitů?",
+"9 (1 load + 8 shift)",
+"8 (jen posun)",
+"16 (2 na bit)",
+"10 (start + 8 + stop)"
+],
+[
+"Co dělá signál SH/LD u 74166?",
+"0 = načti paralelně, 1 = posouvej",
+"0 = resetuj registr, 1 = normální chod",
+"Zastaví hodiny bez ovlivnění dat",
+"Volí směr posunu: 0 doleva, 1 doprava"
+],
+[
+"Co má 74595 navíc oproti 74164?",
+"Záchytný výstupní registr a třístavové výstupy",
+"Paralelní vstupy pro načtení celého bajtu",
+"Komparátor pro porovnání s pevnou hodnotou",
+"Obousměrný přenos volený signálem DIR"
+],
+[
+"K čemu je RCLK u 74595?",
+"Přepíše data z posuvného do záchytného (výstupního) registru",
+"Posouvá data o jednu pozici doprava",
+"Asynchronně maže obsah posuvného registru",
+"Povoluje výstupy QA–QH (aktivní v log. 0), jinak jsou ve vysoké impedanci"
+],
+[
+"Jak se řetězí více 74595?",
+"Přes sériový výstup QH'",
+"Přes výstupní povolení OE",
+"Přes hodinový vstup RCLK",
+"Přes paralelní výstupy QA–QH"
+],
+[
+"74573 je…",
+"8bit záchytný registr (latch)",
+"8bit sériově-paralelní posuvný registr",
+"4bit čítač nahoru i dolů",
+"8bit komparátor dvou slov"
+],
+[
+"Co se stane u 74573 při LE = 1?",
+"Výstupy průběžně sledují vstupy",
+"Aktuální data se zachytí a drží",
+"Výstupy přejdou do stavu vysoké impedance",
+"Registr se vymaže na samé nuly"
+],
+[
+"Co znamená stav Z?",
+"Vysoká impedance – výstup je odpojen",
+"Logická nula na výstupu obvodu",
+"Zkrat mezi výstupem a napájením",
+"Nulové napětí na sběrnici (zem)"
+],
+[
+"74244 je…",
+"Jednosměrný budič (posilovač) sběrnice",
+"Obousměrný budič sběrnice se směrem DIR",
+"Osmibitový komparátor dvou binárních slov",
+"Synchronní čítač nahoru i dolů"
+],
+[
+"Čím se 74245 liší od 74244?",
+"Je obousměrný, směr volí DIR",
+"Je jednosměrný a má jen 4 bity",
+"Nemá třístavové výstupy, jen 0 a 1",
+"Je to čítač, ne budič sběrnice"
+],
+[
+"U 74245 DIR = 1 znamená přenos…",
+"Z A do B",
+"Z B do A",
+"Oběma směry",
+"Žádný"
+],
+[
+"Na jakém principu porovnává 74688?",
+"XNOR na každý bit + AND + NAND (shoda = 0)",
+"Odečte slova a testuje výsledek na nulu",
+"Posouvá bity a porovnává je postupně sériově",
+"Čítá rozdílné bity pomocí čítače 74193"
+],
+[
+"Typické použití 74688?",
+"Adresní dekodér – porovnání adresy s pevnou hodnotou",
+"Převod sériových dat na paralelní výstup pro řízení LED",
+"Zesílení signálu pro připojení LED pole",
+"Počítání výrobků na výrobní lince"
+],
+[
+"74193 je…",
+"4bit synchronní obousměrný čítač s předvolbou",
+"8bit sériově-paralelní posuvný registr",
+"8bit komparátor s aktivně nízkým výstupem",
+"8bit záchytný registr s třístavovými výstupy"
+],
+[
+"K čemu jsou výstupy CO a BO u 74193?",
+"Přetečení/podtečení pro kaskádové zapojení",
+"Výběr směru čítání nahoru nebo dolů",
+"Asynchronní reset čítače na nulu",
+"Povolení výstupů QA–QD (třístav)"
+]
+],
+"terms": [
+[
+"PAL",
+"Programovatelné AND, pevné OR"
+],
+[
+"PLA",
+"Programovatelné AND i OR"
+],
+[
+"GAL",
+"Přeprogramovatelná PAL (EEPROM)"
+],
+[
+"CPLD",
+"Více makrobuněk v čipu"
+],
+[
+"FPGA",
+"Logické bloky CLB, miliony hradel"
+],
+[
+"LUT",
+"Tabulka implementující funkci"
+],
+[
+"OLMC",
+"Makrobuňka"
+],
+[
+"74164",
+"Sériově → paralelní registr"
+],
+[
+"74166",
+"Paralelně → sériový registr"
+],
+[
+"74595",
+"Posuvný reg. + latch + tristate"
+],
+[
+"74573",
+"8bit záchytný registr (latch)"
+],
+[
+"74244",
+"Jednosměrný budič sběrnice"
+],
+[
+"74245",
+"Obousměrný budič (DIR)"
+],
+[
+"74688",
+"8bit komparátor"
+],
+[
+"74193",
+"4bit čítač nahoru/dolů"
+]
+],
+"open": [
+{
+"q": "Charakterizuj PLD, jejich výhody, nevýhody a rozdělení.",
+"k": [
+"Uživatelsky konfigurovatelný číslicový IO",
+"Programování propojkami nebo do EEPROM/Flash",
+"Funkce jako součet součinů",
+"Výhody: méně součástek, spolehlivost, snadná změna",
+"Nevýhody: HDL jazyk, výměna celého čipu, cena",
+"Výrobci Xilinx, Altera (Intel), Lattice",
+"SPLD (PAL, PLA, GAL) → CPLD → FPGA"
+]
+},
+{
+"q": "Popiš PLA, PAL, GAL, CPLD a FPGA.",
+"k": [
+"PAL: progr. AND, pevné OR, rychlejší",
+"PLA: progr. AND i OR, flexibilnější",
+"GAL: mazatelná PAL (EEPROM)",
+"CPLD: stovky makrobuněk, CoolRunner",
+"FPGA: CLB s LUT, GPM, IOB, block RAM, násobičky, DCM, konfigurace z EEPROM"
+]
+},
+{
+"q": "Porovnej makrobuňku a logický blok.",
+"k": [
+"Makrobuňka (OLMC): SPLD/CPLD, AND-OR + D klopný obvod + výstupní logika",
+"Až 16 součinových termů",
+"Logický blok (CLB): FPGA, LUT + flip-flopy + multiplexory",
+"CLB je flexibilnější, bloky v matici přes propojovací mřížku"
+]
+},
+{
+"q": "Popiš WebPACK a PLD kompilátor.",
+"k": [
+"ISE WebPACK – zdarma od Xilinx, VHDL/Verilog",
+"Project Navigator, syntéza, mapování, implementace",
+"iMPACT nahraje .bit přes USB/LPT",
+"Metodika: zápis → popis → simulace → realizace",
+"Kompilátor: minimalizace, optimalizace, výstup .jed / .bit"
+]
+},
+{
+"q": "Popiš obvody NPLD řady 74xx.",
+"k": [
+"NPLD – pevná funkce z výroby",
+"74164 S→P, 74166 P→S (SH/LD, 9 taktů)",
+"74595 posuv + záchytný registr + tristate, řetězení přes QH'",
+"74573 latch (LE, OE)",
+"74244 jednosměrný budič, 74245 obousměrný (DIR)",
+"74688 komparátor (XNOR), 74193 čítač nahoru/dolů (CO, BO)"
+]
+}
+]
+}
