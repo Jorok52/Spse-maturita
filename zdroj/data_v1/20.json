@@ -62,9 +62,9 @@
 [
 "Kdy je nutný 80žilový kabel?",
 "Pro UDMA 4 a vyšší (každý druhý vodič zem)",
-"Vždy, pro všechna zařízení IDE",
-"Jen pro mechaniky CD-ROM (ATAPI)",
-"Jen pro disketové mechaniky"
+"Pro každé zařízení IDE bez ohledu na režim přenosu",
+"Pro mechaniky CD-ROM připojené přes ATAPI",
+"Pro disketové mechaniky"
 ],
 [
 "Cable Select – černý konektor je…",
@@ -209,9 +209,9 @@
 [
 "Co podporuje M.2?",
 "4 PCIe linky, 2 SATA kanály, USB, audio – dle klíčování (B, M)",
-"Jen SATA disky v malém formátu 2242/2280, PCIe ani USB rozhraní nepodporuje",
-"Jen USB zařízení a Wi-Fi karty",
-"Jen jednu linku PCIe x1"
+"SATA disky v malém formátu 2242/2280, PCIe ani USB rozhraní nepodporuje",
+"USB zařízení a Wi-Fi karty, disky ne",
+"Jednu linku PCIe x1 bez podpory SATA"
 ],
 [
 "Rychlost M.2 NVMe dle podkladů?",
@@ -257,10 +257,10 @@
 ],
 [
 "Lze SAS disk připojit k SATA řadiči?",
-"Ne",
-"Ano vždy",
-"Jen přes USB",
-"Jen v IDE režimu"
+"Ne – SAS zařízení nejsou kompatibilní se SATA řadiči",
+"Ano, konektory jsou stejné",
+"Ano, ale jen přes USB adaptér",
+"Ne, SAS disk se dá připojit jen k IDE řadiči"
 ],
 [
 "FireWire 800 rychlost?",

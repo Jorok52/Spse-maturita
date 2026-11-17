@@ -70,7 +70,7 @@ function bucketLab(n, title, prompt, cats, items, opt){
       labShell(n, title, '<p class="muted">'+esc(prompt)+'</p>'+
         '<div class="bksegs">'+list.map((_,k) => '<i class="'+(res[k] === true ? 'ok' : res[k] === false ? 'bad' : k === i ? 'cur' : '')+'"></i>').join('')+'</div>'+
         '<div class="bkstage"><div class="bkcard" id="bkcard"><span class="bkn">'+(i+1)+'/'+list.length+'</span>'+(opt && opt.art ? opt.art(it) : '')+esc(it[0])+'</div><div class="fb" id="fb"></div></div>'+binsHTML(false),
-        'Klikni na přihrádku, kam pojem patří. Klávesy 1–'+Math.min(9,cats.length)+' vyberou přihrádku, Enter pokračuje.');
+        'Klikni na přihrádku, kam pojem patří.<span class="kb"> Klávesy 1–'+Math.min(9,cats.length)+' vyberou přihrádku, Enter pokračuje.</span>');
       let done = false;
       const next = () => { if(busy) return; i++; render(); };
       const pick = k => {
@@ -1304,7 +1304,7 @@ function runAIExam(n, opts){
   function render(pending){
     const tl = timer && timer.left ? timer.left() : null;
     shell('<div class="chat" id="chat">'+bubbles()+(pending != null ? '<div class="msgb ai" id="pend"><span class="who">Zkoušející</span><div id="pendt">'+(pending ? mdLite(pending) : '<span class="typing"><i></i><i></i><i></i></span>')+'</div></div>' : '')+'</div>'+
-      (finished ? '<div class="aixgrade"><div class="g">'+(grade || '–')+'</div><div><b>'+(grade ? ['','Výborně','Chvalitebně','Dobře','Dostatečně','Nedostatečně'][grade] : 'Hodnocení')+'</b><span class="muted small">'+(opts.timed && tl != null ? 'Čas: '+Math.floor((900-tl)/60)+' min '+((900-tl)%60)+' s · ' : '')+asked+' otázek</span></div>'+
+      (finished ? '<div class="aixgrade"><div class="g">'+(grade || '–')+'</div><div><b>'+(grade ? ['','Výborně','Chvalitebně','Dobře','Dostatečně','Nedostatečně'][grade] : 'Hodnocení')+'</b><span class="muted small">'+(opts.timed && tl != null ? 'Čas: '+Math.floor((900-tl)/60)+' min '+((900-tl)%60)+' s · ' : '')+asked+' '+plural(asked,'otázka','otázky','otázek')+'</span></div>'+
           '<div class="row"><button class="btn" id="again">Zkoušet znovu</button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>'
         : call.on ? '<div class="callpanel" id="callp" data-st="'+call.state+'"><div class="callorb"><i></i><i></i><i></i></div><div class="callinfo"><b id="callst">'+esc(call.label)+'</b><span id="calllive"></span></div>'+
           '<div class="row"><button class="btn" id="csend">Domluvil jsem</button><button class="btn ghost" id="cskip">Přeskočit čtení</button><button class="btn ghost" id="ctype">Psát místo mluvení</button><span class="spacer"></span><button class="btn red" id="chang">Zavěsit a ohodnotit</button></div></div>'

@@ -1,9 +1,12 @@
 /* ================= OBRÁZKY Z PDF ================= */
 function imgsOf(n){ return (IMG && IMG[n]) || []; }
+/* obrázek z PDF má číslo strany (p), nakreslené schéma podle podkladů má popisek (cap) */
+function imgWhere(im){ return im.p ? 'strana ' + im.p + ' v PDF' : 'schéma podle podkladů: ' + (im.cap || ''); }
+function imgAlt(n, im){ return im.p ? 'Obrázek z PDF k otázce ' + n + ', strana ' + im.p : 'Schéma k otázce ' + n + ': ' + (im.cap || ''); }
 function lightbox(n, i){
   const list = imgsOf(n); if(!list.length) return;
   const lb = document.createElement('div'); lb.className = 'lbx'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Obrázek z PDF');
-  const draw = () => { lb.innerHTML = '<figure><img src="' + list[i].s + '" alt="Obrázek z PDF k otázce ' + n + ', strana ' + list[i].p + '"><figcaption>' + esc(n + '. ' + T[n].t) + ' · strana ' + list[i].p + ' v PDF · ' + (i+1) + '/' + list.length + '</figcaption></figure>' +
+  const draw = () => { lb.innerHTML = '<figure><img src="' + list[i].s + '" alt="' + esc(imgAlt(n, list[i])) + '"><figcaption>' + esc(n + '. ' + T[n].t) + ' · ' + esc(imgWhere(list[i])) + ' · ' + (i+1) + '/' + list.length + '</figcaption></figure>' +
     '<button class="lbx-x" aria-label="Zavřít">✕</button>' + (list.length > 1 ? '<button class="lbx-p" aria-label="Předchozí">‹</button><button class="lbx-n" aria-label="Další">›</button>' : ''); bind(); };
   const close = () => { lb.remove(); document.removeEventListener('keydown', key, true); };
   const key = e => { if(e.key === 'Escape'){ e.stopPropagation(); close(); } else if(e.key === 'ArrowRight'){ e.stopPropagation(); i = (i+1) % list.length; draw(); } else if(e.key === 'ArrowLeft'){ e.stopPropagation(); i = (i-1+list.length) % list.length; draw(); } };
@@ -16,7 +19,7 @@ function lightbox(n, i){
 }
 function galleryHTML(n, title){
   const list = imgsOf(n); if(!list.length) return '';
-  return '<div class="section"><h3>' + (title || 'Obrázky z tvých PDF') + '</h3><div class="gal">' + list.map((im, i) => '<button class="gal-i" data-gn="' + n + '" data-gi="' + i + '"><img src="' + im.s + '" alt="" loading="lazy"><span>str. ' + im.p + '</span></button>').join('') + '</div></div>';
+  return '<div class="section"><h2>' + (title || 'Obrázky z tvých PDF') + '</h2><div class="gal">' + list.map((im, i) => '<button class="gal-i" data-gn="' + n + '" data-gi="' + i + '"><img src="' + im.s + '" alt="" loading="lazy" decoding="async"><span>' + (im.p ? 'str. ' + im.p : 'schéma') + '</span></button>').join('') + '</div></div>';
 }
 function bindGallery(){ view.querySelectorAll('.gal-i').forEach(b => b.onclick = () => lightbox(+b.dataset.gn, +b.dataset.gi)); }
 

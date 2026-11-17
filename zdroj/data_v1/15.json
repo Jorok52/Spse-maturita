@@ -161,9 +161,9 @@
 [
 "Co je překřížený cluster?",
 "Na jeden cluster ukazují dva záznamy (dva soubory)",
-"Cluster, na který nikdo neukazuje, ale má data",
-"Cluster na konci disku za posledním souborem",
-"Cluster zašifrovaný pomocí EFS"
+"Obsahuje data, ale žádný záznam v adresáři na něj neukazuje",
+"Leží na konci disku za posledním souborem",
+"Je zašifrovaný pomocí EFS"
 ],
 [
 "Jak OS ve FAT „smaže“ soubor?",

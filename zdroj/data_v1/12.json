@@ -327,9 +327,9 @@
 [
 "Proč UNIX běží od superpočítačů po PC?",
 "Platformová nezávislost díky napsání v C",
-"Protože je napsaný v assembleru",
-"Protože má jednotné grafické rozhraní",
-"Protože ho vyvíjí Microsoft pro všechny"
+"Je napsaný v assembleru zvlášť pro každý procesor",
+"Má jednotné grafické rozhraní na všech zařízeních",
+"Vyvíjí ho Microsoft pro všechny typy počítačů"
 ]
 ],
 "terms": [

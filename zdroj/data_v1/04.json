@@ -48,9 +48,9 @@
 [
 "Proč otevřený kolektor potřebuje pull-up rezistor?",
 "Bez něj je výstup v log. 1 nedefinovaný (visí)",
-"Aby omezil proud tekoucí do země při log. 0",
-"Aby zrychlil přenos a zkrátil hrany signálu",
-"Aby výstup mohl přejít do stavu vysoké impedance"
+"Omezuje proud tekoucí do země při log. 0",
+"Zrychlí přenos a zkrátí hrany signálu",
+"Umožní výstupu přejít do stavu vysoké impedance"
 ],
 [
 "Co je drátová logika (wired AND) u otevřeného kolektoru?",

@@ -19,7 +19,7 @@ function runQuizLevels(n){
   view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět na téma</button><h1 class="lbh">Kvíz po úrovních · '+n+'. '+esc(t.t)+'</h1>'+
     '<p class="muted" style="max-width:62ch">Každá úroveň má pevných 10 otázek. Na další úroveň potřebuješ aspoň 7 správně. Úrovně tak projdou celé téma, nic se neopakuje dokola.</p>'+
     '<div class="lvgrid">'+cards+'</div>'+
-    '<div class="section"><h3>Další varianty</h3><div class="modes">'+
+    '<div class="section"><h2>Další varianty</h2><div class="modes">'+
     '<button class="mode" data-v="mix"><b>Chytrý mix</b><span>10 otázek, častěji ty, které ještě neumíš nebo jsi neviděl. 3 pojistky.</span><em>opakování</em></button>'+
     '<button class="mode" data-v="all"><b>Celé téma</b><span>Všech '+QBY[n].length+' otázek tématu v náhodném pořadí, bez pojistek.</span><em>generálka</em></button></div></div></div>';
   $('#back').onclick = () => renderTopic(n);
@@ -67,20 +67,20 @@ function runProfile(){
   const maxD = Math.max(1, ...days.map(x => x.n));
   const nick = (typeof LB !== 'undefined' && LB.me) ? LB.me.nick : null;
   const row = x => '<li><button class="prow" data-n="'+x.n+'"><span class="ref">'+ref(x.n)+'</span><span class="pt">'+esc(T[x.n].t)+'</span><span class="pbar"><i style="width:'+(x.m*100).toFixed(1)+'%"></i></span><span class="pv">'+pct(x.m)+'</span><span class="pv sm">'+(x.acc==null?'—':Math.round(x.acc*100)+' % správně')+'</span></button></li>';
-  view.innerHTML = '<div class="bench wide prof">'+
+  view.innerHTML = '<div class="bench wide prof" data-scr="prof">'+
     '<button class="back" id="back">← Zpět na desku</button>'+
     '<div class="phead"><div class="pchip"><span class="notch"></span><b>'+esc(nick || 'Ty')+'</b><span>'+esc(rankOf(L))+' · úroveň '+L+'</span><div class="xpbar big"><i style="width:'+(p*100).toFixed(1)+'%"></i></div><em>'+S.xp.toLocaleString('cs-CZ')+' XP · do další úrovně '+(hi-S.xp).toLocaleString('cs-CZ')+'</em></div>'+
     '<div class="result ptiles"><div class="tile"><div class="v">'+masteredCount()+'</div><div class="l">zvládnutých otázek z '+ALLQ.length+'</div></div>'+
-    '<div class="tile"><div class="v">'+(R+W ? Math.round(R/(R+W)*100)+' %' : '—')+'</div><div class="l">úspěšnost ('+(R+W)+' odpovědí)</div></div>'+
+    '<div class="tile"><div class="v">'+(R+W ? Math.round(R/(R+W)*100)+' %' : '—')+'</div><div class="l">úspěšnost ('+(R+W)+' '+plural(R+W,'odpověď','odpovědi','odpovědí')+')</div></div>'+
     '<div class="tile"><div class="v">'+streak()+'</div><div class="l">dní v řadě</div></div>'+
     '<div class="tile"><div class="v">'+(S.best.survival||0)+'</div><div class="l">rekord v přežití</div></div></div></div>'+
     (!played.length ? '<p class="muted" style="margin-top:18px">Zatím tu nic není. Zahraj si kvíz nebo ústní zkoušení a profil se začne plnit.</p>' :
     '<div class="pcols"><div><h3>Tohle ti jde</h3><ul class="plist">'+(played.length < 2 ? '' : strong.map(row).join(''))+'</ul>'+(played.length < 2 ? '<p class="muted small">Zahraj si aspoň dvě témata a ukážu ti, co ti jde líp.</p>' : '')+'</div><div><h3>Na tom zapracuj</h3><ul class="plist">'+weak.map(row).join('')+'</ul>'+
       (untouched.length ? '<p class="muted small">Ještě jsi nezačal: '+untouched.map(x => x.n+'.').join(' ')+'</p>' : '')+'</div></div>')+
-    '<div class="section"><h3>Aktivita za 4 týdny</h3><div class="act28">'+days.map(x => '<span title="'+x.k+': '+x.n+' odpovědí" style="--a:'+(x.n ? .25 + .75*x.n/maxD : 0)+'"></span>').join('')+'</div></div>'+
-    (miss.length ? '<div class="section"><h3>Nejčastější chyby</h3><div class="wronglist">'+miss.map(q => '<div><b>'+esc(q.q)+'</b><span>'+esc(q.a)+'</span> <em class="muted small">('+ref(q.n)+', chyb '+S.ans[q.id][1]+', správně '+S.ans[q.id][0]+')</em></div>').join('')+'</div>'+
+    '<div class="section"><h2>Aktivita za 4 týdny</h2><div class="act28">'+days.map(x => '<span title="'+x.k+': '+x.n+' '+plural(x.n,'odpověď','odpovědi','odpovědí')+'" style="--a:'+(x.n ? .25 + .75*x.n/maxD : 0)+'"></span>').join('')+'</div></div>'+
+    (miss.length ? '<div class="section"><h2>Nejčastější chyby</h2><div class="wronglist">'+miss.map(q => '<div><b>'+esc(q.q)+'</b><span>'+esc(q.a)+'</span> <em class="muted small">('+ref(q.n)+', chyb '+S.ans[q.id][1]+', správně '+S.ans[q.id][0]+')</em></div>').join('')+'</div>'+
       '<div class="row" style="margin-top:12px"><button class="btn" id="fixmiss">Procvičit tyhle chyby</button></div></div>' : '')+
-    '<div class="section"><h3>Všechna témata</h3><ul class="plist all">'+st.map(row).join('')+'</ul></div>'+
+    '<div class="section"><h2>Všechna témata</h2><ul class="plist all">'+st.map(row).join('')+'</ul></div>'+
     '<p class="muted small" style="margin-top:16px">Profil se ukládá v tomhle prohlížeči'+(typeof LB !== 'undefined' && LB.on ? ' a s žebříčkem i online. Na jiném zařízení ho obnovíš kódem hráče v Žebříčku.' : '.')+'</p></div>';
   $('#back').onclick = () => go('');
   $$('.prow').forEach(b => b.onclick = () => go('t'+b.dataset.n));
@@ -93,7 +93,7 @@ const IN_ARTIFACT = !!(window.claude && window.claude.use);
 function pdfName(n){ return 'materialy/' + String(n).padStart(2,'0') + '.pdf'; }
 function runMaterials(){
   onKey = null;
-  view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět na desku</button><h1 class="lbh">Materiály</h1>'+
+  view.innerHTML = '<div class="bench wide" data-scr="mat"><button class="back" id="back">← Zpět na desku</button><h1 class="lbh">Materiály</h1>'+
     '<p class="muted" style="max-width:64ch">Tvoje podklady jako datasheety součástek na desce. Čti je přímo tady, nebo si otevři původní PDF.'+(IN_ARTIFACT ? ' PDF soubory jsou ve verzi na GitHubu a v aplikaci.' : '')+'</p>'+
     '<ol class="dslist">'+NUMS.map(n => { const t = T[n], has = !!RAW[n];
       return '<li class="ds"><span class="dsref">'+ref(n)+'</span><span class="dst"><b>'+esc(t.t)+'</b><span>'+(has ? t.outline.slice(0,3).map(esc).join(' · ') : 'Bez PDF – sestaveno podle oficiální osnovy')+'</span></span>'+
@@ -104,32 +104,39 @@ function runMaterials(){
   $$('[data-t]').forEach(b => b.onclick = () => go('t'+b.dataset.t));
   window.scrollTo(0,0);
 }
-function rawToHTML(txt){
+function rawParas(txt){
   const lines = txt.split('\n').map(l => l.replace(/\f/g,'').trim()).filter(Boolean);
   const out = []; let para = '';
-  const flush = () => { if(para){ out.push('<p>'+esc(para)+'</p>'); para = ''; } };
+  const flush = () => { if(para){ out.push({h:false, t:para}); para = ''; } };
   lines.forEach((l, i) => {
     const next = lines[i+1] || '';
     const isHead = l.length <= 60 && !/[.,;:)–-]$/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ0-9]/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !para;
-    if(isHead && l.split(' ').length <= 8){ flush(); out.push('<h3>'+esc(l)+'</h3>'); return; }
+    if(isHead && l.split(' ').length <= 8){ flush(); out.push({h:true, t:l}); return; }
     if(para && /^[a-záčďéěíňóřšťúůýž(]/.test(l)) para += ' ' + l;
     else { flush(); para = l; }
     if(/[.:]$/.test(l)) flush();
   });
-  flush(); return out.join('');
+  flush(); return out;
 }
-function runReader(n, vid){
-  onKey = null; const t = T[n];
-  view.innerHTML = '<div class="bench wide dsread"><button class="back" id="back">← Materiály</button>'+
+function rawToHTML(txt){ return rawParas(txt).map((p, i) => p.h ? '<h3 data-pi="'+i+'">'+esc(p.t)+'</h3>' : '<p data-pi="'+i+'">'+esc(p.t)+'</p>').join(''); }
+function runReader(n, vid, opt){
+  onKey = null; const t = T[n]; opt = opt || {};
+  view.innerHTML = '<div class="bench wide dsread" data-scr="read"><button class="back" id="back">'+(opt.back ? '← Hledání' : '← Materiály')+'</button>'+
     '<div class="dshead"><span class="dsref">'+ref(n)+'</span><div><h1>'+esc(t.t)+'</h1><span class="muted small">Datasheet · maturitní otázka '+n+'</span></div>'+
     (IN_ARTIFACT ? '' : '<a class="btn ghost" href="'+pdfName(n)+'" target="_blank" rel="noopener">Otevřít PDF</a>')+'</div>'+
     videoHTML(n, true)+
-    '<div class="section"><h3>Osnova</h3><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
+    '<div class="section"><h2>Osnova</h2><ol class="outline">'+t.outline.map(o => '<li>'+esc(o)+'</li>').join('')+'</ol></div>'+
     galleryHTML(n, 'Obrázky')+
-    '<div class="section"><h3>Text podkladů</h3><div class="dstext">'+rawToHTML(RAW[n]||'')+'</div></div>'+
+    '<div class="section"><h2>Text podkladů</h2><div class="dstext">'+rawToHTML(RAW[n]||'')+'</div></div>'+
     '<div class="row" style="margin-top:20px"><button class="btn" id="toq">Procvičit tohle téma</button></div></div>';
-  $('#back').onclick = () => runMaterials();
+  $('#back').onclick = () => opt.back ? opt.back() : runMaterials();
   $('#toq').onclick = () => go('t'+n);
   bindGallery(); window.scrollTo(0,0);
   if(vid){ const v = view.querySelector('.vfold'); if(v) v.scrollIntoView({block:'start'}); }
+  if(opt.q){   // z hledání: zvýraznit hledaná slova a skočit na nalezený odstavec
+    const box = view.querySelector('.dstext');
+    if(box) markText(box, opt.q);
+    const el = box && (box.querySelector('[data-pi="'+opt.para+'"]') || box.querySelector('mark'));
+    if(el){ el.classList.add('srhit'); setTimeout(() => el.scrollIntoView({block:'center'}), 30); }
+  }
 }

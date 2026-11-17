@@ -166,9 +166,9 @@
 [
 "Proč se dělá teplotní kalibrace (TCAL)?",
 "Teplota roztahuje díly a posouvá hlavičky vůči stopám",
-"Kvůli chlazení disku za provozu – kalibrace řídí otáčky ventilátoru",
-"Kvůli zvýšení otáček ploten",
-"Kvůli aktualizaci údajů SMART"
+"Řídí otáčky ventilátoru podle teploty disku",
+"Zvyšuje otáčky ploten, když se disk zahřeje",
+"Aktualizuje teplotní údaje ve SMART"
 ],
 [
 "Z čeho se skládá přístupová doba?",
@@ -187,9 +187,9 @@
 [
 "Proč se data na disku kódují (FM, MFM, RLL)?",
 "Aby dlouhé řady nul nezpůsobily ztrátu synchronizace",
-"Kvůli šifrování dat na plotně",
-"Kvůli kompresi dat, aby se na plotnu vešlo víc informací",
-"Kvůli monitorování SMART"
+"Data se tím šifrují, aby je nešlo přečíst v jiném počítači",
+"Aby se data dala číst i bez řadiče disku",
+"Disk tak hlásí svůj stav přes SMART"
 ],
 [
 "Kódování s 2–7 mezerami mezi impulsy?",

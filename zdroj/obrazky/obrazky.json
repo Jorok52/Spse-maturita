@@ -1,0 +1,50 @@
+{
+ "15": [
+  {
+   "f": "u15-fat-disk.svg",
+   "cap": "Logický disk FAT – boot record, FAT 1, FAT 2, root, data"
+  },
+  {
+   "f": "u15-fat-retezec.svg",
+   "cap": "Řetězec clusterů ve FAT (5 → 6 → 9, EOF)"
+  },
+  {
+   "f": "u15-ntfs.svg",
+   "cap": "NTFS – MFT, rezerva 12 %, $MFTMirr, metasoubory"
+  }
+ ],
+ "11": [
+  {
+   "f": "u11-ip-maska.svg",
+   "cap": "IPv4 adresa a maska – síť, broadcast, hosté"
+  },
+  {
+   "f": "u11-tridy.svg",
+   "cap": "Třídy IPv4 adres A–E podle prvního oktetu"
+  },
+  {
+   "f": "u11-smerovac.svg",
+   "cap": "Směrovač R1 a jeho směrovací tabulka"
+  }
+ ],
+ "13": [
+  {
+   "f": "u13-geometrie.svg",
+   "cap": "Geometrie HDD – stopa, sektor, cylindr, hlavy"
+  },
+  {
+   "f": "u13-sektor-zbr.svg",
+   "cap": "Struktura sektoru, ZBR a přístupová doba HDD"
+  }
+ ],
+ "17": [
+  {
+   "f": "u17-deleni.svg",
+   "cap": "Rozdělení pamětí – volatilní RAM a nevolatilní ROM"
+  },
+  {
+   "f": "u17-hierarchie.svg",
+   "cap": "Hierarchie pamětí a princip cache (hit / miss)"
+  }
+ ]
+}

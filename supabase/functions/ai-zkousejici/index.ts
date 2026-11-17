@@ -30,7 +30,7 @@ async function chatModels(): Promise<string[]> {
 }
 const STT_MODELS = env("AI_STT_MODELS", "whisper-large-v3,whisper-large-v3-turbo").split(",").map((m) => m.trim()).filter(Boolean);
 const LIMIT_PLAYER = Number(env("AI_LIMIT_PLAYER", "80"));   // dotazů na hráče za den
-const LIMIT_IP = Number(env("AI_LIMIT_IP", "200"));          // dotazů z jedné IP za den (škola = jedna IP)
+const LIMIT_IP = Number(env("AI_LIMIT_IP", "600"));          // dotazů z jedné IP za den – celá škola je za jednou IP, proto víc; celkový strop hlídá LIMIT_ALL
 const LIMIT_ALL = Number(env("AI_LIMIT_ALL", "900"));        // dotazů celkem za den (pod free limitem Groqu)
 
 const cors = {

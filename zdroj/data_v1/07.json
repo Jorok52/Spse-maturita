@@ -27,7 +27,7 @@
 [
 "Co je race condition (závodní podmínka)?",
 "Výsledek závisí na pořadí přístupu procesů ke sdíleným datům",
-"Souboj procesů o nejvyšší prioritu v plánovači",
+"Souboj procesů o nejvyšší prioritu, který plánovač řeší přidělením procesoru",
 "Přetečení bufferu, když producent nestíhá konzument",
 "Situace, kdy rychlejší proces vždy vyhraje procesor"
 ],
@@ -35,13 +35,13 @@
 "Co je kritická sekce?",
 "Část kódu, kde se přistupuje ke sdíleným prostředkům",
 "Část jádra OS, kam smí jen administrátor",
-"Chybový stav, kdy proces čeká na prostředek",
+"Chybový stav, kdy proces donekonečna čeká na prostředek držený jiným procesem",
 "Oblast paměti BIOSu chráněná proti zápisu"
 ],
 [
 "Podmínka Mutual Exclusion znamená…",
 "V kritické sekci smí být najednou jen jeden proces",
-"Procesy se v kritické sekci přesně střídají",
+"Procesy se v kritické sekci přesně střídají podle proměnné turn, ať ji potřebují, nebo ne",
 "Žádný proces nesmí na vstup čekat",
 "Systém smí mít jen jeden procesor"
 ],
@@ -55,7 +55,7 @@
 [
 "Aktivní čekání (busy waiting) je…",
 "Proces neustále testuje podmínku a spotřebovává CPU",
-"Proces je uspán a čeká na probuzení jiným procesem",
+"Proces je uspán do fronty a čeká, až ho jiný proces probudí signálem",
 "Proces je odložen na disk, dokud se KS neuvolní",
 "Proces je ukončen a po uvolnění KS spuštěn znovu"
 ],
@@ -76,7 +76,7 @@
 [
 "Proč je zákaz přerušení nevhodný pro víceprocesorové systémy?",
 "Procesy na jiných CPU zákaz ignorují a vstoupí do KS",
-"Je příliš pomalý a zdržuje přepínání kontextu",
+"Je příliš pomalý, protože každé přerušení musí schválit operační systém",
 "Nelze ho na žádném procesoru implementovat",
 "Vyžaduje semafor a podporu operačního systému"
 ],
@@ -146,7 +146,7 @@
 [
 "Co udělá WAIT na semaforu?",
 "value--, při value < 0 zablokuje proces do fronty",
-"value++, a je-li někdo ve frontě, probudí ho",
+"value++, a pokud na semaforu někdo čeká ve frontě, probudí ho",
 "value se nastaví na 0 a proces vstoupí do KS",
 "Ukončí proces, pokud je value záporná"
 ],
@@ -174,7 +174,7 @@
 [
 "Co je deadlock?",
 "Procesy navzájem čekají na prostředky, které drží ten druhý",
-"Proces nikdy nedostane CPU, protože ho předbíhají jiné",
+"Proces nikdy nedostane CPU, protože ho stále předbíhají procesy s vyšší prioritou",
 "Procesy neustále mění stav, ale nikdo nepostoupí",
 "Proces s vysokou prioritou čeká na proces s nízkou"
 ],
@@ -211,7 +211,7 @@
 "Holič, jedno křeslo, omezená čekárna",
 "5 filozofů a sdílené vidličky",
 "Čtenáře a písaře nad daty",
-"Producenta a konzumenta s bufferem"
+"Producenta a konzumenta se sdíleným omezeným bufferem"
 ],
 [
 "Kolik filozofů je v klasickém problému?",

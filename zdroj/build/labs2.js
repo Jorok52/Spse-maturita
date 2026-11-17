@@ -522,7 +522,7 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
   function status(){
     const el = $('#ptstat'); if(!el) return;
     el.textContent = tool in MAX ? 'Klikni na plochu, kam chceš '+KIND[tool].toLowerCase()+' umístit.' :
-      tool === 'straight' || tool === 'cross' ? (pend ? 'Kabel z '+dev(pend.d).name+' '+pend.p+' – klikni na druhé zařízení (Esc zruší).' : (tool === 'cross' ? 'Křížený' : 'Přímý')+' kabel: klikni na první zařízení a vyber port.') :
+      tool === 'straight' || tool === 'cross' ? (pend ? 'Kabel z '+dev(pend.d).name+' '+pend.p+' – klikni na druhé zařízení'+(TOUCH ? '.' : ' (Esc zruší).') : (tool === 'cross' ? 'Křížený' : 'Přímý')+' kabel: klikni na první zařízení a vyber port.') :
       tool === 'del' ? 'Mazání: klikni na zařízení nebo kabel, který chceš odstranit.' : 'Klikni na zařízení nebo kabel – otevře se jeho nastavení. Zařízení můžeš přetahovat.';
     $$('.ptbar [data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === tool));
   }

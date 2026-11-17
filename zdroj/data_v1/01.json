@@ -50,9 +50,9 @@
   [
    "Co určuje datový typ?",
    "Druh a rozsah hodnot, uložení v paměti a dostupné operace",
-   "Jen to, kolik bajtů proměnná zabere v operační paměti počítače",
-   "Jen to, jestli proměnná může být lokální nebo globální",
-   "Jen to, ve které knihovně je proměnná deklarovaná"
+   "Viditelnost proměnné (lokální × globální) a dobu jejího života",
+   "Název proměnné a hlavičkový soubor, ve kterém je deklarovaná",
+   "Adresu, na které bude proměnná v paměti uložená"
   ],
   [
    "Typická velikost typu char?",
@@ -78,9 +78,9 @@
   [
    "Proč je char celočíselný typ?",
    "Ukládá se jako číselný kód znaku ('A' = 65)",
-   "Protože může obsahovat jen číslice 0 až 9 (ASCII)",
-   "Protože zabírá stejně místa jako typ int",
-   "Protože se do něj nesmí uložit písmeno"
+   "Může obsahovat jen číslice 0 až 9 (ASCII)",
+   "Zabírá v paměti stejně místa jako typ int",
+   "Překladač ho při překladu převede na int a znak zahodí"
   ],
   [
    "Proč se float/double nemají porovnávat přes ==?",

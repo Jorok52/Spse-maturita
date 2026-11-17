@@ -278,9 +278,9 @@
 [
 "Supervisor password umožňuje…",
 "Plný přístup do Setupu a změny",
-"Jen používat PC, do Setupu nesmí",
-"Nic, slouží jen jako záloha",
-"Jen bootovat z USB disku"
+"Používat PC, ale do Setupu nepustí",
+"Nic, slouží jako záloha pro případ zapomenutí",
+"Spustit systém z USB disku, Setup zůstane zamčený"
 ],
 [
 "Jak se jmenují nástroje pro flash UEFI?",

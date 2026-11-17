@@ -19,5 +19,6 @@ build() {  # $1 = číslo verze, $2 = název, $3.. = extra volby
 }
 [ -z "$ONLY3" ] && build 1 "Maturitní deska"
 [ -z "$ONLY3" ] && build 2 "Maturitní deska 2"
-rm -rf materialy; cp -r "$SRC/materialy" materialy
+MAT="$SRC/materialy"; [ -d "$MAT" ] || MAT="$SRC/../materialy"   # v repu leží PDF v kořeni (materialy/)
+rm -rf materialy; cp -r "$MAT" materialy
 build 3 "Maturitní deska 3" -c.extraResources=materialy
