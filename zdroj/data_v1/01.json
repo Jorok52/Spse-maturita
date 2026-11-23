@@ -117,7 +117,7 @@
    "2",
    "2.5",
    "3",
-   "2,5"
+   "1"
   ],
   [
    "Co vrátí výraz (double)5 / 2?",
@@ -173,7 +173,7 @@
    "Okamžitě ukončí nejbližší cyklus nebo switch",
    "Přeskočí zbytek iterace a pokračuje další",
    "Zastaví celý program a vrátí systému kód chyby",
-   "Zastaví program a vrátí kód chyby"
+   "Ukončí funkci a vrátí se do místa volání"
   ],
   [
    "Co dělá continue?",
@@ -201,14 +201,14 @@
    "Nedefinované chování – C hranice nehlídá",
    "Překladač vždy ohlásí chybu indexu",
    "Pole se automaticky zvětší o jeden prvek",
-   "Pole se automaticky zvětší o prvek"
+   "Vrátí se nula, protože prvek neexistuje"
   ],
   [
    "Čemu ve výrazech obvykle odpovídá název pole a?",
    "Ukazateli na první prvek, &a[0]",
    "Počtu prvků pole (jako sizeof)",
    "Adrese posledního prvku, &a[4]",
-   "Adrese posledního prvku"
+   "Kopii celého pole v nové paměti"
   ],
   [
    "Čím končí řetězec v C?",
@@ -250,14 +250,14 @@
    "Vždy hodnotou – funkce dostane kopii",
    "Vždy odkazem – funkce mění originál",
    "Podle toho, co při spojování určí linker",
-   "Podle toho, co určí linker"
+   "Automaticky ukazatelem, který vytvoří překladač"
   ],
   [
    "Jak funkcí změníš původní proměnnou?",
    "Předáš její adresu: zmenOriginal(&a)",
    "Předáš ji hodnotou: zmenOriginal(a)",
    "Vrátíš ji z funkce příkazem break",
-   "Vrátíš ji příkazem break"
+   "Deklaruješ ji ve funkci znovu se stejným jménem"
   ],
   [
    "Jak funkce vrátí více výsledků?",
@@ -299,7 +299,7 @@
    "Složený typ spojující položky různých typů pod jedno jméno",
    "Pole prvků stejného typu uložených souvisle v paměti",
    "Knihovna funkcí ze stdlib.h pro práci se záznamy",
-   "Knihovna funkcí pro práci se záznamy"
+   "Ukazatel na blok paměti alokovaný přes malloc"
   ],
   [
    "Co vrátí malloc při neúspěchu?",
@@ -312,7 +312,7 @@
    "Co je memory leak?",
    "Paměť z malloc se nikdy neuvolní přes free",
    "Ukazatel ukazuje na už uvolněnou paměť z malloc",
-   "Ukazatel ukazuje na uvolněnou paměť",
+   "Zápis za konec pole do cizí paměti",
    "Čtení přes NULL ukazatel"
   ],
   [
