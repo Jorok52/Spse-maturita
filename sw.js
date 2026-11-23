@@ -1,10 +1,10 @@
 /* Maturitní deska – service worker (offline režim a instalace na plochu)
-   Verze 23.11.2026 11:26 · generuje zdroj/build/build.py, needitovat v kořeni repa.
+   Verze 23.11.2026 12:17 · generuje zdroj/build/build.py, needitovat v kořeni repa.
    - stránka: nejdřív síť (ať je vždy nejnovější), bez signálu poslední uložená kopie
    - obrázky, písma, ikony: mají v názvu otisk obsahu, takže stačí uložit jednou
    - PDF: nejdřív síť, ale každé otevřené PDF se uloží a bez signálu jde i offline
    - videa, version.json a cizí servery (AI, žebříček) jdou vždy rovnou na síť */
-const VERSION = '23.11.2026 11:26';
+const VERSION = '23.11.2026 12:17';
 const PAGE = 'md-page', STATIC = 'md-static', MEDIA = 'md-media';
 const CORE = ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'].concat(["fonts/ChakraPetch-500-latin-ext.woff2", "fonts/ChakraPetch-500-latin.woff2", "fonts/ChakraPetch-600-latin-ext.woff2", "fonts/ChakraPetch-600-latin.woff2", "fonts/ChakraPetch-700-latin-ext.woff2", "fonts/ChakraPetch-700-latin.woff2", "fonts/IBMPlexMono-400-latin-ext.woff2", "fonts/IBMPlexMono-400-latin.woff2", "fonts/IBMPlexMono-500-latin-ext.woff2", "fonts/IBMPlexMono-500-latin.woff2", "fonts/IBMPlexMono-600-latin-ext.woff2", "fonts/IBMPlexMono-600-latin.woff2", "fonts/IBMPlexSans-400-latin-ext.woff2", "fonts/IBMPlexSans-400-latin.woff2", "fonts/IBMPlexSans-500-latin-ext.woff2", "fonts/IBMPlexSans-500-latin.woff2", "fonts/IBMPlexSans-600-latin-ext.woff2", "fonts/IBMPlexSans-600-latin.woff2"]);
 

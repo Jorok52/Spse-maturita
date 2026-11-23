@@ -1090,8 +1090,239 @@ function runCreativeAI(n){
   render('');
 }
 
+/* ---------- T5: digitalizace signálu (kreativní) ---------- */
+cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů převodníku a sleduj vzorkování, kvantování, kvantizační chybu i aliasing.', n => {
+  const F = 300, WIN = 0.01, UREF = 5;
+  const SIG = {
+    sin:{t:'sinus 300 Hz', fmax:F, f:t => 2.5 + 2.2*Math.sin(2*Math.PI*F*t)},
+    tri:{t:'trojúhelník 300 Hz', fmax:F, f:t => { const p = ((t*F) % 1 + 1) % 1; return 2.5 + 2.2*(p < .5 ? 4*p - 1 : 3 - 4*p); }},
+    mix:{t:'složený 300 + 900 Hz', fmax:3*F, f:t => 2.5 + 1.6*Math.sin(2*Math.PI*F*t) + .6*Math.sin(2*Math.PI*3*F*t)}
+  };
+  const TASKS = [
+    {t:'Sinus 300 Hz: nastav nejnižší vzorkovací frekvenci, která ještě splní Nyquistův teorém (fs > 2 · f).', ok:() => sig === 'sin' && fs === 700,
+      no:() => sig !== 'sin' ? 'Přepni signál na sinus.' : fs <= 600 ? 'fs = '+fs+' Hz je moc málo – pro 300 Hz potřebuješ víc než 600 Hz.' : 'Funguje to, ale jde to i s nižší frekvencí.'},
+    {t:'Převodník má Uref = 5 V. Zvol nejmenší počet bitů, při kterém je kvantizační krok (LSB) menší než 0,1 V.', ok:() => bits === 6,
+      no:() => UREF / 2**bits >= .1 ? 'LSB = '+fmt(UREF / 2**bits, 3)+' V – ještě je moc velký.' : 'LSB je dost malý, ale stačí i méně bitů.'},
+    {t:'Ukaž aliasing: nastav fs tak, aby se sinus 300 Hz po vzorkování jevil jako signál 100 Hz.', ok:() => sig === 'sin' && (fs === 200 || fs === 400),
+      no:() => sig !== 'sin' ? 'Přepni signál na sinus.' : 'Při fs = '+fs+' Hz vypadá signál jako '+alias(fs)+' Hz.'}
+  ];
+  let sig = 'sin', fs = 1500, bits = 3, ti = 0;
+  const alias = f => Math.abs(F - f * Math.round(F / f));
+  const X = t => 44 + t / WIN * 586, Y = v => 262 - v / UREF * 236;
+  function samples(){ const out = []; for(let k = 0; k / fs <= WIN + 1e-9; k++){ const t = k / fs, v = SIG[sig].f(t), lsb = UREF / 2**bits, q = Math.max(0, Math.min(2**bits - 1, Math.round(v / lsb))); out.push({k, t, v, q, vq:q*lsb}); } return out; }
+  function plot(){
+    const S = samples(), L = 2**bits, lsb = UREF / L, under = fs <= 2*SIG[sig].fmax;
+    let g = '<rect x="44" y="26" width="586" height="236" class="dgbg"/>';
+    if(L <= 64) for(let q = 0; q < L; q++) g += '<path d="M44 '+Y(q*lsb).toFixed(1)+'H630" class="dglvl"/>';
+    for(let v = 0; v <= 5; v++) g += '<text x="38" y="'+(Y(v)+4)+'" text-anchor="end" class="dgt">'+v+' V</text>';
+    for(let m = 0; m <= 10; m += 2) g += '<text x="'+X(m/1000)+'" y="280" text-anchor="middle" class="dgt">'+m+' ms</text>';
+    let a = ''; for(let i = 0; i <= 500; i++){ const t = WIN * i / 500; a += (i ? 'L' : 'M')+X(t).toFixed(1)+' '+Y(SIG[sig].f(t)).toFixed(1); }
+    g += '<path d="'+a+'" class="dgan"/>';
+    let st = ''; S.forEach((s, i) => { const x0 = X(s.t), x1 = X(Math.min(WIN, S[i+1] ? S[i+1].t : WIN)); st += (i ? 'L'+x0.toFixed(1)+' '+Y(s.vq).toFixed(1) : 'M'+x0.toFixed(1)+' '+Y(s.vq).toFixed(1))+'H'+x1.toFixed(1); });
+    g += '<path d="'+st+'" class="dgst"/>';
+    if(under && sig === 'sin'){ const m = Math.round(F / fs), fa = F - m*fs; let r = ''; for(let i = 0; i <= 500; i++){ const t = WIN * i / 500; r += (i ? 'L' : 'M')+X(t).toFixed(1)+' '+Y(2.5 + 2.2*Math.sin(2*Math.PI*fa*t)).toFixed(1); } g += '<path d="'+r+'" class="dgal"/>'; }
+    S.forEach(s => { g += '<path d="M'+X(s.t).toFixed(1)+' 262V'+Y(s.v).toFixed(1)+'" class="dgstem"/><circle cx="'+X(s.t).toFixed(1)+'" cy="'+Y(s.v).toFixed(1)+'" r="3.6" class="dgpt"/>'; });
+    g += '<g class="dgleg"><path d="M60 14h18" class="dgan"/><text x="82" y="18" class="dgt">analogový signál</text><circle cx="196" cy="14" r="3.6" class="dgpt"/><text x="204" y="18" class="dgt">vzorky</text><path d="M262 14h18" class="dgst"/><text x="284" y="18" class="dgt">kvantovaný výstup</text>'+
+      (under && sig === 'sin' ? '<path d="M412 14h18" class="dgal"/><text x="434" y="18" class="dgt al">alias '+alias(fs)+' Hz</text>' : '')+'</g>';
+    return '<svg class="dgsvg" viewBox="0 0 640 290" role="img" aria-label="Vzorkování a kvantování signálu">'+g+'</svg>';
+  }
+  function info(){
+    const S = samples(), lsb = UREF / 2**bits, under = fs <= 2*SIG[sig].fmax, err = Math.max(...S.map(s => Math.abs(s.v - s.vq)));
+    const row = (k, v, c) => '<div class="dgi'+(c ? ' '+c : '')+'"><span>'+k+'</span><b>'+v+'</b></div>';
+    return '<div class="dginfo">'+row('vzorkovací frekvence', fs+' Hz')+row('Nyquist (2 · f<sub>max</sub>)', 2*SIG[sig].fmax+' Hz', under ? 'bad' : 'ok')+row('vzorků na periodu 300 Hz', fmt(fs / F, 2))+
+      row('úrovní (2<sup>n</sup>)', 2**bits)+row('kvantizační krok LSB', fmt(lsb, 3)+' V')+row('max. chyba (LSB/2)', fmt(lsb/2, 3)+' V')+row('datový tok', fmt(fs*bits/1000, 1)+' kb/s')+row('odstup S/N ≈ 6,02 n + 1,76', fmt(6.02*bits + 1.76, 1)+' dB')+'</div>'+
+      (under ? '<p class="dgwarn">⚠ fs ≤ 2 · f<sub>max</sub> – vzorky nestačí, signál nejde správně zrekonstruovat'+(sig === 'sin' ? ' a jeví se jako '+alias(fs)+' Hz (aliasing)' : '')+'.</p>' : '<p class="dgok">✓ Nyquistův teorém splněn – signál jde ze vzorků zrekonstruovat.</p>')+
+      '<div class="tblwrap"><table class="tbl dgtbl"><tr><th>vzorek</th><th>čas</th><th>napětí</th><th>kód</th><th>výstup</th><th>chyba</th></tr>'+
+      S.slice(0, 6).map(s => '<tr><td>'+s.k+'</td><td>'+fmt(s.t*1000, 2)+' ms</td><td>'+fmt(s.v, 3)+' V</td><td class="mono">'+s.q.toString(2).padStart(bits, '0')+'</td><td>'+fmt(s.vq, 3)+' V</td><td>'+fmt(Math.abs(s.v - s.vq), 3)+' V</td></tr>').join('')+'</table></div>'+
+      '<p class="muted small">Největší chyba v okně: '+fmt(err, 3)+' V</p>';
+  }
+  function update(){ const p = $('#dgplot'), i = $('#dginfo'); if(!p) return; p.innerHTML = plot(); i.innerHTML = info(); $('#dgfsv').textContent = fs+' Hz'; $('#dgbv').textContent = bits+' b'; }
+  function render(){
+    labShell(5, 'Digitalizuj signál', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b> Zkoušej dál, nebo dokonči.')+'</p>'+
+      '<div class="seg ledseg dgseg">'+Object.keys(SIG).map(k => '<button class="'+(k === sig ? 'on' : '')+'" data-s="'+k+'">'+SIG[k].t+'</button>').join('')+'</div>'+
+      '<div class="dgwrap" id="dgplot">'+plot()+'</div>'+
+      '<div class="dgctl"><label><span>vzorkovací frekvence f<sub>s</sub></span><input type="range" id="dgfs" class="slider" min="200" max="4000" step="100" value="'+fs+'"><b id="dgfsv">'+fs+' Hz</b></label>'+
+      '<label><span>rozlišení převodníku n</span><input type="range" id="dgb" class="slider" min="1" max="8" step="1" value="'+bits+'"><b id="dgbv">'+bits+' b</b></label></div>'+
+      '<div id="dginfo">'+info()+'</div>'+
+      '<div class="row" style="margin-top:12px">'+(ti < TASKS.length ? '<button class="btn" id="dgchk">Ověřit úkol</button>' : '<button class="btn" id="dgfin">Dokončit</button>')+'</div>',
+      'Vzorkování = odběr hodnot v čase, kvantování = zaokrouhlení na jednu z 2ⁿ úrovní, kódování = zápis úrovně binárně. LSB = Uref / 2ⁿ.');
+    $$('.dgseg button').forEach(b => b.onclick = () => { sig = b.dataset.s; beep('tick'); render(); });
+    $('#dgfs').oninput = e => { fs = +e.target.value; update(); };
+    $('#dgb').oninput = e => { bits = +e.target.value; update(); };
+    if($('#dgchk')) $('#dgchk').onclick = () => { const T = TASKS[ti]; if(T.ok()){ beep('ok'); toast('Úkol splněn!'); addXP(10); ti++; render(); } else { beep('bad'); toast(T.no()); } };
+    if($('#dgfin')) $('#dgfin').onclick = () => labDone(5, 'Signál zdigitalizovaný', [[TASKS.length, 'úkoly']], 25, () => LABS[5].find(l => l.name === 'Digitalizuj signál').run(5));
+  }
+  render();
+});
+
+/* ---------- T4: diferenciální pár (kreativní) ---------- */
+cre(4, 'Diferenciální pár proti rušení', 'Pošli bity po kabelu, do kterého se indukuje rušení. Porovnej přenos jedním vodičem proti zemi a diferenciálním párem a zjisti, proč se vodiče kroutí.', n => {
+  const BITS = [1,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0], SPB = 24, NS = BITS.length * SPB;
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const smooth = (a, w) => a.map((_, i) => { let s = 0, c = 0; for(let j = -w; j <= w; j++){ const k = i + j; if(k >= 0 && k < a.length){ s += a[k]; c++; } } return s / c; });
+  const norm = a => { const m = Math.max(...a.map(Math.abs)); return a.map(x => x / m); };
+  const NC = norm(smooth(Array.from({length:NS}, (_, i) => .7*Math.sin(2*Math.PI*i/(SPB*2.7)) + .5*Math.sin(2*Math.PI*i/(SPB*.9) + 1) + (rnd()*2 - 1)*.6), 3));
+  const NI = norm(smooth(Array.from({length:NS}, (_, i) => .8*Math.sin(2*Math.PI*i/(SPB*1.7) + 2) + (rnd()*2 - 1)*.7), 3));
+  const TASKS = [
+    {t:'Jeden vodič proti zemi (nesymetricky): zvyš rušení, až přijímač začne chybovat.', ok:r => mode === 'se' && r.err > 0, no:() => mode !== 'se' ? 'Přepni na „jeden vodič proti zemi“.' : 'Rušení je zatím malé – zvyš ho.'},
+    {t:'Přepni na diferenciální pár (kroucená dvojlinka) a ukaž, že ani při rušení aspoň 2 V nevznikne chyba.', ok:r => mode === 'diff' && twist && noise >= 2 && r.err === 0, no:r => mode !== 'diff' ? 'Přepni na diferenciální pár.' : !twist ? 'Zapni kroucení vodičů.' : 'Nastav rušení aspoň na 2 V.'},
+    {t:'Proč se vodiče kroutí? U diferenciálního páru kroucení vypni a najdi rušení, při kterém začne chybovat i on.', ok:r => mode === 'diff' && !twist && r.err > 0, no:() => mode !== 'diff' ? 'Přepni na diferenciální pár.' : twist ? 'Vypni kroucení vodičů.' : 'Zvyš rušení.'}
+  ];
+  let mode = 'se', noise = .6, twist = true, ti = 0;
+  function sim(){
+    const a = [], b = [], rx = [], dec = [];
+    for(let i = 0; i < NS; i++){
+      const s = BITS[Math.floor(i / SPB)];
+      if(mode === 'se'){ a.push(3.3*s - noise*NC[i]); b.push(0); rx.push(a[i]); }
+      else { const nm = twist ? NC[i] : .55*NC[i] + .45*NI[i]; a.push(1.2 + .2*(2*s - 1) + noise*NC[i]); b.push(1.2 - .2*(2*s - 1) + noise*nm); rx.push(a[i] - b[i]); }
+    }
+    const th = mode === 'se' ? 1.65 : 0; let err = 0, margin = Infinity;
+    BITS.forEach((s, k) => { const v = rx[k*SPB + SPB/2], r = v > th ? 1 : 0; dec.push(r); if(r !== s) err++; margin = Math.min(margin, (s ? v - th : th - v)); });
+    return {a, b, rx, dec, err, th, margin};
+  }
+  function lane(arr, y0, h, lo, hi, cls, label, th){
+    const X = i => 70 + i / (NS - 1) * 560, Y = v => y0 + h - (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * h;
+    let d = ''; arr.forEach((v, i) => d += (i ? 'L' : 'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1));
+    let g = '<rect x="70" y="'+y0+'" width="560" height="'+h+'" class="dpbg"/><text x="62" y="'+(y0 + h/2 + 4)+'" text-anchor="end" class="dpt">'+label+'</text>';
+    if(th != null) g += '<path d="M70 '+Y(th).toFixed(1)+'H630" class="dpth"/><text x="634" y="'+(Y(th)+3).toFixed(1)+'" class="dpt s">práh</text>';
+    return g + '<path d="'+d+'" class="dpw '+cls+'"/>';
+  }
+  function scene(r){
+    let g = '';
+    const wave = twist ? 'M140 40 C155 26,170 54,185 40 S215 26,230 40 S260 54,275 40 S305 26,320 40 S350 54,365 40 S395 26,410 40 S440 54,455 40 S485 26,500 40' : 'M140 34H500';
+    const wave2 = twist ? 'M140 40 C155 54,170 26,185 40 S215 54,230 40 S260 26,275 40 S305 54,320 40 S350 26,365 40 S395 54,410 40 S440 26,455 40 S485 54,500 40' : 'M140 46H500';
+    g += '<rect x="20" y="20" width="110" height="40" rx="6" class="dpbox"/><text x="75" y="44" text-anchor="middle" class="dpt">vysílač</text><rect x="510" y="20" width="110" height="40" rx="6" class="dpbox"/><text x="565" y="44" text-anchor="middle" class="dpt">přijímač</text>';
+    if(mode === 'se') g += '<path d="M140 34H500" class="dpcab a"/><path d="M140 52H500" class="dpcab gnd"/><text x="320" y="70" text-anchor="middle" class="dpt s">signál + zem (GND)</text>';
+    else g += '<path d="'+wave+'" class="dpcab a"/><path d="'+wave2+'" class="dpcab b"/><text x="320" y="72" text-anchor="middle" class="dpt s">'+(twist ? 'kroucená dvojlinka D+ / D−' : 'rovné vodiče D+ / D− vedle sebe')+'</text>';
+    if(noise > 0) g += '<path d="M300 4l-8 12h7l-6 12 14-16h-7l6-8z" class="dpzap" opacity="'+Math.min(1, .3 + noise/3)+'"/><text x="318" y="14" class="dpt s zap">rušení '+fmt(noise, 1)+' V</text>';
+    const L = mode === 'se'
+      ? lane(r.a, 92, 64, -3.5, 7, 'a', 'vodič', null) + lane(r.rx, 176, 64, -3.5, 7, 'rx', 'přijímač', r.th)
+      : lane(r.a, 92, 52, -2.5, 5, 'a', 'D+', null) + lane(r.b, 160, 52, -2.5, 5, 'b', 'D−', null) + lane(r.rx, 228, 52, -1.6, 1.6, 'rx', 'D+ − D−', r.th);
+    const yb = mode === 'se' ? 262 : 300;
+    let bits = ''; BITS.forEach((s, k) => { const x = 70 + (k + .5) * 560 / BITS.length, bad = r.dec[k] !== s; bits += '<text x="'+x.toFixed(1)+'" y="'+yb+'" text-anchor="middle" class="dpbit">'+s+'</text><text x="'+x.toFixed(1)+'" y="'+(yb + 18)+'" text-anchor="middle" class="dpbit'+(bad ? ' bad' : ' ok')+'">'+r.dec[k]+'</text>'; });
+    bits += '<text x="62" y="'+yb+'" text-anchor="end" class="dpt s">odesláno</text><text x="62" y="'+(yb + 18)+'" text-anchor="end" class="dpt s">přijato</text>';
+    return '<svg class="dpsvg" viewBox="0 0 660 '+(yb + 30)+'" role="img" aria-label="Přenos signálu po kabelu s rušením">'+g+L+bits+'</svg>';
+  }
+  function update(){
+    const r = sim(), p = $('#dpplot'); if(!p) return;
+    p.innerHTML = scene(r);
+    $('#dpstat').innerHTML = '<span class="'+(r.err ? 'bad' : 'ok')+'">chybných bitů: <b>'+r.err+'/'+BITS.length+'</b></span><span>nejmenší rezerva u prahu: <b>'+fmt(r.margin, 2)+' V</b></span><span>'+(mode === 'se' ? 'úrovně 0 V / 3,3 V' : 'úrovně ±0,2 V kolem 1,2 V (rozdíl ±0,4 V)')+'</span>';
+    $('#dpnv').textContent = fmt(noise, 1)+' V';
+    return r;
+  }
+  function render(){
+    labShell(4, 'Diferenciální pár proti rušení', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b>')+'</p>'+
+      '<div class="dpctl"><div class="seg ledseg"><button class="'+(mode === 'se' ? 'on' : '')+'" data-m="se">jeden vodič proti zemi</button><button class="'+(mode === 'diff' ? 'on' : '')+'" data-m="diff">diferenciální pár</button></div>'+
+      '<label class="dptw'+(mode === 'diff' ? '' : ' off')+'"><input type="checkbox" id="dptw"'+(twist ? ' checked' : '')+(mode === 'diff' ? '' : ' disabled')+'> kroucené vodiče</label></div>'+
+      '<div class="dgctl"><label><span>indukované rušení</span><input type="range" id="dpn" class="slider" min="0" max="3" step="0.1" value="'+noise+'"><b id="dpnv"></b></label></div>'+
+      '<div class="dgwrap" id="dpplot"></div><p class="dpstat" id="dpstat"></p>'+
+      '<div class="row" style="margin-top:10px">'+(ti < TASKS.length ? '<button class="btn" id="dpchk">Ověřit úkol</button>' : '<button class="btn" id="dpfin">Dokončit</button>')+'</div>',
+      'Přijímač diferenciálního páru vyhodnocuje rozdíl D+ − D−. Rušení, které se indukuje do obou vodičů stejně (souhlasné), se odečte. Kroucení zajistí, že oba vodiče chytí stejné rušení.');
+    update();
+    $$('.dpctl .seg button').forEach(b => b.onclick = () => { mode = b.dataset.m; beep('tick'); render(); });
+    if($('#dptw')) $('#dptw').onchange = e => { twist = e.target.checked; update(); };
+    $('#dpn').oninput = e => { noise = +e.target.value; update(); };
+    if($('#dpchk')) $('#dpchk').onclick = () => { const r = sim(), T = TASKS[ti]; if(T.ok(r)){ beep('ok'); toast('Úkol splněn!'); addXP(10); ti++; render(); } else { beep('bad'); toast(T.no(r)); } };
+    if($('#dpfin')) $('#dpfin').onclick = () => labDone(4, 'Rušení přemoženo', [[TASKS.length, 'úkoly']], 25, () => LABS[4].find(l => l.name === 'Diferenciální pár proti rušení').run(4));
+  }
+  render();
+});
+
+/* ---------- T14: Secure Boot a TPM (kreativní) ---------- */
+cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč → jádro → BitLocker. Zapínej Secure Boot a CSM, podstrč bootkit a sleduj, jak TPM pozná změnu.', n => {
+  const LD = {
+    wbm:{t:'Windows Boot Manager', s:'podpis Microsoft (klíč v db)', signed:true},
+    shim:{t:'GRUB přes shim (Linux)', s:'podpis Microsoft UEFI CA (db)', signed:true},
+    kit:{t:'Zavaděč s bootkitem', s:'bez platného podpisu', signed:false},
+    old:{t:'Starý zavaděč z černé listiny', s:'podpis Microsoft, ale hash je v dbx', signed:true, dbx:true}
+  };
+  const TASKS = [
+    {t:'Bezpečný start: nabootuj Windows se zapnutým Secure Bootem a BitLockerem tak, aby TPM uvolnil klíč k disku.', ok:r => r.end === 'ok' && r.sb && r.bl && r.ld === 'wbm'},
+    {t:'Útok: podstrč zavaděč s bootkitem při zapnutém Secure Bootu. Co se stane?', ok:r => r.end === 'blocked' && r.ld === 'kit'},
+    {t:'Vypni Secure Boot a spusť bootkit se zapnutým BitLockerem. Pozná to TPM?', ok:r => r.end === 'recovery' && r.ld === 'kit' && !r.sb},
+    {t:'Zapni CSM (legacy režim) a zkus nabootovat. Co se stane se Secure Bootem?', ok:r => r.csm}
+  ];
+  let sb = true, csm = false, bl = true, ld = 'wbm', ti = 0, run = null, busy = false;
+  const H = s => { let h = 0x811c9dc5; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16).toUpperCase().padStart(8, '0'); };
+  const ext = (pcr, m) => H(pcr + '|' + m);
+  const Z = '00000000';
+  const pcrs = (sbOn, csmOn, l) => ({p0:ext(Z, 'UEFI 2.7 firmware'), p4:ext(Z, csmOn ? 'MBR legacy' : 'efi:' + l), p7:ext(Z, 'SecureBoot=' + (sbOn ? 1 : 0))});
+  const SEALED = pcrs(true, false, 'wbm');
+  function simulate(){
+    const eff = sb && !csm, st = [], P = {p0:Z, p4:Z, p7:Z};
+    st.push({id:'fw', t:'UEFI firmware', s:'ok', m:csm ? 'CSM zapnutý: firmware emuluje BIOS a bootuje z MBR – Secure Boot nejde použít' : 'POST, inicializace HW; Secure Boot '+(eff ? 'zapnutý' : 'vypnutý')});
+    P.p0 = ext(Z, 'UEFI 2.7 firmware'); P.p7 = ext(Z, 'SecureBoot=' + (eff ? 1 : 0));
+    const L = LD[ld];
+    let end = 'ok';
+    if(eff && (!L.signed || L.dbx)){
+      st.push({id:'ld', t:L.t, s:'blocked', m:L.dbx ? 'Hash zavaděče je v databázi zakázaných (dbx) – Secure Boot ho nespustí' : 'Chybí platný digitální podpis – Secure Boot spuštění zastavil'});
+      end = 'blocked';
+    } else {
+      st.push({id:'ld', t:csm ? 'Zavaděč z MBR (legacy)' : L.t, s:!L.signed && !csm ? 'warn' : 'ok', m:csm ? 'Legacy boot: zaváděcí kód z MBR, podpisy se nekontrolují' : eff ? 'Podpis ověřen: '+L.s : 'Secure Boot vypnutý – podpis se nekontroluje ('+L.s+')'});
+      P.p4 = ext(Z, csm ? 'MBR legacy' : 'efi:' + ld);
+      st.push({id:'krn', t:ld === 'shim' ? 'Jádro Linuxu' : 'Jádro Windows + ovladače', s:ld === 'kit' && !csm ? 'warn' : 'ok', m:ld === 'kit' && !csm ? 'Jádro běží, ale bootkit se zavedl dřív a antivirus ho nevidí' : 'Zavaděč ověřil a spustil jádro'});
+      if(bl && ld !== 'shim'){
+        const ok = P.p0 === SEALED.p0 && P.p4 === SEALED.p4 && P.p7 === SEALED.p7;
+        st.push({id:'bl', t:'BitLocker + TPM', s:ok ? 'ok' : 'blocked', m:ok ? 'Registry PCR odpovídají zapečetěným hodnotám → TPM uvolnil klíč, disk je odemčený' : 'PCR se liší od zapečetěných hodnot → TPM klíč neuvolní → zadej 48místný obnovovací klíč BitLockeru'});
+        if(!ok) end = 'recovery';
+      } else st.push({id:'bl', t:bl ? 'BitLocker' : 'Disk bez šifrování', s:'ok', m:bl ? 'Linux disk BitLockerem nešifruje' : 'BitLocker je vypnutý – disk není šifrovaný, TPM nic nekontroluje'});
+    }
+    return {st, P, end, sb:eff, bl, ld, csm};
+  }
+  function chain(){
+    const stages = ['fw','ld','krn','bl'], names = {fw:'UEFI firmware', ld:'Zavaděč', krn:'Jádro OS', bl:'BitLocker / TPM'};
+    const shown = run ? run.r.st.slice(0, run.k) : [];
+    return '<div class="sbchain">'+stages.map((id, i) => { const s = shown.find(x => x.id === id); const st = s ? s.s : run && run.k > i ? 'skip' : 'wait';
+      return (i ? '<i class="sbar'+(s ? ' on' : '')+'">→</i>' : '')+'<div class="sbst '+st+'"><b>'+esc(s ? s.t : names[id])+'</b><span>'+(s ? esc(s.m) : st === 'skip' ? 'nespustilo se' : 'čeká')+'</span><em>'+({ok:'✓', warn:'!', blocked:'✗', wait:'·', skip:'—'})[st]+'</em></div>'; }).join('')+'</div>';
+  }
+  function pcrPanel(){
+    const P = run && run.k >= 1 ? run.r.P : {p0:'—', p4:'—', p7:'—'};
+    const row = (k, lbl) => { const v = P[k], s = SEALED[k], m = run && run.k >= 2 && v === s; return '<tr><td>PCR'+k.slice(1)+'</td><td>'+lbl+'</td><td class="mono '+(run && run.k >= 2 ? (m ? 'ok' : 'bad') : '')+'">'+v+'</td><td class="mono">'+s+'</td></tr>'; };
+    return '<div class="sbpcr"><h4>TPM – registry PCR</h4><table class="tbl"><tr><th></th><th>měří</th><th>teď</th><th>zapečetěno</th></tr>'+row('p0', 'firmware')+row('p4', 'zavaděč')+row('p7', 'politika Secure Boot')+'</table>'+
+      '<p class="muted small">PCR se nedá přepsat, jen „rozšířit“: PCR = hash(PCR + měření). Klíč BitLockeru je zapečetěný k hodnotám PCR při bezpečném startu.</p></div>';
+  }
+  function screen(){
+    if(!run || run.k < run.r.st.length) return '<div class="sbscr wait">'+(run ? 'Startuji…' : 'Nastav firmware a stiskni Zapnout.')+'</div>';
+    const e = run.r.end;
+    return e === 'blocked' ? '<div class="sbscr bad"><b>Secure Boot Violation</b><span>Neplatný podpis zavaděče. Systém se nespustí.</span></div>'
+      : e === 'recovery' ? '<div class="sbscr rec"><b>Obnovení nástroje BitLocker</b><span>Zadejte obnovovací klíč pro tuto jednotku (48 číslic).</span></div>'
+      : ld === 'kit' ? '<div class="sbscr warn"><b>Systém nabootoval</b><span>…ale v paměti běží bootkit. Nic to neodhalilo.</span></div>'
+      : '<div class="sbscr ok"><b>'+(ld === 'shim' ? 'Linux se spouští' : 'Windows se spouští')+'</b><span>'+(bl && ld !== 'shim' ? 'Disk odemčený klíčem z TPM.' : 'Start proběhl.')+'</span></div>';
+  }
+  const tog = (id, on, lbl, dis) => '<button class="sbtog'+(on ? ' on' : '')+'" id="'+id+'"'+(dis ? ' disabled' : '')+'><i></i>'+lbl+'</button>';
+  function render(){
+    labShell(14, 'Secure Boot a TPM', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b>')+'</p>'+
+      '<div class="sbx"><div class="sbfw"><h4>Nastavení UEFI</h4>'+tog('sbsb', sb && !csm, 'Secure Boot', csm)+tog('sbcsm', csm, 'CSM (legacy BIOS)')+tog('sbbl', bl, 'BitLocker s TPM')+
+        '<h4>Zavaděč na disku</h4>'+Object.keys(LD).map(k => '<label class="sbld'+(ld === k ? ' on' : '')+'"><input type="radio" name="sbld" value="'+k+'"'+(ld === k ? ' checked' : '')+'><b>'+esc(LD[k].t)+'</b><span>'+esc(LD[k].s)+'</span></label>').join('')+
+        '<button class="btn" id="sbgo"'+(busy ? ' disabled' : '')+'>⏻ Zapnout počítač</button></div>'+
+      '<div class="sbmain">'+chain()+'<div class="sbbot">'+screen()+pcrPanel()+'</div></div></div>'+
+      (ti >= TASKS.length ? '<div class="row" style="margin-top:12px"><button class="btn" id="sbfin">Dokončit</button></div>' : ''),
+      'Secure Boot kontroluje podpisy podle databází ve firmwaru (PK, KEK, db povolené, dbx zakázané). TPM měří každou fázi do registrů PCR – BitLocker dostane klíč jen při stejných hodnotách jako při bezpečném startu.');
+    $('#sbsb').onclick = () => { if(busy) return; sb = !sb; run = null; render(); };
+    $('#sbcsm').onclick = () => { if(busy) return; csm = !csm; run = null; render(); };
+    $('#sbbl').onclick = () => { if(busy) return; bl = !bl; run = null; render(); };
+    $$('input[name="sbld"]').forEach(r => r.onchange = () => { if(busy) return; ld = r.value; run = null; render(); });
+    $('#sbgo').onclick = boot;
+    if($('#sbfin')) $('#sbfin').onclick = () => labDone(14, 'Bootovací řetěz pochopený', [[TASKS.length, 'úkoly']], 30, () => LABS[14].find(l => l.name === 'Secure Boot a TPM').run(14));
+  }
+  function boot(){
+    if(busy) return;
+    busy = true; run = {r:simulate(), k:0}; beep('tick'); render();
+    const step = () => {
+      if(!$('#sbgo')){ busy = false; return; }
+      run.k++; beep(run.r.st[run.k - 1].s === 'blocked' ? 'bad' : 'tick');
+      if(run.k < run.r.st.length){ render(); setTimeout(step, 650); return; }
+      busy = false;
+      if(ti < TASKS.length && TASKS[ti].ok(run.r)){ ti++; addXP(10); beep('ok'); toast('Úkol splněn!'); }
+      render();
+    };
+    setTimeout(step, 500);
+  }
+  render();
+});
+
 /* ---------- štítek „mimo PDF“ u laboratoří, které nevycházejí z podkladů ---------- */
 (function(){
-  const XL = new Set(['Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
+  const XL = new Set(['Diferenciální pár proti rušení','Secure Boot a TPM','Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
   Object.keys(LABS).forEach(k => LABS[k].forEach(l => { if(XL.has(l.name) || (T[k] && T[k].x)) l.x = true; }));
 })();
