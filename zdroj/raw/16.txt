@@ -50,26 +50,11 @@ SW – pomocí PS_ON
 ATX 3.0
 + 12VHPWR konektor
 Tolerance výstupních napětí:
-Výstupní napětí
-Tolerance
-Minimální napětí [V]
-Maximální napětí [V]
-+12VDC
-+-5%
-+11,40V
-+12,60V
-+5VDC
-+-5%
-+4,75V
-+5,25V
-+3.3VDC
-+-5%
-+3,14V
-+3,47V
--12V
-+-10%
--10,80V
--13,20V
+| Výstupní napětí | Tolerance | Minimální napětí [V] | Maximální napětí [V] |
+| +12VDC | +-5% | +11,40V | +12,60V |
+| +5VDC | +-5% | +4,75V | +5,25V |
+| +3.3VDC | +-5% | +3,14V | +3,47V |
+| -12V | +-10% | -10,80V | -13,20V |
 16. Zdroje
 Konektory
 Proti obrácení polarity jsou konektory klíčované anebo mají zkosené hrany
@@ -406,51 +391,16 @@ BIOS vs. UEFI – Srovnání
 Oba představují firmwarové rozhraní mezi hardwarem a operačním systémem, které slouží
 ke spuštění počítače.
 UEFI je však moderní náhrada klasického BIOSu a přináší řadu technických vylepšení.
-Vlastnost
-BIOS
-UEFI
-Vzhled
-Textový, jednoduché
-modro-bílé menu
-Moderní, často grafické GUI, možnost
-ovládání myší
-Ovládání
-Pouze klávesnice
-Klávesnice i myš, podpora scrollování,
-intuitivní rozhraní
-Architektura
-16bit, adresuje max. 1
-MB paměti
-32/64bit, zvládá větší paměti i kapacitu
-disků
-Podpora disků
-Max. 2,2 TB (MBR)
-Až 9,4 ZB (GPT), podpora více disků a více
-oddílů
-Formát oddílů
-MBR – max. 4 primární
-oddíly
-GPT – až 128 primárních oddílů, záloha a
-kontrola integrity
-Zavaděč OS
-V MBR disku –
-jednoduchý boot sector
-ESP oddíl (FAT32) s více zavaděči a boot
-manažery
-Zabezpečení
-Žádná vnitřní ochrana
-Secure Boot – ochrana před malwarem,
-bootkity, neautorizovanými OS
-Bootování
-Pomalejší, lineární
-inicializace
-Rychlé, paralelní inicializace HW,
-efektivnější start
-Kompatibilita
-Starší systémy, jako
-Windows 7 a dříve
-Moderní systémy (Windows 8+, Linux s UEFI
-podporou), ale může emulovat BIOS (CSM)
+| Vlastnost | BIOS | UEFI |
+| Vzhled | Textový, jednoduché modro-bílé menu | Moderní, často grafické GUI, možnost ovládání myší |
+| Ovládání | Pouze klávesnice | Klávesnice i myš, podpora scrollování, intuitivní rozhraní |
+| Architektura | 16bit, adresuje max. 1 MB paměti | 32/64bit, zvládá větší paměti i kapacitu disků |
+| Podpora disků | Max. 2,2 TB (MBR) | Až 9,4 ZB (GPT), podpora více disků a více oddílů |
+| Formát oddílů | MBR – max. 4 primární oddíly | GPT – až 128 primárních oddílů, záloha a kontrola integrity |
+| Zavaděč OS | V MBR disku – jednoduchý boot sector | ESP oddíl (FAT32) s více zavaděči a boot manažery |
+| Zabezpečení | Žádná vnitřní ochrana | Secure Boot – ochrana před malwarem, bootkity, neautorizovanými OS |
+| Bootování | Pomalejší, lineární inicializace | Rychlé, paralelní inicializace HW, efektivnější start |
+| Kompatibilita | Starší systémy, jako Windows 7 a dříve | Moderní systémy (Windows 8+, Linux s UEFI podporou), ale může emulovat BIOS (CSM) |
 16. EUFI
 Rozdíl v bootování: BIOS vs. UEFI
 BIOS bootování:

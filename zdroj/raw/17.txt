@@ -442,27 +442,11 @@ Sdílená mezi více jádry procesoru.
 Ještě větší, ale pomalejší než L2 (až desítky MB).
 Zvyšuje efektivitu vícevláknového zpracování.
 17. Typy paměti a jejich funkce
-Cache typ
-Umístění
-Rychlost
-Kapacita
-Poznámka
-L1
-uvnitř CPU
-nejrychlejší
-~32–128 kB
-každé jádro zvlášť
-L2
-uvnitř CPU
-rychlá
-~256 kB–2 MB
-sdílená nebo zvlášť
-L3
-sdílená mezi jádry
-pomalejší
-~2–64 MB
-u vícejádrových CPU
-Latence paměti (časování DRAM)
+| Cache typ | Umístění | Rychlost | Kapacita | Poznámka |
+| L1 | uvnitř CPU | nejrychlejší | ~32–128 kB | každé jádro zvlášť |
+| L2 | uvnitř CPU | rychlá | ~256 kB–2 MB | sdílená nebo zvlášť |
+| L3 | sdílená mezi jádry | pomalejší | ~2–64 MB | u vícejádrových CPU |
+| Latence paměti (časování DRAM) |  |  |  |  |
 Latence = zpoždění, které nastává při přístupu k paměťovým buňkám.
 Udává se v počtu taktů (cyklů), které jsou nutné k provedení jednotlivých operací při
 čtení/zápisu dat v DRAM.
@@ -489,26 +473,12 @@ Určuje, jak dlouho musí zůstat řádek aktivní, než může být deaktivová
 Kombinuje trvání potřebné pro aktivaci, čtení a ukončení práce s řádkem.
 Příklad: tRAS = 24 → řádek musí zůstat aktivní minimálně 24 taktů, než může být uzavřen.
 17. Typy paměti a jejich funkce
-Zkratka
-Název
-Význam
-tCL
-CAS Latency
-Počet taktů od aktivace sloupce po
-načtení dat
-tRCD
-RAS to CAS Delay
-Zpoždění mezi výběrem řádku a výběrem
-sloupce
-tRP
-RAS Precharge Time
-Pauza mezi ukončením jednoho řádku a
-aktivací dalšího
-tRAS
-Active to Precharge Delay
-Minimální doba, po kterou musí být řádek
-aktivní
-Dual Channel – dvoukanálová architektura paměti
+| Zkratka | Název | Význam |
+| tCL | CAS Latency | Počet taktů od aktivace sloupce po načtení dat |
+| tRCD | RAS to CAS Delay | Zpoždění mezi výběrem řádku a výběrem sloupce |
+| tRP | RAS Precharge Time | Pauza mezi ukončením jednoho řádku a aktivací dalšího |
+| tRAS | Active to Precharge Delay | Minimální doba, po kterou musí být řádek aktivní |
+| Dual Channel – dvoukanálová architektura paměti |  |  |
 Dual Channel je technologie, která umožňuje současný přenos dat dvěma paměťovými kanály,
 čímž se zvyšuje propustnost operační paměti.
 Základní princip:

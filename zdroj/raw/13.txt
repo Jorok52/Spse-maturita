@@ -361,21 +361,7 @@ potřebné magnetické pole pro přepis.
 Funguje při nižších teplotách než HAMR → levnější a spolehlivější na výrobu.
 Výhoda: vysoká hustota zápisu bez potřeby laseru
 Použití: alternativní technologie pro budoucí generace HDD
-Technologie
-Princip
-Výhoda
-Nevýhoda
-SMR
-Překrývání stop
-Vysoká kapacita
-Pomalejší přepis
-HAMR
-Laserové zahřátí místa
-před zápisem
-Velmi vysoká hustota a
-stabilita
-Výroba, teplotní zátěž
-MAMR
-Zahřátí mikrovlnami
-Menší složitost než HAMR
-Vyžaduje speciální řadiče
+| Technologie | Princip | Výhoda | Nevýhoda |
+| SMR | Překrývání stop | Vysoká kapacita | Pomalejší přepis |
+| HAMR | Laserové zahřátí místa před zápisem | Velmi vysoká hustota a stabilita | Výroba, teplotní zátěž |
+| MAMR | Zahřátí mikrovlnami | Menší složitost než HAMR | Vyžaduje speciální řadiče |

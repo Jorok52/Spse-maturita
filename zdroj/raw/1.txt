@@ -56,35 +56,11 @@ nebo .obj).
 03 Linker propojí objektové soubory, vyřeší odkazy na definice funkcí a potřebné knihovny a sestaví
 spustitelný soubor.
 04 Operační systém program načte do paměti a při spuštění předá řízení jeho vstupnímu bodu.
-Nástroj
-
-Hlavní úloha
-
-Výsledek
-
-Preprocesor
-
-Zpracuje #include, #define, #if
-
-Upravený zdrojový text
-
-Compiler
-
-Přeloží zdroják; kontroluje chyby
-
-Objektový soubor
-
-Linker
-
-Spojuje části programu a knihovny
-
-Spustitelný program
-
-Debugger
-
-Ladění již spuštěného programu
-
-Informace o chování programu
+| Nástroj | Hlavní úloha | Výsledek |
+| Preprocesor | Zpracuje #include, #define, #if | Upravený zdrojový text |
+| Compiler | Přeloží zdroják; kontroluje chyby | Objektový soubor |
+| Linker | Spojuje části programu a knihovny | Spustitelný program |
+| Debugger | Ladění již spuštěného programu | Informace o chování programu |
 
 
 PŘÍKLAD ZDROJOVÉHO SOUBORU MAIN.C
@@ -154,53 +130,14 @@ desetinnou částí. void vyjadřuje nepřítomnost hodnoty, například u funkc
 
 Přehled typů a typických velikostí; skutečné velikosti závisejí na platformě.
 
-Typ
-
-Význam
-
-Typická velikost
-
-char
-
-Znak nebo malá celočíselná hodnota
-
-1B
-
-short
-
-Celé číslo, zpravidla menší rozsah
-
-2B
-
-int
-
-Základní celočíselný typ
-
-4B
-
-long
-
-Celočíselný typ; rozsah závisí na systému
-
-4 nebo 8 B
-
-long long
-
-Celé číslo alespoň 64 bitů
-
-8B
-
-float
-
-Reálné číslo, nižší přesnost
-
-4B
-
-double
-
-Reálné číslo, vyšší přesnost
-
-8B
+| Typ | Význam | Typická velikost |
+| char | Znak nebo malá celočíselná hodnota | 1B |
+| short | Celé číslo, zpravidla menší rozsah | 2B |
+| int | Základní celočíselný typ | 4B |
+| long | Celočíselný typ; rozsah závisí na systému | 4 nebo 8 B |
+| long long | Celé číslo alespoň 64 bitů | 8B |
+| float | Reálné číslo, nižší přesnost | 4B |
+| double | Reálné číslo, vyšší přesnost | 8B |
 
 Tabulka obsahuje běžné velikosti, nikoli záruku na každém počítači. Operátor sizeof vrací velikost objektu
 nebo typu v bajtech; standard jazyka určuje jen minimální požadavky a vztahy mezi některými typy.
@@ -314,35 +251,11 @@ double podil = (double)5 / 2; // 2.5
 int celyPodil = 5 / 2;
 // 2
 
-Převod
-
-Co se stane
-
-Riziko
-
-int → float
-
-Celé číslo se převede na reálné
-
-U velkých čísel ztráta přesnosti
-
-float → int
-
-Desetinná část se odřízne k nule
-
-Překročení rozsahu, ztráta části
-
-double → float
-
-Sníží se přesnost či rozsah
-
-Zaokrouhlení, překročení rozsahu
-
-ukazatel → jiný ukazatel
-
-Změní se interpretace adresy
-
-Neplatné zarovnání nebo přístup
+| Převod | Co se stane | Riziko |
+| int → float | Celé číslo se převede na reálné | U velkých čísel ztráta přesnosti |
+| float → int | Desetinná část se odřízne k nule | Překročení rozsahu, ztráta části |
+| double → float | Sníží se přesnost či rozsah | Zaokrouhlení, překročení rozsahu |
+| ukazatel → jiný ukazatel | Změní se interpretace adresy | Neplatné zarovnání nebo přístup |
 
 Přetečení a rozdíl mezi hodnotou a ukazatelem
 Při převodu velkého čísla do menšího typu se hodnota nemusí vejít; podle konkrétního typu a konverze
@@ -800,53 +713,14 @@ undefined reference nebo odpovídajícím linkovacím hlášením.
 
 
 Nejčastější standardní hlavičky
-Hlavička
-
-Použití
-
-Příklady
-
-stdio.h
-
-Vstup a výstup
-
-printf, scanf, FILE
-
-stdlib.h
-
-Paměť, převody, ukončení
-
-malloc, free, atoi, exit
-
-string.h
-
-Práce s řetězci a pamětí
-
-strlen, strcpy, strcmp, memcpy
-
-math.h
-
-Matematické funkce
-
-sqrt, pow, sin
-
-time.h
-
-Práce s časem
-
-time, clock
-
-ctype.h
-
-Klasifikace a změna znaků
-
-isdigit, toupper
-
-stdbool.h
-
-Logické typy v C99–C17
-
-bool, true, false
+| Hlavička | Použití | Příklady |
+| stdio.h | Vstup a výstup | printf, scanf, FILE |
+| stdlib.h | Paměť, převody, ukončení | malloc, free, atoi, exit |
+| string.h | Práce s řetězci a pamětí | strlen, strcpy, strcmp, memcpy |
+| math.h | Matematické funkce | sqrt, pow, sin |
+| time.h | Práce s časem | time, clock |
+| ctype.h | Klasifikace a změna znaků | isdigit, toupper |
+| stdbool.h | Logické typy v C99–C17 | bool, true, false |
 
 Vlastní knihovna v praxi
 Pro větší projekt je praktické oddělit rozhraní (deklarace v .h) od implementace (definice funkcí v .c).
@@ -918,17 +792,9 @@ Pole
 
 Prvky stejného typu leží souvisle v paměti a indexují se od 0.
 
-Funkce
-
-Rozdělují program; parametry se v C předávají hodnotou.
-
-Struktury a ukazatele
-
-Struktury sdružují položky, ukazatele ukládají adresy.
-
-Knihovny
-
-Hlavička poskytne deklarace, linker potřebuje implementaci.
+| Funkce | Rozdělují program; parametry se v C předávají hodnotou. |
+| Struktury a ukazatele | Struktury sdružují položky, ukazatele ukládají adresy. |
+| Knihovny | Hlavička poskytne deklarace, linker potřebuje implementaci. |
 
 Kontrolní otázky
 01 Jaký je rozdíl mezi compilerem a linkerem a co dělá preprocesor?

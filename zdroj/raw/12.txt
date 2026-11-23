@@ -68,59 +68,14 @@ Silný shell, hierarchický systém, jednotné rozhraní pro vstup/výstup
 Bohatá výbava nástrojů pro práci i vývoj
 Silná síťová integrace
 UNIX – Srovnání s MS Windows
-Vlastnost
-UNIX/Linux
-Windows
-Licencování
-Open Source – uživatel má přístup ke
-zdrojovému kódu, může ho upravovat a
-přizpůsobit systému.
-Proprietární (uzavřený kód) – zdrojový
-kód je nepřístupný, chráněný licencí
-Microsoftu.
-Zabezpečení
-Vysoká bezpečnost – otevřený kód
-umožňuje rychlé odhalení a opravu
-chyb, nižší výskyt virů.
-Častý cíl útoků – velká uživatelská
-základna, více malwaru a bezpečnostních
-děr.
-Výkon a nároky
-Nižší systémové nároky, běží rychle i na
-starším hardware.
-Vyšší nároky na výkon, pomalejší na
-slabších strojích.
-Způsob přístupu k
-zařízení
-Všechna zařízení (např. HDD, tiskárny,
-CD-ROM) jsou reprezentována jako
-soubory (např. /dev/sda, /dev/lp0).
-Zařízení jsou spravována jako objekty
-nebo jednotky (např. C:, D:, E:, USB Drive).
-Adresářová struktura
-Stromová struktura začínající
-kořenovým adresářem / (např. /home,
-/etc, /bin).
-Soubory jsou rozděleny podle písmen
-jednotek (C:\, D:\, atd.), adresáře = složky.
-Duplicitní názvy
-Nelze mít dva soubory se stejným
-názvem ve stejném adresáři – to platí
-pro obě platformy. (Pozor: uvedené
-tvrzení o Linuxu je nesprávné – systém
-nedovolí duplicitu ve stejné složce,
-stejně jako Windows.)
-Stejné – nelze mít duplicitní název
-souboru ve stejné složce.
-Uložení systémových
-a programových
-souborů
-Různě oddělené – systémové soubory
-ve /etc, /bin, /sbin, programové v /usr,
-/opt, atd.
-Většina systémových a programových
-souborů je umístěna na jednotce C:\
-(např. C:\Windows, C:\Program Files).
+| Vlastnost | UNIX/Linux | Windows |
+| Licencování | Open Source – uživatel má přístup ke zdrojovému kódu, může ho upravovat a přizpůsobit systému. | Proprietární (uzavřený kód) – zdrojový kód je nepřístupný, chráněný licencí Microsoftu. |
+| Zabezpečení | Vysoká bezpečnost – otevřený kód umožňuje rychlé odhalení a opravu chyb, nižší výskyt virů. | Častý cíl útoků – velká uživatelská základna, více malwaru a bezpečnostních děr. |
+| Výkon a nároky | Nižší systémové nároky, běží rychle i na starším hardware. | Vyšší nároky na výkon, pomalejší na slabších strojích. |
+| Způsob přístupu k zařízení | Všechna zařízení (např. HDD, tiskárny, CD-ROM) jsou reprezentována jako soubory (např. /dev/sda, /dev/lp0). | Zařízení jsou spravována jako objekty nebo jednotky (např. C:, D:, E:, USB Drive). |
+| Adresářová struktura | Stromová struktura začínající kořenovým adresářem / (např. /home, /etc, /bin). | Soubory jsou rozděleny podle písmen jednotek (C:\, D:\, atd.), adresáře = složky. |
+| Duplicitní názvy | Nelze mít dva soubory se stejným názvem ve stejném adresáři – to platí pro obě platformy. (Pozor: uvedené tvrzení o Linuxu je nesprávné – systém nedovolí duplicitu ve stejné složce, stejně jako Windows.) | Stejné – nelze mít duplicitní název souboru ve stejné složce. |
+| Uložení systémových a programových souborů | Různě oddělené – systémové soubory ve /etc, /bin, /sbin, programové v /usr, /opt, atd. | Většina systémových a programových souborů je umístěna na jednotce C:\ (např. C:\Windows, C:\Program Files). |
 12. Unix
 Shrnutí pro zapamatování
 UNIX/Linux je otevřený, rychlý, bezpečný a univerzální systém s jednotným přístupem k
@@ -209,12 +164,9 @@ Konfigurační soubory a skripty, např. nastavení sítě, start serveru.
 Domovské adresáře běžných uživatelů (např. /home/riso).
 /lib
 Sdílené knihovny, především pro jazyk C a další systémové programy.
-/tmp
-Dočasné soubory, které se po restartu obvykle mažou.
-/var
-Proměnlivé soubory – logy, fronty tiskáren, e-maily apod.
-/mnt
-Připojovací bod pro externí disky nebo oddíly (mount point).
+| /tmp | Dočasné soubory, které se po restartu obvykle mažou. |
+| /var | Proměnlivé soubory – logy, fronty tiskáren, e-maily apod. |
+| /mnt | Připojovací bod pro externí disky nebo oddíly (mount point). |
 mc -a
 Spuštění Midnight Commanderu – dvoupanelový správce souborů v terminálu.
 12. Unix
@@ -350,41 +302,17 @@ nekonzistenci dat.
 Signály jsou asynchronní oznámení mezi procesy nebo z jádra procesům – upozorňují je na
 určité události (např. přerušení, chybu, ukončení…).
 Základní signály:
-Signál
-Význam
-Obvykle vyvolán
-SIGINT
-Přerušení (Ctrl+C)
-Uživatelem
-SIGQUIT
-Ukončení s výpisem jádra (Ctrl+\ nebo Ctrl+I)
-Uživatelem
-SIGHUP
-Ukončení relace (např. zavření terminálu)
-Shell
-SIGKILL
-Násilné ukončení procesu
-Nelze zachytit nebo ignorovat
-SIGTERM
-Žádost o ukončení (standardní)
-Lze zachytit
-Použití:
-Poslání signálu: kill -SIGNAL PID
-Nejsilnější signál: kill -9 PID # SIGKILL
-Zjištění PID procesu: ps -a -l
-Shrnutí pro zapamatování
-Metoda
-Popis
-Použití
-Semafory
-Synchronizace přístupu ke zdrojům
-P() a V(), pozor na deadlock
-Sdílená paměť
-Rychlá výměna dat
-Vyžaduje synchronizaci
-Signály
-Oznámení o události
-kill, SIGINT, SIGKILL atd.
+| Signál | Význam | Obvykle vyvolán |
+| SIGINT | Přerušení (Ctrl+C) | Uživatelem |
+| SIGQUIT | Ukončení s výpisem jádra (Ctrl+\ nebo Ctrl+I) | Uživatelem |
+| SIGHUP | Ukončení relace (např. zavření terminálu) | Shell |
+| SIGKILL | Násilné ukončení procesu | Nelze zachytit nebo ignorovat |
+| SIGTERM | Žádost o ukončení (standardní) | Lze zachytit |
+| Použití: Poslání signálu: kill -SIGNAL PID Nejsilnější signál: kill -9 PID # SIGKILL Zjištění PID procesu: ps -a -l Shrnutí pro zapamatování |  |  |
+| Metoda | Popis | Použití |
+| Semafory | Synchronizace přístupu ke zdrojům | P() a V(), pozor na deadlock |
+| Sdílená paměť | Rychlá výměna dat | Vyžaduje synchronizaci |
+| Signály | Oznámení o události | kill, SIGINT, SIGKILL atd. |
 12. Unix
 UNIX – Uživatelský interface (rozhraní)
 Rozhraní systému
@@ -395,24 +323,15 @@ Grafický (GUI) – např. GNOME, KDE (méně používaný na serverech)
 Systémové programy (nástroje)
 Programátoři i běžní uživatelé využívají systémové programy, často zaměřené na
 manipulaci se soubory a adresáři.
-Příkaz
-Popis
-mkdir
-Vytvoření nového adresáře
-rmdir
-Odstranění prázdného adresáře
-cd
-Změna aktuálního adresáře
-pwd
-Zobrazení aktuálního adresáře (absolutní cesta)
-ls
-Výpis obsahu adresáře
-cp
-Kopírování souboru/adresáře
-mv
-Přesunutí nebo přejmenování souboru/adresáře
-rm
-Odstranění souboru/adresáře (i rekurzivně: rm -r)
+| Příkaz | Popis |
+| mkdir | Vytvoření nového adresáře |
+| rmdir | Odstranění prázdného adresáře |
+| cd | Změna aktuálního adresáře |
+| pwd | Zobrazení aktuálního adresáře (absolutní cesta) |
+| ls | Výpis obsahu adresáře |
+| cp | Kopírování souboru/adresáře |
+| mv | Přesunutí nebo přejmenování souboru/adresáře |
+| rm | Odstranění souboru/adresáře (i rekurzivně: rm -r) |
 Shell (terminálové prostředí)
 Shell je interpreter příkazů – tedy proces, který:
 zprostředkovává spouštění jiných programů
@@ -576,30 +495,12 @@ Doporučeno: 4 GB a více.
 3.Dostatek místa na disku
 Virtuální stroj vytváří velký soubor (virtuální disk), který zabírá několik GB.
 Doporučeno: SSD disk pro rychlejší práci.
-Software
-Licence
-Popis
-VirtualBox
-Freeware (open source)
-Nejoblíbenější volně dostupný nástroj.
-Podporuje mnoho OS, běží na Windows,
-Linux, macOS.
-Microsoft Virtual PC
-Freeware (ukončený vývoj)
-Dříve řešení od Microsoftu, omezené jen
-na starší systémy Windows (např. XP
-Mode).
-VMware Workstation
-Komerční
-Profesionální nástroj s širokou
-funkcionalitou, podporuje snapshoty,
-klonování, sdílené složky.
-Parallels Workstation
-Komerční
-Původně zaměřen hlavně na virtualizaci
-Windows na macOS, existují i verze pro
-Windows.
-Praktické využití virtualizace Unixu na Windows
+| Software | Licence | Popis |
+| VirtualBox | Freeware (open source) | Nejoblíbenější volně dostupný nástroj. Podporuje mnoho OS, běží na Windows, Linux, macOS. |
+| Microsoft Virtual PC | Freeware (ukončený vývoj) | Dříve řešení od Microsoftu, omezené jen na starší systémy Windows (např. XP Mode). |
+| VMware Workstation | Komerční | Profesionální nástroj s širokou funkcionalitou, podporuje snapshoty, klonování, sdílené složky. |
+| Parallels Workstation | Komerční | Původně zaměřen hlavně na virtualizaci Windows na macOS, existují i verze pro Windows. |
+| Praktické využití virtualizace Unixu na Windows |  |  |
 Testování a vývoj softwaru v Unixových systémech bez nutnosti instalace Linuxu na disk.
 Výuka Unixu/Linuxu ve školním prostředí na počítačích s Windows.
 Spuštění nástrojů, které jsou dostupné pouze v Unix/Linux prostředí (např. bash, gcc,

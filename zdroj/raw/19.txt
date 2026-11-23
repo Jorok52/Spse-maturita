@@ -167,40 +167,22 @@ Přenosová rychlost na lane
 (jedním směrem)
 Přenosová rychlost x16
 (obousměrně) - PROPUSTNOST
-PCIe 1.0
-250 MB/s
-8 GB/s
-PCIe 2.0
-500 MB/s
-16 GB/s
-PCIe 3.0
-1 GB/s
-32 GB/s
-PCIe 4.0
-2 GB/s
-64 GB/s
-PCIe 5.0
-4 GB/s
-128 GB/s
-PCIe 6.0
-8 GB/s
-256 GB/s
+| PCIe 1.0 | 250 MB/s | 8 GB/s |
+| PCIe 2.0 | 500 MB/s | 16 GB/s |
+| PCIe 3.0 | 1 GB/s | 32 GB/s |
+| PCIe 4.0 | 2 GB/s | 64 GB/s |
+| PCIe 5.0 | 4 GB/s | 128 GB/s |
+| PCIe 6.0 | 8 GB/s | 256 GB/s |
 19. Typy a charakteristika sběrnic
 Od PCIe 2.0 dále → každá nová generace zdvojnásobuje propustnost.
 PCIe 4.0 a vyšší jsou klíčové pro NVMe SSD disky, AI výpočty a herní grafické karty.
 Typy slotů a použití
-Slot
-Použití
-PCIe x1
-Tunery, malé síťové a zvukové karty
-PCIe x4
-Řadiče, NVMe SSD disky
-PCIe x8
-Některé profesionální GPU, AI akcelerátory
-PCIe x16
-Herní a profesionální grafické karty
-PCIe x32
-Specializovaný hardware (málo používané)
+| Slot | Použití |
+| PCIe x1 | Tunery, malé síťové a zvukové karty |
+| PCIe x4 | Řadiče, NVMe SSD disky |
+| PCIe x8 | Některé profesionální GPU, AI akcelerátory |
+| PCIe x16 | Herní a profesionální grafické karty |
+| PCIe x32 | Specializovaný hardware (málo používané) |
 PCIe sloty jsou zpětně kompatibilní → např. karta x1 může být vložena do slotu x16, ale
 poběží na x1 rychlosti.
 Výhody PCIe oproti starým sběrnicím

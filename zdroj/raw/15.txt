@@ -28,30 +28,12 @@ systém (OS) spravuje a organizuje data uložená na paměťových médiích (na
 USB). Umožňuje ukládání, vyhledávání, čtení, zápis a mazání souborů.
 Bez souborového systému by OS nemohl přistupovat k souborům – viděl by jen
 neuspořádaný tok bitů.
-Název
-Využití
-Omezení / Vlastnosti
-FAT12
-Diskety, velmi malá zařízení
-Max. velikost disku ~32 MB,
-max. 4078 clusterů
-FAT16
-Starší verze DOS a Windows
-Max. velikost 2 GB (někdy až 4
-GB), omezení názvů
-VFAT32 (FAT32)
-Windows 95+
-Max. soubor 4 GB, disk max. 2
-TB, podpora dlouhých názvů
-exFAT
-Flash disky, SDXC
-Moderní náhrada FAT32, větší
-soubory (nad 4 GB), bez
-journalingu
-NTFS
-Windows NT/XP a novější
-Podpora práv, šifrování,
-journaling, větší disky i soubory
+| Název | Využití | Omezení / Vlastnosti |
+| FAT12 | Diskety, velmi malá zařízení | Max. velikost disku ~32 MB, max. 4078 clusterů |
+| FAT16 | Starší verze DOS a Windows | Max. velikost 2 GB (někdy až 4 GB), omezení názvů |
+| VFAT32 (FAT32) | Windows 95+ | Max. soubor 4 GB, disk max. 2 TB, podpora dlouhých názvů |
+| exFAT | Flash disky, SDXC | Moderní náhrada FAT32, větší soubory (nad 4 GB), bez journalingu |
+| NTFS | Windows NT/XP a novější | Podpora práv, šifrování, journaling, větší disky i soubory |
 Logický disk je logická jednotka vytvořená na fyzickém médiu (např. oddíl disku). Při
 formátování se vytváří struktura, která umožňuje přístup k datům.
 Rozdělení na dvě hlavní oblasti:
@@ -151,16 +133,11 @@ Na disku se nachází dvě kopie FAT tabulky – druhá slouží jako záloha (o
 poškození).
 Umístění: za Boot Recordem.
 Možné hodnoty záznamů v FAT tabulce:
-Hodnota v záznamu
-Význam
-0000h
-Cluster je volný (neobsazený)
-FFF7h
-Vadný cluster (bad sector)
-XXXXh
-Ukazuje na číslo dalšího clusteru v řetězci
-FFF8h – FFFFh
-EOF – konec souboru
+| Hodnota v záznamu | Význam |
+| 0000h | Cluster je volný (neobsazený) |
+| FFF7h | Vadný cluster (bad sector) |
+| XXXXh | Ukazuje na číslo dalšího clusteru v řetězci |
+| FFF8h – FFFFh | EOF – konec souboru |
 15. Souborové systémy FAT, FAT32, NTFS, exFAT
 Typy souborového systému FAT (File Allocation Table)
 Souborový systém FAT má tři základní varianty, které se liší šířkou záznamu v tabulce FAT a
@@ -201,40 +178,12 @@ Možnost označit špatné clustery
 Podpora transakcí (snižuje riziko poškození dat)
 Nevýhoda: bez podpory oprávnění, šifrování (na rozdíl od NTFS)
 15. Souborové systémy FAT, FAT32, NTFS, exFAT
-Vlastnost
-FAT12/16
-VFAT16
-VFAT32
-Velikost FAT
-záznamu
-12/16 bit
-16 bit
-32 bit (z toho 28 bitů
-využito)
-Podpora
-dlouhých
-názvů
-Ne (jen 8.3)
-Ano (až 255 znaků)
-Ano
-ROOT
-DIRECTORY
-Pevně na začátku, fixní
-délka
-Pevně na začátku, max.
-512 položek
-Přesunut do 2. clusteru
-– bez omezení
-Max. velikost
-souboru
-~2–4 GB
-~2–4 GB
-4 GB / soubor (exFAT
-nemá toto omezení)
-Efektivita
-Nízká
-Střední
-Vyšší
+| Vlastnost | FAT12/16 | VFAT16 | VFAT32 |
+| Velikost FAT záznamu | 12/16 bit | 16 bit | 32 bit (z toho 28 bitů využito) |
+| Podpora dlouhých názvů | Ne (jen 8.3) | Ano (až 255 znaků) | Ano |
+| ROOT DIRECTORY | Pevně na začátku, fixní délka | Pevně na začátku, max. 512 položek | Přesunut do 2. clusteru – bez omezení |
+| Max. velikost souboru | ~2–4 GB | ~2–4 GB | 4 GB / soubor (exFAT nemá toto omezení) |
+| Efektivita | Nízká | Střední | Vyšší |
 Řešení dlouhých názvů souborů (LFN – Long File Names)
 FAT12 / FAT16
 Používá tzv. 8.3 konvenci:
@@ -300,25 +249,11 @@ Datum a čas vytvoření / změny
 Velikost souboru v bajtech
 Číslo prvního clusteru, kde soubor začíná
 Shrnutí – klíčové body k zapamatování
-Prvek
-Umístění
-Poznámka
-Root Directory
-Organizační oblast (FAT12/16),
-datová oblast (FAT32)
-Pevná/variabilní velikost
-Podadresář
-Datová oblast
-Zabírá vždy min. 1 cluster, ihned
-obsahuje . a ..
-Záznam ve FAT
-1 záznam na 1 cluster
-Spojuje clustery do řetězců podle
-potřeby
-EOF (End of File)
-Značí poslední cluster souboru
-Typicky FFF8h a vyšší hodnoty
-(záleží na typu FAT)
+| Prvek | Umístění | Poznámka |
+| Root Directory | Organizační oblast (FAT12/16), datová oblast (FAT32) | Pevná/variabilní velikost |
+| Podadresář | Datová oblast | Zabírá vždy min. 1 cluster, ihned obsahuje . a .. |
+| Záznam ve FAT | 1 záznam na 1 cluster | Spojuje clustery do řetězců podle potřeby |
+| EOF (End of File) | Značí poslední cluster souboru | Typicky FFF8h a vyšší hodnoty (záleží na typu FAT) |
 15. Souborové systémy FAT, FAT32, NTFS, exFAT
 Chyby FAT systému
 Ztracený cluster (Lost cluster)
@@ -379,13 +314,10 @@ Rychlá
 1× přepsání (např. nulami) – nedostatečné pro citlivá data
 Bezpečná (DOD 5220.22-M)
 3× přepsání: 00000000, 11111111 (FFh), 10101010 (F6h) → opakovat
-Guttmanova metoda
-35 průchodů s různými vzory – extrémně bezpečná, ale pomalá
-Shrnutí – klíčové pojmy:
-Pojem
-Význam
-Ztracený cluster
-Obsahuje data, ale žádný záznam ve FAT na něj neodkazuje
+| Guttmanova metoda | 35 průchodů s různými vzory – extrémně bezpečná, ale pomalá |
+| Shrnutí – klíčové pojmy: |  |
+| Pojem | Význam |
+| Ztracený cluster | Obsahuje data, ale žádný záznam ve FAT na něj neodkazuje |
 Překřížený cluster
 Na jeden cluster ukazují 2 záznamy ve FAT
 Poškozený FAT

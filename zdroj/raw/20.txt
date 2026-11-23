@@ -35,39 +35,15 @@ Nevýhody PATA:
 Paralelní přenos dat způsobuje rušení a interferenci na vysokých frekvencích.
 Omezená délka kabelů (max. 46 cm).
 Nutnost jumperů pro manuální nastavení master/slave.
-Verze ATA
-Max. kapacita
-Přenosová rychlost
-Další vlastnosti
-ATA 1
-512 MB
-PIO 0-2, DMA 0-2
-První standard
-ATA 2 (EIDE)
-8 GB
-PIO 0-4, DMA 0-2
-Rozšíření kapacity
-ATA 3
-128 GB
-PIO 0-4, DMA 0-2
-Podpora SMART (Self-Monitoring)
-ATA 4
-128 GB
-UDMA 0-2
-Podpora ATAPI CD-ROM
-ATA 5
-128 GB
-UDMA 0-4 (66 MB/s)
-80žilový kabel pro UDMA 4+
-ATA 6
-144 PB
-UDMA 0-5 (100 MB/s)
-LBA 48bit addressing
-ATA 7
-144 PB
-UDMA 0-6 (133 MB/s)
-SATA 1.0 jako součást standardu
-Rozhraní EIDE (Enhanced IDE)
+| Verze ATA | Max. kapacita | Přenosová rychlost | Další vlastnosti |
+| ATA 1 | 512 MB | PIO 0-2, DMA 0-2 | První standard |
+| ATA 2 (EIDE) | 8 GB | PIO 0-4, DMA 0-2 | Rozšíření kapacity |
+| ATA 3 | 128 GB | PIO 0-4, DMA 0-2 | Podpora SMART (Self-Monitoring) |
+| ATA 4 | 128 GB | UDMA 0-2 | Podpora ATAPI CD-ROM |
+| ATA 5 | 128 GB | UDMA 0-4 (66 MB/s) | 80žilový kabel pro UDMA 4+ |
+| ATA 6 | 144 PB | UDMA 0-5 (100 MB/s) | LBA 48bit addressing |
+| ATA 7 | 144 PB | UDMA 0-6 (133 MB/s) | SATA 1.0 jako součást standardu |
+| Rozhraní EIDE (Enhanced IDE) |  |  |  |
 EIDE (Enhanced Integrated Drive Electronics) je rozšířená verze IDE (ATA-2) vyvinutá firmou
 Western Digital, která:
 Zvyšuje přenosové rychlosti oproti standardnímu IDE.
@@ -179,21 +155,14 @@ K rozpoznání konkrétních funkcí je nutné klíčování konektoru (různé 
 apod.).
 Významně vyšší rychlosti než SATA Express, především díky přímému propojení s PCIe
 sběrnicí.
-Druh
-Maximální rychlost
-SATA I (včetně eSATA)
-1,5 Gb/s (150 MB/s)
-SATA 3 (včetně eSATA)
-3,0 Gb/s (300 MB/s)
-SATA 6 (včetně eSATA)
-6,0 Gb/s (600 MB/s)
-M.2 SATA a mSATA
-Stejná jako SATA 3 & 6
-M.2 PCIe (přes SATA)
-1,5 Gb/s (150 MB/s)
-M.2 PCIe (přes NVMe)
-3,5 Gb/s (3500 MB/s)
-Technologie SATA II a SATA III
+| Druh | Maximální rychlost |
+| SATA I (včetně eSATA) | 1,5 Gb/s (150 MB/s) |
+| SATA 3 (včetně eSATA) | 3,0 Gb/s (300 MB/s) |
+| SATA 6 (včetně eSATA) | 6,0 Gb/s (600 MB/s) |
+| M.2 SATA a mSATA | Stejná jako SATA 3 & 6 |
+| M.2 PCIe (přes SATA) | 1,5 Gb/s (150 MB/s) |
+| M.2 PCIe (přes NVMe) | 3,5 Gb/s (3500 MB/s) |
+| Technologie SATA II a SATA III |  |
 SATA II a SATA III přinesly významné technologické pokroky, které zvyšují výkon, efektivitu a
 spolehlivost. NCQ zlepšuje práci s daty, Hot Swap umožňuje snadnou výměnu disků,
 Staggered Spin-Up chrání napájecí zdroj, Port Selector zajišťuje redundanci a Port Multiplier
@@ -306,26 +275,12 @@ Mini USB – dříve u fotoaparátů, některých telefonů a přenosných disk�
 Micro USB – využíván u mobilních zařízení, dnes nahrazen USB-C.
 USB-C – oboustranný konektor s vyšší přenosovou rychlostí a větším výkonem.
 20. Typy a charakteristika rozhrání
-Pin
-Barva
-Funkce
-1
-Červená
-+5V (napájení)
-2
-Bílá
-Data-
-3
-Zelená
-Data+
-4
-Černá
-GND (zem)
-Verze USB
-USB 1.x (1996)
-Rychlosti:
-Low Speed: 1,5 Mb/s
-Full Speed: 12 Mb/s
+| Pin | Barva | Funkce |
+|  | 1 Červená | +5V (napájení) |
+|  | 2 Bílá | Data- |
+|  | 3 Zelená | Data+ |
+|  | 4 Černá | GND (zem) |
+| Verze USB USB 1.x (1996) Rychlosti: | Low Speed: 1,5 Mb/s Full Speed: 12 Mb/s |  |
 Half duplex – data mohou pouze odesílat nebo přijímat, ne současně.
 Konektory: USB-A, USB-B
 USB 2.0 (2000)
@@ -385,27 +340,9 @@ Nízká latence – odezva pouze 8 ns.
 Maximální napájení 10 W (u TB3 a TB4 až 100 W přes USB PD).
 Maximální délka kabelu 3 m pro měděné kabely, delší s optickými.
 Podpora přenosu obrazu, audia a dat současně.
-Vlastnost
-Thunderbolt 3/4
-USB 3.2
-USB4
-Rychlost
-40 Gb/s
-20 Gb/s
-40 Gb/s
-Konektor
-USB-C
-USB-C
-USB-C
-Podpora videa
-Ano (DP 1.4)
-Omezená
-Ano
-Podpora řetězení
-Ano
-Ne
-Ano
-Napájení
-Až 100 W
-Až 100 W
-Až 100 W
+| Vlastnost | Thunderbolt 3/4 | USB 3.2 | USB4 |
+| Rychlost | 40 Gb/s | 20 Gb/s | 40 Gb/s |
+| Konektor | USB-C | USB-C | USB-C |
+| Podpora videa | Ano (DP 1.4) | Omezená | Ano |
+| Podpora řetězení | Ano | Ne | Ano |
+| Napájení | Až 100 W | Až 100 W | Až 100 W |

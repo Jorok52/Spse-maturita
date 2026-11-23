@@ -202,26 +202,10 @@ Používán v cenově dostupných sestavách.
 Socket AM3+, AM3, AM2, AM2+:
 Používány pro procesory řady AMD Phenom, Athlon a FX.
 Příkladem je procesor AMD FX-8350 pro socket AM3+.
-FUNKCE
-INTEL (LGA)
-AMD (PGA/LGA)
-TECHNOLOGIE:
-LGA (Land Grid Array) –
-plošky
-PGA (Pin Grid Array) –
-piny, nově i LGA
-CHLAZENÍ:
-Vyžaduje specifické chladiče
-Kompatibilita chladičů je
-vyšší (AM4 má jednotné
-upevnění)
-TDP (Thermal Design
-Power)
-Typicky nižší (efektivnější
-chlazení)
-Vyšší TDP u high-end
-procesorů (vyšší výkon
-na úkor tepla)
+| FUNKCE | INTEL (LGA) | AMD (PGA/LGA) |
+| TECHNOLOGIE: | LGA (Land Grid Array) – plošky | PGA (Pin Grid Array) – piny, nově i LGA |
+| CHLAZENÍ: | Vyžaduje specifické chladiče | Kompatibilita chladičů je vyšší (AM4 má jednotné upevnění) |
+| TDP (Thermal Design Power) | Typicky nižší (efektivnější chlazení) | Vyšší TDP u high-end procesorů (vyšší výkon na úkor tepla) |
 18. Sockety, chlazení, chipset
 TDP a návrhy chlazení
 Thermal Design Power (TDP):
@@ -284,29 +268,11 @@ slitiny gallia).
 Výhody: Extrémní účinnost.
 Nevýhody: Náklady, složitost, krátká doba použití.
 Příklad: LN2 se často používá při soutěžích v přetaktování.
-TDP (W)
-Doporučené chlazení
-Příklad použití
-< 30 W
-Pasivní chlazení
-Pasivní grafické karty,
-nízkovýkonné
-procesory
-30–95 W
-Aktivní vzduchové chlazení
-Mainstream CPU (Intel
-Core i5, AMD Ryzen 5)
-95–200 W
-Výkonné aktivní chlazení
-nebo uzavřené vodní
-chlazení (AIO)
-High-end CPU (Intel
-Core i9, AMD Ryzen 9)
-> 200 W
-Custom vodní chlazení nebo
-extrémní metody
-Přetaktování, servery,
-workstations
+| TDP (W) | Doporučené chlazení | Příklad použití |
+| < 30 W | Pasivní chlazení | Pasivní grafické karty, nízkovýkonné procesory |
+| 30–95 W | Aktivní vzduchové chlazení | Mainstream CPU (Intel Core i5, AMD Ryzen 5) |
+| 95–200 W | Výkonné aktivní chlazení nebo uzavřené vodní chlazení (AIO) | High-end CPU (Intel Core i9, AMD Ryzen 9) |
+| > 200 W | Custom vodní chlazení nebo extrémní metody | Přetaktování, servery, workstations |
 18. Sockety, chlazení, chipset
 HEAT PIPE (Pasivní chlazení)
 Princip funkce:

@@ -219,32 +219,14 @@ Paměť programu a dat jsou odděleny v cache, ale propojeny v hlavní paměti.
 CPU může přistupovat k oběma pamětem současně, ale zpracování je flexibilnější než u
 čisté Harvardské architektury.
 2. Mikroprocesor
-Faktor
-Von Neumannova architektura
-Harvardská architektura
-Uložení programu a dat
-Společná paměť
-Oddělené paměti
-Paměťová sběrnice
-Jedna sběrnice pro instrukce i data
-Dvě oddělené sběrnice
-Přístup k datům a instrukcím
-Sekvenční přístup
-Paralelní přístup
-Riziko přepsání programu
-Ano
-Ne
-Efektivita využití paměti
-Lepší (paměť může být využita
-univerzálně)
-Horší (instrukční a datová paměť
-jsou fixní)
-Náročnost na návrh CPU
-Nižší
-Vyšší
-Využití
-Obecné počítače, operační systémy
-Vestavěné systémy, DSP, GPU
+| Faktor | Von Neumannova architektura | Harvardská architektura |
+| Uložení programu a dat | Společná paměť | Oddělené paměti |
+| Paměťová sběrnice | Jedna sběrnice pro instrukce i data | Dvě oddělené sběrnice |
+| Přístup k datům a instrukcím | Sekvenční přístup | Paralelní přístup |
+| Riziko přepsání programu | Ano | Ne |
+| Efektivita využití paměti | Lepší (paměť může být využita univerzálně) | Horší (instrukční a datová paměť jsou fixní) |
+| Náročnost na návrh CPU | Nižší | Vyšší |
+| Využití | Obecné počítače, operační systémy | Vestavěné systémy, DSP, GPU |
 Architektura CISC vs. RISC
 Architektura CISC (Complex Instruction Set Computer)
 CISC procesory používají složitou instrukční sadu, která obsahuje velké množství komplexních
@@ -492,22 +474,13 @@ Příklad rozsvícení LED na PA5:
 GPIOA->ODR |= (1 << 5); // Zapnutí LED
 Příklad zhasnutí LED na PA5:
 GPIOA->ODR &= ~(1 << 5); // Vypnutí LED
-Komponenta
-Funkce
-AHB sběrnice
-Rychlá komunikace mezi CPU, RAM a DMA
-APB sběrnice
-Připojení pomalejších periferií (UART, SPI,
-I2C, TIM)
-RCC – AHB1ENR
-Aktivace periferií přes hodinový registr
-GPIOx_MODER
-Nastavení vstupního/výstupního režimu
-pinu
-GPIOx_IDR
-Čtení vstupních dat (např. tlačítka)
-GPIOx_ODR
-Nastavení výstupu (např. LED diody)
+| Komponenta | Funkce |
+| AHB sběrnice | Rychlá komunikace mezi CPU, RAM a DMA |
+| APB sběrnice | Připojení pomalejších periferií (UART, SPI, I2C, TIM) |
+| RCC – AHB1ENR | Aktivace periferií přes hodinový registr |
+| GPIOx_MODER | Nastavení vstupního/výstupního režimu pinu |
+| GPIOx_IDR | Čtení vstupních dat (např. tlačítka) |
+| GPIOx_ODR | Nastavení výstupu (např. LED diody) |
 2. Mikroprocesor
 Časovač (Timer) v procesorech STM32F4
 Časovače (Timers) jsou hardwarové moduly, které umožňují přesné měření času, generování

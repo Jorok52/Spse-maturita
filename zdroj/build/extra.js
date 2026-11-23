@@ -110,7 +110,14 @@ function rawParas(txt){
   const out = []; let para = '', ppg = 1;
   const flush = () => { if(para){ out.push({h:false, t:para, pg:ppg}); para = ''; } };
   lines.forEach((L, i) => {
-    const l = L.t, next = (lines[i+1] || {}).t || '';
+    const l = L.t, next = (lines[i+1] || {}).t || '', last = out[out.length - 1];
+    if(/^\|.*\|$/.test(l)){   // řádek tabulky z PDF („| a | b |“, viz zdroj/build/tabulky.py)
+      flush(); const cells = l.slice(1, -1).split('|').map(c => c.trim());
+      if(last && last.tab && last.open){ last.tab.push(cells); last.t += ' ' + cells.join(' '); }
+      else out.push({h:false, tab:[cells], t:cells.join(' '), pg:L.pg, open:true});
+      return;
+    }
+    if(last && last.open) last.open = false;
     const isHead = l.length <= 60 && !/[.,;:)–-]$/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ0-9]/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(next) && !para;
     if(isHead && l.split(' ').length <= 8){ flush(); out.push({h:true, t:l, pg:L.pg}); return; }
     if(para && /^[a-záčďéěíňóřšťúůýž(]/.test(l)) para += ' ' + l;
@@ -120,7 +127,7 @@ function rawParas(txt){
   flush(); return out;
 }
 function rawToHTML(txt){ return parasToHTML(rawParas(txt)); }
-function parasToHTML(paras){ return paras.map((p, i) => p.h ? '<h3 data-pi="'+i+'">'+esc(p.t)+'</h3>' : '<p data-pi="'+i+'">'+esc(p.t)+'</p>').join(''); }
+function parasToHTML(paras){ return paras.map((p, i) => p.tab ? '<div class="tblwrap dstab" data-pi="'+i+'"><table class="tbl"><tr>'+p.tab[0].map(c => '<th>'+esc(c)+'</th>').join('')+'</tr>'+p.tab.slice(1).map(r => '<tr>'+r.map(c => '<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</table></div>' : p.h ? '<h3 data-pi="'+i+'">'+esc(p.t)+'</h3>' : '<p data-pi="'+i+'">'+esc(p.t)+'</p>').join(''); }
 /* ---------- odpověď v PDF (tlačítko u špatné odpovědi v kvízu) ---------- */
 const ANS_STOP = new Set('který která které kterou kterým jaký jaká jaké jakou jakým proč jsou může mohou nebo také jako když pouze tedy tento tato toto jeho jejich mezi podle kolik kde kdy čím čemu této tohoto byla bylo není nejsou pro při bez nad pod před přes jeho její jsme jste jak co kdo'.split(' '));
 function ansWords(s){ return [...new Set((String(s).toLowerCase().match(/[a-záčďéěíňóřšťúůýž0-9]{3,}/g) || []).filter(x => !ANS_STOP.has(x)))]; }

@@ -107,50 +107,12 @@ Používá se v specializovaných embedded systémech.
 Představitelé: Experimentální projekty v oblasti vestavěných systémů.
 Shrnutí typů jader:
 6. Operační systém & plánování procesů
-Typ jádra
-Výhody
-Nevýhody
-Příklady OS
-Monolitické
-Vysoký výkon, přímý
-přístup k HW
-Chyba v jednom
-subsystému může
-shodit celý systém
-MS-DOS, Windows
-95/98, staré verze
-Mac OS
-Mikrojádro
-Stabilita, bezpečnost,
-modularita
-Vysoká režie
-meziprocesové
-komunikace
-Minix, Symbian OS
-Hybridní jádro
-Vyšší výkon než
-mikrojádro, flexibilita
-Nemožnost
-dynamického
-zavádění modulů
-Windows NT, Mac
-OS X
-Exokernel
-Maximální výkon,
-přímý přístup k HW
-Složitá
-implementace, nízká
-abstrakce
-AE GIS, Nemesis
-Nanokernel
-Extrémně malá
-velikost, vhodné pro
-embedded systémy
-Omezená
-funkcionalita,
-složitost vývoje
-Experimentální
-systémy
+| Typ jádra | Výhody | Nevýhody | Příklady OS |
+| Monolitické | Vysoký výkon, přímý přístup k HW | Chyba v jednom subsystému může shodit celý systém | MS-DOS, Windows 95/98, staré verze Mac OS |
+| Mikrojádro | Stabilita, bezpečnost, modularita | Vysoká režie meziprocesové komunikace | Minix, Symbian OS |
+| Hybridní jádro | Vyšší výkon než mikrojádro, flexibilita | Nemožnost dynamického zavádění modulů | Windows NT, Mac OS X |
+| Exokernel | Maximální výkon, přímý přístup k HW | Složitá implementace, nízká abstrakce | AE GIS, Nemesis |
+| Nanokernel | Extrémně malá velikost, vhodné pro embedded systémy | Omezená funkcionalita, složitost vývoje | Experimentální systémy |
 6. Operační systém & plánování procesů
 RTOS – Real-Time Operating System (Operační systém reálného času)
 RTOS je speciální typ operačního systému navržený tak, aby poskytoval přesně časově
@@ -224,25 +186,11 @@ Zaručený čas provedení
 úlohy
 Ano
 Ne
-Deterministické chování
-Ano
-Ne
-Použití
-Průmysl, embedded
-systémy, zdravotnictví,
-robotika
-Počítače, servery, mobilní
-zařízení
-Efektivní plánování úloh
-Ano
-Ano, ale bez garance
-načasování
-Multitasking
-Ano
-Ano
-Paměťová efektivita
-Vysoká
-Střední až nízká
+| Deterministické chování | Ano | Ne |
+| Použití | Průmysl, embedded systémy, zdravotnictví, robotika | Počítače, servery, mobilní zařízení |
+| Efektivní plánování úloh | Ano | Ano, ale bez garance načasování |
+| Multitasking | Ano | Ano |
+| Paměťová efektivita | Vysoká | Střední až nízká |
 6. Operační systém & plánování procesů
 Procesy v operačním systému
 Proces je běžící instance programu, která je načtená v operační paměti a vykonává se
@@ -285,31 +233,13 @@ Procesy mezi sebou musí komunikovat (např. sdílením paměti, pomocí rour (p
 nebo zpráv).
 6. Operační systém & plánování procesů
 Životní cyklus procesu (Stavy procesu)
-Stav procesu
-Popis
-NEW (nový proces)
-Proces je vytvořen (uživatelem
-nebo OS), ale ještě nezačal
-běžet.
-READY (připravený)
-Proces čeká na přidělení
-procesoru (je připraven ke
-spuštění).
-RUN (běžící)
-Proces je aktuálně vykonáván
-procesorem.
-WAIT (čekající)
-Proces čeká na dokončení I/O
-operace nebo jiného procesu.
-END (ukončený)
-Proces byl dokončen nebo
-ukončen uživatelem/OS.
-Přechody mezi stavy:
-NEW → READY (OS proces vytvoří a umístí do fronty).
-READY → RUN (proces dostane CPU a začne běžet).
-RUN → WAIT (čekání na I/O operaci, signál atd.).
-WAIT → READY (po dokončení I/O operace proces čeká na CPU).
-RUN → END (proces se dokončí nebo je ukončen).
+| Stav procesu | Popis |
+| NEW (nový proces) | Proces je vytvořen (uživatelem nebo OS), ale ještě nezačal běžet. |
+| READY (připravený) | Proces čeká na přidělení procesoru (je připraven ke spuštění). |
+| RUN (běžící) | Proces je aktuálně vykonáván procesorem. |
+| WAIT (čekající) | Proces čeká na dokončení I/O operace nebo jiného procesu. |
+| END (ukončený) | Proces byl dokončen nebo ukončen uživatelem/OS. |
+| Přechody mezi stavy: NEW → READY (OS proces vytvoří a umístí do fronty). READY → RUN (proces dostane CPU a začne běžet). RUN → WAIT (čekání na I/O operaci, signál atd.). WAIT → READY (po dokončení I/O operace proces čeká na CPU). RUN → END (proces se dokončí nebo je ukončen). |  |
 6. Operační systém & plánování procesů
 Řídicí blok procesu (PCB - Process Control Block)
 PCB (Process Control Block) je datová struktura v jádře operačního systému, která uchovává
@@ -404,37 +334,13 @@ Vykreslování grafiky (např. jeden thread vykresluje, druhý provádí výpoč
 Aplikace jako Excel (výpočty běží v jednom vlákně, zatímco grafické vykreslování v
 jiném).
 Vlákno vs. Proces – Jaký je rozdíl?
-Vlastnost
-Proces
-Vlákno
-Paměťový prostor
-Každý proces má
-vlastní
-Vlákna sdílejí paměť
-procesu
-Vytvoření
-Pomalé – OS alokuje
-nový prostor
-Rychlé – využívá
-existující paměť
-Přepnutí kontextu
-Drahé – nutné
-přepnout celý stav
-procesu
-Levné – OS přepíná
-pouze registry
-Běh na více jádrech
-Ano – OS rozděluje
-procesy mezi jádra
-Jen u kernel-level
-vláken
-Synchronizace
-Snazší (nezávislé
-procesy)
-Nutná
-synchronizace mezi
-vlákny
-Shrnutí – Proč používat vlákna?
+| Vlastnost | Proces | Vlákno |
+| Paměťový prostor | Každý proces má vlastní | Vlákna sdílejí paměť procesu |
+| Vytvoření | Pomalé – OS alokuje nový prostor | Rychlé – využívá existující paměť |
+| Přepnutí kontextu | Drahé – nutné přepnout celý stav procesu | Levné – OS přepíná pouze registry |
+| Běh na více jádrech | Ano – OS rozděluje procesy mezi jádra | Jen u kernel-level vláken |
+| Synchronizace | Snazší (nezávislé procesy) | Nutná synchronizace mezi vlákny |
+| Shrnutí – Proč používat vlákna? |  |  |
 Nižší spotřeba paměti – více vláken v jednom procesu sdílí stejný paměťový prostor.
 Rychlejší přepínání než mezi procesy – není třeba přepínat celý kontext.
 Lepší výkon na více jádrech – kernel-level vlákna mohou běžet paralelně.

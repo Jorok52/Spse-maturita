@@ -144,24 +144,12 @@ Kompatibilita:
 GPT není podporován ve Windows XP a starších 32bit systémech (bootování z GPT
 vyžaduje 64bitový OS a UEFI).
 Moderní OS jako Windows 10/11, Linux, macOS GPT plně podporují.
-Vlastnost
-MBR
-GPT
-Max. velikost disku
-2 TiB
-9,4 ZB (teoreticky)
-Max. počet oddílů
-4 primární / 3 + 1 rozšířený
-128 primárních
-Adresování
-CHS / 32bit LBA
-64bit LBA
-Umístění tabulky
-Začátek disku
-Začátek i konec disku
-Kompatibilita
-Starší systémy (BIOS, Win XP)
-Nové systémy (UEFI, Win 10/11)
+| Vlastnost | MBR | GPT |
+| Max. velikost disku | 2 TiB | 9,4 ZB (teoreticky) |
+| Max. počet oddílů | 4 primární / 3 + 1 rozšířený | 128 primárních |
+| Adresování | CHS / 32bit LBA | 64bit LBA |
+| Umístění tabulky | Začátek disku | Začátek i konec disku |
+| Kompatibilita | Starší systémy (BIOS, Win XP) | Nové systémy (UEFI, Win 10/11) |
 14. Organizační struktura HDD OS Windows
 Program DiskEdit – práce s PaT a EPT
 Co je DiskEdit:
@@ -236,31 +224,14 @@ Záloha a obnova oddílů
 Možnost vytvoření image disku nebo oddílu.
 Záchrana systému a bootování
 Obsahuje bootovací nástroje pro obnovu při selhání systému.
-Funkce
-Acronis Disk Director
-Paragon Partition Manager
-Tvorba/mazání oddílů
-Ano
-Ano
-Obnova MBR a boot
-sektoru
-Ano
-Ano
-Obnova ztracených oddílů
-Ano
-Ano
-Defragmentace
-Ano
-Ne (většinou)
-Konverze FAT ↔ NTFS
-Ne (ne přímo)
-Ano
-Podpora moderních OS
-Ano (vč. Win8 a novějších)
-Ano
-Záchrana dat
-Ano
-Ano
+| Funkce | Acronis Disk Director | Paragon Partition Manager |
+| Tvorba/mazání oddílů | Ano | Ano |
+| Obnova MBR a boot sektoru | Ano | Ano |
+| Obnova ztracených oddílů | Ano | Ano |
+| Defragmentace | Ano | Ne (většinou) |
+| Konverze FAT ↔ NTFS | Ne (ne přímo) | Ano |
+| Podpora moderních OS | Ano (vč. Win8 a novějších) | Ano |
+| Záchrana dat | Ano | Ano |
 14. Organizační struktura HDD OS Windows
 Správa disku ve Windows
 Kde se nachází:

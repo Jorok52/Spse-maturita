@@ -35,30 +35,13 @@ Používán hlavně v minulosti pro tiskárny a vnitřní propojení komponent v
 Typické příklady paralelních sběrnic:
 ISA, ATA (Parallel ATA), SCSI, PCI, FSB (Front Side Bus)
 Srovnání sériového a paralelního přenosu
-Kritérium
-Paralelní přenos
-Sériový přenos
-Rychlost
-Potenciálně vyšší (více bitů najednou), ale
-závislá na synchronizaci všech linek
-Moderní technologie umožňují velmi
-vysoké rychlosti na jedné lince
-Délka kabelu
-Omezená – vyšší zpoždění mezi vodiči vede
-k chybám
-Vhodný i pro větší vzdálenosti
-Složitost
-Jednodušší na implementaci u krátkých
-vzdáleností, ale více vodičů
-Vyžaduje převod do paralelní
-podoby přes USART apod.
-Rušení
-Vyšší kvůli více vodičům blízko u sebe
-Nižší rušení a přeslechy
-Cena
-Více vodičů = vyšší náklady
-Úspornější na kabeláž i konektory
-Trendy a vývoj
+| Kritérium | Paralelní přenos | Sériový přenos |
+| Rychlost | Potenciálně vyšší (více bitů najednou), ale závislá na synchronizaci všech linek | Moderní technologie umožňují velmi vysoké rychlosti na jedné lince |
+| Délka kabelu | Omezená – vyšší zpoždění mezi vodiči vede k chybám | Vhodný i pro větší vzdálenosti |
+| Složitost | Jednodušší na implementaci u krátkých vzdáleností, ale více vodičů | Vyžaduje převod do paralelní podoby přes USART apod. |
+| Rušení | Vyšší kvůli více vodičům blízko u sebe | Nižší rušení a přeslechy |
+| Cena | Více vodičů = vyšší náklady | Úspornější na kabeláž i konektory |
+| Trendy a vývoj |  |  |
 Díky poklesu ceny integrovaných obvodů a rostoucím nárokům na rychlost a spolehlivost
 se trh přesouvá k sériovým přenosům.
 Nahrazení starších paralelních rozhraní:
@@ -109,30 +92,12 @@ Systémové sběrnice v PC, např. adresové a datové sběrnice.
 Řízení pamětí, vstupně-výstupních obvodů (např. přístup k RAM).
 4. Přenos dat, rozdělení paměti a organizace
 Shrnutí: Otevřený kolektor vs. Třístavový výstup
-Vlastnost
-Otevřený kolektor
-Třístavový výstup
-Stav výstupu
-0 nebo „nepřipojeno“ (s pullupem log. 1)
-0, 1, nebo vysoká impedance
-(Hi-Z)
-Řízení sběrnice
-Pasivně – každý může stáhnout
-sběrnici do 0
-Aktivně – pouze jeden výstup
-smí být aktivní
-Potřeba pull-up
-rezistoru
-Ano
-Ne
-Využití
-I²C, prioritní logika
-Systémové sběrnice, řízení RAM
-Odolnost proti
-kolizím
-Vysoká (drátová logika)
-Vyžaduje řízení pomocí OE
-signálu
+| Vlastnost | Otevřený kolektor | Třístavový výstup |
+| Stav výstupu | 0 nebo „nepřipojeno“ (s pullupem log. 1) | 0, 1, nebo vysoká impedance (Hi-Z) |
+| Řízení sběrnice | Pasivně – každý může stáhnout sběrnici do 0 | Aktivně – pouze jeden výstup smí být aktivní |
+| Potřeba pull-up rezistoru | Ano | Ne |
+| Využití | I²C, prioritní logika | Systémové sběrnice, řízení RAM |
+| Odolnost proti kolizím | Vysoká (drátová logika) | Vyžaduje řízení pomocí OE signálu |
 Sběrnice – princip, dělení, parametry
 Sběrnice je soubor (svazek) vodičů, který propojuje jednotlivé součásti počítače (např. CPU,
 RAM, GPU, periferní zařízení) a zajišťuje přenos dat, adres a řídicích signálů mezi nimi.
@@ -166,22 +131,11 @@ Příklady:
 PCI, PCIe (PCI Express) – moderní rozhraní pro grafické a rozšiřující karty.
 USB, SATA, M.2 – externí a úložné zařízení.
 Základní parametry sběrnice
-Parametr
-Význam
-Jednotka
-Šířka sběrnice
-Počet bitů, které může přenést současně
-bit
-Frekvence sběrnice
-Počet operací za sekundu (rychlost taktu)
-Hz
-Přenosová rychlost
-(propustnost)
-Kolik dat se přenese za jednotku času
-bit/s (bps)
-Přístupová doba
-Doba čekání zařízení na přístup ke sběrnici
-sekundy (s)
+| Parametr | Význam | Jednotka |
+| Šířka sběrnice | Počet bitů, které může přenést současně | bit |
+| Frekvence sběrnice | Počet operací za sekundu (rychlost taktu) | Hz |
+| Přenosová rychlost (propustnost) | Kolik dat se přenese za jednotku času | bit/s (bps) |
+| Přístupová doba | Doba čekání zařízení na přístup ke sběrnici | sekundy (s) |
 Rozdělení sběrnic
 Sběrnici lze rozdělit podle více hledisek: funkce vodičů, typ přenosu dat, synchronizace a
 směr přenosu.
@@ -539,44 +493,15 @@ rychlejší).
 Nepotřebuje speciální programátor – mazání a zápis přímo elektrickým impulsem.
 Použití: USB flash disky, SSD, paměťové karty.
 4. Přenos dat, rozdělení paměti a organizace
-Paměť
-Závislost na napájení
-Možnost zápisu
-Použití
-SRAM
-Ano
-Ano
-Cache paměti
-DRAM
-Ano
-Ano
-Operační paměť
-NoRAM (FIFO, LIFO)
-Ano
-Ano
-Buffery, zásobníky
-ROM
-Ne
-Ne
-Firmware, BIOS
-PROM
-Ne
-Jednorázové
-Firmware
-EPROM
-Ne
-Opakovatelné (po UV
-mazání)
-Specializovaná zařízení
-EEPROM
-Ne
-Opakovatelné (elektricky)
-Firmware, konfigurace
-FLASH
-Ne
-Opakovatelné (rychlé
-elektrické mazání)
-Úložiště dat
+| Paměť | Závislost na napájení | Možnost zápisu | Použití |
+| SRAM | Ano | Ano | Cache paměti |
+| DRAM | Ano | Ano | Operační paměť |
+| NoRAM (FIFO, LIFO) | Ano | Ano | Buffery, zásobníky |
+| ROM | Ne | Ne | Firmware, BIOS |
+| PROM | Ne | Jednorázové | Firmware |
+| EPROM | Ne | Opakovatelné (po UV mazání) | Specializovaná zařízení |
+| EEPROM | Ne | Opakovatelné (elektricky) | Firmware, konfigurace |
+| FLASH | Ne | Opakovatelné (rychlé elektrické mazání) | Úložiště dat |
 Statická paměťová buňka – SRAM (Static Random Access Memory)
 SRAM uchovává informace po celou dobu, kdy je připojena ke zdroji napájení.
 Po odpojení napájení se obsah ztratí.
