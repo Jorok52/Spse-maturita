@@ -1,12 +1,12 @@
 {
 "n": 13,
-"t": "Fyzická struktura HDD",
+"t": "Fyzická struktura pevných disků, charakteristiky a technologie",
 "outline": [
-"Princip magnetického záznamu a čtení dat, základní pojmy, charakteristika HDD",
-"Geometrie HDD – stopa, sektor, cylindr",
-"Vystavovací mechanismy, teplotní kalibrace",
-"Přístupová doba, kódování, prekompenzace, ZBR, MTBF, SMART",
-"Proces výběru a zavedení OS, instalace OS přes UEFI"
+"Princip magnetického záznamu (hysterezní smyčka)",
+"Geometrie HDD – stopa, sektor, cylindr, blok; adresování",
+"Základní pojmy – parkování hlaviček, hustota zápisu, ZBR, MTBF, SMART, vzduchový polštář, prekompenzace zápisu, teplotní kalibrace",
+"Vystavovací mechanizmus",
+"Technologie SMR, HAMR a MAMR"
 ],
 "q": [
 [
@@ -94,27 +94,6 @@
 "Na kolejnici nad plotnou"
 ],
 [
-"K čemu je barometrický filtr?",
-"Vyrovnává tlak uvnitř HDD",
-"Zachytává prach z tření hlav",
-"Chladí disk a ploten",
-"Filtruje elektrický šum"
-],
-[
-"K čemu je recirkulační filtr?",
-"Zachytává mikroskopické částice uvnitř",
-"Vyrovnává tlak uvnitř disku pomocí malého ventilu",
-"Chladí vzduch v disku",
-"Čistí plotny kapalinou"
-],
-[
-"Kdo provádí LLF (low level format)?",
-"Výrobce disku",
-"Uživatel",
-"Windows při instalaci",
-"BIOS"
-],
-[
 "Jak se číslují sektory?",
 "Od 1 proti směru otáčení",
 "Od 0 ve směru otáčení",
@@ -171,41 +150,6 @@
 "Aktualizuje teplotní údaje ve SMART"
 ],
 [
-"Z čeho se skládá přístupová doba?",
-"Seek time + rotační latence + přepnutí hlavičky",
-"Jen seek time (přesun hlavy) – ostatní se zanedbává",
-"Transfer dat + kontrola CRC",
-"Otáčky (RPM) + velikost cache"
-],
-[
-"Co řeší prokládání (interleaving)?",
-"Hlavička nestihne další sektor – zapisuje se do každého n-tého",
-"Fragmentaci souborů na disku",
-"Přehřívání hlav při zápisu",
-"Ztrátu synchronizace řadiče při dlouhých řadách nul v zapisovaných datech"
-],
-[
-"Proč se data na disku kódují (FM, MFM, RLL)?",
-"Aby dlouhé řady nul nezpůsobily ztrátu synchronizace",
-"Data se tím šifrují, aby je nešlo přečíst v jiném počítači",
-"Aby se data dala číst i bez řadiče disku",
-"Disk tak hlásí svůj stav přes SMART"
-],
-[
-"Kódování s 2–7 mezerami mezi impulsy?",
-"RLL",
-"FM",
-"MFM",
-"PRML"
-],
-[
-"Moderní kódování odhadující nejpravděpodobnější bit?",
-"PRML / EPRML",
-"FM (frekvenční)",
-"MFM (modif. FM)",
-"RLL (2,7)"
-],
-[
 "Co je ZBR?",
 "Zónový záznam – vnější stopy mají víc sektorů",
 "Kódování s 2–7 mezerami",
@@ -260,20 +204,6 @@
 "Laser pro ohřev místa před zápisem dat",
 "Překrývání stop (šindele)",
 "Kapalinové ložisko ploten"
-],
-[
-"O kolik ušetří kódování MFM oproti FM?",
-"Až 20 %",
-"Až 50 %",
-"Nic",
-"Až 90 %"
-],
-[
-"O kolik ušetří RLL oproti MFM?",
-"Až 50 %",
-"Až 20 %",
-"Až 5 %",
-"Až 100 %"
 ]
 ],
 "terms": [
@@ -310,14 +240,6 @@
 "Teplotní kalibrace"
 ],
 [
-"Interleaving",
-"Prokládání sektorů"
-],
-[
-"RLL",
-"2–7 mezer mezi impulsy"
-],
-[
 "ZBR",
 "Zóny s různým počtem sektorů"
 ],
@@ -340,6 +262,18 @@
 [
 "MAMR",
 "Mikrovlny"
+],
+[
+"Parkování hlaviček",
+"Hlavy mimo data při vypnutí"
+],
+[
+"Vzduchový polštář",
+"Hlava se vznáší nad plotnou, nedotýká se jí"
+],
+[
+"Prekompenzace",
+"Úprava zápisu na vnitřních stopách"
 ]
 ],
 "open": [

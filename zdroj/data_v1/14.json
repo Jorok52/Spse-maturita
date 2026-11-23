@@ -1,13 +1,14 @@
 {
 "n": 14,
-"t": "Organizační struktura HDD (Windows)",
+"t": "Organizační struktura pevného disku operačním systémem Windows",
 "outline": [
-"Rozdělení disku: MBR, EPT, GPT – typy, rozdíly, souvislost s instalací OS",
-"Struktura PaT a EPT, program DiskEdit",
-"Programy pro správu disků: Acronis Disk Director, Paragon Partition Manager",
-"Adresování CHS a LBA, souvislost s BIOS a UEFI při bootování",
-"EFI System Partition – vznik, obsah, bootování a instalace",
-"RAID, dynamické svazky"
+"Souborové systémy v OS Windows – NTFS",
+"MBR, GPT, souvislost s instalací OS",
+"Struktura a popis PAT a EPT",
+"Programy pro správu disků",
+"EFI system partition – vznik, obsah, souvislost s bootováním a instalací",
+"BIOS a UEFI – rozdíly při bootu",
+"Secure Boot, TPM – popis, princip fungování"
 ],
 "q": [
 [
@@ -193,76 +194,6 @@
 "Zapojen do pole RAID"
 ],
 [
-"RAID 0 je…",
-"Striping – rychlost, žádná ochrana dat",
-"Zrcadlení – kopie na dva disky",
-"Striping s rozdělenou paritou",
-"Dvojitá parita – přežije 2 disky"
-],
-[
-"RAID 1 je…",
-"Zrcadlení, kapacita 50 %",
-"Striping, kapacita 100 %",
-"Distribuovaná parita, kapacita (n−1)",
-"Hammingův kód, nízká kapacita"
-],
-[
-"RAID 5 – minimum disků a kapacita?",
-"3 disky, (n−1)",
-"2 disky, 50 %",
-"4 disky, (n−2)",
-"3 disky, 100 %"
-],
-[
-"RAID 6 přežije výpadek…",
-"Dvou disků",
-"Jednoho disku",
-"Žádného",
-"Všech"
-],
-[
-"Proč je RAID 10 odolnější než 0+1?",
-"Zrcadlí páry a pak prokládá – přežije víc výpadků v různých párech",
-"Má navíc paritu rozloženou mezi všechny disky, takže zvládne i výpadek celého páru",
-"Potřebuje víc disků (minimálně 6)",
-"Je rychlejší, protože nepoužívá zrcadlení"
-],
-[
-"Čím chrání data RAID 2?",
-"Hammingovým kódem",
-"Paritou na jednom disku",
-"Zrcadlením",
-"Ničím"
-],
-[
-"Problém RAID 3 a 4?",
-"Dedikovaný paritní disk je úzké hrdlo",
-"Nemají žádnou ochranu dat proti výpadku",
-"Využitelná kapacita je jen 50 %",
-"Potřebují minimálně 8 disků"
-],
-[
-"Výhoda HW RAID oproti SW RAID?",
-"Vlastní procesor a cache, nezatěžuje CPU, hot-swap",
-"Je levnější, protože nepotřebuje řadič ani vlastní paměť",
-"Nepotřebuje žádný řadič ani ovladač",
-"Řídí ho operační systém pomocí CPU"
-],
-[
-"Rozložený (spanned) svazek ve Windows…",
-"Spojuje více disků do jednoho svazku (až 32)",
-"Zrcadlí data na druhý disk (jako RAID 1)",
-"Je vždy jen na jednom fyzickém disku",
-"Prokládá data s paritou (jako RAID 5)"
-],
-[
-"Zrcadlený dynamický svazek odpovídá…",
-"RAID 1",
-"RAID 0",
-"RAID 5",
-"RAID 6"
-],
-[
 "Co je ESP (EFI System Partition)?",
 "Speciální oddíl ve FAT32, ze kterého UEFI načítá zavaděče OS",
 "Rozšířený oddíl v MBR, který obsahuje logické disky propojené přes EPT",
@@ -325,28 +256,20 @@
 "Konverze FAT↔NTFS"
 ],
 [
-"RAID 0",
-"Striping"
+"NTFS",
+"Souborový systém Windows: žurnál, ACL, MFT"
 ],
 [
-"RAID 1",
-"Zrcadlení"
+"Secure Boot",
+"Spustí jen podepsaný zavaděč a jádro"
 ],
 [
-"RAID 5",
-"Distribuovaná parita, n−1"
+"TPM",
+"Čip pro klíče a měření bootu (BitLocker)"
 ],
 [
-"RAID 6",
-"Dvě parity, n−2"
-],
-[
-"RAID 10",
-"Zrcadlené páry + striping"
-],
-[
-"Spanned volume",
-"Více disků v jednom svazku"
+"ESP",
+"FAT32 oddíl se zavaděči .efi"
 ]
 ],
 "open": [

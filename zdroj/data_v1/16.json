@@ -1,12 +1,15 @@
 {
 "n": 16,
-"t": "Zdroje, BIOS, UEFI, bootování",
+"t": "Zdroje PC, BIOS, UEFI a proces bootování PC",
 "outline": [
-"Typy zdrojů PC, konektory, zapojení, napětí, signály",
-"BIOS a jeho součásti, upgrade",
+"Typy zdrojů PC – charakteristiky, konektory, zapojování, napětí, signály",
+"Účinnost zdroje, certifikace zdrojů",
+"Impulsní vs. lineární zdroj, evoluce AT a ATX",
+"Ochrany zdroje, PFC filtr",
+"BIOS a jeho součásti",
 "UEFI a rozdíly v bootování",
-"Nastavení HW konfigurace (Setup)",
-"Výběr a zavedení OS, instalace OS přes UEFI"
+"CSM, Secure Boot, TPM – popis, princip fungování",
+"Proces výběru a zavedení OS"
 ],
 "q": [
 [
@@ -375,6 +378,22 @@
 [
 "CSM",
 "Legacy BIOS režim"
+],
+[
+"Impulsní zdroj",
+"Spínání na vysoké frekvenci, účinnost 80–95 %"
+],
+[
+"Lineární zdroj",
+"Síťový transformátor 50 Hz, účinnost 40–60 %"
+],
+[
+"80 PLUS",
+"Certifikace účinnosti: Bronze až Titanium"
+],
+[
+"PFC",
+"Korekce účiníku, aktivní přes 0,95"
 ]
 ],
 "open": [

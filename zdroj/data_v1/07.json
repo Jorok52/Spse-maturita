@@ -2,11 +2,11 @@
 "n": 7,
 "t": "Synchronizace procesů",
 "outline": [
-"Problém producent vs. konzument",
-"Kritická sekce: charakteristika, podmínky, ošetření",
-"Aktivní a pasivní čekání",
+"Kritická sekce – charakteristika a podmínky pro ošetření KS",
+"Aktivní vs. pasivní čekání",
 "Sdílený prostředek",
-"Řešení: zákaz přerušení, zamykací proměnná, přesné střídání, Peterson, atomická instrukce, sleep/wakeup, semafory",
+"Problém Producent vs. Konzument",
+"Řešení KS – zákaz přerušení, zamykací proměnná, přesné střídání, Petersonovo řešení, atomická instrukce, sleep() a wakeup(), semafory a transakce",
 "Klasické synchronizační problémy"
 ],
 "q": [
@@ -283,6 +283,10 @@
 [
 "Pasivní čekání",
 "Uspání a probuzení"
+],
+[
+"Transakce",
+"Skupina operací: vše (COMMIT), nebo nic (ROLLBACK)"
 ]
 ],
 "open": [

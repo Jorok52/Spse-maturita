@@ -1,13 +1,15 @@
 {
 "n": 6,
-"t": "Operační systém & plánování procesů",
+"t": "Operační systém a plánování procesů",
 "outline": [
-"Charakteristika operačního systému",
+"Charakteristika OS",
+"Historický vývoj OS",
 "Typy jader OS",
-"Proces vs. vlákno, PCB, TCB",
-"Přepínání kontextů",
-"Plánovače OS, preemptivní a nepreemptivní plánování",
-"Algoritmy FCFS, SJF, SRTF, RR, PS, MFQS"
+"Režimy jádra",
+"Proces vs. vlákno – PCB vs. TCB",
+"Přepínání kontextu",
+"Plánovače OS – preemptivní vs. nepreemptivní plánování",
+"Plánovací algoritmy FCFS, SJF, SRTF, RR, PS, MFQS"
 ],
 "q": [
 [
@@ -340,6 +342,14 @@
 [
 "Střednědobý plánovač",
 "Swapování"
+],
+[
+"Režim jádra",
+"Plný přístup k HW, běží v něm jádro a ovladače"
+],
+[
+"Uživatelský režim",
+"Omezená práva, služby jádra přes syscall"
 ]
 ],
 "open": [

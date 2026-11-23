@@ -2,15 +2,11 @@
 "n": 8,
 "t": "Řízení operační paměti",
 "outline": [
-"K čemu slouží operační paměť a co v ní je",
-"Souvislá oblast",
-"Přidělování po blocích",
-"Stránkování",
-"Segmentace",
-"Segmentace se stránkováním",
+"K čemu slouží OP a co se v ní nachází",
+"Strategie přidělování OP – souvislá oblast, po blocích, stránkování, segmentace, segmentace se stránkováním",
 "Výpadek stránky, pre-cleaning, thrashing",
-"Čisté a špinavé stránky",
-"Algoritmy výměny stránek"
+"Čisté vs. špinavé stránky",
+"Algoritmy výměny stránek – optimální, FIFO, LRU, druhá šance, hodiny, NUR/NRU, Random, NFU"
 ],
 "q": [
 [
@@ -336,6 +332,18 @@
 [
 "Hodinový alg.",
 "Ručička + referenční bit"
+],
+[
+"Druhá šance",
+"FIFO, ale stránka s R = 1 dostane další šanci"
+],
+[
+"NRU",
+"Třídy podle bitů R a M, vyhazuje nejnižší třídu"
+],
+[
+"NFU",
+"Vyhazuje stránku s nejmenším čítačem použití"
 ]
 ],
 "open": [

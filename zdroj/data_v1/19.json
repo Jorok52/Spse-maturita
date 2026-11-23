@@ -1,11 +1,12 @@
 {
 "n": 19,
-"t": "Sběrnice – typy a charakteristika",
+"t": "Konstrukční uspořádání PC – typy a charakteristiky sběrnic",
 "outline": [
-"Pojem sběrnice, typy a charakteristika paralelních sběrnic",
-"ISA, PCI, AGP, PCI-X: konektor, datová šířka, frekvence, přenosová rychlost",
-"PCI Express: princip, datový pár, link, označení, kompatibilita",
-"Verze PCIe: kódování, přenosové rychlosti, souvislost s chipsetem"
+"Sběrnice a typy, základní charakteristiky a pojmy",
+"Diferenciální datový pár",
+"Sběrnice ISA, PCI, AGP – konektory, datové šířky",
+"AMR, CNR, ACR",
+"PCI Express – lane, link, verze, komunikace mezi zařízeními"
 ],
 "q": [
 [
@@ -79,13 +80,6 @@
 "Nepodporuje zvukové ani síťové karty"
 ],
 [
-"EISA je…",
-"32bit rozšíření ISA, 8 MHz, až 33 MB/s, zpětně kompatibilní",
-"Slot pro grafické karty od Intelu z roku 1996 (předchůdce AGP)",
-"Sériová sběrnice s diferenciálními páry",
-"Nástupce PCIe pro servery s 64 b šířkou"
-],
-[
 "PCI je…",
 "Paralelní half-duplex, Plug & Play, 32/64 b",
 "Sériová full-duplex sběrnice s linkami",
@@ -119,13 +113,6 @@
 "Ano, má zvlášť adresní a datové vodiče, proto je rychlejší",
 "Jen 64bitová verze má oddělené vodiče",
 "Jen PCI-X má oddělené vodiče pro adresy"
-],
-[
-"PCI-X oproti PCI?",
-"64 b, až 133 MHz, pro servery, kompatibilní s PCI",
-"Sériová verze PCI s linkami jako PCIe",
-"Varianta PCI jen pro grafické karty",
-"Pomalejší a úspornější verze pro notebooky"
 ],
 [
 "Kdo a kdy vyvinul AGP?",
@@ -281,16 +268,8 @@
 "16b, 8 MHz, 8 MB/s, 1984"
 ],
 [
-"EISA",
-"32b, 8 MHz, 33 MB/s"
-],
-[
 "PCI",
 "32/64b, 33/66 MHz, 133 MB/s"
-],
-[
-"PCI-X",
-"64b, 133 MHz, servery"
 ],
 [
 "AGP",
@@ -331,6 +310,22 @@
 [
 "PCIe 5.0",
 "4 GB/s na lane"
+],
+[
+"AMR",
+"Audio/Modem Riser (Intel, AC'97)"
+],
+[
+"CNR",
+"Nástupce AMR, navíc LAN a USB"
+],
+[
+"ACR",
+"Konkurence CNR (AMD, VIA)"
+],
+[
+"Diferenciální pár",
+"D+ a D−, odolnost proti rušení"
 ]
 ],
 "open": [

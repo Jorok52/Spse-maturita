@@ -2,14 +2,16 @@
  "n": 1,
  "t": "Programovací jazyk C",
  "outline": [
-  "Překlad programu, compiler a linker",
-  "Datové typy",
-  "Definice, inicializace, přetypování",
-  "Řídicí struktury – větvení a cykly",
-  "Pole a řetězce",
-  "Funkce a modularita",
+  "Vývojové prostředí, compiler a linker",
+  "Datové typy – definice vs. inicializace",
+  "Přetypování",
+  "Standardní vstupy a výstupy",
+  "Řídicí struktury – větvení, cykly",
+  "Práce s polem – jednorozměrné, dvourozměrné; načtení, výpis, manipulace s prvky",
+  "Funkce – popis a použití; definice, tělo, prototyp; bez parametru, s parametrem",
   "Struktury a ukazatele",
-  "Knihovny a #include"
+  "Knihovny",
+  "Práce se soubory"
  ],
  "q": [
   [

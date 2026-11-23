@@ -1,14 +1,15 @@
 {
 "n": 18,
-"t": "Sockety, chlazení, chipset",
+"t": "Konstrukční uspořádání PC – sockety, chlazení, chipsety",
 "outline": [
-"Vnitřní struktura a části základní desky",
-"Chipset",
+"Vnitřní struktura a části základní desky, chipset",
 "Typy a charakteristiky socketů Intel a AMD",
-"Vliv zátěže a frekvence na spotřebu",
-"TDP a návrh chlazení",
-"Typy chlazení CPU, princip heatpipe",
-"Technologie TCC, EIST, Intelligent Power Capability, Cool'n'Quiet, Turbo Boost"
+"Vliv zátěže a taktovací frekvence na spotřebu",
+"TDP, PPT, MTP – souvislost s chlazením",
+"Pasivní vs. aktivní chlazení",
+"Heat pipe, dvoufázový termosifon",
+"Řízení ventilátorů",
+"Technologie TCC, Thermal throttling, Enhanced Intel SpeedStep, Cool'n'Quiet a Turbo Boost"
 ],
 "q": [
 [
@@ -271,13 +272,6 @@
 "Přidá procesoru víc vyrovnávací paměti"
 ],
 [
-"Co dělá Intelligent Power Capability?",
-"Napájí jen právě potřebné části CPU",
-"Zvýší takt jader při vysoké zátěži",
-"Řídí otáčky ventilátorů podle teploty",
-"Je to typ napájecího zdroje s PFC"
-],
-[
 "Vliv přetaktování?",
 "Vyšší spotřeba a teplo – potřeba lepšího chlazení a zdroje",
 "Nižší spotřeba a teplo, protože procesor dokončí práci rychleji a déle spí",
@@ -345,6 +339,26 @@
 [
 "Turbo Boost",
 "Dočasné zvýšení taktu"
+],
+[
+"PPT",
+"AMD: max. příkon pouzdra CPU"
+],
+[
+"MTP / PL2",
+"Intel: krátkodobý max. příkon v turbu"
+],
+[
+"Termosifon",
+"Kapalina se vrací gravitací"
+],
+[
+"PWM ventilátor",
+"4pin, otáčky řídí pulzy při 12 V"
+],
+[
+"Thermal throttling",
+"Snížení frekvence při přehřátí"
 ]
 ],
 "open": [

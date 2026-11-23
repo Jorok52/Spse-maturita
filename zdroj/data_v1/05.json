@@ -4,12 +4,10 @@
 "outline": [
 "Charakteristika, použití, přesnost a princip převodu",
 "Analogový vs. digitální signál",
-"Paralelní (flash) převodník",
-"Přírůstkový (čítací) převodník",
-"Sledovací s vratným čítačem",
-"S postupnou aproximací",
-"S dvojitou integrací",
-"Sigma-delta"
+"Paralelní převodník",
+"Kompenzační převodníky – čítací, sledovací, s postupnou aproximací",
+"Převodník s dvojitou integrací",
+"Sigma-delta převodník"
 ],
 "q": [
 [

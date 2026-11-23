@@ -2,12 +2,14 @@
 "n": 2,
 "t": "Mikroprocesor",
 "outline": [
-"Co je mikroprocesor a jeho obecný popis",
+"Co je to mikroprocesor a jeho obecný popis – řadič, ALU",
 "Rozdíl mezi mikroprocesorem a mikrořadičem",
-"Charakteristika ARM STM32F4: architektura, paměť, registry",
-"Porty, čítače/časovače (časové smyčky), přerušovací systém",
-"Školní kit a periferie",
-"Konfigurace projektu v Keil v5"
+"Charakteristika procesoru ARM STM32F4 – architektura, velikosti a typy paměti, registry",
+"Popis portů",
+"Popis čítačů/časovačů, včetně realizace časových smyček",
+"Popis přerušovacího systému",
+"Charakteristika školního kitu včetně použitých periferií",
+"Konfigurace projektu a práce v IDE"
 ],
 "q": [
 [
@@ -263,34 +265,6 @@
 "Číslo portu, na kterém přerušení vzniklo"
 ],
 [
-"Co je DMA?",
-"Přímý přenos dat mezi pamětí a periferiemi bez CPU",
-"Typ vyrovnávací paměti mezi procesorem a operační pamětí",
-"Řadič přerušení s prioritami požadavků",
-"Paměť typu ROM s uloženým firmwarem"
-],
-[
-"Kterým signálem periferie žádá DMA o přenos?",
-"DREQ",
-"DACK",
-"HLDA",
-"EOP"
-],
-[
-"Jak DMA žádá CPU o uvolnění sběrnice?",
-"HOLD (HRQ), CPU odpoví HLDA",
-"IRQ, CPU odpoví signálem INTA",
-"DACK, CPU odpoví signálem EOP",
-"DREQ, CPU odpoví signálem RESET"
-],
-[
-"Který signál DMA značí konec přenosu?",
-"EOP (End of Process)",
-"DACK (DMA Acknowledge)",
-"DREQ (DMA Request)",
-"HLDA (Hold Acknowledge)"
-],
-[
 "Jaký ladicí nástroj je na STM32F4 Discovery?",
 "ST-LINK",
 "JTAG-ICE",
@@ -324,13 +298,6 @@
 "Počítač nepotřebuje program, řeší úlohy hardwarově",
 "Každý problém potřebuje vlastní zapojení hardwaru",
 "Program se po spuštění už nedá změnit ani přepsat"
-],
-[
-"Co je potřeba nastavit v DMA řadiči před přenosem?",
-"Režim, typ přenosu, zdrojovou a cílovou adresu, délku, synchronizaci a indikaci konce",
-"Jen frekvenci procesoru a velikost cache",
-"Pouze adresu obslužné rutiny přerušení (ISR)",
-"Prioritu přerušení, číslo vektoru a velikost zásobníku – zbytek si DMA řadič zjistí sám"
 ]
 ],
 "terms": [
@@ -349,10 +316,6 @@
 [
 "PSV",
 "Registr příznaků (overflow, nula, parita)"
-],
-[
-"DMA",
-"Přenos dat bez účasti CPU"
 ],
 [
 "PIC",

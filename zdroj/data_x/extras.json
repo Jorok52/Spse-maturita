@@ -1,9 +1,6 @@
 {
  "2": {
-  "outline_add": [
-   "Řadič a ALU",
-   "Konfigurace projektu a práce v prostředí Keil uVision 5"
-  ],
+  "outline_add": [],
   "q": [
    [
     "V jakém prostředí se na SPŠE programuje STM32F4?",
@@ -48,10 +45,7 @@
   ]
  },
  "12": {
-  "outline_add": [
-   "Systémové proměnné",
-   "Vrstvy systému"
-  ],
+  "outline_add": [],
   "q": [
    [
     "Vrstvy UNIXu od hardwaru nahoru?",
@@ -87,6 +81,41 @@
     "ls -env",
     "cat /env",
     "set --list"
+   ],
+   [
+    "Co udělá příkaz ls -l > seznam.txt?",
+    "Zapíše výstup ls do souboru (přepíše ho)",
+    "Připíše výstup ls na konec souboru seznam.txt",
+    "Vypíše obsah souboru seznam.txt na obrazovku",
+    "Předá soubor seznam.txt příkazu ls jako vstup"
+   ],
+   [
+    "Kterým znakem se výstup připíše na konec souboru?",
+    ">>",
+    ">",
+    "|",
+    "<"
+   ],
+   [
+    "Čím začíná skript pro bash?",
+    "#!/bin/bash",
+    "// bash",
+    "<?bash",
+    "@echo bash"
+   ],
+   [
+    "Jak ze skriptu uděláš spustitelný soubor?",
+    "chmod +x skript.sh",
+    "run skript.sh",
+    "exec +x skript.sh",
+    "mv skript.sh /bin"
+   ],
+   [
+    "Co vypíše echo $SHELL?",
+    "Cestu k aktuálnímu shellu, např. /bin/bash",
+    "Domovský adresář uživatele, např. /home/student",
+    "Adresáře, ve kterých shell hledá příkazy",
+    "Jméno přihlášeného uživatele, např. student"
    ]
   ],
   "open": [
@@ -102,9 +131,7 @@
   ]
  },
  "16": {
-  "outline_add": [
-   "CSM, Secure Boot, TPM – popis a princip"
-  ],
+  "outline_add": [],
   "q": [
    [
     "Co je TPM?",
@@ -133,6 +160,48 @@
     "CSM vypne čip TPM a tím i ověřování podpisů",
     "CSM je určen jen pro disky NVMe bez podpisů",
     "Funguje vždy, CSM a Secure Boot se nevylučují"
+   ],
+   [
+    "Hlavní rozdíl impulsního a lineárního zdroje?",
+    "Impulsní spíná napětí na vysoké frekvenci, má malý transformátor a vyšší účinnost",
+    "Lineární spíná napětí na vysoké frekvenci, proto je menší a lehčí",
+    "Impulsní pracuje se síťovými 50 Hz a má velký těžký transformátor",
+    "Lineární má vyšší účinnost, protože u něj nevznikají spínací ztráty"
+   ],
+   [
+    "Jakou účinnost má typicky lineární zdroj?",
+    "Kolem 40–60 %",
+    "Přes 95 %",
+    "Přesně 100 %",
+    "Pod 5 %"
+   ],
+   [
+    "Proč stačí impulsnímu zdroji malý transformátor?",
+    "Pracuje na vysoké frekvenci (desítky až stovky kHz)",
+    "Transformuje napětí až za usměrňovačem a filtrem",
+    "Výstupní napětí mu stabilizuje lineární regulátor",
+    "Dává nižší výstupní napětí než lineární zdroj"
+   ],
+   [
+    "Co přinesl ATX oproti AT?",
+    "Zapínání signálem z desky (PS_ON), pohotovostní 5VSB a napětí 3,3 V",
+    "Mechanický vypínač na síťovém napětí a konektory P8 a P9 k desce",
+    "Lineární stabilizaci napětí a transformátor na síťové frekvenci",
+    "Napětí 5 V pro logiku a 12 V pro motory disků poprvé v PC"
+   ],
+   [
+    "Nejvyšší stupeň certifikace 80 PLUS?",
+    "Titanium",
+    "Gold",
+    "Bronze",
+    "Platinum Plus"
+   ],
+   [
+    "Co znamená účiník blízký 1 díky aktivnímu PFC?",
+    "Zdroj odebírá proud v souladu s napětím sítě, minimum jalového výkonu",
+    "Zdroj drží stabilnější výstupní napětí 12 V i při plné zátěži",
+    "Zdroj se při nízké zátěži sám přepne do úsporného režimu",
+    "Ventilátor zdroje se točí pomaleji, protože vzniká méně tepla"
    ]
   ],
   "open": [
@@ -148,11 +217,7 @@
   ]
  },
  "1": {
-  "outline_add": [
-   "Standardní vstupy a výstupy (printf, scanf)",
-   "Algoritmy třídění pole",
-   "Práce se soubory"
-  ],
+  "outline_add": [],
   "q": [
    [
     "Proč se ve scanf píše & před proměnnou?",
@@ -181,8 +246,546 @@
     "0 bajtů",
     "−1",
     "EOF"
+   ],
+   [
+    "K čemu slouží vývojové prostředí (IDE)?",
+    "Spojuje editor, překladač a debugger do jednoho programu",
+    "Překládá zdrojový kód do strojového kódu bez linkeru",
+    "Spouští program v C po řádcích bez předchozího překladu",
+    "Převádí program z jazyka C do jazyka C++ nebo Java"
+   ],
+   [
+    "Jak zapíšeš prvek ve druhém řádku a třetím sloupci pole int m[3][4]?",
+    "m[1][2]",
+    "m[2][3]",
+    "m[3][2]",
+    "m[2,3]"
+   ],
+   [
+    "Kolik prvků má pole int m[3][4]?",
+    "12",
+    "7",
+    "3",
+    "4"
+   ],
+   [
+    "Jak je v paměti uložené dvourozměrné pole v C?",
+    "Po řádcích za sebou – nejdřív celý řádek 0, pak řádek 1…",
+    "Po sloupcích za sebou – nejdřív celý sloupec 0, pak sloupec 1…",
+    "Každý řádek zvlášť na jiném místě, propojené ukazateli",
+    "Jako tabulka ukazatelů na prvky rozházené po paměti"
+   ],
+   [
+    "Jak projdeš všechny prvky dvourozměrného pole?",
+    "Dvěma vnořenými cykly – vnější přes řádky, vnitřní přes sloupce",
+    "Jedním cyklem for, který zvyšuje oba indexy současně",
+    "Cyklem while, dokud printf nevrátí hodnotu 0",
+    "Funkcí scanf s formátem %d[][] pro celé pole najednou"
+   ],
+   [
+    "Jak vypadá prototyp funkce bez parametrů, která vrací int?",
+    "int f(void);",
+    "f int();",
+    "void f(int);",
+    "int f[];"
+   ],
+   [
+    "Co vrací funkce s návratovým typem void?",
+    "Nic – jen provede své příkazy",
+    "Hodnotu 0, pokud vše proběhlo bez chyby",
+    "Ukazatel na funkci, která ji zavolala",
+    "Počet příkazů, které provedla"
    ]
   ],
   "open": []
+ },
+ "3": {
+  "q": [
+   [
+    "Co se děje ve fázi syntézy při návrhu PLD?",
+    "Popis (HDL, rovnice) se převede na logické funkce a minimalizuje",
+    "Navržený obvod se ověří se skutečnými zpožděními signálů",
+    "Logika se rozmístí do makrobuněk a přiřadí se piny",
+    "Vytvoří se soubor JEDEC a nahraje se do obvodu"
+   ],
+   [
+    "Jaký je rozdíl mezi funkční a časovou simulací?",
+    "Funkční ověřuje jen logiku, časová i skutečná zpoždění v obvodu",
+    "Funkční ověřuje zpoždění signálů, časová pouze logiku obvodu",
+    "Funkční se dělá v hotovém obvodu, časová na počítači",
+    "Časová měří dobu programování, funkční počet makrobuněk"
+   ],
+   [
+    "Co se děje při implementaci (place & route) u FPGA?",
+    "Logika se rozmístí do konkrétních logických bloků a propojí",
+    "Popis v HDL se převede na logické rovnice a minimalizuje",
+    "Ověří se funkce obvodu bez znalosti zpoždění signálů",
+    "Bitstream se nahraje přes JTAG do konfigurační paměti"
+   ],
+   [
+    "Čím končí návrh PLD před testováním hotového zařízení?",
+    "Naprogramováním obvodu vygenerovaným souborem (JEDEC, bitstream)",
+    "Funkční simulací navržených logických rovnic na počítači",
+    "Minimalizací logických funkcí pomocí Karnaughovy mapy",
+    "Zápisem pravdivostní tabulky do zadání celého projektu"
+   ]
+  ]
+ },
+ "4": {
+  "q": [
+   [
+    "Co vyhodnocuje přijímač u diferenciálního páru?",
+    "Rozdíl napětí mezi vodiči D+ a D−",
+    "Napětí vodiče D+ proti zemi",
+    "Součet proudů obou vodičů",
+    "Napětí vodiče D− proti zemi"
+   ],
+   [
+    "Proč je diferenciální pár odolný proti rušení?",
+    "Rušení se indukuje do obou vodičů stejně a odečtením zmizí",
+    "Signál se posílá dvakrát a přijímač obě kopie porovná",
+    "Vodiče mají vyšší napětí, takže rušení je proti nim slabé",
+    "Každý vodič je stíněný vlastní kovovou fólií proti rušení"
+   ],
+   [
+    "Proč se vodiče diferenciálního páru kroutí?",
+    "Aby na oba působilo stejné rušení",
+    "Aby byl kabel ohebnější",
+    "Aby se zvýšilo napětí signálu",
+    "Kvůli snadnějšímu rozlišení barev"
+   ],
+   [
+    "Která rozhraní používají diferenciální pár?",
+    "USB, SATA i PCI Express",
+    "Paralelní port LPT a sběrnice ISA",
+    "Rozhraní PATA a sběrnice PCI",
+    "Sériový port RS-232 a I²C"
+   ]
+  ]
+ },
+ "6": {
+  "q": [
+   [
+    "Co smí kód v režimu jádra (kernel mode)?",
+    "Přistupovat k veškerému HW a vykonávat všechny instrukce",
+    "Spouštět aplikace s omezenými právy bez přístupu k HW",
+    "Číst soubory uživatele, ale ne zapisovat do paměti",
+    "Volat jádro systémovým voláním jako běžná aplikace"
+   ],
+   [
+    "Jak se aplikace v uživatelském režimu dostane ke službě jádra?",
+    "Systémovým voláním (syscall)",
+    "Přímým zápisem do portů HW",
+    "Restartem počítače",
+    "Přes BIOS Setup"
+   ],
+   [
+    "Proč OS odděluje uživatelský režim a režim jádra?",
+    "Chyba aplikace neshodí celý systém ani nepoškodí jiné procesy",
+    "Aplikace pak běží rychleji, protože jádro obcházejí",
+    "Jádro tak ušetří paměť, kterou by zabraly aplikace",
+    "Aplikace pak mohou ovládat HW přímo bez ovladačů"
+   ],
+   [
+    "Jak se jmenovaly první OS, které zpracovávaly úlohy jednu po druhé bez uživatele?",
+    "Dávkové systémy",
+    "Systémy reálného času",
+    "Mobilní OS",
+    "Grafické OS"
+   ],
+   [
+    "Co přineslo multiprogramování?",
+    "V paměti je víc programů a CPU se přepne, když jeden čeká",
+    "Jeden program se rozdělí a běží na více procesorech",
+    "Programy se zpracují jeden po druhém bez zásahu uživatele",
+    "Každý uživatel dostane vlastní počítač se svým OS"
+   ],
+   [
+    "Kdy a kde vznikl UNIX?",
+    "1969 v Bell Labs",
+    "1991 ve Finsku",
+    "1981 u Microsoftu",
+    "1984 u Apple"
+   ]
+  ]
+ },
+ "7": {
+  "q": [
+   [
+    "Co je transakce při synchronizaci?",
+    "Skupina operací, která proběhne celá, nebo vůbec",
+    "Jedna nedělitelná instrukce procesoru typu Test-and-Set",
+    "Proměnná, kterou si procesy předávají při přesném střídání",
+    "Fronta procesů čekajících na uvolnění semaforu"
+   ],
+   [
+    "Co udělá ROLLBACK?",
+    "Vrátí všechny změny transakce do původního stavu",
+    "Potvrdí změny transakce a trvale je uloží",
+    "Uvolní zámek a pustí další proces do kritické sekce",
+    "Zopakuje transakci od začátku s novými daty"
+   ],
+   [
+    "Co znamená A ve vlastnostech transakce ACID?",
+    "Atomicita – vše, nebo nic",
+    "Aktivní čekání na prostředek",
+    "Asynchronní zpracování operací",
+    "Adresace sdílené paměti"
+   ]
+  ]
+ },
+ "8": {
+  "q": [
+   [
+    "Jak vybírá oběť algoritmus Random?",
+    "Náhodně – jednoduché a bez režie, ale nepředvídatelné",
+    "Stránku, která je v paměti nejdéle (podle fronty)",
+    "Stránku, která se nejdéle nepoužila (podle času)",
+    "Stránku s nejmenším počtem použití (podle čítače)"
+   ],
+   [
+    "Kterou třídu stránek NRU vyhodí nejdřív?",
+    "Nepoužitou a nezměněnou (R = 0, M = 0)",
+    "Použitou a změněnou (R = 1, M = 1)",
+    "Použitou a nezměněnou (R = 1, M = 0)",
+    "Nepoužitou, ale změněnou (R = 0, M = 1)"
+   ],
+   [
+    "Co udělá algoritmus druhé šance se stránkou, která má bit R = 1?",
+    "Vynuluje R a přesune ji na konec fronty",
+    "Okamžitě ji vyhodí",
+    "Zapíše ji na disk a nechá v paměti",
+    "Zvýší jí čítač o 1"
+   ]
+  ]
+ },
+ "10": {
+  "q": [
+   [
+    "Jakým konektorem se zakončuje kroucená dvojlinka v LAN?",
+    "RJ-45",
+    "RJ-11",
+    "BNC",
+    "DB-9"
+   ],
+   [
+    "Jak je zapojený křížený kabel?",
+    "Jeden konec podle T568A, druhý podle T568B",
+    "Oba konce stejně podle normy T568B",
+    "Oba konce stejně podle normy T568A",
+    "Jeden konec RJ-45, druhý konektor RJ-11"
+   ],
+   [
+    "Co umožňuje Auto-MDIX?",
+    "Port sám rozpozná typ kabelu a přizpůsobí se",
+    "Port sám zvolí nejvyšší rychlost a duplex spojení",
+    "Port napájí připojené zařízení přímo po kabelu",
+    "Port rozdělí jednu síť na víc virtuálních sítí"
+   ],
+   [
+    "Kolik párů vodičů má kroucená dvojlinka pro Ethernet?",
+    "4",
+    "2",
+    "1",
+    "8"
+   ]
+  ]
+ },
+ "13": {
+  "q": [
+   [
+    "Co je parkování hlaviček?",
+    "Přesun hlav mimo datovou oblast (parkovací zóna, rampa) při vypnutí",
+    "Přesun dat z vadných sektorů do rezervní oblasti disku",
+    "Zastavení ploten při přehřátí a čekání na vychladnutí",
+    "Přesun hlav na vnější stopu kvůli rychlejšímu čtení"
+   ],
+   [
+    "Proč se hlavičky parkují?",
+    "Aby při zastavení ploten nedosedly na data a nepoškodily je",
+    "Aby disk po zapnutí rychleji našel stopu s MBR",
+    "Aby se hlavy při nečinnosti zbytečně nezahřívaly",
+    "Aby se uvolnilo místo pro zápis na vnitřní stopy"
+   ],
+   [
+    "Co je prekompenzace zápisu?",
+    "Úprava časování zápisu na vnitřních stopách, aby se bity neslévaly",
+    "Komprese dat před zápisem, aby se na vnitřní stopu vešlo víc bitů",
+    "Zvýšení otáček disku při zápisu na vnitřní, hustší stopy plotny",
+    "Dvojí zápis každého sektoru na vnitřních stopách pro kontrolu chyb"
+   ],
+   [
+    "Co je blok (cluster) z pohledu geometrie disku?",
+    "Skupina sektorů, kterou souborový systém přiděluje jako celek",
+    "Soustředná kružnice na plotně, na které leží sektory",
+    "Stopy stejného průměru na všech plotnách nad sebou",
+    "Výseč stopy, nejmenší adresovatelná jednotka disku"
+   ],
+   [
+    "Co se stane při head crash?",
+    "Hlava se dotkne rotující plotny a poškodí povrch i data",
+    "Hlava se přesune do parkovací zóny mimo data",
+    "Disk přeskočí vadný sektor a označí ho v tabulce",
+    "Hlavy se kvůli přehřátí přepnou na jinou plotnu"
+   ]
+  ]
+ },
+ "14": {
+  "q": [
+   [
+    "Jaký souborový systém používá Windows pro systémový disk?",
+    "NTFS",
+    "FAT32",
+    "exFAT",
+    "ext4"
+   ],
+   [
+    "Co ověřuje Secure Boot?",
+    "Digitální podpisy zavaděče, jádra a ovladačů",
+    "Heslo uživatele před spuštěním Windows",
+    "Kontrolní součty všech souborů na disku",
+    "Licenci Windows uloženou ve firmwaru"
+   ],
+   [
+    "Kde jsou uložené klíče pro Secure Boot?",
+    "Ve firmwaru UEFI (PK, KEK, db, dbx)",
+    "V MBR disku za tabulkou oddílů",
+    "V registru Windows ve větvi HKLM",
+    "Na oddílu ESP v souboru bootx64.efi"
+   ],
+   [
+    "Co ukládá TPM při měřeném bootu (measured boot)?",
+    "Otisky (hashe) jednotlivých fází bootu do registrů PCR",
+    "Kopii zavaděče pro obnovu po poškození disku",
+    "Hesla uživatelů a klíče k Wi-Fi sítím",
+    "Pořadí bootovacích zařízení nastavené v Setupu"
+   ],
+   [
+    "K čemu využívá BitLocker čip TPM?",
+    "Uloží šifrovací klíč a uvolní ho jen při nezměněném bootu",
+    "Šifruje data přímo v čipu TPM rychleji než procesor",
+    "Ukládá do své paměti zálohu šifrovaného disku",
+    "Kontroluje digitální podpisy všech spuštěných programů"
+   ],
+   [
+    "Kde hledá zavaděč BIOS a kde UEFI?",
+    "BIOS v MBR a aktivním oddílu, UEFI jako soubor .efi na ESP",
+    "BIOS jako soubor .efi na ESP, UEFI v MBR a aktivním oddílu",
+    "Oba v MBR, UEFI navíc kontroluje digitální podpis",
+    "Oba na oddílu ESP, BIOS ale bez kontroly podpisu"
+   ],
+   [
+    "Jaký disk potřebuje Windows pro boot v režimu UEFI?",
+    "GPT s oddílem ESP (FAT32)",
+    "MBR s aktivním oddílem NTFS",
+    "Jakýkoli disk bez oddílů",
+    "Disk s FAT12"
+   ]
+  ]
+ },
+ "17": {
+  "q": [
+   [
+    "Napětí DDR4?",
+    "1,2 V",
+    "1,5 V",
+    "1,8 V",
+    "2,5 V"
+   ],
+   [
+    "Napětí DDR5?",
+    "1,1 V",
+    "1,2 V",
+    "1,35 V",
+    "1,5 V"
+   ],
+   [
+    "Co je novinkou modulů DDR5?",
+    "Dva nezávislé 32bitové subkanály a regulátor napětí (PMIC) na modulu",
+    "Jeden 128bitový kanál na modul a napájení 1,5 V přímo z desky",
+    "Modul SO-DIMM se 184 piny a napětím 2,5 V pro všechny čipy",
+    "Čtyři 16bitové subkanály a napájení 1,8 V bez regulátoru"
+   ],
+   [
+    "Co znamená označení PC4-25600?",
+    "Modul DDR4 s propustností 25 600 MB/s (DDR4-3200)",
+    "Modul DDR4 s kapacitou 25 600 MB (25 GB)",
+    "Modul DDR4 s frekvencí jádra 25 600 MHz",
+    "Modul DDR2 s 256 piny a propustností 6400 MB/s"
+   ],
+   [
+    "Proč má ECC modul šířku 72 b místo 64 b?",
+    "8 bitů navíc slouží pro kontrolní kód",
+    "Je rychlejší o 8 MHz",
+    "Má víc kapacity pro OS",
+    "Kvůli zpětné kompatibilitě s DDR"
+   ],
+   [
+    "Co ECC paměť dokáže?",
+    "Opravit jednobitovou chybu a odhalit dvoubitovou",
+    "Opravit dvoubitovou chybu a odhalit trojbitovou",
+    "Odhalit chybu, opravu ale nechá na OS",
+    "Zdvojnásobit propustnost díky 72bitové šířce"
+   ],
+   [
+    "Šířka sběrnice v Quad Channel?",
+    "256 b",
+    "128 b",
+    "64 b",
+    "512 b"
+   ],
+   [
+    "Kdo předává operačnímu systému mapu paměti?",
+    "Firmware – BIOS službou E820, UEFI funkcí GetMemoryMap",
+    "Paměťový modul sám přes čip SPD po spuštění OS",
+    "Ovladač čipsetu, který paměť změří až ve Windows",
+    "Řadič paměti v CPU přes registr MODER"
+   ],
+   [
+    "Proč 32bitové Windows ukážou ze 4 GB RAM jen asi 3,2 GB?",
+    "Část adres pod 4 GB zabírají zařízení (MMIO)",
+    "1 GB si nechá BIOS natrvalo pro sebe",
+    "Paměťový modul je vadný",
+    "Windows šetří RAM pro hibernaci"
+   ],
+   [
+    "Co firmware přečte z paměťového modulu přes SPD?",
+    "Kapacitu, časování a podporované frekvence (XMP)",
+    "Obsah paměti z posledního spuštění počítače",
+    "Sériové číslo procesoru a verzi BIOSu",
+    "Mapu vadných buněk pro opravu chyb ECC"
+   ]
+  ]
+ },
+ "18": {
+  "q": [
+   [
+    "Co je PPT u procesorů AMD?",
+    "Maximální příkon celého pouzdra procesoru povolený deskou",
+    "Maximální teplota pouzdra procesoru před throttlingem",
+    "Počet tranzistorů v pouzdře procesoru na mm²",
+    "Minimální příkon procesoru v úsporném režimu"
+   ],
+   [
+    "Co je MTP (dříve PL2) u Intelu?",
+    "Krátkodobě povolený maximální příkon při Turbo Boostu",
+    "Maximální teplota procesoru, při které se vypne",
+    "Dlouhodobý příkon procesoru při základní frekvenci",
+    "Maximální počet jader, která mohou běžet v turbu"
+   ],
+   [
+    "Jak se v dvoufázovém termosifonu vrací kapalina k výparníku?",
+    "Gravitací – kondenzátor musí být výš než výparník",
+    "Knotem uvnitř trubice díky kapilárním silám",
+    "Čerpadlem, které ji pohání v uzavřeném okruhu",
+    "Ventilátorem, který tlačí páru zpět k procesoru"
+   ],
+   [
+    "Jak se řídí otáčky 4pin ventilátoru?",
+    "PWM signálem při konstantním napájení 12 V",
+    "Snižováním napájecího napětí ze 12 V na 5 V",
+    "Tachometrickým signálem, který posílá ventilátor",
+    "Odporem zapojeným do kabelu ventilátoru"
+   ],
+   [
+    "Co dělá thermal throttling?",
+    "Při dosažení teplotního limitu sníží frekvenci (a napětí) CPU",
+    "Při nízké zátěži zvýší frekvenci nad základní hodnotu",
+    "Při přehřátí okamžitě vypne počítač bez varování",
+    "Při vysoké teplotě přepne CPU do režimu přetaktování"
+   ],
+   [
+    "Jak roste dynamický příkon CPU s napětím?",
+    "S druhou mocninou napětí (P ≈ C·U²·f)",
+    "Lineárně s napětím (P ≈ C·U·f)",
+    "S třetí mocninou napětí (P ≈ C·U³)",
+    "S odmocninou napětí (P ≈ C·√U·f)"
+   ]
+  ]
+ },
+ "19": {
+  "q": [
+   [
+    "K čemu sloužily sloty AMR a CNR?",
+    "Pro levné karty s analogovou částí – modem, zvuk, síť",
+    "Pro grafické karty s vlastní pamětí a výstupem na monitor",
+    "Pro rozšíření operační paměti o další moduly",
+    "Pro řadiče disků SCSI a RAID v serverech"
+   ],
+   [
+    "Co přidal CNR oproti AMR?",
+    "Podporu síťové karty (LAN) a USB",
+    "Podporu 3D grafiky a výstupu na monitor",
+    "Podporu disků SATA a řadiče RAID",
+    "Napájení 12 V pro karty s vyšší spotřebou"
+   ],
+   [
+    "Kdo prosazoval slot ACR?",
+    "AMD, VIA a další jako konkurenci CNR",
+    "Intel jako nástupce slotu AMR",
+    "IBM jako rozšíření sběrnice ISA",
+    "Apple pro modemy v počítačích Mac"
+   ],
+   [
+    "Jak spolu komunikují zařízení PCIe?",
+    "Pakety po sériových linkách bod–bod",
+    "Sdílenou paralelní sběrnicí s arbitráží",
+    "Přes IRQ linky a DMA kanály ISA",
+    "Přes řadič USB a sběrnici FSB"
+   ],
+   [
+    "Proč PCIe používá diferenciální páry?",
+    "Kvůli odolnosti proti rušení a vysokým rychlostem",
+    "Kvůli zpětné kompatibilitě se sběrnicí ISA",
+    "Aby karta mohla datovými vodiči napájet desku",
+    "Aby se na jeden vodič vešly adresy i data"
+   ]
+  ]
+ },
+ "20": {
+  "q": [
+   [
+    "Proč EIDE nemohlo dál zvyšovat takt na 40žilovém kabelu?",
+    "Kvůli vzájemnému rušení vodičů (EMC, přeslech)",
+    "Kvůli malému počtu pinů na konektoru disku",
+    "Protože disky nezvládaly vyšší otáčky ploten",
+    "Kvůli omezení kapacity disku na 8 GB"
+   ],
+   [
+    "Kapacita 3,5″ HD diskety?",
+    "1,44 MB",
+    "720 kB",
+    "2,88 GB",
+    "100 MB"
+   ],
+   [
+    "Jak hostitel USB pozná Low Speed zařízení?",
+    "Pull-up rezistor 1,5 kΩ je na vodiči D−",
+    "Pull-up rezistor je na vodiči D+",
+    "Zařízení pošle svou rychlost jako text",
+    "Podle barvy konektoru"
+   ],
+   [
+    "Jak se zařízení přepne na USB High Speed?",
+    "Připojí se jako Full Speed a sekvencí chirp se s hostitelem dohodne na 480 Mb/s",
+    "Přepne pull-up rezistor z D− na D+ a tím si samo zvolí rychlost 480 Mb/s",
+    "Hostitel mu po připojení zvýší napětí na sběrnici z 5 V na 12 V a zrychlí ho",
+    "Zařízení pošle hostiteli svou maximální rychlost hned v prvním datovém paketu"
+   ],
+   [
+    "Co dělá řadič Thunderbolt?",
+    "Přenáší (tuneluje) PCIe a DisplayPort jedním kabelem",
+    "Převádí USB na sériový port RS-232 pro starší zařízení",
+    "Nabíjí baterie notebooků bez přenosu dat",
+    "Propojuje disky SATA do pole RAID přes kabel"
+   ],
+   [
+    "Kolik front příkazů umí NVMe oproti AHCI?",
+    "Až 64 K front (AHCI jen 1 frontu s 32 příkazy)",
+    "Jednu frontu s 32 příkazy stejně jako AHCI",
+    "Dvě fronty – jednu pro čtení a jednu pro zápis",
+    "32 front po jednom příkazu, AHCI jich má 64"
+   ]
+  ]
  }
 }

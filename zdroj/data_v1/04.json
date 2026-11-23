@@ -1,13 +1,14 @@
 {
 "n": 4,
-"t": "Přenos dat, rozdělení paměti a organizace",
+"t": "Přenos dat, rozdělení paměti a jejich organizace",
 "outline": [
-"Sériový vs. paralelní přenos",
-"Připojení s otevřeným kolektorem (vytvoření sběrnice)",
-"Připojení s třístavovým zesilovačem (vytvoření sběrnice)",
-"Sběrnice I2C, SPI, RS-232, IEEE 1284, USB",
-"Rozdělení pamětí v PC, RWM vs. ROM",
-"Organizace paměti: kapacita, hloubka, délka slova, paměťová mapa"
+"Sériový vs. paralelní přenos dat",
+"Princip připojení s otevřeným kolektorem včetně vytvoření sběrnice",
+"Princip připojení s třístavovým zesilovačem včetně vytvoření sběrnice",
+"Princip diferenciálního datového páru",
+"Popis sběrnic I²C, SPI, RS-232, IEEE 1284, USB",
+"Rozdělení paměti v PC včetně popisu, RWM vs. ROM paměti",
+"Organizace paměti – kapacita, hloubka paměti, délka datového slova"
 ],
 "q": [
 [
@@ -375,6 +376,10 @@
 [
 "Délka slova",
 "Bity na jedné adrese"
+],
+[
+"Diferenciální pár",
+"Dva vodiče D+ a D−, přijímač čte rozdíl napětí"
 ]
 ],
 "open": [

@@ -4,10 +4,9 @@
 "outline": [
 "K čemu slouží vnější paměť",
 "Charakteristika HDD",
-"Přidělování místa: spojité, spojitý seznam, indexová alokace",
-"Plánování přístupu na disk: FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK",
-"HDD vs. SSD",
-"Fragmentace a defragmentace"
+"Metody přidělování místa na disku – spojité, spojitý seznam, indexová alokace",
+"Plánovací metody přístupu na disk – FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK",
+"HDD vs. SSD"
 ],
 "q": [
 [
@@ -226,13 +225,6 @@
 "Pravidelná defragmentace",
 "Zapojení do RAID 0",
 "Monitorování S.M.A.R.T."
-],
-[
-"Co dělá defragmentace?",
-"Přesune části souborů do souvislých clusterů",
-"Smaže nepotřebné a dočasné soubory z disku",
-"Zkontroluje disk a opraví vadné sektory",
-"Komprimuje data, aby zabírala méně místa"
 ]
 ],
 "terms": [

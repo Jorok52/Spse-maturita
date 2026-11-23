@@ -1,11 +1,13 @@
 {
 "n": 17,
-"t": "Typy pamětí a jejich funkce",
+"t": "Konstrukční uspořádání PC – typy pamětí a jejich funkce v PC",
 "outline": [
-"ROM, BIOS, CMOS, RAM, DRAM, SDRAM, DDR–DDR4: provedení, moduly, datové šířky, rychlosti, přenos dat",
-"Cache (HW, SW) – princip činnosti",
-"Časování paměti (latence) a Dual Channel",
-"Logická struktura operační paměti (konvenční, UMA, XMS)"
+"Funkce pamětí PC a jejich souvislosti – ROM BIOS, CMOS RAM, DRAM, SDRAM, DDR, DDR2, 3, 4 a 5",
+"Provedení a moduly, technologie přenosu dat",
+"Označení pamětí (DDR vs. PC), ECC",
+"CACHE (HW, SW) – popis a princip činnosti",
+"Multi channel struktury",
+"Souvislost adresace RAM s BIOS a UEFI"
 ],
 "q": [
 [
@@ -212,41 +214,6 @@
 "Registr pro mezivýsledky ALU"
 ],
 [
-"Časování 9-9-9-24 odpovídá…",
-"tCL – tRCD – tRP – tRAS",
-"tRAS – tRP – tRCD – tCL",
-"CL – CL – CL – takt",
-"Napětí"
-],
-[
-"Co je tCL?",
-"CAS latence – takty od výběru sloupce po data",
-"Zpoždění mezi výběrem řádku a sloupce",
-"Doba na přepnutí na jiný řádek",
-"Minimální doba, kdy je řádek aktivní"
-],
-[
-"Co je tRCD?",
-"Zpoždění mezi výběrem řádku (RAS) a sloupce (CAS)",
-"CAS latence – počet taktů od výběru sloupce po první data",
-"Doba deaktivace řádku (precharge)",
-"Perioda obnovování (refresh) řádku"
-],
-[
-"Co je tRP?",
-"Doba na deaktivaci řádku před přístupem k jinému",
-"CAS latence – takty od sloupce po data",
-"Minimální doba, kdy je řádek aktivní",
-"Zpoždění mezi výběrem řádku a sloupce"
-],
-[
-"Co je tRAS?",
-"Minimální doba, po kterou je řádek aktivní",
-"Zpoždění mezi výběrem řádku a sloupce",
-"Doba na deaktivaci řádku před dalším",
-"Perioda obnovování (refresh) celé paměti"
-],
-[
 "Šířka sběrnice v Dual Channel?",
 "128 bitů (2 × 64)",
 "64 bitů (1 × 64)",
@@ -266,27 +233,6 @@
 "Jen jeden modul v libovolném slotu",
 "Moduly s různou frekvencí a kapacitou",
 "SSD disk připojený přes NVMe"
-],
-[
-"Rozsah konvenční paměti?",
-"0 – 640 kB",
-"640 kB – 1 MB",
-"Nad 1 MB",
-"0 – 1 MB"
-],
-[
-"Co je UMA?",
-"Horní oblast 640 kB – 1 MB (BIOS, video, HW)",
-"Paměť nad 1 MB, přístupná po ovladači",
-"Vyrovnávací paměť mezi CPU a RAM",
-"Konvenční paměť 0–640 kB pro DOS"
-],
-[
-"Co je XMS?",
-"Paměť nad 1 MB, přístup po zavedení ovladače (HIMEM.SYS)",
-"Konvenční paměť do 640 kB pro DOS a BIOS, přístupná bez jakýchkoli ovladačů",
-"Video paměť grafické karty v oblasti UMA",
-"Paměť ROM s BIOSem na konci prvního MB"
 ],
 [
 "Jaký modul odpovídá DDR-266?",
@@ -341,28 +287,28 @@
 "8n prefetch, 1,5 V"
 ],
 [
-"tCL",
-"CAS latence"
+"DDR4",
+"1,2 V, 288 pinů"
 ],
 [
-"tRCD",
-"RAS → CAS"
+"DDR5",
+"1,1 V, 2 subkanály, PMIC na modulu"
 ],
 [
-"tRP",
-"Precharge řádku"
+"ECC",
+"72 b: opraví 1bitovou, odhalí 2bitovou chybu"
 ],
 [
-"tRAS",
-"Min. aktivní řádek"
+"PC4-25600",
+"DDR4-3200, 25 600 MB/s"
 ],
 [
-"UMA",
-"640 kB – 1 MB"
+"Multi channel",
+"Víc 64b kanálů paměti současně"
 ],
 [
-"XMS",
-"Nad 1 MB"
+"E820",
+"Mapa paměti od BIOSu pro OS"
 ]
 ],
 "open": [

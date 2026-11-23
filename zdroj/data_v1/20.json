@@ -1,13 +1,14 @@
 {
 "n": 20,
-"t": "Rozhraní – typy a charakteristika",
+"t": "Konstrukční uspořádání PC – typy a charakteristiky rozhraní",
 "outline": [
-"Rozhraní EIDE: vznik, složení, komunikační módy, zapojení",
-"Serial ATA: typy, charakteristika, rychlosti",
-"NCQ, Staggered Spin-Up, Port Multiplier, Port Selector, Hot Swap",
-"eSATA, mSATA, M.2 – rychlosti a konektory",
-"AHCI a NVMe",
-"USB: verze, konektory, rychlosti, kompatibilita"
+"Diferenciální datový pár",
+"EIDE – charakteristika, způsoby přenosu dat (PIO, DMA), rychlost sběrnice v souvislosti s EMC",
+"FDD",
+"SATA – charakteristika, rychlosti; Hot swap, NCQ, Staggered Spin-Up, Port Multiplier; eSATA, mSATA; AHCI",
+"NVMe, princip fungování; M.2 slot",
+"USB – verze, konektory, přenosové rychlosti, kompatibilita; fyzická identifikace režimu rychlosti (LS, FS, HS) a její změna",
+"Thunderbolt – princip fungování"
 ],
 "q": [
 [
@@ -95,20 +96,6 @@
 "7"
 ],
 [
-"Kolik zařízení podporuje SCSI?",
-"Až 15",
-"2",
-"127",
-"4"
-],
-[
-"Rychlost Ultra320 SCSI?",
-"320 MB/s",
-"320 Mb/s",
-"32 MB/s",
-"3,2 GB/s"
-],
-[
 "Datová šířka SATA?",
 "1 bit (sériově)",
 "16 bitů",
@@ -158,13 +145,6 @@
 "Šifrování disků při startu systému"
 ],
 [
-"Co je Port Selector?",
-"Jeden disk připojený ke dvěma řadičům (redundance)",
-"Více disků připojených k jednomu portu řadiče přes rozbočovač",
-"Přepínač mezi USB a SATA na disku",
-"Výběr bootovacího disku v BIOSu"
-],
-[
 "Co je Port Multiplier?",
 "Více disků k jednomu SATA řadiči",
 "Jeden disk připojený ke dvěma řadičům",
@@ -198,13 +178,6 @@
 "2001",
 "2015",
 "1996"
-],
-[
-"Co je SATA Express?",
-"Kombinace SATA a 2 PCIe linek – neuchytila se, nahradil ji M.2",
-"Externí verze SATA s odolnějším konektorem a delším kabelem (až 2 m)",
-"Zmenšená verze SATA pro notebooky (2009)",
-"Nová verze SATA III s rychlostí 6 Gb/s"
 ],
 [
 "Co podporuje M.2?",
@@ -247,27 +220,6 @@
 "2×",
 "100×",
 "Stejně"
-],
-[
-"SAS je…",
-"Sériová verze SCSI pro servery, 12 Gb/s",
-"Typ USB rozhraní pro externí disky",
-"Paralelní verze SCSI pro pracovní stanice",
-"Mini SATA pro malé disky v noteboocích"
-],
-[
-"Lze SAS disk připojit k SATA řadiči?",
-"Ne – SAS zařízení nejsou kompatibilní se SATA řadiči",
-"Ano, konektory jsou stejné",
-"Ano, ale jen přes USB adaptér",
-"Ne, SAS disk se dá připojit jen k IDE řadiči"
-],
-[
-"FireWire 800 rychlost?",
-"800 Mb/s",
-"800 MB/s",
-"80 Mb/s",
-"8 Gb/s"
 ],
 [
 "Kolik USB zařízení a hubů max?",
@@ -354,10 +306,6 @@
 "Přenos přes CPU"
 ],
 [
-"SCSI",
-"Až 15 zařízení, servery"
-],
-[
 "SATA III",
 "6 Gb/s, 600 MB/s"
 ],
@@ -368,10 +316,6 @@
 [
 "Staggered Spin-Up",
 "Postupné roztáčení"
-],
-[
-"Port Selector",
-"Disk ke 2 řadičům"
 ],
 [
 "Port Multiplier",
@@ -394,12 +338,24 @@
 "SSD přímo přes PCIe"
 ],
 [
-"SAS",
-"Sériové SCSI, 12 Gb/s"
-],
-[
 "Thunderbolt 3",
 "40 Gb/s, USB-C"
+],
+[
+"FDD",
+"Disketová mechanika, 1,44 MB"
+],
+[
+"Low/Full Speed",
+"Pull-up 1,5 kΩ na D− / D+"
+],
+[
+"High Speed",
+"480 Mb/s po dohodě chirp K-J"
+],
+[
+"Thunderbolt",
+"Tuneluje PCIe a DisplayPort jedním kabelem"
 ]
 ],
 "open": [

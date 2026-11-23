@@ -2,11 +2,10 @@
 "n": 12,
 "t": "Unix",
 "outline": [
-"Charakteristika systému, srovnání s MS Windows",
-"Adresářová struktura",
-"Uživatelský a programátorský interface: příkazy, roury, skripty, proměnné, vrstvy",
-"Služby Telnet, SSH, FTP, DNS, DHCP",
-"Virtualizace Unixu na MS Windows"
+"Charakteristika systému – srovnání s MS Windows, adresářová struktura",
+"Uživatelský a programátorský interface – základní příkazy, roury, tvorba skriptů, systémové proměnné, vrstvy",
+"Použití a popis služeb Telnet, SSH, FTP, DNS, DHCP",
+"Virtualizace unixového prostředí na MS Windows"
 ],
 "q": [
 [
@@ -101,55 +100,6 @@
 "/srv"
 ],
 [
-"Co dělá fork()?",
-"Vytvoří kopii procesu (potomka)",
-"Nahradí kód procesu novým programem",
-"Ukončí proces",
-"Čeká na potomka"
-],
-[
-"Co vrací fork() v potomkovi?",
-"0",
-"PID potomka",
-"−1",
-"PID rodiče"
-],
-[
-"Co dělá exec()?",
-"Načte nový program do adresního prostoru procesu",
-"Vytvoří kopii procesu jako nového potomka",
-"Ukončí rodiče a předá řízení potomkovi",
-"Pošle procesu signál k ukončení"
-],
-[
-"Kdy vzniká zombie proces?",
-"Potomek skončil, ale rodič nezavolal wait()",
-"Proces je uspán a čeká na signál od jiného",
-"Proces čeká na dokončení I/O operace",
-"Rodič skončil dřív a potomek běží dál"
-],
-[
-"Rozsah hodnot nice?",
-"−20 (nejvyšší priorita) až +19 (nejnižší)",
-"0 (nejvyšší) až 255 (nejnižší)",
-"1 (nejnižší) až 10 (nejvyšší)",
-"−19 (nejnižší) až +20 (nejvyšší)"
-],
-[
-"Kdo smí zadat zápornou hodnotu nice?",
-"Jen root",
-"Kdokoli",
-"Nikdo",
-"Jen vlastník souboru"
-],
-[
-"Kterým příkazem změníš prioritu běžícího procesu?",
-"renice",
-"nice",
-"kill -9",
-"chmod"
-],
-[
 "Co dělá roura (pipe) |?",
 "Stdout jednoho příkazu posílá na stdin druhého",
 "Přesměruje výstup příkazu do souboru",
@@ -162,41 +112,6 @@
 "Skript (script)",
 "Démon (daemon)",
 "Relace (session)"
-],
-[
-"Operace Dijkstrova semaforu?",
-"P (čekej) a V (uvolni)",
-"GET (čti) a SET (nastav)",
-"OPEN (otevři) a CLOSE (zavři)",
-"PUSH (vlož) a POP (vyber)"
-],
-[
-"Nejrychlejší IPC metoda dle podkladů?",
-"Sdílená paměť (nutná synchronizace)",
-"Signály (asynchronní oznámení)",
-"Sockety přes síťový protokol",
-"Soubory na disku a roury"
-],
-[
-"Signál, který nelze zachytit ani ignorovat?",
-"SIGKILL (kill -9)",
-"SIGTERM (kill -15)",
-"SIGINT (Ctrl+C)",
-"SIGHUP (kill -1)"
-],
-[
-"Ctrl+C posílá signál…",
-"SIGINT",
-"SIGKILL",
-"SIGHUP",
-"SIGTERM"
-],
-[
-"SIGHUP vzniká typicky při…",
-"Zavření terminálu (ukončení relace)",
-"Stisku Ctrl+C v terminálu",
-"Chybě přístupu do paměti",
-"Startu nového procesu"
 ],
 [
 "Kde shell hledá spustitelné soubory?",
@@ -311,13 +226,6 @@
 "chmod"
 ],
 [
-"Co dělá signál SIGQUIT?",
-"Ukončí proces s výpisem jádra (Ctrl+\\)",
-"Násilně zabije proces bez možnosti zachycení",
-"Pozastaví proces",
-"Restartuje terminál"
-],
-[
 "Co SSH kromě šifrování zajišťuje?",
 "Autentizaci, integritu dat a volitelnou kompresi",
 "Jen přidělení IP adresy klientovi pomocí DHCP",
@@ -354,32 +262,8 @@
 "Logy, proměnná data"
 ],
 [
-"fork()",
-"Vytvoří potomka"
-],
-[
-"exec()",
-"Nahradí program"
-],
-[
-"wait()",
-"Rodič čeká na potomka"
-],
-[
-"Zombie",
-"Ukončený, nesklizený proces"
-],
-[
-"nice/renice",
-"Priorita procesu"
-],
-[
 "Pipe |",
 "stdout → stdin"
-],
-[
-"SIGKILL",
-"Nezachytitelné ukončení"
 ],
 [
 "Telnet",
@@ -392,6 +276,18 @@
 [
 "Daemon",
 "Služba na pozadí"
+],
+[
+"Přesměrování >",
+"Zapíše výstup příkazu do souboru"
+],
+[
+"#!/bin/bash",
+"Úvodní řádek skriptu – kterým shellem spustit"
+],
+[
+"$PATH",
+"Adresáře, kde shell hledá příkazy"
 ]
 ],
 "open": [

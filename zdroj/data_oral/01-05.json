@@ -1,7 +1,7 @@
 {
  "1": [
   {
-   "q": "Překlad programu – preprocesor, compiler, linker.",
+   "q": "Vývojové prostředí, compiler a linker.",
    "k": [
     "Zdroják v souboru .c; procesor neumí vykonat if/printf přímo → C je kompilovaný jazyk, překlad proběhne před spuštěním",
     "Preprocesor: zpracuje direktivy s # – #include vloží obsah hlavičky, #define makra, #if podmíněný překlad → upravený zdrojový text",
@@ -61,7 +61,7 @@
    ]
   },
   {
-   "q": "Pole a řetězce.",
+   "q": "Práce s polem – jednorozměrné a dvourozměrné, načtení, výpis, manipulace.",
    "k": [
     "Pole = více prvků stejného typu pod jedním jménem, leží souvisle v paměti",
     "Indexy od 0, poslední N - 1 → int a[5] má indexy 0 až 4",
@@ -72,7 +72,10 @@
     "Do funkce se předá adresa prvního prvku bez počtu → přidává se parametr s délkou: void vypis(const int *a, int pocet)",
     "Řetězec = znaky ukončené \\0; char text[] = \"Ahoj\"; má 5 prvků",
     "char kratke[4] = \"Ahoj\"; je chyba – nezbyde místo na \\0",
-    "Chyby: buffer overflow (zápis za konec), chybný index, chybějící \\0, malá velikost pole"
+    "Chyby: buffer overflow (zápis za konec), chybný index, chybějící \\0, malá velikost pole",
+    "Dvourozměrné pole int m[3][4] = 3 řádky × 4 sloupce, prvek m[i][j], v paměti uložené po řádcích (mimo PDF – z osnovy)",
+    "Načtení a výpis pole cyklem for (index 0 až n−1), u 2D pole dva vnořené cykly (mimo PDF – z osnovy)",
+    "Manipulace s prvky: součet, průměr, hledání minima a maxima, prohození prvků přes pomocnou proměnnou, třídění (bubble sort) (mimo PDF – z osnovy)"
    ]
   },
   {
@@ -87,7 +90,8 @@
     "Parametry jsou lokální proměnné funkce; lokální proměnné platí jen ve funkci, globální jsou sdílené (moc globálních ztěžuje údržbu)",
     "Více výsledků přes ukazatelové parametry: void vyhodnot(int a, int b, int *min, int *max)",
     "Dobrá funkce: jasný účel, srozumitelný název, přiměřeně parametrů",
-    "Výhody: čitelnost, méně opakovaného kódu, snazší testování, znovupoužití a rozšiřování"
+    "Výhody: čitelnost, méně opakovaného kódu, snazší testování, znovupoužití a rozšiřování",
+    "Funkce bez parametru int f(void), bez návratové hodnoty void f(int x); s parametrem se předává kopie hodnoty (mimo PDF – z osnovy)"
    ]
   },
   {
@@ -127,15 +131,6 @@
     "printf(formát, hodnoty) – formátovaný výstup; scanf(formát, &proměnná) – čtení, předává se adresa (mimo PDF)",
     "Specifikátory %d int, %f float, %lf double ve scanf, %c znak, %s řetězec, %zu pro sizeof (mimo PDF)",
     "Escape sekvence \\n nový řádek, \\t tabulátor; getchar/putchar, fgets pro bezpečné čtení řádku (mimo PDF)"
-   ]
-  },
-  {
-   "q": "Algoritmy třídění pole.",
-   "k": [
-    "Bubble sort – porovnává sousední prvky a prohazuje je, větší „probublávají“ na konec, O(n²) (mimo PDF – z osnovy)",
-    "Select sort – najde minimum zbytku a prohodí ho na začátek zbytku, O(n²) (mimo PDF – z osnovy)",
-    "Insert sort – vkládá prvky na správné místo do seřazené části (mimo PDF – z osnovy)",
-    "Prohození dvou prvků přes pomocnou proměnnou (mimo PDF – z osnovy)"
    ]
   },
   {
@@ -215,21 +210,17 @@
    ]
   },
   {
-   "q": "Přerušovací systém a DMA.",
+   "q": "Přerušovací systém.",
    "k": [
     "Polling: CPU se cyklicky dotazuje periferií – jednoduché, ale zatěžuje CPU a reaguje pomalu",
     "Přerušení: asynchronní reakce na událost, CPU se věnuje jiné práci",
     "Postup: periferie IRQ → PIC vyhodnotí prioritu → signál INT → CPU INTA → PIC pošle typ přerušení → CPU uloží stav a najde adresu ve vektoru přerušení → ISR → návrat",
     "PIC: příjem požadavků, prioritizace, odeslání signálu CPU, více úrovní priorit",
-    "Vektor přerušení = tabulka adres obslužných rutin (např. IRQ1 klávesnice)",
-    "DMA: přímý přenos mezi pamětí a periferiemi bez CPU, CPU jen nastaví přenos",
-    "Typy přenosu: periferie ↔ RAM, periferie ↔ periferie, paměť ↔ paměť",
-    "Nastavení DMA: režim, typ, zdrojová a cílová adresa, délka, synchronizace, indikace konce",
-    "Signály: DREQ → HOLD (HRQ) → HLDA → adresa → DACK a přenos → EOP → uvolnění sběrnice"
+    "Vektor přerušení = tabulka adres obslužných rutin (např. IRQ1 klávesnice)"
    ]
   },
   {
-   "q": "Školní kit a práce v Keil uVision 5.",
+   "q": "Charakteristika školního kitu a konfigurace projektu v IDE.",
    "k": [
     "STM32F407G Discovery: ARM Cortex-M4, 5stupňová pipeline, 1 MB Flash, 192 + 4 kB RAM, až 168 MHz",
     "Ladění přes ST-LINK",
@@ -283,16 +274,16 @@
    ]
   },
   {
-   "q": "Vývojové prostředí WebPACK a PLD kompilátor.",
+   "q": "Popis jednotlivých fází návrhu PLD obvodu.",
    "k": [
-    "ISE WebPACK – bezplatné prostředí Xilinx pro FPGA a CPLD, jazyky VHDL a Verilog",
-    "Postup: překlad HDL → syntéza → mapování → implementace → bitstream .bit",
-    "Lze spustit rovnou poslední krok, předchozí se provedou automaticky",
-    "Project Navigator: hierarchie návrhu, editor HDL, konzole, nástroje",
-    "Programování FPGA aplikací iMPACT přes USB nebo LPT",
-    "Metodika návrhu: formální zápis → popis problému (tabulky, rovnice, grafy, Karnaughovy mapy) → simulace → realizace",
-    "Kompilátor je nezávislý na typu PLD, převádí popis do nahratelného formátu",
-    "Výstupy: dříve .JEDEC (.jed) pro CPLD, dnes .BIT pro FPGA; minimalizace rovnic a optimalizace I/O a makrobuněk"
+    "Metodika dle podkladů: formální zápis → popis problému (tabulky, rovnice, grafy, Karnaughovy mapy) → simulace → realizace",
+    "Zadání a specifikace: co má obvod dělat, vstupy, výstupy, časové požadavky (mimo PDF – z osnovy)",
+    "Popis návrhu: pravdivostní tabulka, logické rovnice, schéma nebo jazyk HDL (VHDL, Verilog, ABEL) (mimo PDF – z osnovy)",
+    "Funkční simulace: ověření logiky ještě bez znalosti konkrétního obvodu (mimo PDF – z osnovy)",
+    "Syntéza (kompilace): kompilátor nezávislý na typu PLD převede popis na logické rovnice a minimalizuje je",
+    "Implementace: mapování do makrobuněk (fitting u CPLD) nebo logických bloků (place & route u FPGA), přiřazení pinů (mimo PDF – z osnovy)",
+    "Časová simulace se skutečnými zpožděními v obvodu (mimo PDF – z osnovy)",
+    "Programovací soubor: JEDEC (.jed) pro PAL, GAL a CPLD, bitstream (.bit) pro FPGA; naprogramování (JTAG) a otestování"
    ]
   },
   {
@@ -404,6 +395,17 @@
     "Zápis 16k (2k × 8) = 2048 míst po 8 bitech",
     "Adresa se zadává na adresní sběrnici (A0–An), data jdou po datové (D0–Dn), lze zapisovat hexadecimálně",
     "Maticové uspořádání buněk na řádky (ROW) a sloupce (COLUMN)"
+   ]
+  },
+  {
+   "q": "Princip diferenciálního datového páru.",
+   "k": [
+    "Signál se posílá dvěma vodiči současně: D+ s napětím +U a D− s opačnou polaritou (mimo PDF – z osnovy)",
+    "Přijímač vyhodnocuje rozdíl napětí D+ − D−, ne napětí proti zemi (mimo PDF – z osnovy)",
+    "Rušení se indukuje do obou vodičů stejně (souhlasné rušení) a rozdílem se odečte (mimo PDF – z osnovy)",
+    "Vodiče se kroutí a vedou těsně vedle sebe, aby na oba působilo stejné rušení (mimo PDF – z osnovy)",
+    "Výhody: odolnost proti rušení, malé napěťové úrovně → méně vyzařování, vyšší rychlosti, delší kabely (mimo PDF – z osnovy)",
+    "Použití: USB (D+, D−), SATA, PCI Express, Ethernet, RS-485, HDMI (mimo PDF – z osnovy)"
    ]
   }
  ],

@@ -1,15 +1,16 @@
 {
 "n": 11,
-"t": "IP adresace a směrování",
+"t": "IP adresace a směrování v datových sítích",
 "outline": [
-"Třídní adresování, třídy, vyhrazené adresy",
-"IP a MAC, síťová karta, výchozí brána, broadcast, prefix, maska, VLSM, CIDR",
-"Počet podsítí/hostů, síťová a broadcast adresa, velikost bloku, wildcard maska",
-"Návrh topologie s VLSM",
+"Třídní adresování – rozdělení tříd, vyhrazené IP adresy",
+"Pojmy – IP a MAC adresa, síťová adresa, výchozí brána, všesměrová adresa, prefix, maska (pod)sítě, VLSM, CIDR",
+"Zjištění počtu (pod)sítí a hostů – všesměrové a síťové adresy, velikosti bloku, wildcard",
+"Návrh topologie sítě v rámci VLSM",
 "Sumarizace",
-"Směrovač a směrovací tabulka",
+"Charakteristika směrovače a směrovací tabulky",
 "Statické vs. dynamické směrování",
-"RIP, IGRP, EIGRP, OSPF; Cisco Packet Tracer"
+"Směrovací protokoly RIP, IGRP, EIGRP, OSPF",
+"Ukázka prostředí Cisco Packet Tracer"
 ],
 "q": [
 [

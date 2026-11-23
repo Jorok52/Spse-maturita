@@ -1,13 +1,13 @@
 {
 "n": 3,
-"t": "PLD & NPLD",
+"t": "Programovatelné a neprogramovatelné logické obvody",
 "outline": [
 "Charakteristika, vznik a rozdělení PLD",
-"PLA, PAL, GAL, CPLD, FPGA",
+"Popis dílčích PLD obvodů – PLA, PAL, GAL, CPLD, FPGA",
 "Makrobuňka vs. logický blok",
-"Vývojové prostředí WebPack, PLD kompilátor",
+"Popis jednotlivých fází návrhu PLD obvodu",
 "Charakteristika NPLD",
-"Obvody 74164, 74166, 74595, 74573, 74244, 74245, 74688, 74193"
+"Popis a využití obvodů 74164, 74166, 74595, 74573, 74244, 74245, 74688, 74193"
 ],
 "q": [
 [
@@ -156,34 +156,6 @@
 "Až 2",
 "Až 1024",
 "Neomezeně"
-],
-[
-"Čí je prostředí ISE WebPACK?",
-"Xilinx",
-"Altera",
-"Intel",
-"Lattice"
-],
-[
-"Kterou aplikací se v ISE nahrává bitstream do FPGA?",
-"iMPACT",
-"Project Navigator",
-"Keil",
-"Quartus"
-],
-[
-"Výstupní soubor PLD kompilátoru pro FPGA?",
-".bit (bitstream)",
-".hex (Intel HEX)",
-".jed (JEDEC)",
-".vhd (zdrojový kód)"
-],
-[
-"Starší formát výstupu pro CPLD?",
-".JEDEC (.jed)",
-".bit (bitstream)",
-".bin (binární obraz)",
-".vhd (VHDL kód)"
 ],
 [
 "Fáze metodiky návrhu PLD?",

@@ -1,14 +1,13 @@
 {
 "n": 15,
-"t": "Souborové systémy FAT, FAT32, NTFS, exFAT",
+"t": "Souborové systémy FAT a FAT32, NTFS a exFAT",
 "outline": [
 "Struktura logického disku, číslování sektorů, cluster",
 "Zaváděcí záznam, hlavní adresář, typy FAT, struktura podadresářů",
-"Rozdíly FAT, VFAT16 a VFAT32, dlouhé názvy",
-"Chyby FAT a jejich odstraňování",
-"Bezpečné odstraňování dat, fragmentace a defragmentace",
-"Charakteristika a vnitřní struktura NTFS, porovnání s FAT",
-"Metasoubory NTFS, registr Windows, body obnovení"
+"Rozdíly FAT, FAT16, FAT32 a exFAT, řešení dlouhých názvů",
+"Chyby FAT systému a jejich řešení",
+"Bezpečné odstraňování dat, fragmentace a defragmentace disku",
+"NTFS – porovnání s FAT, metasoubory"
 ],
 "q": [
 [
@@ -264,55 +263,6 @@
 "16 TB"
 ],
 [
-"Která větev registru obsahuje nastavení přihlášeného uživatele?",
-"HKEY_CURRENT_USER",
-"HKEY_LOCAL_MACHINE",
-"HKEY_USERS",
-"HKEY_CLASSES_ROOT"
-],
-[
-"Která větev obsahuje globální nastavení HW a SW?",
-"HKEY_LOCAL_MACHINE",
-"HKEY_CURRENT_USER",
-"HKEY_CURRENT_CONFIG",
-"HKEY_CLASSES_ROOT"
-],
-[
-"Co neukládá bod obnovení systému?",
-"Uživatelská data (dokumenty, fotky)",
-"Nastavení registru Windows",
-"Nainstalované ovladače",
-"Systémové soubory a konfiguraci"
-],
-[
-"Jak často se automaticky tvoří body obnovení?",
-"Každých 7 dní a před instalacemi",
-"Každou hodinu a při restartu",
-"Jen ručně, když o to uživatel požádá",
-"Při každém startu počítače"
-],
-[
-"Jaký FS potřebuje UEFI pro zavaděč (EFI oddíl)?",
-"FAT32",
-"NTFS",
-"exFAT",
-"ext4"
-],
-[
-"Kolik dat zaadresuje 28bitová LBA (sektor 512 B)?",
-"≈ 137 GB",
-"≈ 2 TB",
-"≈ 8 GB",
-"≈ 128 PB"
-],
-[
-"Kterými nástroji se opravují chyby v registru dle podkladů?",
-"TuneUp Utilities, Norton Utilities, CCleaner",
-"DiskEdit a Paragon Partition Manager",
-"fdisk, format a chkdsk",
-"ipconfig, ping a tracert"
-],
-[
 "Jaké atributy může mít položka adresáře FAT?",
 "Read-only, Hidden, System, Volume label, Subdirectory, Archive",
 "Owner, Group, Other, Read, Write, Execute, Sticky bit, Setuid",
@@ -380,10 +330,6 @@
 [
 "EFS",
 "Šifrování v NTFS"
-],
-[
-"HKLM",
-"Globální nastavení HW/SW"
 ]
 ],
 "open": [

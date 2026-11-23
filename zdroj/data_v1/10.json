@@ -2,12 +2,14 @@
 "n": 10,
 "t": "Komunikace a rozdělení datových sítí",
 "outline": [
-"PAN, LAN, MAN, WAN; ISP, IoT, QoS; IP vs. MAC adresa",
-"Unicast, multicast, anycast, broadcast",
-"Topologie: sběrnice, kruh, hvězda, strom",
-"CSMA/CD, CSMA/CA, Token Ring",
-"Kabeláž 10Base5, 10Base2, 10BaseT; přímý vs. křížený kabel",
-"ISO/OSI model, (de)enkapsulace, srovnání s TCP/IP"
+"Základní pojmy a značky – PAN, LAN, MAN, WAN; ISP, IoT, QoS; IP adresa vs. MAC adresa",
+"Způsoby komunikace – unicast, multicast, anycast, broadcast",
+"Topologie – sběrnice, kruh, hvězda, strom",
+"Protokoly CSMA/CD, CSMA/CA, Token Ring",
+"Kabeláž – přímý vs. křížený kabel",
+"ISO/OSI model – vrstvy a jejich charakteristika",
+"Průchod dat sítí od odesilatele k příjemci – (de)encapsulation",
+"Srovnání s TCP/IP modelem"
 ],
 "q": [
 [
@@ -86,41 +88,6 @@
 "Překládá doménová jména na IP adresy",
 "Přenáší soubory mezi klientem a serverem",
 "Šifruje webový provoz pomocí TLS"
-],
-[
-"Port HTTP a HTTPS?",
-"80 a 443",
-"21 a 22",
-"53 a 80",
-"25 a 110"
-],
-[
-"FTP používá porty…",
-"20 (data) a 21 (řízení)",
-"22 (SSH) a 23 (Telnet)",
-"80 (data) a 8080 (řízení)",
-"53 (DNS) a 67 (DHCP)"
-],
-[
-"Port DNS?",
-"53",
-"25",
-"67",
-"443"
-],
-[
-"DNS záznam pro IPv6?",
-"AAAA",
-"A",
-"MX",
-"CNAME"
-],
-[
-"DNS záznam pro e-mailový server?",
-"MX",
-"A",
-"CNAME",
-"PTR"
 ],
 [
 "Broadcast znamená…",
@@ -212,27 +179,6 @@
 "Switch, ke kterému je kruh připojen",
 "Router s výchozí branou sítě",
 "DHCP server v lokální síti"
-],
-[
-"Max. délka segmentu 10Base5?",
-"500 m",
-"200 m",
-"100 m",
-"1000 m"
-],
-[
-"Max. délka segmentu 10Base2?",
-"200 m",
-"500 m",
-"100 m",
-"50 m"
-],
-[
-"10BaseT používá…",
-"Kroucenou dvojlinku, max. 100 m",
-"Tlustý koaxiální kabel, max. 500 m",
-"Optické vlákno, max. 2 km",
-"Tenký koax s T konektory, max. 200 m"
 ],
 [
 "Křížený kabel použijeme pro…",
@@ -379,20 +325,16 @@
 "Vysílá držitel tokenu"
 ],
 [
-"10Base5",
-"Tlustý koax, 500 m"
-],
-[
-"10Base2",
-"Tenký koax, 200 m"
-],
-[
-"10BaseT",
-"Kroucená dvojlinka, 100 m"
-],
-[
 "Segment / paket / rámec",
 "Transportní / síťová / linková"
+],
+[
+"Přímý kabel",
+"Oba konce stejně, různá zařízení (PC–switch)"
+],
+[
+"Křížený kabel",
+"T568A a T568B, stejná zařízení (PC–PC)"
 ]
 ],
 "open": [
