@@ -20,8 +20,8 @@
 [
 "Proč count++ není bezpečné bez synchronizace?",
 "Je to několik instrukcí (načti, zvyš, ulož) a může dojít k přepnutí kontextu",
-"Je to jedna atomická instrukce, takže je bezpečné vždy – problém je jen v pomalé cache",
-"Protože proměnná count je uložená jen v cache",
+"Je to jedna atomická instrukce a problém způsobuje pomalá cache",
+"Protože proměnná count je uložená v cache procesoru",
 "Protože inkrementace je pomalá a zdržuje konzumenta"
 ],
 [
@@ -83,9 +83,9 @@
 [
 "Hlavní problém zamykací proměnné?",
 "Dva procesy ji mohou otestovat současně a oba vstoupí (race condition)",
-"Proces nikdy nevstoupí, i když je sekce volná, protože čeká na signál od druhého procesu",
+"Proces nevstoupí ani do volné sekce, dokud nedostane signál od druhého",
 "Je to pasivní čekání, proces se uspí",
-"Funguje jen pro jeden proces, ne pro dva"
+"Funguje pro jeden proces, pro dva už ne"
 ],
 [
 "Kterou proměnnou přidává přesné střídání?",
@@ -112,8 +112,8 @@
 "Jaké proměnné používá Peterson?",
 "turn a pole interested[]",
 "lock a pole count[]",
-"value a list",
-"in a out"
+"value a fronta list[]",
+"in, out a pole buffer[]"
 ],
 [
 "Příklady atomických instrukcí?",
@@ -125,9 +125,9 @@
 [
 "Jak HW zajistí atomicitu instrukce?",
 "Uzamkne přístup k datové sběrnici",
-"Vypne cache procesoru",
-"Zastaví hodinový signál",
-"Restartuje procesor"
+"Vypne na chvíli cache procesoru",
+"Zastaví hodinový signál ostatním jádrům",
+"Přepne procesor do režimu jádra"
 ],
 [
 "Problém sleep/wakeup u producent–konzument?",

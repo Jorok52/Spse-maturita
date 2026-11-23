@@ -102,14 +102,14 @@
    "Rozdíl mezi inicializací a přiřazením?",
    "Inicializace nastaví hodnotu při vzniku, přiřazení ji změní později",
    "Přiřazení nastaví hodnotu při vzniku, inicializace ji změní později",
-   "Inicializace se smí jen u globálních, přiřazení jen u lokálních",
-   "Je to totéž, jen inicializace se píše se slovem const"
+   "Inicializace patří ke globálním, přiřazení k lokálním proměnným",
+   "Inicializace se píše se slovem const, přiřazení bez něj"
   ],
   [
    "Jakou hodnotu má neinicializovaná lokální proměnná?",
    "Neurčitou – její čtení může být nedefinované",
-   "Vždy 0, stejně jako globální a statická proměnná",
-   "Vždy -1, aby šla chyba poznat",
+   "Nulu, stejně jako globální a statická proměnná",
+   "Hodnotu -1, aby šla chyba poznat",
    "Poslední hodnotu z předchozího běhu"
   ],
   [
@@ -333,15 +333,15 @@
    "Rozdíl #include <stdio.h> a #include \"moje.h\"?",
    "<> standardní hlavičky, \"\" nejdřív projektové",
    "<> projektové hlavičky, \"\" standardní hlavičky",
-   "<> vloží jen deklarace, \"\" vloží i definice",
-   "Žádný – je to jen otázka stylu zápisu"
+   "<> vloží deklarace, \"\" k nim přidá i definice",
+   "<> pro soubory .h, \"\" pro soubory .c"
   ],
   [
    "Co potřebuje compiler a co linker při volání knihovní funkce?",
    "Compiler deklaraci, linker implementaci",
    "Compiler implementaci, linker deklaraci",
-   "Oba jen hlavičkový soubor",
-   "Oba jen zdrojový soubor .c"
+   "Oba potřebují hlavičkový soubor .h",
+   "Oba potřebují zdrojový soubor .c"
   ],
   [
    "K čemu je #ifndef / #define / #endif v hlavičce?",

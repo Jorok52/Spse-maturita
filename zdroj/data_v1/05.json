@@ -42,8 +42,8 @@
 "Analogový signál je…",
 "Spojitý v čase i amplitudě",
 "Nespojitý v čase i v amplitudě",
-"Spojitý jen v čase, kvantovaný",
-"Spojitý jen v amplitudě, vzorkovaný"
+"Spojitý v čase, kvantovaný v amplitudě",
+"Spojitý v amplitudě, vzorkovaný v čase"
 ],
 [
 "Kde vzniká kvantizační šum?",

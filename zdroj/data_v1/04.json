@@ -112,9 +112,9 @@
 [
 "Half duplex znamená…",
 "Oba směry, ale ne současně",
-"Data tečou pouze jedním směrem",
+"Data tečou jedním směrem (simplex)",
 "Oba směry současně po dvou párech",
-"Přenos jen při zapnutém potvrzování"
+"Přenos s potvrzováním každého bajtu"
 ],
 [
 "Kolik vodičů má I²C a jak se jmenují?",

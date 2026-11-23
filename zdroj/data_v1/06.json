@@ -36,9 +36,9 @@
 [
 "Příklad monolitického jádra dle podkladů?",
 "MS-DOS, Windows 95/98",
-"Minix, Symbian",
-"Windows NT, XP",
-"Nemesis, AE GIS"
+"Minix 3, Symbian OS",
+"Windows NT, XP, 7",
+"Nemesis, AEGIS"
 ],
 [
 "Hlavní nevýhoda mikrojádra?",
@@ -64,9 +64,9 @@
 [
 "Co je typické pro exokernel?",
 "Aplikace mají téměř přímý přístup k HW, minimum abstrakce",
-"Obsahuje všechny služby včetně souborového systému",
+"Obsahuje služby OS včetně souborového systému v jádře",
 "Kombinuje mikrojádro a monolit pro vyšší výkon",
-"Běží jen na ARM a má pevné časování úloh"
+"Je určený pro ARM a garantuje pevné časování úloh"
 ],
 [
 "Co garantuje Hard RTOS?",
@@ -127,8 +127,8 @@
 [
 "Co obsahuje PCB?",
 "Stav, PID, PC, registry, limity paměti, otevřené soubory, prioritu",
-"Jen strojový kód programu a jeho data",
-"Jen identifikátor vlákna TID, jeho zásobník a ukazatel na nadřazené vlákno",
+"Strojový kód programu a jeho data",
+"Identifikátor vlákna TID, jeho zásobník a ukazatel na proces",
 "Tabulku stránek uloženou na disku ve swapu"
 ],
 [

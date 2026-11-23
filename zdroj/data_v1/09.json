@@ -187,16 +187,16 @@
 [
 "Jak se liší LOOK od SCAN?",
 "Nejezdí až na kraj disku, otočí se u posledního požadavku",
-"Obsluhuje jen jedním směrem a na konci skáče zpět na začátek disku",
-"Vybírá vždy nejbližší požadavek k hlavičce",
+"Obsluhuje jedním směrem a na konci skáče zpět na začátek disku",
+"Vybírá nejbližší požadavek k hlavičce",
 "Obsluhuje požadavky v pořadí, jak přišly"
 ],
 [
 "C-LOOK…",
 "Jede jedním směrem k poslednímu požadavku a skočí zpět k nejnižšímu",
-"Jede až na kraj disku a cestou zpět obsluhuje všechny zbývající požadavky ve frontě",
+"Jede až na kraj disku a cestou zpět obsluhuje zbývající požadavky",
 "Obsluhuje požadavky v pořadí, v jakém přišly do fronty",
-"Vždy jede k požadavku nejbližšímu k aktuální hlavičce"
+"Jede k požadavku nejbližšímu k aktuální hlavičce"
 ],
 [
 "Který algoritmus má nejhorší průměrnou odezvu?",

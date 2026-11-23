@@ -13,9 +13,9 @@
 [
 "Kde je uložen BIOS?",
 "Ve Flash (dříve ROM/EPROM) paměti",
-"V paměti CMOS s baterií",
+"V paměti CMOS napájené baterií",
 "Na systémovém disku v MBR",
-"V cache procesoru L2"
+"V cache procesoru úrovně L2"
 ],
 [
 "Co obsahuje CMOS?",
@@ -203,8 +203,8 @@
 "Která cache je sdílená mezi jádry?",
 "L3",
 "L1",
-"L2 vždy",
-"Žádná"
+"L2",
+"Registry procesoru"
 ],
 [
 "Co je SW cache?",

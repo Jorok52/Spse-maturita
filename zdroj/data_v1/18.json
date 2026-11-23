@@ -169,9 +169,9 @@
 [
 "Pro jaké CPU je LGA 1155?",
 "Sandy Bridge a Ivy Bridge",
-"Haswell a Broadwell",
-"Skylake a Kaby Lake",
-"Nehalem a Westmere"
+"Haswell a Haswell Refresh",
+"Skylake a Coffee Lake",
+"Bloomfield a Lynnfield"
 ],
 [
 "Co je TDP?",
@@ -191,8 +191,8 @@
 "Doporučené chlazení pro 95–200 W?",
 "Výkonné aktivní nebo AIO vodní",
 "Pasivní chladič bez ventilátoru",
-"Žádné, stačí proudění ve skříni",
-"Jen teplovodivá pasta bez chladiče"
+"Proudění vzduchu ve skříni bez chladiče",
+"Teplovodivá pasta bez chladiče"
 ],
 [
 "K čemu je teplovodivá pasta?",
@@ -205,8 +205,8 @@
 "Rozdíl 3pin a 4pin ventilátoru?",
 "4pin má PWM – deska reguluje otáčky",
 "3pin je rychlejší, protože má plné napětí",
-"4pin nemá napájení, jen signál",
-"Žádný, čtvrtý pin je jen zem navíc"
+"4pin má navíc druhé napájení 5 V",
+"Čtvrtý pin je druhá zem pro větší proud"
 ],
 [
 "Co je AIO?",

@@ -99,8 +99,8 @@
 [
 "Příklad multicastu?",
 "IPTV, online rádio, videokonference",
-"DHCP žádost o IP adresu",
-"Načtení webové stránky",
+"DHCP žádost o přidělení IP adresy",
+"Načtení webové stránky ze serveru",
 "Dotaz na DNS server 8.8.8.8"
 ],
 [

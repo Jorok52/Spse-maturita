@@ -167,8 +167,8 @@
 [
 "Jak OS ve FAT „smaže“ soubor?",
 "Přepíše 1. znak názvu na E5h a uvolní clustery ve FAT na 0",
-"Přepíše všechna data souboru nulami a cluster označí ve FAT jako volný",
-"Přesune soubor do koše a nic nemaže",
+"Přepíše data souboru nulami a cluster označí ve FAT jako volný",
+"Přesune soubor do koše na stejném oddílu",
 "Smaže boot record a záznam v MBR"
 ],
 [

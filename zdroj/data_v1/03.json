@@ -28,8 +28,8 @@
 "V jakém tvaru se zapisují logické funkce v PLD?",
 "Součet součinů (disjunktivní normální forma)",
 "Součin součtů (konjunktivní normální forma)",
-"Pouze pravdivostní tabulkou bez rovnic",
-"Jen Karnaughovou mapou bez zjednodušení"
+"Pravdivostní tabulkou bez logických rovnic",
+"Karnaughovou mapou bez zjednodušení"
 ],
 [
 "Nevýhoda PLD?",
@@ -251,8 +251,8 @@
 [
 "Čím se 74245 liší od 74244?",
 "Je obousměrný, směr volí DIR",
-"Je jednosměrný a má jen 4 bity",
-"Nemá třístavové výstupy, jen 0 a 1",
+"Je jednosměrný a má 4 bity místo 8",
+"Nemá třístavové výstupy, výstup je 0 nebo 1",
 "Je to čítač, ne budič sběrnice"
 ],
 [

@@ -145,9 +145,9 @@
 [
 "Co se stane při page fault?",
 "Načte se stránka z disku, aktualizuje se tabulka, instrukce se zopakuje",
-"Proces se okamžitě ukončí s chybou",
-"Systém pozastaví všechny procesy, restartuje se a stránku načte znovu z disku",
-"Nic, procesor pokračuje další instrukcí"
+"Proces se okamžitě ukončí s chybou a uvolní svou paměť",
+"Systém pozastaví ostatní procesy, restartuje se a stránku smaže",
+"Procesor instrukci přeskočí a pokračuje další instrukcí"
 ],
 [
 "Segmentace dělí program na…",

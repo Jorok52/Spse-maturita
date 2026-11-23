@@ -61,8 +61,8 @@
 "Rozlišuje UNIX velikost písmen v názvech?",
 "Ano (file.txt ≠ File.txt)",
 "Ne (file.txt = File.txt)",
-"Jen u adresářů, ne u souborů",
-"Jen u přípon souborů"
+"U adresářů ano, u souborů ne",
+"Rozlišuje u přípon, u názvů ne"
 ],
 [
 "Adresář s konfiguračními soubory?",
@@ -137,16 +137,16 @@
 [
 "Rozdíl diff a cmp?",
 "diff porovnává po řádcích, cmp po bajtech",
-"Žádný, jsou to aliasy stejného příkazu",
+"Jsou to dva názvy stejného příkazu",
 "cmp porovnává po řádcích, diff po bajtech",
-"diff porovnává jen binární soubory"
+"diff porovnává binární soubory, cmp textové"
 ],
 [
 "Rozdíl more a less?",
 "less umí listovat oběma směry",
 "more umí listovat oběma směry",
-"Žádný, less je jen novější název",
-"less ukáže jen první řádek souboru"
+"less je novější název pro more",
+"less ukáže první řádek souboru"
 ],
 [
 "Port Telnetu?",
@@ -159,8 +159,8 @@
 "Hlavní problém Telnetu?",
 "Nešifruje – hesla i data jdou v čistém textu",
 "Je pomalý, protože vše komprimuje",
-"Nefunguje přes TCP, jen přes UDP",
-"Nemá příkazovou řádku, jen grafické okno"
+"Funguje přes UDP, a proto ztrácí data",
+"Má grafické okno místo příkazové řádky"
 ],
 [
 "Port SSH?",
@@ -228,9 +228,9 @@
 [
 "Co SSH kromě šifrování zajišťuje?",
 "Autentizaci, integritu dat a volitelnou kompresi",
-"Jen přidělení IP adresy klientovi pomocí DHCP",
+"Přidělení IP adresy klientovi pomocí DHCP",
 "Překlad doménových jmen na adresy",
-"Nic dalšího, jen šifruje přenos"
+"Zrychlení přenosu pomocí vyrovnávací paměti"
 ],
 [
 "Proč UNIX běží od superpočítačů po PC?",

@@ -92,8 +92,8 @@
 [
 "Která vlastnost patří k CISC?",
 "Proměnlivá délka instrukcí, mikroprogramové řízení",
-"Všechny instrukce mají stejnou délku 32 bitů",
-"Každá instrukce trvá jen jeden hodinový takt",
+"Instrukce mají pevnou délku 32 bitů",
+"Instrukce typicky trvá jeden hodinový takt",
 "Obvodově řízený řadič a snadný pipelining"
 ],
 [

@@ -42,9 +42,9 @@
 [
 "Kdo vyvinul EIDE (ATA-2)?",
 "Western Digital",
-"Seagate",
-"Intel",
-"IBM"
+"Seagate Technology",
+"Intel a Microsoft",
+"IBM a Compaq"
 ],
 [
 "Co přineslo EIDE?",
@@ -77,9 +77,9 @@
 [
 "Cable Select – modrý konektor jde do…",
 "Základní desky",
-"Mastera",
-"Slave",
-"Zdroje"
+"Mastera (disk 0)",
+"Slave (disk 1)",
+"Napájecího zdroje"
 ],
 [
 "Která ATA verze přinesla 48bit LBA?",
@@ -98,9 +98,9 @@
 [
 "Datová šířka SATA?",
 "1 bit (sériově)",
-"16 bitů",
-"32 bitů",
-"8 bitů"
+"16 bitů (paralelně)",
+"32 bitů (paralelně)",
+"8 bitů (po bajtech)"
 ],
 [
 "Rychlost SATA I?",
@@ -259,9 +259,9 @@
 [
 "Kdo vyvinul Thunderbolt?",
 "Intel s Apple",
-"Microsoft",
+"Microsoft s Dellem",
 "AMD a IBM",
-"Samsung"
+"Samsung a Sony"
 ],
 [
 "Rychlost Thunderbolt 3/4?",

@@ -78,8 +78,8 @@
    [
     "Jak vypíšeš všechny proměnné prostředí?",
     "env (nebo printenv)",
-    "ls -env",
-    "cat /env",
+    "list (nebo lsvar)",
+    "cat /env (nebo more)",
     "set --list"
    ],
    [
@@ -158,8 +158,8 @@
     "Proč při zapnutém CSM nefunguje Secure Boot?",
     "CSM emuluje legacy BIOS boot, který podpisy neověřuje",
     "CSM vypne čip TPM a tím i ověřování podpisů",
-    "CSM je určen jen pro disky NVMe bez podpisů",
-    "Funguje vždy, CSM a Secure Boot se nevylučují"
+    "CSM je určen pro disky NVMe, které podpisy nemají",
+    "Funguje, CSM a Secure Boot se nevylučují"
    ],
    [
     "Hlavní rozdíl impulsního a lineárního zdroje?",

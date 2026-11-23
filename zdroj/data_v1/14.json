@@ -28,9 +28,9 @@
 [
 "Kde leží MBR?",
 "V prvním sektoru disku (CHS 0,0,1)",
-"Na konci disku jako záloha",
-"V oddílu EFI ve FAT32",
-"V čipu BIOSu na desce"
+"V posledním sektoru disku jako záloha",
+"V oddílu EFI na disku ve FAT32",
+"Ve flash paměti BIOSu na desce"
 ],
 [
 "Kolik B zabírá zaváděcí kód v MBR?",
@@ -154,9 +154,9 @@
 [
 "Které Windows nepodporují GPT bootování?",
 "Windows XP a starší 32bit",
-"Windows 10 (64bit)",
-"Windows 11",
-"Windows Server 2019"
+"Windows 10 a 11 (64bit)",
+"Windows 8.1 a novější",
+"Windows Server 2016 a 2019"
 ],
 [
 "K čemu je DiskEdit?",

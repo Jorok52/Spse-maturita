@@ -57,8 +57,8 @@
 [
 "Kolik pinů má SATA Power a jaká napětí?",
 "15 pinů; 3,3 V, 5 V, 12 V",
-"4 piny; jen 5 V a 12 V",
-"6 pinů; jen 12 V pro motor",
+"4 piny; 5 V a 12 V",
+"6 pinů; 12 V pro motor disku",
 "24 pinů; 3,3 V, 5 V, 12 V"
 ],
 [
@@ -85,8 +85,8 @@
 [
 "Signál 5VSB (fialový)…",
 "Drží +5 V v pohotovosti pro softwarové zapnutí",
-"Ze desky do zdroje zapíná všechny hlavní větve",
-"Hlásí desce, že jsou všechna napětí stabilní",
+"Jde z desky do zdroje a zapíná hlavní větve",
+"Hlásí desce, že jsou výstupní napětí stabilní",
 "Je to zem (GND) pro řídicí signály desky"
 ],
 [
@@ -120,16 +120,16 @@
 [
 "Aktivní PFC koriguje účiník…",
 "Nad 0,9 pomocí tranzistorů a kondenzátorů",
-"Pouze cívkou na vstupu, bez aktivních součástek",
-"Nekoriguje vůbec, jen filtruje špičky ze sítě",
+"Cívkou na vstupu, bez aktivních součástek",
+"Filtruje špičky ze sítě a účiník nemění",
 "Snižuje účiník na 0,5 kvůli úspoře energie"
 ],
 [
 "Pasivní PFC používá…",
 "Cívku na vstupu (pasivní součástky)",
-"Tranzistory a řídicí obvod",
-"Mikroprocesor s firmwarem",
-"Záložní baterii (UPS)"
+"Tranzistory a řídicí obvod PFC",
+"Mikroprocesor s vlastním firmwarem",
+"Záložní baterii (UPS) ve zdroji"
 ],
 [
 "Ochrana OVP je proti…",
@@ -177,8 +177,8 @@
 "Jak resetovat CMOS?",
 "Jumper Clear CMOS nebo vyjmutí baterie",
 "Přeinstalovat operační systém",
-"Vyměnit pevný disk za nový",
-"Při startu podržet klávesu F12"
+"Odpojit a znovu připojit pevný disk",
+"Při startu podržet klávesu F12 (boot menu)"
 ],
 [
 "Výrobci BIOSu?",
@@ -239,9 +239,9 @@
 [
 "Co je CSM?",
 "Legacy režim UEFI pro starší OS (emulace BIOSu)",
-"Ochrana zdroje proti přepětí a zkratu",
-"Typ oddílu pro zavaděč systému",
-"Kontrolní součet obrazu firmwaru"
+"Ochrana zdroje proti přepětí a zkratu na výstupu",
+"Typ oddílu GPT pro zavaděč operačního systému",
+"Kontrolní součet obrazu firmwaru v čipu"
 ],
 [
 "Na jakém FS musí být ESP oddíl?",
@@ -295,9 +295,9 @@
 [
 "Ve které záložce Setupu najdeš XMP profily pamětí?",
 "Performance / OC / Ai Tweaker",
-"Boot / Fast Boot",
-"Security / Password",
-"Exit / Save Changes"
+"Boot / Fast Boot / CSM",
+"Security / Password / TPM",
+"Exit / Save / Load Defaults"
 ],
 [
 "Co je Chassis Intrusion (záložka Security)?",
@@ -309,8 +309,8 @@
 [
 "Které funkce má BIOS?",
 "POST, zavedení OS, komunikace HW–SW, Setup, API pro OS",
-"Jen formátování disku a kontrola vadných sektorů při startu",
-"Jen ovládání ventilátorů a měření teplot",
+"Formátování disku a kontrola vadných sektorů při startu",
+"Ovládání ventilátorů a měření teplot součástek",
 "Správa uživatelských účtů a jejich hesel"
 ]
 ],

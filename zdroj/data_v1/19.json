@@ -111,8 +111,8 @@
 "Má PCI oddělené vodiče pro adresy a data?",
 "Ne – adresa se pošle na začátku transakce (multiplex)",
 "Ano, má zvlášť adresní a datové vodiče, proto je rychlejší",
-"Jen 64bitová verze má oddělené vodiče",
-"Jen PCI-X má oddělené vodiče pro adresy"
+"64bitová verze má oddělené adresní vodiče",
+"PCI 66 MHz má adresní vodiče oddělené"
 ],
 [
 "Kdo a kdy vyvinul AGP?",
