@@ -1081,7 +1081,8 @@ function runCreativeAI(n){
     const sys = 'Jsi kreativní a přesný učitel IT pro středoškoláky. Píšeš česky, vtipně, ale fakta musí být přesná podle podkladů. Nejvýše 220 slov. Bez úvodu typu „Jasně!“. Na konci přidej řádek „Shrnutí:“ s 3 nejdůležitějšími fakty.';
     const msg = 'Maturitní otázka '+n+': '+t.t+'\nPodotázka: '+o.q+'\nKlíčové body: '+o.k.join('; ')+'\n\nStyl: '+STY[sty][1]+' – '+STY[sty][2]+(RAW[n] ? '\n\nVýtah z podkladů:\n"""\n'+rawExcerpt(n, o.q+' '+o.k.join(' '), 3500)+'\n"""' : '');
     ctl = new AbortController();
-    try{ await aiAsk(sys, [{role:'user', content:msg}], s => { const p = $('#cout'); if(p) p.textContent = s; }, ctl.signal); busy = false; const txt = $('#cout') ? $('#cout').textContent : ''; render(txt); addXP(5); }
+    let raw = '';
+    try{ await aiAsk(sys, [{role:'user', content:msg}], s => { raw = s; const p = $('#cout'); if(p) p.innerHTML = mdLite(s); }, ctl.signal); busy = false; render(raw); addXP(5); }
     catch(e){ busy = false; render(e && e.code === 'cancelled' ? (e.text || '') : aiErrText(e)); }
   }
   function shell(inner){ labShell(n, 'Vysvětli mi to jinak (AI)', inner, 'AI napíše výklad ve zvoleném stylu podle tvých podkladů. Výsledek si můžeš zkopírovat.'); }
@@ -1090,12 +1091,12 @@ function runCreativeAI(n){
       '<div class="row" style="margin:8px 0"><select id="sub" class="sel">'+t.open.map((o,i) => '<option value="'+i+'"'+(i===sub?' selected':'')+'>'+esc(o.q)+'</option>').join('')+'</select></div>'+
       '<div class="cats">'+STY.map((s,i) => '<button class="btn '+(i===sty?'':'ghost')+' sty" data-i="'+i+'">'+s[1]+'</button>').join('')+'</div>'+
       '<div class="row" style="margin-top:12px"><button class="btn" id="gen"'+(busy?' disabled':'')+'>Vytvořit</button>'+(busy?'<button class="btn red" id="stop">Zastavit</button>':'')+(text && !busy?'<button class="btn ghost" id="copy">Zkopírovat</button>':'')+'</div>'+
-      '<div class="aiexp" id="cout">'+esc(text || 'Výsledek se objeví tady.')+'</div>');
+      '<div class="aiexp md" id="cout">'+(text ? mdLite(text) : esc('Výsledek se objeví tady.'))+'</div>');
     $('#sub').onchange = e => { sub = +e.target.value; };
     $$('.sty').forEach(b => b.onclick = () => { sty = +b.dataset.i; render(text); });
     $('#gen').onclick = go;
     if($('#stop')) $('#stop').onclick = () => ctl && ctl.abort();
-    if($('#copy')) $('#copy').onclick = () => { const v = $('#cout').textContent; try{ navigator.clipboard.writeText(v).then(() => toast('Zkopírováno'), () => toast('Kopírování nejde – označ text ručně')); }catch(e){ toast('Kopírování nejde – označ text ručně'); } };
+    if($('#copy')) $('#copy').onclick = () => { const v = text; try{ navigator.clipboard.writeText(v).then(() => toast('Zkopírováno'), () => toast('Kopírování nejde – označ text ručně')); }catch(e){ toast('Kopírování nejde – označ text ručně'); } };
   }
   render('');
 }

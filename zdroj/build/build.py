@@ -35,7 +35,9 @@ raw = {}
 for f in sorted(glob.glob(base + '/raw/*.txt')):
     n = int(re.findall(r'(\d+)\.txt$', f)[0])
     txt = open(f, encoding='utf-8').read()
-    lines = [l for l in txt.split('\n') if not re.match(r'^\s*\d+\.\s.{0,60}$', l) or len(l) > 70]
+    # záhlaví stránky („5. A/D Převodníky“) se vynechá, ale značka nové stránky \f z něj zůstane (čtečka podle ní najde číslo strany)
+    lines = [l if not re.match(r'^\s*\d+\.\s.{0,60}$', l) or len(l) > 70 else ('\f' if '\f' in l else None) for l in txt.split('\n')]
+    lines = [l for l in lines if l is not None]
     raw[n] = re.sub(r'[ \t]+', ' ', '\n'.join(lines))
 labs = open(base + '/build/labs.js', encoding='utf-8').read()
 _lbc = json.load(open(base + '/build/leaderboard.json'))

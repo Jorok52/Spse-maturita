@@ -1209,29 +1209,39 @@ function aiExplainButton(cur, host){
     host.appendChild(b);
     b.onclick = async () => {
       b.disabled = true;
-      let box = view.querySelector('.aiexp'); if(!box){ box = document.createElement('div'); box.className = 'aiexp'; view.querySelector('.bench').appendChild(box); }
+      let box = view.querySelector('.aiexp'); if(!box){ box = document.createElement('div'); box.className = 'aiexp md'; view.querySelector('.bench').appendChild(box); }
       box.textContent = 'Přemýšlím…';
       const t = cur.n ? T[cur.n] : null;
       const sys = 'Jsi trpělivý učitel IT na střední průmyslové škole a pomáháš studentovi s přípravou k maturitě. Odpovídej česky, stručně (nejvýše 120 slov), věcně a srozumitelně, bez nadpisů. Drž se studentových podkladů; když podklady něco neříkají, řekni to.';
       const msg = 'Téma: '+(t ? t.n+'. '+t.t : '')+'\nOtázka: '+cur.text+'\nSprávná odpověď: '+cur.ans+'\nŠpatné možnosti: '+cur.opts.filter(o => o !== cur.ans).join(' | ')+
         '\n\nVýtah z podkladů studenta:\n"""\n'+rawExcerpt(cur.n, cur.text+' '+cur.ans, AI.mode === 'proxy' ? 2000 : 3500)+'\n"""\n\nVysvětli, proč je správná odpověď správná a čím se liší od ostatních možností. Přidej jednu pomůcku, jak si to zapamatovat.';
-      try{ await aiAsk(sys, [{role:'user', content:msg}], txt => { box.textContent = txt; }); }
+      try{ await aiAsk(sys, [{role:'user', content:msg}], txt => { box.innerHTML = mdLite(txt); }); }
       catch(e){ box.textContent = aiErrText(e); }
     };
   });
 }
 
 /* AI zkoušející */
-function mdLite(src){
-  const lines = esc(src).split('\n'); let out = '', ul = false;
-  const inl = x => x.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(^|\s)\*(?!\s)([^*]+?)\*(?=\s|$|[.,;:!?])/g, '$1<i>$2</i>').replace(/`([^`]+)`/g, '<code>$1</code>');
+function mdLite(src){   // Markdown z AI → HTML (nadpisy, seznamy, tučně, kurzíva, kód, citace, odkazy)
+  const lines = String(src == null ? '' : src).replace(/\r/g, '').split('\n'); let out = '', list = null, code = null;
+  const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/__(.+?)__/g, '<b>$1</b>')
+    .replace(/(^|[\s(„])\*(?!\s)([^*]+?)\*(?=[\s).,;:!?“]|$)/g, '$1<i>$2</i>').replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const close = () => { if(list){ out += '</'+list+'>'; list = null; } };
   lines.forEach(l => {
-    const m = l.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)$/);
-    if(m){ if(!ul){ out += '<ul>'; ul = true; } out += '<li>' + inl(m[1]) + '</li>'; return; }
-    if(ul){ out += '</ul>'; ul = false; }
-    if(l.trim()) out += '<p>' + inl(l) + '</p>';
+    if(code !== null){ if(/^\s*```/.test(l)){ out += '<pre class="code">'+esc(code.join('\n'))+'</pre>'; code = null; } else code.push(l); return; }
+    if(/^\s*```/.test(l)){ close(); code = []; return; }
+    let m;
+    if((m = l.match(/^\s*#{1,6}\s+(.*)$/))){ close(); out += '<h4>'+inl(m[1])+'</h4>'; return; }
+    if(/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)){ close(); out += '<hr>'; return; }
+    if((m = l.match(/^\s*>\s?(.*)$/))){ close(); out += '<blockquote>'+inl(m[1])+'</blockquote>'; return; }
+    if((m = l.match(/^\s*\d+[.)]\s+(.*)$/))){ if(list !== 'ol'){ close(); out += '<ol>'; list = 'ol'; } out += '<li>'+inl(m[1])+'</li>'; return; }
+    if((m = l.match(/^\s*[-*•]\s+(.*)$/))){ if(list !== 'ul'){ close(); out += '<ul>'; list = 'ul'; } out += '<li>'+inl(m[1])+'</li>'; return; }
+    close();
+    if(l.trim()) out += '<p>'+inl(l)+'</p>';
   });
-  if(ul) out += '</ul>';
+  if(code !== null) out += '<pre class="code">'+esc(code.join('\n'))+'</pre>';
+  close();
   return out;
 }
 function examTimer(sec, el, onEnd){

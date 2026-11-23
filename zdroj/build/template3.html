@@ -561,6 +561,25 @@ button.pcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.
 .msgb.me{background:#2b3134;align-self:flex-end}
 .aibox{background:var(--mask-2);border-radius:8px;padding:16px;display:grid;gap:8px;max-width:640px}
 .aiexp{margin-top:14px;background:var(--mask-2);border-left:3px solid var(--copper);border-radius:6px;padding:12px 14px;white-space:pre-wrap;font-size:15px;line-height:1.5}
+.md{white-space:normal}
+.md>:first-child{margin-top:0}.md>:last-child{margin-bottom:0}
+.md p{margin:0 0 8px}.md h4{margin:12px 0 6px;font:600 15.5px/1.3 var(--font-display);color:var(--copper)}
+.md ul,.md ol{margin:4px 0 10px;padding-left:22px}.md li{margin:3px 0}.md li::marker{color:var(--copper)}
+.md code{font:13.5px var(--font-mono);background:rgba(255,255,255,.07);border-radius:4px;padding:1px 5px}
+.md pre.code{margin:8px 0;white-space:pre-wrap}
+.md blockquote{margin:8px 0;padding:6px 12px;border-left:3px solid var(--copper-dim);color:var(--silk-dim);background:rgba(255,255,255,.03);border-radius:0 6px 6px 0}
+.md hr{border:0;border-top:1px solid rgba(208,162,75,.3);margin:12px 0}
+.md a{color:var(--copper)}
+.pdfov{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px));background:rgba(3,6,6,.72);backdrop-filter:blur(3px);animation:fxItem .25s var(--ease) both}
+.pdfpan{width:min(900px,100%);max-height:100%;display:flex;flex-direction:column;background:var(--chip);border:1px solid var(--copper);border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.6);overflow:hidden}
+.pdfhd{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(208,162,75,.3)}
+.pdfhd b{display:block;font:600 16px/1.2 var(--font-display)}.pdfhd span:not(.dsref){font:12px var(--font-mono);color:var(--silk-dim)}
+.pdfx{margin-left:auto;background:none;border:0;color:var(--silk-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}.pdfx:hover{color:var(--silk);background:rgba(255,255,255,.07)}
+.pdfq{display:flex;flex-direction:column;gap:4px;padding:10px 14px;background:rgba(97,227,140,.06);border-bottom:1px solid #2f3739}
+.pdfq span{font-size:14px;color:var(--silk-dim)}.pdfq b{color:var(--led-on);font-weight:600}
+.pdfnote{margin:8px 14px 0;font:12.5px/1.4 var(--font-mono);color:#ffcf6e}
+.pdfacts{padding:10px 14px}
+.pdfbody{flex:1;overflow-y:auto;padding:4px 16px 16px;border-top:1px solid #2f3739}
 
 
 
@@ -2411,7 +2430,7 @@ function runQuiz(cfg){
     fb.innerHTML = '<span class="msg '+(ok?'ok':'bad')+'">'+(ok?'Správně · +'+gain+' XP':'Špatně · správně je zvýrazněno')+'</span><button class="btn" id="nx">'+(last?'Výsledky':'Další')+'<span class="kbd">Enter</span></button>';
     document.getElementById('nx').onclick = next;
     document.getElementById('nx').focus({preventScroll:true});
-    if(!ok) aiExplainButton(cur, fb);
+    if(!ok){ pdfAnswerButton(cur, fb); aiExplainButton(cur, fb); }
   }
   function finish(aborted){
     onKey = null;
@@ -2726,7 +2745,7 @@ if(MD_WEB && 'serviceWorker' in navigator && (location.protocol === 'https:' || 
   addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.PWA_PROMPT = e; if(window.MD_SET) MD_SET.refresh(); });
   addEventListener('appinstalled', () => { window.PWA_PROMPT = null; toast('Hotovo – Maturitní desku najdeš mezi aplikacemi.'); if(window.MD_SET) MD_SET.refresh(); });
 }
-window.__md = {LABS, T, QBY, renderTopic, runAIExam, get S(){ return S; }};
+window.__md = {LABS, T, QBY, RAW, renderTopic, runAIExam, mdLite, findAnswer, rawParas, get S(){ return S; }};
 /* ---------------- boot ---------------- */
 renderStats();
 route();

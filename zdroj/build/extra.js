@@ -119,6 +119,54 @@ function rawParas(txt){
   flush(); return out;
 }
 function rawToHTML(txt){ return rawParas(txt).map((p, i) => p.h ? '<h3 data-pi="'+i+'">'+esc(p.t)+'</h3>' : '<p data-pi="'+i+'">'+esc(p.t)+'</p>').join(''); }
+/* ---------- odpověď v PDF (tlačítko u špatné odpovědi v kvízu) ---------- */
+const ANS_STOP = new Set('který která které kterou kterým jaký jaká jaké jakou jakým proč jsou může mohou nebo také jako když pouze tedy tento tato toto jeho jejich mezi podle kolik kde kdy čím čemu této tohoto byla bylo není nejsou pro při bez nad pod před přes jeho její jsme jste jak co kdo'.split(' '));
+function ansWords(s){ return [...new Set((String(s).toLowerCase().match(/[a-záčďéěíňóřšťúůýž0-9]{3,}/g) || []).filter(x => !ANS_STOP.has(x)))]; }
+function findAnswer(n, cur){
+  const raw = RAW[n]; if(!raw) return null;
+  const paras = rawParas(raw), stem = x => x.length > 5 ? x.slice(0, x.length - 2) : x;
+  const A = ansWords(cur.ans).map(stem), Q = ansWords(cur.text).map(stem), low = paras.map(p => p.t.toLowerCase());
+  // souvislý úsek 1–3 odstavců, který pokryje nejvíc různých slov ze správné odpovědi (a otázky)
+  let best = null;
+  for(let i = 0; i < paras.length; i++) for(let len = 1; len <= 3 && i + len <= paras.length; len++){
+    const txt = low.slice(i, i + len).join(' ');
+    let sc = 0; A.forEach(x => { if(txt.includes(x)) sc += 3; }); Q.forEach(x => { if(txt.includes(x)) sc += 1; });
+    if(paras[i].h && len === 1) sc *= .5;
+    sc -= (len - 1) * .5;   // kratší úsek má přednost
+    if(sc > 0 && (!best || sc > best.score)) best = {para:i, len, score:sc};
+  }
+  if(!best) return null;
+  let page = null;
+  if(raw.split('\f').length > 2){   // stránky známe jen u textů, kde pdftotext zachoval konce stránek
+    const re = new RegExp(paras[best.para].t.split(' ').slice(0, 5).map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+'));
+    const m = re.exec(raw); if(m) page = (raw.slice(0, m.index).match(/\f/g) || []).length + 1;
+  }
+  return {para:best.para, len:best.len, page, score:best.score, words:ansWords(cur.ans).concat(ansWords(cur.text).filter(x => x.length >= 5)).join(' ')};
+}
+function pdfAnswerButton(cur, host){
+  if(!host || !cur || !cur.n || !T[cur.n]) return;
+  const b = document.createElement('button'); b.className = 'btn ghost'; b.textContent = '📄 Odpověď v PDF';
+  host.appendChild(b); b.onclick = () => showPdfAnswer(cur);
+}
+function showPdfAnswer(cur){
+  const n = cur.n, t = T[n], f = findAnswer(n, cur), page = f && f.page, prevKey = onKey;
+  const note = !RAW[n] ? 'K této otázce nemáš PDF podklady – je sestavená podle oficiální osnovy.'
+    : cur.x ? 'Tahle otázka je doplněná mimo tvoje PDF, takže přesnou odpověď v podkladech nenajdeš. Níž je nejbližší místo.'
+    : !f || f.score < 3 ? 'Přesné místo jsem v podkladech nenašel, ukazuju nejbližší.' : '';
+  const ov = document.createElement('div'); ov.className = 'pdfov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', 'Odpověď v podkladech');
+  ov.innerHTML = '<div class="pdfpan"><div class="pdfhd"><span class="dsref">'+ref(n)+'</span><div><b>Odpověď v podkladech</b><span>'+esc(t.t)+(page ? ' · strana '+page : '')+'</span></div><button class="pdfx" aria-label="Zavřít">✕</button></div>'+
+    '<div class="pdfq"><span>'+esc(cur.text)+'</span><b>✓ '+esc(cur.ans)+'</b></div>'+(note ? '<p class="pdfnote">'+note+'</p>' : '')+
+    '<div class="row pdfacts">'+(IN_ARTIFACT || !RAW[n] ? '' : '<a class="btn" href="'+pdfName(n)+(page ? '#page='+page : '')+'" target="_blank" rel="noopener">Otevřít PDF'+(page ? ' na straně '+page : '')+'</a>')+'<button class="btn ghost pdfclose">Zpět ke kvízu<span class="kbd">Esc</span></button></div>'+
+    (RAW[n] ? '<div class="dstext pdfbody">'+rawToHTML(RAW[n])+'</div>' : '')+'</div>';
+  document.body.appendChild(ov);
+  const keys = e => { if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(); } else if(e.key === 'Enter' || /^[0-9]$/.test(e.key) || e.key === ' '){ e.stopPropagation(); } };
+  const close = () => { ov.remove(); document.removeEventListener('keydown', keys, true); onKey = prevKey; };
+  onKey = null; document.addEventListener('keydown', keys, true);
+  ov.querySelector('.pdfx').onclick = close; ov.querySelector('.pdfclose').onclick = close; ov.onclick = e => { if(e.target === ov) close(); };
+  const body = ov.querySelector('.pdfbody');
+  if(body && f){ markText(body, f.words); const els = Array.from({length:f.len}, (_, k) => body.querySelector('[data-pi="'+(f.para + k)+'"]')).filter(Boolean); els.forEach(el => el.classList.add('srhit')); if(els[0]) setTimeout(() => els[0].scrollIntoView({block:'center'}), 40); }
+  ov.querySelector('.pdfclose').focus({preventScroll:true});
+}
 function runReader(n, vid, opt){
   onKey = null; const t = T[n]; opt = opt || {};
   view.innerHTML = '<div class="bench wide dsread" data-scr="read"><button class="back" id="back">'+(opt.back ? '← Hledání' : '← Materiály')+'</button>'+
