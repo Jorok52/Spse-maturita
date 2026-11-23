@@ -1223,22 +1223,31 @@ function aiExplainButton(cur, host){
 
 /* AI zkoušející */
 function mdLite(src){   // Markdown z AI → HTML (nadpisy, seznamy, tučně, kurzíva, kód, citace, odkazy)
-  const lines = String(src == null ? '' : src).replace(/\r/g, '').split('\n'); let out = '', list = null, code = null;
-  const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/__(.+?)__/g, '<b>$1</b>')
-    .replace(/(^|[\s(„])\*(?!\s)([^*]+?)\*(?=[\s).,;:!?“]|$)/g, '$1<i>$2</i>').replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  const close = () => { if(list){ out += '</'+list+'>'; list = null; } };
+  const lines = String(src == null ? '' : src).replace(/\r/g, '').split('\n'); let out = '', list = null, code = null, gap = false, sub = false;
+  const inl = x => { const codes = [];
+    let h = esc(x).replace(/`([^`]+)`/g, (_, c) => '\u0000' + (codes.push(c) - 1) + '\u0000');   // kód se nejdřív schová, aby se v něm neměnily ** a __
+    h = h.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/__(.+?)__/g, '<b>$1</b>')
+      .replace(/(^|[\s(„])\*(?!\s)([^*]+?)\*(?=[\s).,;:!?“]|$)/g, '$1<i>$2</i>')
+      .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return h.replace(/\u0000(\d+)\u0000/g, (_, k) => '<code>' + codes[+k] + '</code>'); };
+  const close = () => { if(list){ out += '</'+list+'>'; list = null; } gap = false; sub = false; };
   lines.forEach(l => {
     if(code !== null){ if(/^\s*```/.test(l)){ out += '<pre class="code">'+esc(code.join('\n'))+'</pre>'; code = null; } else code.push(l); return; }
     if(/^\s*```/.test(l)){ close(); code = []; return; }
     let m;
-    if((m = l.match(/^\s*#{1,6}\s+(.*)$/))){ close(); out += '<h4>'+inl(m[1])+'</h4>'; return; }
-    if(/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)){ close(); out += '<hr>'; return; }
-    if((m = l.match(/^\s*>\s?(.*)$/))){ close(); out += '<blockquote>'+inl(m[1])+'</blockquote>'; return; }
-    if((m = l.match(/^\s*\d+[.)]\s+(.*)$/))){ if(list !== 'ol'){ close(); out += '<ol>'; list = 'ol'; } out += '<li>'+inl(m[1])+'</li>'; return; }
-    if((m = l.match(/^\s*[-*•]\s+(.*)$/))){ if(list !== 'ul'){ close(); out += '<ul>'; list = 'ul'; } out += '<li>'+inl(m[1])+'</li>'; return; }
+    if(!l.trim()){ if(list) gap = true; return; }   // prázdný řádek seznam neukončí (AI často dělá mezery mezi body)
+    if(list && (m = l.match(/^\s{2,}[-*•]\s+(.*)$/))){   // odsazená odrážka = vnořený seznam v posledním bodu
+      const item = '<li>'+inl(m[1])+'</li>';
+      out = sub ? out.replace(/<\/ul><\/li>$/, item+'</ul></li>') : out.replace(/<\/li>$/, '<ul class="mdsub">'+item+'</ul></li>');
+      sub = true; gap = false; return;
+    }
+    if((m = l.match(/^\s*(\d+)[.)]\s+(.*)$/))){ if(list !== 'ol'){ close(); out += '<ol'+(+m[1] !== 1 ? ' start="'+(+m[1])+'"' : '')+'>'; list = 'ol'; } out += '<li>'+inl(m[2])+'</li>'; gap = false; sub = false; return; }
+    if((m = l.match(/^\s*[-*•]\s+(.*)$/))){ if(list !== 'ul'){ close(); out += '<ul>'; list = 'ul'; } out += '<li>'+inl(m[1])+'</li>'; gap = false; sub = false; return; }
     close();
-    if(l.trim()) out += '<p>'+inl(l)+'</p>';
+    if((m = l.match(/^\s*#{1,6}\s+(.*)$/))){ out += '<h4>'+inl(m[1])+'</h4>'; return; }
+    if(/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)){ out += '<hr>'; return; }
+    if((m = l.match(/^\s*>\s?(.*)$/))){ out += '<blockquote>'+inl(m[1])+'</blockquote>'; return; }
+    out += '<p>'+inl(l)+'</p>';
   });
   if(code !== null) out += '<pre class="code">'+esc(code.join('\n'))+'</pre>';
   close();
@@ -1327,12 +1336,12 @@ function runAIExam(n, opts){
   }
   function bubbles(){
     return turns.slice(1).map(m => m.role === 'assistant'
-      ? '<div class="msgb ai"><span class="who">Zkoušející</span>'+mdLite(m.content.replace(/^[ \t*_]*ZNÁMKA[ \t*_]*:?[ \t*_]*[1-5][ \t*_.]*$/gmi, ''))+'</div>'
+      ? '<div class="msgb ai"><span class="who">Zkoušející</span><div class="md">'+mdLite(m.content.replace(/^[ \t*_]*ZNÁMKA[ \t*_]*:?[ \t*_]*[1-5][ \t*_.]*$/gmi, ''))+'</div></div>'
       : '<div class="msgb me"><span class="who">Ty</span>'+esc(m.content)+'</div>').join('');
   }
   function render(pending){
     const tl = timer && timer.left ? timer.left() : null;
-    shell('<div class="chat" id="chat">'+bubbles()+(pending != null ? '<div class="msgb ai" id="pend"><span class="who">Zkoušející</span><div id="pendt">'+(pending ? mdLite(pending) : '<span class="typing"><i></i><i></i><i></i></span>')+'</div></div>' : '')+'</div>'+
+    shell('<div class="chat" id="chat">'+bubbles()+(pending != null ? '<div class="msgb ai" id="pend"><span class="who">Zkoušející</span><div id="pendt" class="md">'+(pending ? mdLite(pending) : '<span class="typing"><i></i><i></i><i></i></span>')+'</div></div>' : '')+'</div>'+
       (finished ? '<div class="aixgrade"><div class="g">'+(grade || '–')+'</div><div><b>'+(grade ? ['','Výborně','Chvalitebně','Dobře','Dostatečně','Nedostatečně'][grade] : 'Hodnocení')+'</b><span class="muted small">'+(opts.timed && tl != null ? 'Čas: '+Math.floor((900-tl)/60)+' min '+((900-tl)%60)+' s · ' : '')+asked+' '+plural(asked,'otázka','otázky','otázek')+'</span></div>'+
           '<div class="row"><button class="btn" id="again">Zkoušet znovu</button><button class="btn ghost" id="bk">Zpět na téma</button></div></div>'
         : call.on ? '<div class="callpanel" id="callp" data-st="'+call.state+'"><div class="callorb"><i></i><i></i><i></i></div><div class="callinfo"><b id="callst">'+esc(call.label)+'</b><span id="calllive"></span></div>'+

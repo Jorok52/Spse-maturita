@@ -1096,7 +1096,7 @@ function runCreativeAI(n){
     $$('.sty').forEach(b => b.onclick = () => { sty = +b.dataset.i; render(text); });
     $('#gen').onclick = go;
     if($('#stop')) $('#stop').onclick = () => ctl && ctl.abort();
-    if($('#copy')) $('#copy').onclick = () => { const v = text; try{ navigator.clipboard.writeText(v).then(() => toast('Zkopírováno'), () => toast('Kopírování nejde – označ text ručně')); }catch(e){ toast('Kopírování nejde – označ text ručně'); } };
+    if($('#copy')) $('#copy').onclick = () => { const v = $('#cout').innerText; try{ navigator.clipboard.writeText(v).then(() => toast('Zkopírováno'), () => toast('Kopírování nejde – označ text ručně')); }catch(e){ toast('Kopírování nejde – označ text ručně'); } };
   }
   render('');
 }

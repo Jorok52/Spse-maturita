@@ -90,7 +90,7 @@ function createWindow() {
   // odkazy ven otevírat v prohlížeči
   // PDF materiály: přibalené v resources/materialy, otevřou se ve výchozím prohlížeči PDF
   const openPdf = (url) => {
-    const m = /materialy\/(\d{2})\.pdf$/.exec(decodeURIComponent(url));
+    const m = /materialy\/(\d{2})\.pdf(?:#.*)?$/.exec(decodeURIComponent(url));   // #page=N z „Odpověď v PDF“ (systémový prohlížeč PDF stránku nedostane)
     if (!m) return false;
     const cands = [path.join(process.resourcesPath || '', 'materialy', m[1] + '.pdf'), path.join(__dirname, 'materialy', m[1] + '.pdf')];
     const f = cands.find(p => { try { return fs.existsSync(p); } catch (e) { return false; } });
