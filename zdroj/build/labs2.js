@@ -1095,7 +1095,7 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
   const F = 300, WIN = 0.01, UREF = 5;
   const SIG = {
     sin:{t:'sinus 300 Hz', fmax:F, f:t => 2.5 + 2.2*Math.sin(2*Math.PI*F*t)},
-    tri:{t:'trojúhelník 300 Hz', fmax:F, f:t => { const p = ((t*F) % 1 + 1) % 1; return 2.5 + 2.2*(p < .5 ? 4*p - 1 : 3 - 4*p); }},
+    tri:{t:'trojúhelník 300 Hz', fmax:3*F, harm:true, f:t => { const p = ((t*F) % 1 + 1) % 1; return 2.5 + 2.2*(p < .5 ? 4*p - 1 : 3 - 4*p); }},
     mix:{t:'složený 300 + 900 Hz', fmax:3*F, f:t => 2.5 + 1.6*Math.sin(2*Math.PI*F*t) + .6*Math.sin(2*Math.PI*3*F*t)}
   };
   const TASKS = [
@@ -1103,13 +1103,14 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
       no:() => sig !== 'sin' ? 'Přepni signál na sinus.' : fs <= 600 ? 'fs = '+fs+' Hz je moc málo – pro 300 Hz potřebuješ víc než 600 Hz.' : 'Funguje to, ale jde to i s nižší frekvencí.'},
     {t:'Převodník má Uref = 5 V. Zvol nejmenší počet bitů, při kterém je kvantizační krok (LSB) menší než 0,1 V.', ok:() => bits === 6,
       no:() => UREF / 2**bits >= .1 ? 'LSB = '+fmt(UREF / 2**bits, 3)+' V – ještě je moc velký.' : 'LSB je dost malý, ale stačí i méně bitů.'},
-    {t:'Ukaž aliasing: nastav fs tak, aby se sinus 300 Hz po vzorkování jevil jako signál 100 Hz.', ok:() => sig === 'sin' && (fs === 200 || fs === 400),
-      no:() => sig !== 'sin' ? 'Přepni signál na sinus.' : 'Při fs = '+fs+' Hz vypadá signál jako '+alias(fs)+' Hz.'}
+    {t:'Ukaž aliasing: nastav fs tak, aby se sinus 300 Hz po vzorkování jevil jako signál 100 Hz.', ok:() => sig === 'sin' && fs === 400,
+      no:() => sig !== 'sin' ? 'Přepni signál na sinus.' : flat(fs) ? 'Při fs = '+fs+' Hz padají všechny vzorky do průchodů nulou – signál zmizí úplně.' : 'Při fs = '+fs+' Hz vypadá signál jako '+alias(fs)+' Hz.'}
   ];
   let sig = 'sin', fs = 1500, bits = 3, ti = 0;
   const alias = f => Math.abs(F - f * Math.round(F / f));
+  const flat = f => Math.abs(F / f * 2 - Math.round(F / f * 2)) < 1e-9;   // f = k · fs/2 → vzorky jen v nulách
   const X = t => 44 + t / WIN * 586, Y = v => 262 - v / UREF * 236;
-  function samples(){ const out = []; for(let k = 0; k / fs <= WIN + 1e-9; k++){ const t = k / fs, v = SIG[sig].f(t), lsb = UREF / 2**bits, q = Math.max(0, Math.min(2**bits - 1, Math.round(v / lsb))); out.push({k, t, v, q, vq:q*lsb}); } return out; }
+  function samples(){ const out = []; for(let k = 0; k / fs <= WIN + 1e-9; k++){ const t = k / fs, v = SIG[sig].f(t), lsb = UREF / 2**bits, q = Math.max(0, Math.min(2**bits - 1, Math.floor(v / lsb))); out.push({k, t, v, q, vq:(q + .5)*lsb}); } return out; }
   function plot(){
     const S = samples(), L = 2**bits, lsb = UREF / L, under = fs <= 2*SIG[sig].fmax;
     let g = '<rect x="44" y="26" width="586" height="236" class="dgbg"/>';
@@ -1120,24 +1121,25 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
     g += '<path d="'+a+'" class="dgan"/>';
     let st = ''; S.forEach((s, i) => { const x0 = X(s.t), x1 = X(Math.min(WIN, S[i+1] ? S[i+1].t : WIN)); st += (i ? 'L'+x0.toFixed(1)+' '+Y(s.vq).toFixed(1) : 'M'+x0.toFixed(1)+' '+Y(s.vq).toFixed(1))+'H'+x1.toFixed(1); });
     g += '<path d="'+st+'" class="dgst"/>';
-    if(under && sig === 'sin'){ const m = Math.round(F / fs), fa = F - m*fs; let r = ''; for(let i = 0; i <= 500; i++){ const t = WIN * i / 500; r += (i ? 'L' : 'M')+X(t).toFixed(1)+' '+Y(2.5 + 2.2*Math.sin(2*Math.PI*fa*t)).toFixed(1); } g += '<path d="'+r+'" class="dgal"/>'; }
+    if(under && sig === 'sin' && !flat(fs)){ const m = Math.round(F / fs), fa = F - m*fs; let r = ''; for(let i = 0; i <= 500; i++){ const t = WIN * i / 500; r += (i ? 'L' : 'M')+X(t).toFixed(1)+' '+Y(2.5 + 2.2*Math.sin(2*Math.PI*fa*t)).toFixed(1); } g += '<path d="'+r+'" class="dgal"/>'; }
     S.forEach(s => { g += '<path d="M'+X(s.t).toFixed(1)+' 262V'+Y(s.v).toFixed(1)+'" class="dgstem"/><circle cx="'+X(s.t).toFixed(1)+'" cy="'+Y(s.v).toFixed(1)+'" r="3.6" class="dgpt"/>'; });
     g += '<g class="dgleg"><path d="M60 14h18" class="dgan"/><text x="82" y="18" class="dgt">analogový signál</text><circle cx="196" cy="14" r="3.6" class="dgpt"/><text x="204" y="18" class="dgt">vzorky</text><path d="M262 14h18" class="dgst"/><text x="284" y="18" class="dgt">kvantovaný výstup</text>'+
-      (under && sig === 'sin' ? '<path d="M412 14h18" class="dgal"/><text x="434" y="18" class="dgt al">alias '+alias(fs)+' Hz</text>' : '')+'</g>';
+      (under && sig === 'sin' && !flat(fs) ? '<path d="M412 14h18" class="dgal"/><text x="434" y="18" class="dgt al">alias '+alias(fs)+' Hz</text>' : '')+'</g>';
     return '<svg class="dgsvg" viewBox="0 0 640 290" role="img" aria-label="Vzorkování a kvantování signálu">'+g+'</svg>';
   }
   function info(){
     const S = samples(), lsb = UREF / 2**bits, under = fs <= 2*SIG[sig].fmax, err = Math.max(...S.map(s => Math.abs(s.v - s.vq)));
     const row = (k, v, c) => '<div class="dgi'+(c ? ' '+c : '')+'"><span>'+k+'</span><b>'+v+'</b></div>';
-    return '<div class="dginfo">'+row('vzorkovací frekvence', fs+' Hz')+row('Nyquist (2 · f<sub>max</sub>)', 2*SIG[sig].fmax+' Hz', under ? 'bad' : 'ok')+row('vzorků na periodu 300 Hz', fmt(fs / F, 2))+
+    return '<div class="dginfo">'+row('vzorkovací frekvence', fs+' Hz')+row('Nyquist (2 · f<sub>max</sub>)'+(SIG[sig].harm ? ' pro 3. harm.' : ''), 2*SIG[sig].fmax+' Hz', under ? 'bad' : 'ok')+row('vzorků na periodu 300 Hz', fmt(fs / F, 2))+
       row('úrovní (2<sup>n</sup>)', 2**bits)+row('kvantizační krok LSB', fmt(lsb, 3)+' V')+row('max. chyba (LSB/2)', fmt(lsb/2, 3)+' V')+row('datový tok', fmt(fs*bits/1000, 1)+' kb/s')+row('odstup S/N ≈ 6,02 n + 1,76', fmt(6.02*bits + 1.76, 1)+' dB')+'</div>'+
-      (under ? '<p class="dgwarn">⚠ fs ≤ 2 · f<sub>max</sub> – vzorky nestačí, signál nejde správně zrekonstruovat'+(sig === 'sin' ? ' a jeví se jako '+alias(fs)+' Hz (aliasing)' : '')+'.</p>' : '<p class="dgok">✓ Nyquistův teorém splněn – signál jde ze vzorků zrekonstruovat.</p>')+
+      (under ? '<p class="dgwarn">⚠ fs ≤ 2 · f<sub>max</sub> – vzorky nestačí, signál nejde správně zrekonstruovat'+(sig === 'sin' ? (flat(fs) ? ' – všechny vzorky padají do průchodů nulou a signál zmizí' : ' a jeví se jako '+alias(fs)+' Hz (aliasing)') : '')+'.</p>' : '<p class="dgok">✓ Nyquistův teorém splněn'+(SIG[sig].harm ? ' pro 3. harmonickou (900 Hz). Trojúhelník má ale i vyšší liché harmonické (1500, 2100 Hz…), takže úplně přesně ho zrekonstruovat nejde.' : ' – signál jde ze vzorků zrekonstruovat.')+'</p>')+
       '<div class="tblwrap"><table class="tbl dgtbl"><tr><th>vzorek</th><th>čas</th><th>napětí</th><th>kód</th><th>výstup</th><th>chyba</th></tr>'+
       S.slice(0, 6).map(s => '<tr><td>'+s.k+'</td><td>'+fmt(s.t*1000, 2)+' ms</td><td>'+fmt(s.v, 3)+' V</td><td class="mono">'+s.q.toString(2).padStart(bits, '0')+'</td><td>'+fmt(s.vq, 3)+' V</td><td>'+fmt(Math.abs(s.v - s.vq), 3)+' V</td></tr>').join('')+'</table></div>'+
       '<p class="muted small">Největší chyba v okně: '+fmt(err, 3)+' V</p>';
   }
   function update(){ const p = $('#dgplot'), i = $('#dginfo'); if(!p) return; p.innerHTML = plot(); i.innerHTML = info(); $('#dgfsv').textContent = fs+' Hz'; $('#dgbv').textContent = bits+' b'; }
   function render(){
+    onKey = null;
     labShell(5, 'Digitalizuj signál', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b> Zkoušej dál, nebo dokonči.')+'</p>'+
       '<div class="seg ledseg dgseg">'+Object.keys(SIG).map(k => '<button class="'+(k === sig ? 'on' : '')+'" data-s="'+k+'">'+SIG[k].t+'</button>').join('')+'</div>'+
       '<div class="dgwrap" id="dgplot">'+plot()+'</div>'+
@@ -1145,7 +1147,7 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
       '<label><span>rozlišení převodníku n</span><input type="range" id="dgb" class="slider" min="1" max="8" step="1" value="'+bits+'"><b id="dgbv">'+bits+' b</b></label></div>'+
       '<div id="dginfo">'+info()+'</div>'+
       '<div class="row" style="margin-top:12px">'+(ti < TASKS.length ? '<button class="btn" id="dgchk">Ověřit úkol</button>' : '<button class="btn" id="dgfin">Dokončit</button>')+'</div>',
-      'Vzorkování = odběr hodnot v čase, kvantování = zaokrouhlení na jednu z 2ⁿ úrovní, kódování = zápis úrovně binárně. LSB = Uref / 2ⁿ.');
+      'Vzorkování = odběr hodnot v čase, kvantování = přiřazení jedné z 2ⁿ úrovní, kódování = zápis úrovně binárně. Krok jedné úrovně (LSB) = Uref / 2ⁿ; výstup je střed úrovně, chyba je tedy nejvýš LSB/2.');
     $$('.dgseg button').forEach(b => b.onclick = () => { sig = b.dataset.s; beep('tick'); render(); });
     $('#dgfs').oninput = e => { fs = +e.target.value; update(); };
     $('#dgb').oninput = e => { bits = +e.target.value; update(); };
@@ -1174,7 +1176,7 @@ cre(4, 'Diferenciální pár proti rušení', 'Pošli bity po kabelu, do kteréh
     for(let i = 0; i < NS; i++){
       const s = BITS[Math.floor(i / SPB)];
       if(mode === 'se'){ a.push(3.3*s - noise*NC[i]); b.push(0); rx.push(a[i]); }
-      else { const nm = twist ? NC[i] : .55*NC[i] + .45*NI[i]; a.push(1.2 + .2*(2*s - 1) + noise*NC[i]); b.push(1.2 - .2*(2*s - 1) + noise*nm); rx.push(a[i] - b[i]); }
+      else { const nm = twist ? NC[i] : .75*NC[i] + .25*NI[i]; a.push(1.2 + .2*(2*s - 1) + noise*NC[i]); b.push(1.2 - .2*(2*s - 1) + noise*nm); rx.push(a[i] - b[i]); }
     }
     const th = mode === 'se' ? 1.65 : 0; let err = 0, margin = Infinity;
     BITS.forEach((s, k) => { const v = rx[k*SPB + SPB/2], r = v > th ? 1 : 0; dec.push(r); if(r !== s) err++; margin = Math.min(margin, (s ? v - th : th - v)); });
@@ -1211,6 +1213,7 @@ cre(4, 'Diferenciální pár proti rušení', 'Pošli bity po kabelu, do kteréh
     return r;
   }
   function render(){
+    onKey = null;
     labShell(4, 'Diferenciální pár proti rušení', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b>')+'</p>'+
       '<div class="dpctl"><div class="seg ledseg"><button class="'+(mode === 'se' ? 'on' : '')+'" data-m="se">jeden vodič proti zemi</button><button class="'+(mode === 'diff' ? 'on' : '')+'" data-m="diff">diferenciální pár</button></div>'+
       '<label class="dptw'+(mode === 'diff' ? '' : ' off')+'"><input type="checkbox" id="dptw"'+(twist ? ' checked' : '')+(mode === 'diff' ? '' : ' disabled')+'> kroucené vodiče</label></div>'+
@@ -1243,6 +1246,7 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
     {t:'Zapni CSM (legacy režim) a zkus nabootovat. Co se stane se Secure Bootem?', ok:r => r.csm}
   ];
   let sb = true, csm = false, bl = true, ld = 'wbm', ti = 0, run = null, busy = false;
+  const me = window.__sbInst = (window.__sbInst || 0) + 1;   // časovač patří jen této instanci dílny
   const H = s => { let h = 0x811c9dc5; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16).toUpperCase().padStart(8, '0'); };
   const ext = (pcr, m) => H(pcr + '|' + m);
   const Z = '00000000';
@@ -1250,34 +1254,34 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
   const SEALED = pcrs(true, false, 'wbm');
   function simulate(){
     const eff = sb && !csm, st = [], P = {p0:Z, p4:Z, p7:Z};
-    st.push({id:'fw', t:'UEFI firmware', s:'ok', m:csm ? 'CSM zapnutý: firmware emuluje BIOS a bootuje z MBR – Secure Boot nejde použít' : 'POST, inicializace HW; Secure Boot '+(eff ? 'zapnutý' : 'vypnutý')});
     P.p0 = ext(Z, 'UEFI 2.7 firmware'); P.p7 = ext(Z, 'SecureBoot=' + (eff ? 1 : 0));
+    st.push({id:'fw', t:'UEFI firmware', s:'ok', P:{...P}, m:csm ? 'CSM zapnutý: firmware emuluje BIOS a bootuje z MBR – Secure Boot nejde použít' : 'POST, inicializace HW; Secure Boot '+(eff ? 'zapnutý' : 'vypnutý')});
     const L = LD[ld];
     let end = 'ok';
     if(eff && (!L.signed || L.dbx)){
-      st.push({id:'ld', t:L.t, s:'blocked', m:L.dbx ? 'Hash zavaděče je v databázi zakázaných (dbx) – Secure Boot ho nespustí' : 'Chybí platný digitální podpis – Secure Boot spuštění zastavil'});
+      st.push({id:'ld', t:L.t, s:'blocked', P:{...P}, m:L.dbx ? 'Hash zavaděče je v databázi zakázaných (dbx) – Secure Boot ho nespustí' : 'Chybí platný digitální podpis – Secure Boot spuštění zastavil'});
       end = 'blocked';
     } else {
-      st.push({id:'ld', t:csm ? 'Zavaděč z MBR (legacy)' : L.t, s:!L.signed && !csm ? 'warn' : 'ok', m:csm ? 'Legacy boot: zaváděcí kód z MBR, podpisy se nekontrolují' : eff ? 'Podpis ověřen: '+L.s : 'Secure Boot vypnutý – podpis se nekontroluje ('+L.s+')'});
       P.p4 = ext(Z, csm ? 'MBR legacy' : 'efi:' + ld);
-      st.push({id:'krn', t:ld === 'shim' ? 'Jádro Linuxu' : 'Jádro Windows + ovladače', s:ld === 'kit' && !csm ? 'warn' : 'ok', m:ld === 'kit' && !csm ? 'Jádro běží, ale bootkit se zavedl dřív a antivirus ho nevidí' : 'Zavaděč ověřil a spustil jádro'});
+      st.push({id:'ld', t:csm ? 'Zavaděč z MBR (legacy)' : L.t, s:!L.signed && !csm ? 'warn' : 'ok', P:{...P}, m:csm ? 'Legacy boot: zaváděcí kód z MBR, podpisy se nekontrolují' : eff ? 'Podpis ověřen: '+L.s : 'Secure Boot vypnutý – podpis se nekontroluje ('+L.s+')'});
+      st.push({id:'krn', t:ld === 'shim' ? 'Jádro Linuxu' : 'Jádro Windows + ovladače', s:ld === 'kit' && !csm ? 'warn' : 'ok', P:{...P}, m:ld === 'kit' && !csm ? 'Jádro běží, ale bootkit se zavedl dřív a antivirus ho nevidí' : 'Zavaděč ověřil a spustil jádro'});
       if(bl && ld !== 'shim'){
         const ok = P.p0 === SEALED.p0 && P.p4 === SEALED.p4 && P.p7 === SEALED.p7;
-        st.push({id:'bl', t:'BitLocker + TPM', s:ok ? 'ok' : 'blocked', m:ok ? 'Registry PCR odpovídají zapečetěným hodnotám → TPM uvolnil klíč, disk je odemčený' : 'PCR se liší od zapečetěných hodnot → TPM klíč neuvolní → zadej 48místný obnovovací klíč BitLockeru'});
+        st.push({id:'bl', t:'BitLocker + TPM', s:ok ? 'ok' : 'blocked', P:{...P}, m:ok ? 'Registry PCR odpovídají zapečetěným hodnotám → TPM uvolnil klíč, disk je odemčený' : 'PCR se liší od zapečetěných hodnot → TPM klíč neuvolní → zadej 48místný obnovovací klíč BitLockeru'});
         if(!ok) end = 'recovery';
-      } else st.push({id:'bl', t:bl ? 'BitLocker' : 'Disk bez šifrování', s:'ok', m:bl ? 'Linux disk BitLockerem nešifruje' : 'BitLocker je vypnutý – disk není šifrovaný, TPM nic nekontroluje'});
+      } else st.push({id:'bl', t:bl ? 'BitLocker' : 'Disk bez šifrování', s:'ok', P:{...P}, m:bl ? 'Linux disk BitLockerem nešifruje' : 'BitLocker je vypnutý – disk není šifrovaný, TPM nic nekontroluje'});
     }
     return {st, P, end, sb:eff, bl, ld, csm};
   }
   function chain(){
     const stages = ['fw','ld','krn','bl'], names = {fw:'UEFI firmware', ld:'Zavaděč', krn:'Jádro OS', bl:'BitLocker / TPM'};
     const shown = run ? run.r.st.slice(0, run.k) : [];
-    return '<div class="sbchain">'+stages.map((id, i) => { const s = shown.find(x => x.id === id); const st = s ? s.s : run && run.k > i ? 'skip' : 'wait';
+    return '<div class="sbchain">'+stages.map((id, i) => { const s = shown.find(x => x.id === id); const st = s ? s.s : run && run.k >= run.r.st.length ? 'skip' : 'wait';
       return (i ? '<i class="sbar'+(s ? ' on' : '')+'">→</i>' : '')+'<div class="sbst '+st+'"><b>'+esc(s ? s.t : names[id])+'</b><span>'+(s ? esc(s.m) : st === 'skip' ? 'nespustilo se' : 'čeká')+'</span><em>'+({ok:'✓', warn:'!', blocked:'✗', wait:'·', skip:'—'})[st]+'</em></div>'; }).join('')+'</div>';
   }
   function pcrPanel(){
-    const P = run && run.k >= 1 ? run.r.P : {p0:'—', p4:'—', p7:'—'};
-    const row = (k, lbl) => { const v = P[k], s = SEALED[k], m = run && run.k >= 2 && v === s; return '<tr><td>PCR'+k.slice(1)+'</td><td>'+lbl+'</td><td class="mono '+(run && run.k >= 2 ? (m ? 'ok' : 'bad') : '')+'">'+v+'</td><td class="mono">'+s+'</td></tr>'; };
+    const P = run && run.k >= 1 ? run.r.st[run.k - 1].P : {p0:Z, p4:Z, p7:Z};
+    const row = (k, lbl) => { const v = P[k], s = SEALED[k], meas = v !== Z; return '<tr><td>PCR'+k.slice(1)+'</td><td>'+lbl+'</td><td class="mono '+(meas ? (v === s ? 'ok' : 'bad') : '')+'">'+(meas ? v : '—')+'</td><td class="mono">'+s+'</td></tr>'; };
     return '<div class="sbpcr"><h4>TPM – registry PCR</h4><table class="tbl"><tr><th></th><th>měří</th><th>teď</th><th>zapečetěno</th></tr>'+row('p0', 'firmware')+row('p4', 'zavaděč')+row('p7', 'politika Secure Boot')+'</table>'+
       '<p class="muted small">PCR se nedá přepsat, jen „rozšířit“: PCR = hash(PCR + měření). Klíč BitLockeru je zapečetěný k hodnotám PCR při bezpečném startu.</p></div>';
   }
@@ -1289,11 +1293,12 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
       : ld === 'kit' ? '<div class="sbscr warn"><b>Systém nabootoval</b><span>…ale v paměti běží bootkit. Nic to neodhalilo.</span></div>'
       : '<div class="sbscr ok"><b>'+(ld === 'shim' ? 'Linux se spouští' : 'Windows se spouští')+'</b><span>'+(bl && ld !== 'shim' ? 'Disk odemčený klíčem z TPM.' : 'Start proběhl.')+'</span></div>';
   }
-  const tog = (id, on, lbl, dis) => '<button class="sbtog'+(on ? ' on' : '')+'" id="'+id+'"'+(dis ? ' disabled' : '')+'><i></i>'+lbl+'</button>';
+  const tog = (id, on, lbl, dis) => '<button class="sbtog'+(on ? ' on' : '')+'" id="'+id+'"'+(dis || busy ? ' disabled' : '')+'><i></i>'+lbl+'</button>';
   function render(){
+    onKey = null;
     labShell(14, 'Secure Boot a TPM', '<p class="dgtask">'+(ti < TASKS.length ? '<b>Úkol '+(ti+1)+'/'+TASKS.length+':</b> '+esc(TASKS[ti].t) : '<b>Všechny úkoly splněné.</b>')+'</p>'+
       '<div class="sbx"><div class="sbfw"><h4>Nastavení UEFI</h4>'+tog('sbsb', sb && !csm, 'Secure Boot', csm)+tog('sbcsm', csm, 'CSM (legacy BIOS)')+tog('sbbl', bl, 'BitLocker s TPM')+
-        '<h4>Zavaděč na disku</h4>'+Object.keys(LD).map(k => '<label class="sbld'+(ld === k ? ' on' : '')+'"><input type="radio" name="sbld" value="'+k+'"'+(ld === k ? ' checked' : '')+'><b>'+esc(LD[k].t)+'</b><span>'+esc(LD[k].s)+'</span></label>').join('')+
+        '<h4>Zavaděč na disku</h4>'+Object.keys(LD).map(k => '<label class="sbld'+(ld === k ? ' on' : '')+'"><input type="radio" name="sbld" value="'+k+'"'+(ld === k ? ' checked' : '')+(busy ? ' disabled' : '')+'><b>'+esc(LD[k].t)+'</b><span>'+esc(LD[k].s)+'</span></label>').join('')+
         '<button class="btn" id="sbgo"'+(busy ? ' disabled' : '')+'>⏻ Zapnout počítač</button></div>'+
       '<div class="sbmain">'+chain()+'<div class="sbbot">'+screen()+pcrPanel()+'</div></div></div>'+
       (ti >= TASKS.length ? '<div class="row" style="margin-top:12px"><button class="btn" id="sbfin">Dokončit</button></div>' : ''),
@@ -1309,7 +1314,7 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
     if(busy) return;
     busy = true; run = {r:simulate(), k:0}; beep('tick'); render();
     const step = () => {
-      if(!$('#sbgo')){ busy = false; return; }
+      if(window.__sbInst !== me || !$('#sbgo')){ busy = false; return; }
       run.k++; beep(run.r.st[run.k - 1].s === 'blocked' ? 'bad' : 'tick');
       if(run.k < run.r.st.length){ render(); setTimeout(step, 650); return; }
       busy = false;
@@ -1323,6 +1328,6 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
 
 /* ---------- štítek „mimo PDF“ u laboratoří, které nevycházejí z podkladů ---------- */
 (function(){
-  const XL = new Set(['Diferenciální pár proti rušení','Secure Boot a TPM','Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
+  const XL = new Set(['Digitalizuj signál','Diferenciální pár proti rušení','Secure Boot a TPM','Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
   Object.keys(LABS).forEach(k => LABS[k].forEach(l => { if(XL.has(l.name) || (T[k] && T[k].x)) l.x = true; }));
 })();
