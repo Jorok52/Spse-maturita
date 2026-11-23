@@ -63,7 +63,7 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
   const DESC = {LOAD:'ALU: střadač ← M[a]', LOADI:'střadač ← číslo', STORE:'M[a] ← střadač', ADD:'ALU: střadač + M[a]', SUB:'ALU: střadač − M[a]', INC:'ALU: střadač + 1', DEC:'ALU: střadač − 1', JMP:'řadič: PC ← návěští', JZ:'řadič: skok, je-li Z = 1', JN:'řadič: skok, je-li N = 1', HALT:'stop'};
   function phaseStep(){
     if(cpu.halted) return;
-    if(cpu.pc >= prog.length){ cpu.halted = true; return; }
+    if(cpu.phase === 'fetch' && cpu.pc >= prog.length){ cpu.halted = true; return; }   // konec programu se pozná jen při načítání další instrukce
     if(cpu.phase === 'fetch'){ cpu.cur = prog[cpu.pc]; cpu.ir = cpu.cur.txt; cpu.at = cpu.pc; cpu.pc++; cpu.phase = 'decode'; cpu.last = 'fetch'; cpu.dec = ''; }
     else if(cpu.phase === 'decode'){ cpu.dec = DESC[cpu.cur.op]; cpu.phase = 'execute'; cpu.last = 'decode'; }
     else { exec1(cpu, cpu.cur); cpu.steps++; cpu.phase = 'fetch'; cpu.last = 'execute'; }
