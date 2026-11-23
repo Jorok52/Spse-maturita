@@ -1,14 +1,16 @@
 /* ================= LABORATOŘ (v2) ================= */
 const LABS = {};
-function lab(n, name, desc, run){ (LABS[n] = LABS[n] || []).push({name, desc, run}); }
+let LVBACK = null;   // návrat na výběr úrovní právě spuštěné laboratoře
+function lab(n, name, desc, run){ (LABS[n] = LABS[n] || []).push({name, desc, run:(...a) => { LVBACK = null; return run(...a); }}); }
 function $(s){ return view.querySelector(s); }
 function $$(s){ return view.querySelectorAll(s); }
 function setKeys(f){ onKey = f; }
 function labShell(n, title, inner, hint){
-  view.innerHTML = '<div class="bench wide"><button class="back" id="back">← Zpět na téma</button>'+
+  view.innerHTML = '<div class="bench wide"><div class="lbtop"><button class="back" id="back">← Zpět na téma</button>'+(LVBACK && LVBACK.n === n ? '<button class="back lvbk" id="lvbk">≡ Výběr úrovně</button>' : '')+'</div>'+
     '<div class="eyebrow">Laboratoř · '+ref(n)+' · '+esc(T[n].t)+'</div><h2 class="labh">'+esc(title)+'</h2>'+inner+
     (hint ? '<div class="kbdhint">'+hint+'</div>' : '')+'</div>';
   $('#back').onclick = () => { onKey = null; renderTopic(n); };
+  if($('#lvbk')) $('#lvbk').onclick = () => { onKey = null; LVBACK.fn(); };
 }
 function labDone(n, title, tiles, xp, again, extra){
   onKey = null; addXP(xp);
@@ -19,6 +21,18 @@ function labDone(n, title, tiles, xp, again, extra){
   $('#again').onclick = again; $('#bk').onclick = () => renderTopic(n);
   onKey = e => { if(e.key === 'Enter'){ e.preventDefault(); again(); } };
   window.scrollTo(0,0);
+}
+/* ---------- výběr úrovní ---------- */
+function lvStore(n, name){ try{ return JSON.parse(localStorage.getItem('md3-lv-'+n+'-'+name) || '{}') || {}; }catch(e){ return {}; } }
+function lvMark(n, name, k){ const d = lvStore(n, name); d[k] = 1; try{ localStorage.setItem('md3-lv-'+n+'-'+name, JSON.stringify(d)); }catch(e){} }
+function levelPick(n, name, levels, start, note){
+  onKey = null; LVBACK = null;
+  const done = lvStore(n, name), cnt = levels.filter((_, k) => done[k]).length;
+  labShell(n, name, '<p class="muted" style="max-width:66ch">'+(note || 'Vyber úroveň – začít můžeš kdekoli. Po splnění pokračuješ další úrovní.')+'</p>'+
+    '<div class="lvpk"><span>splněno '+cnt+' z '+levels.length+'</span><i style="--p:'+(cnt / levels.length * 100)+'%"></i></div>'+
+    '<div class="lvgrid">'+levels.map((l, k) => '<button class="lvcard'+(done[k] ? ' pass' : '')+'" data-k="'+k+'"><span class="lvno">'+(k+1)+'</span><span class="lvtxt"><b>'+esc(l[0])+'</b><span>'+esc(l[1] || '')+'</span></span><span class="lvstars" aria-label="'+(done[k] ? 'splněno' : 'nesplněno')+'"><i class="'+(done[k] ? 'on' : '')+'"></i></span></button>').join('')+'</div>', '');
+  $$('.lvcard').forEach(b => b.onclick = () => { beep('tick'); LVBACK = {n, fn:() => levelPick(n, name, levels, start, note)}; start(+b.dataset.k); window.scrollTo(0, 0); });
+  window.scrollTo(0, 0);
 }
 function flash(el, cls){ if(!el) return; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 450); }
 const fmt = (v, d) => Number(v).toLocaleString('cs-CZ', {maximumFractionDigits: d == null ? 3 : d, minimumFractionDigits: d || 0});
@@ -367,7 +381,7 @@ lab(5, 'Kroky převodu A→D', 'Seřaď kroky převodu.', orderLab(5, 'Kroky př
 
 /* ================= T6 – plánovač ================= */
 lab(6, 'Buď plánovač procesů', 'Vybírej, který proces dostane CPU (FCFS, SJF, SRTF, RR), a sleduj Ganttův diagram.', n => {
-  const ALG = ['FCFS','SJF','SRTF','RR'][ri(0,3)], Q = 2;
+  const ALGS = ['FCFS','SJF','SRTF','RR']; let ALG = ALGS[0]; const Q = 2;
   const P = Array.from({length:4}, (_,i) => ({at: i===0 ? 0 : ri(0,6), bt: ri(1,6)})).sort((a,b) => a.at - b.at).map((p,i) => ({...p, name:'P'+(i+1), rem:p.bt, ct:null, enq:false}));
   let t = 0, mistakes = 0; const gantt = []; let queue = []; let cand = []; let runLen = 0;
   function arrive(upTo){ P.forEach(p => { if(!p.enq && p.at <= upTo){ p.enq = true; queue.push(p); } }); }
@@ -442,9 +456,10 @@ lab(6, 'Buď plánovač procesů', 'Vybírej, který proces dostane CPU (FCFS, S
   }
   function finish(){
     const avgW = P.reduce((s,p) => s + (p.ct-p.at-p.bt), 0)/P.length, avgT = P.reduce((s,p) => s + (p.ct-p.at), 0)/P.length;
+    lvMark(6, 'Buď plánovač procesů', ALGS.indexOf(ALG));
     labDone(6, 'Plánování '+ALG+' hotové', [[mistakes, 'chyby'], [fmt(avgW,2), 'průměrné WT'], [fmt(avgT,2), 'průměrné TAT']], Math.max(8, 30 - mistakes*5), () => LABS[6][0].run(6), table(true)+ganttHTML());
   }
-  decide();
+  levelPick(6, 'Buď plánovač procesů', ALGS.map(a => [a, {"FCFS": "kdo dřív přijde, běží celý (nepreemptivní)", "SJF": "nejkratší úloha první (nepreemptivní)", "SRTF": "nejkratší zbývající čas (preemptivní)", "RR": "kvantum 2, fronta dokola"}[a]]), k => { ALG = ALGS[k]; decide(); }, 'Vyber plánovací algoritmus. Procesy a jejich časy se pokaždé vygenerují nové.');
 });
 lab(6, 'Preemptivní, nebo ne?', 'Roztřiď plánovací algoritmy.', bucketLab(6, 'Preemptivní, nebo ne?', 'Může algoritmus procesu odebrat CPU?', ['Nepreemptivní','Preemptivní'],
   [['FCFS',0],['SJF',0],['SRTF',1],['Round Robin',1],['Priority Scheduling (dle podkladů)',1],['MFQS',1]]));
@@ -493,7 +508,7 @@ lab(7, 'Problémy synchronizace', 'Přiřaď popis k problému.', bucketLab(7, '
 
 /* ================= T8 – stránky ================= */
 lab(8, 'Výměna stránek', 'Při výpadku stránky vyber rámec, který se vymění (FIFO, LRU, OPT).', n => {
-  const ALG = ['FIFO','LRU','OPT'][ri(0,2)], F = 3;
+  const ALGS = ['FIFO','LRU','OPT']; let ALG = ALGS[0]; const F = 3;
   const refs = []; while(refs.length < 12){ const p = ri(0,5); if(refs[refs.length-1] !== p) refs.push(p); }
   const fr = Array(F).fill(null), loaded = Array(F).fill(-1), used = Array(F).fill(-1);
   let i = 0, faults = 0, mistakes = 0; const hist = []; let need = null;
@@ -509,6 +524,7 @@ lab(8, 'Výměna stránek', 'Při výpadku stránky vyber rámec, který se vym�
       else { const nxt = fr.map(q => { const k = refs.indexOf(q, i+1); return k < 0 ? Infinity : k; }); const m = Math.max(...nxt); ok = nxt.map((x,k) => x === m ? k : -1).filter(k => k >= 0); }
       need = ok; return render();
     }
+    lvMark(8, 'Výměna stránek', ALGS.indexOf(ALG));
     labDone(8, ALG+': '+faults+' výpadků stránky', [[faults, 'výpadků'], [mistakes, 'chyby']], Math.max(8, 30 - mistakes*5), () => LABS[8][0].run(8), histHTML());
   }
   function histHTML(){
@@ -534,7 +550,7 @@ lab(8, 'Výměna stránek', 'Při výpadku stránky vyber rámec, který se vym�
       else { mistakes++; beep('bad'); flash(b,'shake'); toast('Podle '+ALG+' to má být rámec '+need.join(' nebo ')); }
     });
   }
-  advance();
+  levelPick(8, 'Výměna stránek', ALGS.map(a => [a, {"FIFO": "vyhoď stránku, která je v paměti nejdéle", "LRU": "vyhoď nejdéle nepoužitou stránku", "OPT": "vyhoď stránku potřebnou nejpozději"}[a]]), k => { ALG = ALGS[k]; advance(); }, 'Vyber algoritmus výměny stránek. Posloupnost požadavků se pokaždé vygeneruje nová.');
 });
 lab(8, 'Logická → fyzická adresa', 'Počítej adresy u souvislé oblasti a stránkování.', calcLab(8, 'Překlad adres', () => {
   if(Math.random() < .5){ const b = ri(1,9)*1000, l = ri(10,900); return mcqOf('Bázový registr = '+b+', logická adresa = '+l+'. Fyzická adresa?', String(b+l), [String(b), String(b-l), String(l)], 8); }
@@ -546,12 +562,13 @@ lab(8, 'Strategie přidělování', 'Přiřaď vlastnost ke strategii.', bucketL
 
 /* ================= T9 – disk ================= */
 lab(9, 'Plánování přístupu na disk', 'Klikej na požadavky v pořadí, v jakém je obslouží algoritmus.', n => {
-  const ALG = ['FCFS','SSTF','SCAN','C-SCAN','LOOK','C-LOOK'][ri(0,5)], MAX = 199;
+  const ALGS = ['FCFS','SSTF','SCAN','C-SCAN','LOOK','C-LOOK']; let ALG = ALGS[0]; const MAX = 199;
   const head0 = ri(30,170); const reqs = []; while(reqs.length < 7){ const r = ri(0, MAX); if(r !== head0 && !reqs.includes(r) && Math.abs(r-head0) > 2) reqs.push(r); }
   let head = head0, pending = reqs.slice(), order = [], mistakes = 0; const path = [head0];
   const ups = reqs.filter(r => r > head0).sort((a,b) => a-b), downs = reqs.filter(r => r < head0);
-  const plan = {FCFS: reqs.slice(), SCAN: ups.concat(downs.slice().sort((a,b) => b-a)), LOOK: ups.concat(downs.slice().sort((a,b) => b-a)),
-    'C-SCAN': ups.concat(downs.slice().sort((a,b) => a-b)), 'C-LOOK': ups.concat(downs.slice().sort((a,b) => a-b))}[ALG];
+  const PLANS = {FCFS: reqs.slice(), SCAN: ups.concat(downs.slice().sort((a,b) => b-a)), LOOK: ups.concat(downs.slice().sort((a,b) => b-a)),
+    'C-SCAN': ups.concat(downs.slice().sort((a,b) => a-b)), 'C-LOOK': ups.concat(downs.slice().sort((a,b) => a-b))};
+  let plan = null;
   function acceptable(){
     if(ALG === 'SSTF'){ const d = Math.min(...pending.map(r => Math.abs(r-head))); return pending.filter(r => Math.abs(r-head) === d); }
     return [plan[order.length]];
@@ -582,11 +599,11 @@ lab(9, 'Plánování přístupu na disk', 'Klikej na požadavky v pořadí, v ja
       {FCFS:'FCFS: v pořadí příchodu.', SSTF:'SSTF: vždy nejbližší požadavek k hlavičce.', SCAN:'SCAN: jede nahoru až na konec (199), pak zpět dolů.', 'C-SCAN':'C-SCAN: jede jen nahoru, na konci skočí na 0 a pokračuje nahoru.', LOOK:'LOOK: jako SCAN, ale otočí se u posledního požadavku.', 'C-LOOK':'C-LOOK: jako C-SCAN, ale skočí rovnou na nejnižší požadavek.'}[ALG]);
     $$('.pick').forEach(b => b.onclick = () => {
       const r = +b.dataset.r, ok = acceptable();
-      if(ok.includes(r)){ beep('ok'); moveTo(r); order.push(r); pending.splice(pending.indexOf(r),1); if(!pending.length) return labDone(9, ALG+' hotovo', [[total(), 'pohyb hlavičky (stop)'], [mistakes, 'chyby']], Math.max(8, 30 - mistakes*4), () => LABS[9][0].run(9), svg()); render(); }
+      if(ok.includes(r)){ beep('ok'); moveTo(r); order.push(r); pending.splice(pending.indexOf(r),1); if(!pending.length) lvMark(9, 'Plánování přístupu na disk', ALGS.indexOf(ALG)); return labDone(9, ALG+' hotovo', [[total(), 'pohyb hlavičky (stop)'], [mistakes, 'chyby']], Math.max(8, 30 - mistakes*4), () => LABS[9][0].run(9), svg()); render(); }
       else { mistakes++; beep('bad'); flash(b,'err'); toast('Podle '+ALG+' teď přijde '+ok.join(' nebo ')); }
     });
   }
-  render();
+  levelPick(9, 'Plánování přístupu na disk', ALGS.map(a => [a, {"FCFS": "v pořadí příchodu", "SSTF": "nejbližší požadavek", "SCAN": "výtah – až na kraj a zpět", "C-SCAN": "jedním směrem, skok na začátek", "LOOK": "jako SCAN, otočí se u posledního", "C-LOOK": "jako C-SCAN, skok k nejnižšímu požadavku"}[a]]), k => { ALG = ALGS[k]; plan = PLANS[ALG]; render(); }, 'Vyber plánovací algoritmus. Fronta požadavků a poloha hlavičky se pokaždé vygenerují nové.');
 });
 lab(9, 'Rotační latence', 'Spočítej průměrnou latenci z otáček.', calcLab(9, 'Rotační latence', () => {
   const rpm = [4200,5400,7200,10000,15000][ri(0,4)], lat = 60000/rpm/2;
@@ -820,13 +837,13 @@ lab(14, 'MBR v hex editoru', 'Jako v DiskEditu: najdi v 512 B sektoru tabulku od
     $$('.hb').forEach(b => b.onmouseenter = () => { const o = +b.dataset.o; $('#hoff').innerHTML = 'offset <b>0x'+o.toString(16).toUpperCase().padStart(3,'0')+'</b> = '+o+' · řádek 0x'+(o & ~15).toString(16).toUpperCase().padStart(4,'0')+' + '+(o & 15)+' · hodnota '+hx2(B[o]); });
     $$('.hb').forEach(b => b.onclick = () => {
       const o = +b.dataset.o;
-      if(TASKS[ti][1].includes(o)){ TASKS[ti][1].forEach(x => found.add(x)); beep('ok'); toast(TASKS[ti][2]); ti++;
+      if(TASKS[ti][1].includes(o)){ TASKS[ti][1].forEach(x => found.add(x)); beep('ok'); toast(TASKS[ti][2]); lvMark(14, 'MBR v hex editoru', ti); ti++;
         if(ti >= TASKS.length) return labDone(14, 'MBR přečtený', [[mistakes, 'chyby'], [(n1/2048).toLocaleString('cs-CZ')+' MiB', 'velikost oddílu 1']], Math.max(8, 36 - mistakes*4), () => LABS[14][0].run(14), '<div class="mbrside" style="margin-top:16px">'+side()+'</div>');
         render(); }
       else { mistakes++; beep('bad'); flash(b,'err'); toast('Tohle je offset 0x'+o.toString(16).toUpperCase()); }
     });
   }
-  render();
+  levelPick(14, 'MBR v hex editoru', TASKS.map((t, k) => [['Boot signatura','Začátek tabulky oddílů','Aktivní oddíl','Typ 1. oddílu','Typ 2. oddílu','Začátek 1. oddílu (LBA)'][k], t[0]]), k => { ti = k; found.clear(); TASKS.slice(0, k).forEach(t => t[1].forEach(x => found.add(x))); render(); });
 });
 lab(14, 'RAID: kapacita a přežití', 'Spočítej kapacitu pole a rozhodni, jestli přežije výpadek.', calcLab(14, 'RAID', () => {
   const lv = [0,1,5,6,10][ri(0,4)], s = [1,2,4][ri(0,2)];

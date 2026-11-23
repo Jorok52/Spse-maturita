@@ -24,10 +24,15 @@ lab(1, 'Najdi chybu v kódu', 'Kód se přeloží, ale nefunguje správně. Kde 
 /* ---------- T2: mini procesor (kreativní) ---------- */
 cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembleru a sleduj fázi fetch – decode – execute.', n => {
   const TASKS = [
-    {t:'Sečti M[0] a M[1], výsledek ulož do M[2].', start:'LOAD 0\n; sem doplň\nHALT', f:(a,b) => a+b, edge:[[0,0],[50,49]], gen:() => [ri(0,50), ri(0,50)]},
-    {t:'Odečti M[1] od M[0] a výsledek ulož do M[2].', start:'LOAD 0\n\nHALT', f:(a,b) => a-b, edge:[[20,20],[90,0]], gen:() => [ri(20,90), ri(0,20)]},
-    {t:'Vynásob M[0] × M[1] opakovaným sčítáním (M[1] ≥ 0), výsledek do M[2]. Tip: M[3] = 1 jako konstanta.', start:'; M[3] = 1 (konstanta)\nLOADI 0\nSTORE 2\nloop:\n  LOAD 1\n  JZ konec\n  ; sem doplň tělo cyklu\n  JMP loop\nkonec:\nHALT', f:(a,b) => a*b, mem:[0,1], edge:[[7,0],[0,5],[9,6]], gen:() => [ri(0,9), ri(0,6)]},
-    {t:'Do M[2] ulož větší z čísel M[0] a M[1]. Tip: JN skáče, když je výsledek záporný.', start:'LOAD 0\nSUB 1\n; JN …\nHALT', f:(a,b) => Math.max(a,b), edge:[[30,70],[70,30],[42,42],[0,99]], gen:() => [ri(0,99), ri(0,99)]}
+    {name:'Sčítání', t:'Sečti M[0] a M[1], výsledek ulož do M[2].', start:'LOAD 0\n; sem doplň\nHALT', f:(a,b) => a+b, edge:[[0,0],[50,49]], gen:() => [ri(0,50), ri(0,50)]},
+    {name:'Odčítání', t:'Odečti M[1] od M[0] a výsledek ulož do M[2].', start:'LOAD 0\n\nHALT', f:(a,b) => a-b, edge:[[20,20],[90,0]], gen:() => [ri(20,90), ri(0,20)]},
+    {name:'Násobení', t:'Vynásob M[0] × M[1] opakovaným sčítáním (M[1] ≥ 0), výsledek do M[2]. Tip: M[3] = 1 jako konstanta.', start:'; M[3] = 1 (konstanta)\nLOADI 0\nSTORE 2\nloop:\n  LOAD 1\n  JZ konec\n  ; sem doplň tělo cyklu\n  JMP loop\nkonec:\nHALT', f:(a,b) => a*b, mem:[0,1], edge:[[7,0],[0,5],[9,6]], gen:() => [ri(0,9), ri(0,6)]},
+    {name:'Maximum', t:'Do M[2] ulož větší z čísel M[0] a M[1]. Tip: JN skáče, když je výsledek záporný.', start:'LOAD 0\nSUB 1\n; JN …\nHALT', f:(a,b) => Math.max(a,b), edge:[[30,70],[70,30],[42,42],[0,99]], gen:() => [ri(0,99), ri(0,99)]},
+    {name:'Absolutní hodnota', t:'Do M[2] ulož absolutní hodnotu M[0] (M[0] může být záporné). Tip: −x získáš jako 0 − x.', start:'LOAD 0\n; JN …\nHALT', f:a => Math.abs(a), edge:[[0,0],[-7,0],[12,0],[-50,0]], gen:() => [ri(-50,50), 0]},
+    {name:'Součet 1 + … + n', t:'Do M[2] ulož součet 1 + 2 + … + M[0] (M[0] je 0 až 10). Tip: přičítej M[0] a pak ho zmenši o 1 instrukcí DEC.', start:'LOADI 0\nSTORE 2\nloop:\n  LOAD 0\n  JZ konec\n  ; přičti M[0] k M[2] a M[0] zmenši o 1\n  JMP loop\nkonec:\nHALT', f:a => a*(a+1)/2, edge:[[0,0],[1,0],[10,0]], gen:() => [ri(0,10), 0]},
+    {name:'Celočíselné dělení', t:'Do M[2] ulož celočíselný podíl M[0] div M[1] (M[1] ≥ 1) opakovaným odčítáním.', start:'LOADI 0\nSTORE 2\nloop:\n  LOAD 0\n  SUB 1\n  JN konec\n  ; ulož zbytek do M[0] a zvyš podíl v M[2]\n  JMP loop\nkonec:\nHALT', f:(a,b) => Math.floor(a/b), edge:[[0,5],[7,7],[6,7],[60,1]], gen:() => [ri(0,60), ri(1,9)]},
+    {name:'Mocnina dvou', t:'Do M[2] ulož 2 na M[0] (M[0] je 0 až 7). Tip: zdvojnásobit = přičíst číslo samo k sobě.', start:'LOADI 1\nSTORE 2\nloop:\n  LOAD 0\n  JZ konec\n  ; zdvojnásob M[2] a M[0] zmenši o 1\n  JMP loop\nkonec:\nHALT', f:a => 2**a, edge:[[0,0],[1,0],[7,0]], gen:() => [ri(0,7), 0]},
+    {name:'Sudé, nebo liché', t:'Do M[2] ulož 1, je-li M[0] sudé, jinak 0 (M[0] je 0 až 99). Tip: v M[3] je konstanta 2 – odečítej ji, dokud nedojdeš k nule, nebo pod ni.', start:'LOAD 0\nloop:\n  JZ sude\n  ; odečti 2 a rozhodni\n  JMP loop\nsude:\n  LOADI 1\n  STORE 2\n  HALT', f:a => a % 2 === 0 ? 1 : 0, mem:[0,2], edge:[[0,0],[1,0],[2,0],[99,0]], gen:() => [ri(0,99), 0]}
   ];
   let ti = 0, code = TASKS[0].start, cpu, prog, err = '';
   const HELP = 'LOAD a · LOADI n · STORE a · ADD a · SUB a · INC · DEC · JMP L · JZ L · JN L · HALT · návěští „jméno:“ · komentář „;“';
@@ -131,10 +136,10 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
     try{ prog = parse(code); }catch(e){ err = e.message; render(); return; }
     let ok = 0; const res = [], TS = tests(TASKS[ti]);
     for(const t of TS){ const c = {}; reset(t.m); Object.assign(c, cpu); const fin = runAll(c, prog); const good = fin && c.mem[2] === t.want; if(good) ok++; res.push((good?'✓':'✗')+' M[0]='+t.m[0]+', M[1]='+t.m[1]+' → M[2]='+c.mem[2]+(good?'':' (má být '+t.want+')')); }
-    if(ok === TS.length){ beep('ok'); toast('Úloha splněna!'); addXP(15); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length, 'úloh']], 25, () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
+    if(ok === TS.length){ beep('ok'); toast('Úloha splněna!'); addXP(15); lvMark(2, 'Naprogramuj procesor', ti); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length, 'úloh']], 25, () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
     else { beep('bad'); err = 'Testy: '+ok+'/'+TS.length+'\n'+res.join('\n'); render(); }
   }
-  reset([]); render();
+  levelPick(2, 'Naprogramuj procesor', TASKS.map(t => [t.name, t.t]), k => { ti = k; code = TASKS[k].start; prog = null; err = ''; reset([]); render(); });
 });
 
 /* ---------- T3: PLA programátor (kreativní) ---------- */
@@ -196,9 +201,9 @@ cre(3, 'Naprogramuj PLA', 'Propal propojky ve schématu PLA (pole AND a OR) tak,
     $$('.plasw').forEach(b => b.onclick = () => { cur ^= (4 >> +b.dataset.j); beep('tick'); render(); });
     $$('.plarow').forEach(r => r.onclick = () => { cur = +r.dataset.x; render(); });
     $('#hn').onclick = () => { hint = true; render(); }; $('#cl').onclick = () => { reset(); render(); };
-    $('#dn').onclick = () => { beep('ok'); lvl++; if(lvl >= FN.length) return labDone(3, 'PLA naprogramováno', [[FN.length, 'funkcí'], [tries, 'propálení']], 35, () => LABS[3].find(l => l.name === 'Naprogramuj PLA').run(3)); toast('Funkce sedí!'); reset(); render(); };
+    $('#dn').onclick = () => { beep('ok'); lvMark(3, 'Naprogramuj PLA', lvl); lvl++; if(lvl >= FN.length) return labDone(3, 'PLA naprogramováno', [[FN.length, 'funkcí'], [tries, 'propálení']], 35, () => LABS[3].find(l => l.name === 'Naprogramuj PLA').run(3)); toast('Funkce sedí!'); reset(); render(); };
   }
-  reset(); render();
+  levelPick(3, 'Naprogramuj PLA', FN.map((f, k) => ['Funkce '+(k+1), ['dva součiny','dva součiny, každý ze dvou vstupů','tři součiny','dva součiny přes všechny tři vstupy'][k]]), k => { lvl = k; reset(); render(); }, 'Každá úroveň je jedna logická funkce zadaná jen pravdivostní tabulkou.');
 });
 
 /* ---------- T3: LED matice 8×8 (kreativní) ---------- */
@@ -659,7 +664,7 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
         log = log.concat(r.out); const lg = $('#ptlog'); if(lg) lg.textContent = log.join('\n');
         if(!ok){ beep('bad'); return; }
         beep('ok'); toast('Ping prošel!'); addXP(15);
-        setTimeout(() => { if(!$('#ptnet')) return; lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3, 'úrovně']], 20, () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); window.scrollTo(0,0); }, 1100);
+        setTimeout(() => { if(!$('#ptnet')) return; lvMark(11, 'Mini Packet Tracer', lvl); lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3, 'úrovně']], 20, () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); window.scrollTo(0,0); }, 1100);
       };
       if(r.path.length) animate(r.path, r.reach, fin); else { sim = null; drawNet(); fin(); }
     };
@@ -670,7 +675,7 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
     };
     drawAll();
   }
-  lvl = 0; build(); render();
+  levelPick(11, 'Mini Packet Tracer', [['Postav síť přes switche','PC – switch – router – switch – PC, sítě /24'],['Sítě /26 a křížený kabel','PC1 zapojíš do routeru napřímo'],['Najdi chybu v cizí síti','chyba v kabeláži, nebo v nastavení IP']], k => { lvl = k; build(); render(); });
 });
 
 /* ---------- T12: druhý terminálový scénář (procesy, roury, proměnné) ---------- */
@@ -784,9 +789,9 @@ cre(13, 'Hysterezní smyčka', 'Posunuj magnetické pole hlavy a zapiš do domé
   let checkT = 0;
   function check(){
     clearTimeout(checkT);
-    checkT = setTimeout(() => { if(ti < tasks.length && tasks[ti].ok()){ beep('ok'); toast('Splněno!'); ti++; path = []; if(ti >= tasks.length) return labDone(13, 'Hystereze pochopená', [[3, 'úkoly']], 25, () => LABS[13].find(l => l.name === 'Hysterezní smyčka').run(13)); render(); } }, 350);
+    checkT = setTimeout(() => { if(ti < tasks.length && tasks[ti].ok()){ beep('ok'); toast('Splněno!'); lvMark(13, 'Hysterezní smyčka', ti); ti++; path = []; if(ti >= tasks.length) return labDone(13, 'Hystereze pochopená', [[3, 'úkoly']], 25, () => LABS[13].find(l => l.name === 'Hysterezní smyčka').run(13)); render(); } }, 350);
   }
-  render();
+  levelPick(13, 'Hysterezní smyčka', tasks.map((t, k) => [['Zapiš jedničku','Zapiš nulu','Najdi koercitivní sílu'][k], t.t]), k => { ti = k; path = []; trail = []; H = 0; branch = k === 2 ? 'asc' : 'desc'; render(); });
 });
 
 /* ---------- T15: LFN a clustery ---------- */
@@ -1046,9 +1051,9 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
       render();
     });
     if($('#bpout')) $('#bpout').onclick = () => { delete sel[cat]; beep('tick'); render(); };
-    $('#go').onclick = () => { beep('ok'); addXP(20); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length, 'sestav']], 30, () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); cat = 'mb'; render(); window.scrollTo(0, 0); };
+    $('#go').onclick = () => { beep('ok'); addXP(20); lvMark(18, 'Postav si PC', job); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length, 'sestav']], 30, () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); cat = 'mb'; render(); window.scrollTo(0, 0); };
   }
-  render();
+  levelPick(18, 'Postav si PC', JOBS.map((j, k) => [['Tichý kancelářský PC','Herní PC','Pracovní stanice na rendering'][k], j.t]), k => { job = k; Object.keys(sel).forEach(x => delete sel[x]); cat = 'mb'; render(); }, 'Každá úroveň je jedna zakázka od zákazníka.');
 });
 
 /* ---------- T19/T20: výpočty rozhraní ---------- */
@@ -1151,10 +1156,10 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
     $$('.dgseg button').forEach(b => b.onclick = () => { sig = b.dataset.s; beep('tick'); render(); });
     $('#dgfs').oninput = e => { fs = +e.target.value; update(); };
     $('#dgb').oninput = e => { bits = +e.target.value; update(); };
-    if($('#dgchk')) $('#dgchk').onclick = () => { const T = TASKS[ti]; if(T.ok()){ beep('ok'); toast('Úkol splněn!'); addXP(10); ti++; render(); } else { beep('bad'); toast(T.no()); } };
+    if($('#dgchk')) $('#dgchk').onclick = () => { const T = TASKS[ti]; if(T.ok()){ beep('ok'); toast('Úkol splněn!'); addXP(10); lvMark(5, 'Digitalizuj signál', ti); ti++; render(); } else { beep('bad'); toast(T.no()); } };
     if($('#dgfin')) $('#dgfin').onclick = () => labDone(5, 'Signál zdigitalizovaný', [[TASKS.length, 'úkoly']], 25, () => LABS[5].find(l => l.name === 'Digitalizuj signál').run(5));
   }
-  render();
+  levelPick(5, 'Digitalizuj signál', TASKS.map((t, k) => [['Nyquistův teorém','Počet bitů a LSB','Aliasing'][k], t.t]), k => { ti = k; render(); });
 });
 
 /* ---------- T4: diferenciální pár (kreativní) ---------- */
@@ -1225,10 +1230,10 @@ cre(4, 'Diferenciální pár proti rušení', 'Pošli bity po kabelu, do kteréh
     $$('.dpctl .seg button').forEach(b => b.onclick = () => { mode = b.dataset.m; beep('tick'); render(); });
     if($('#dptw')) $('#dptw').onchange = e => { twist = e.target.checked; update(); };
     $('#dpn').oninput = e => { noise = +e.target.value; update(); };
-    if($('#dpchk')) $('#dpchk').onclick = () => { const r = sim(), T = TASKS[ti]; if(T.ok(r)){ beep('ok'); toast('Úkol splněn!'); addXP(10); ti++; render(); } else { beep('bad'); toast(T.no(r)); } };
+    if($('#dpchk')) $('#dpchk').onclick = () => { const r = sim(), T = TASKS[ti]; if(T.ok(r)){ beep('ok'); toast('Úkol splněn!'); addXP(10); lvMark(4, 'Diferenciální pár proti rušení', ti); ti++; render(); } else { beep('bad'); toast(T.no(r)); } };
     if($('#dpfin')) $('#dpfin').onclick = () => labDone(4, 'Rušení přemoženo', [[TASKS.length, 'úkoly']], 25, () => LABS[4].find(l => l.name === 'Diferenciální pár proti rušení').run(4));
   }
-  render();
+  levelPick(4, 'Diferenciální pár proti rušení', TASKS.map((t, k) => [['Jeden vodič proti zemi','Kroucený diferenciální pár','Proč se vodiče kroutí'][k], t.t]), k => { ti = k; mode = k === 0 ? 'se' : 'diff'; twist = true; render(); });
 });
 
 /* ---------- T14: Secure Boot a TPM (kreativní) ---------- */
@@ -1318,12 +1323,12 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
       run.k++; beep(run.r.st[run.k - 1].s === 'blocked' ? 'bad' : 'tick');
       if(run.k < run.r.st.length){ render(); setTimeout(step, 650); return; }
       busy = false;
-      if(ti < TASKS.length && TASKS[ti].ok(run.r)){ ti++; addXP(10); beep('ok'); toast('Úkol splněn!'); }
+      if(ti < TASKS.length && TASKS[ti].ok(run.r)){ lvMark(14, 'Secure Boot a TPM', ti); ti++; addXP(10); beep('ok'); toast('Úkol splněn!'); }
       render();
     };
     setTimeout(step, 500);
   }
-  render();
+  levelPick(14, 'Secure Boot a TPM', TASKS.map((t, k) => [['Bezpečný start','Bootkit se Secure Bootem','Bootkit bez Secure Bootu','Legacy režim CSM'][k], t.t]), k => { ti = k; run = null; render(); });
 });
 
 /* ---------- štítek „mimo PDF“ u laboratoří, které nevycházejí z podkladů ---------- */
