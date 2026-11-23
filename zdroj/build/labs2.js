@@ -136,10 +136,11 @@ cre(2, 'Naprogramuj procesor', 'Střadačový procesor: napiš program v assembl
     try{ prog = parse(code); }catch(e){ err = e.message; render(); return; }
     let ok = 0; const res = [], TS = tests(TASKS[ti]);
     for(const t of TS){ const c = {}; reset(t.m); Object.assign(c, cpu); const fin = runAll(c, prog); const good = fin && c.mem[2] === t.want; if(good) ok++; res.push((good?'✓':'✗')+' M[0]='+t.m[0]+', M[1]='+t.m[1]+' → M[2]='+c.mem[2]+(good?'':' (má být '+t.want+')')); }
-    if(ok === TS.length){ beep('ok'); toast('Úloha splněna!'); addXP(15); lvMark(2, 'Naprogramuj procesor', ti); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length, 'úloh']], 25, () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
+    if(ok === TS.length){ beep('ok'); toast('Úloha splněna!'); addXP(15); lvMark(2, 'Naprogramuj procesor', ti); ti++; if(ti >= TASKS.length) return labDone(2, 'Všechny programy fungují', [[TASKS.length - from, 'úloh']], Math.round(25 * (TASKS.length - from) / TASKS.length), () => LABS[2].find(l => l.name === 'Naprogramuj procesor').run(2)); code = TASKS[ti].start; prog = null; reset([]); render(); }
     else { beep('bad'); err = 'Testy: '+ok+'/'+TS.length+'\n'+res.join('\n'); render(); }
   }
-  levelPick(2, 'Naprogramuj procesor', TASKS.map(t => [t.name, t.t]), k => { ti = k; code = TASKS[k].start; prog = null; err = ''; reset([]); render(); });
+  let from = 0;
+  levelPick(2, 'Naprogramuj procesor', TASKS.map(t => [t.name, t.t]), k => { from = k; ti = k; code = TASKS[k].start; prog = null; err = ''; reset([]); render(); });
 });
 
 /* ---------- T3: PLA programátor (kreativní) ---------- */
@@ -201,9 +202,10 @@ cre(3, 'Naprogramuj PLA', 'Propal propojky ve schématu PLA (pole AND a OR) tak,
     $$('.plasw').forEach(b => b.onclick = () => { cur ^= (4 >> +b.dataset.j); beep('tick'); render(); });
     $$('.plarow').forEach(r => r.onclick = () => { cur = +r.dataset.x; render(); });
     $('#hn').onclick = () => { hint = true; render(); }; $('#cl').onclick = () => { reset(); render(); };
-    $('#dn').onclick = () => { beep('ok'); lvMark(3, 'Naprogramuj PLA', lvl); lvl++; if(lvl >= FN.length) return labDone(3, 'PLA naprogramováno', [[FN.length, 'funkcí'], [tries, 'propálení']], 35, () => LABS[3].find(l => l.name === 'Naprogramuj PLA').run(3)); toast('Funkce sedí!'); reset(); render(); };
+    $('#dn').onclick = () => { beep('ok'); lvMark(3, 'Naprogramuj PLA', lvl); lvl++; if(lvl >= FN.length) return labDone(3, 'PLA naprogramováno', [[FN.length - from, 'funkcí'], [tries, 'propálení']], Math.round(35 * (FN.length - from) / FN.length), () => LABS[3].find(l => l.name === 'Naprogramuj PLA').run(3)); toast('Funkce sedí!'); reset(); render(); };
   }
-  levelPick(3, 'Naprogramuj PLA', FN.map((f, k) => ['Funkce '+(k+1), ['dva součiny','dva součiny, každý ze dvou vstupů','tři součiny','dva součiny přes všechny tři vstupy'][k]]), k => { lvl = k; reset(); render(); }, 'Každá úroveň je jedna logická funkce zadaná jen pravdivostní tabulkou.');
+  let from = 0;
+  levelPick(3, 'Naprogramuj PLA', FN.map((f, k) => ['Funkce '+(k+1), ['dva součiny','dva součiny, každý ze dvou vstupů','tři součiny','dva součiny přes všechny tři vstupy'][k]]), k => { from = k; lvl = k; reset(); render(); }, 'Každá úroveň je jedna logická funkce zadaná jen pravdivostní tabulkou.');
 });
 
 /* ---------- T3: LED matice 8×8 (kreativní) ---------- */
@@ -664,7 +666,7 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
         log = log.concat(r.out); const lg = $('#ptlog'); if(lg) lg.textContent = log.join('\n');
         if(!ok){ beep('bad'); return; }
         beep('ok'); toast('Ping prošel!'); addXP(15);
-        setTimeout(() => { if(!$('#ptnet')) return; lvMark(11, 'Mini Packet Tracer', lvl); lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3, 'úrovně']], 20, () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); window.scrollTo(0,0); }, 1100);
+        const RUN = LABRUN; setTimeout(() => { if(RUN !== LABRUN || !$('#ptnet')) return; lvMark(11, 'Mini Packet Tracer', lvl); lvl++; if(lvl >= 3) return labDone(11, 'Síť funguje', [[3 - from, 'úrovně']], Math.round(20 * (3 - from) / 3), () => LABS[11].find(l => l.name === 'Mini Packet Tracer').run(11)); build(); render(); window.scrollTo(0,0); }, 1100);
       };
       if(r.path.length) animate(r.path, r.reach, fin); else { sim = null; drawNet(); fin(); }
     };
@@ -675,7 +677,8 @@ cre(11, 'Mini Packet Tracer', 'Postav síť jako v Cisco Packet Traceru: vlož r
     };
     drawAll();
   }
-  levelPick(11, 'Mini Packet Tracer', [['Postav síť přes switche','PC – switch – router – switch – PC, sítě /24'],['Sítě /26 a křížený kabel','PC1 zapojíš do routeru napřímo'],['Najdi chybu v cizí síti','chyba v kabeláži, nebo v nastavení IP']], k => { lvl = k; build(); render(); });
+  let from = 0;
+  levelPick(11, 'Mini Packet Tracer', [['Postav síť přes switche','PC – switch – router – switch – PC, sítě /24'],['Sítě /26 a křížený kabel','PC1 zapojíš do routeru napřímo'],['Najdi chybu v cizí síti','chyba v kabeláži, nebo v nastavení IP']], k => { from = k; lvl = k; build(); render(); });
 });
 
 /* ---------- T12: druhý terminálový scénář (procesy, roury, proměnné) ---------- */
@@ -789,9 +792,10 @@ cre(13, 'Hysterezní smyčka', 'Posunuj magnetické pole hlavy a zapiš do domé
   let checkT = 0;
   function check(){
     clearTimeout(checkT);
-    checkT = setTimeout(() => { if(ti < tasks.length && tasks[ti].ok()){ beep('ok'); toast('Splněno!'); lvMark(13, 'Hysterezní smyčka', ti); ti++; path = []; if(ti >= tasks.length) return labDone(13, 'Hystereze pochopená', [[3, 'úkoly']], 25, () => LABS[13].find(l => l.name === 'Hysterezní smyčka').run(13)); render(); } }, 350);
+    const RUN = LABRUN; checkT = setTimeout(() => { if(RUN !== LABRUN) return; if(ti < tasks.length && tasks[ti].ok()){ beep('ok'); toast('Splněno!'); lvMark(13, 'Hysterezní smyčka', ti); ti++; path = []; if(ti >= tasks.length) return labDone(13, 'Hystereze pochopená', [[3 - from, 'úkoly']], Math.round(25 * (3 - from) / 3), () => LABS[13].find(l => l.name === 'Hysterezní smyčka').run(13)); render(); } }, 350);
   }
-  levelPick(13, 'Hysterezní smyčka', tasks.map((t, k) => [['Zapiš jedničku','Zapiš nulu','Najdi koercitivní sílu'][k], t.t]), k => { ti = k; path = []; trail = []; H = 0; branch = k === 2 ? 'asc' : 'desc'; render(); });
+  let from = 0;
+  levelPick(13, 'Hysterezní smyčka', tasks.map((t, k) => [['Zapiš jedničku','Zapiš nulu','Najdi koercitivní sílu'][k], t.t]), k => { from = k; ti = k; path = []; trail = []; H = 0; branch = k === 2 ? 'asc' : 'desc'; render(); });
 });
 
 /* ---------- T15: LFN a clustery ---------- */
@@ -1051,9 +1055,10 @@ cre(18, 'Postav si PC', 'Poskládej počítač do skříně: desku, procesor do 
       render();
     });
     if($('#bpout')) $('#bpout').onclick = () => { delete sel[cat]; beep('tick'); render(); };
-    $('#go').onclick = () => { beep('ok'); addXP(20); lvMark(18, 'Postav si PC', job); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length, 'sestav']], 30, () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); cat = 'mb'; render(); window.scrollTo(0, 0); };
+    $('#go').onclick = () => { beep('ok'); addXP(20); lvMark(18, 'Postav si PC', job); job++; if(job >= JOBS.length) return labDone(18, 'Všechny zakázky předány', [[JOBS.length - from, 'sestav']], Math.round(30 * (JOBS.length - from) / JOBS.length), () => LABS[18].find(l => l.name === 'Postav si PC').run(18)); toast('Zákazník je spokojený!'); Object.keys(sel).forEach(k => delete sel[k]); cat = 'mb'; render(); window.scrollTo(0, 0); };
   }
-  levelPick(18, 'Postav si PC', JOBS.map((j, k) => [['Tichý kancelářský PC','Herní PC','Pracovní stanice na rendering'][k], j.t]), k => { job = k; Object.keys(sel).forEach(x => delete sel[x]); cat = 'mb'; render(); }, 'Každá úroveň je jedna zakázka od zákazníka.');
+  let from = 0;
+  levelPick(18, 'Postav si PC', JOBS.map((j, k) => [['Tichý kancelářský PC','Herní PC','Pracovní stanice na rendering'][k], j.t]), k => { from = k; job = k; Object.keys(sel).forEach(x => delete sel[x]); cat = 'mb'; render(); }, 'Každá úroveň je jedna zakázka od zákazníka.');
 });
 
 /* ---------- T19/T20: výpočty rozhraní ---------- */
@@ -1157,9 +1162,10 @@ cre(5, 'Digitalizuj signál', 'Nastav vzorkovací frekvenci a počet bitů přev
     $('#dgfs').oninput = e => { fs = +e.target.value; update(); };
     $('#dgb').oninput = e => { bits = +e.target.value; update(); };
     if($('#dgchk')) $('#dgchk').onclick = () => { const T = TASKS[ti]; if(T.ok()){ beep('ok'); toast('Úkol splněn!'); addXP(10); lvMark(5, 'Digitalizuj signál', ti); ti++; render(); } else { beep('bad'); toast(T.no()); } };
-    if($('#dgfin')) $('#dgfin').onclick = () => labDone(5, 'Signál zdigitalizovaný', [[TASKS.length, 'úkoly']], 25, () => LABS[5].find(l => l.name === 'Digitalizuj signál').run(5));
+    if($('#dgfin')) $('#dgfin').onclick = () => labDone(5, 'Signál zdigitalizovaný', [[TASKS.length - from, 'úkoly']], Math.round(25 * (TASKS.length - from) / TASKS.length), () => LABS[5].find(l => l.name === 'Digitalizuj signál').run(5));
   }
-  levelPick(5, 'Digitalizuj signál', TASKS.map((t, k) => [['Nyquistův teorém','Počet bitů a LSB','Aliasing'][k], t.t]), k => { ti = k; render(); });
+  let from = 0;
+  levelPick(5, 'Digitalizuj signál', TASKS.map((t, k) => [['Nyquistův teorém','Počet bitů a LSB','Aliasing'][k], t.t]), k => { from = k; ti = k; sig = 'sin'; fs = 1500; bits = 3; render(); });
 });
 
 /* ---------- T4: diferenciální pár (kreativní) ---------- */
@@ -1231,9 +1237,10 @@ cre(4, 'Diferenciální pár proti rušení', 'Pošli bity po kabelu, do kteréh
     if($('#dptw')) $('#dptw').onchange = e => { twist = e.target.checked; update(); };
     $('#dpn').oninput = e => { noise = +e.target.value; update(); };
     if($('#dpchk')) $('#dpchk').onclick = () => { const r = sim(), T = TASKS[ti]; if(T.ok(r)){ beep('ok'); toast('Úkol splněn!'); addXP(10); lvMark(4, 'Diferenciální pár proti rušení', ti); ti++; render(); } else { beep('bad'); toast(T.no(r)); } };
-    if($('#dpfin')) $('#dpfin').onclick = () => labDone(4, 'Rušení přemoženo', [[TASKS.length, 'úkoly']], 25, () => LABS[4].find(l => l.name === 'Diferenciální pár proti rušení').run(4));
+    if($('#dpfin')) $('#dpfin').onclick = () => labDone(4, 'Rušení přemoženo', [[TASKS.length - from, 'úkoly']], Math.round(25 * (TASKS.length - from) / TASKS.length), () => LABS[4].find(l => l.name === 'Diferenciální pár proti rušení').run(4));
   }
-  levelPick(4, 'Diferenciální pár proti rušení', TASKS.map((t, k) => [['Jeden vodič proti zemi','Kroucený diferenciální pár','Proč se vodiče kroutí'][k], t.t]), k => { ti = k; mode = k === 0 ? 'se' : 'diff'; twist = true; render(); });
+  let from = 0;
+  levelPick(4, 'Diferenciální pár proti rušení', TASKS.map((t, k) => [['Jeden vodič proti zemi','Kroucený diferenciální pár','Proč se vodiče kroutí'][k], t.t]), k => { from = k; ti = k; mode = k === 0 ? 'se' : 'diff'; twist = true; noise = .6; render(); });
 });
 
 /* ---------- T14: Secure Boot a TPM (kreativní) ---------- */
@@ -1313,7 +1320,7 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
     $('#sbbl').onclick = () => { if(busy) return; bl = !bl; run = null; render(); };
     $$('input[name="sbld"]').forEach(r => r.onchange = () => { if(busy) return; ld = r.value; run = null; render(); });
     $('#sbgo').onclick = boot;
-    if($('#sbfin')) $('#sbfin').onclick = () => labDone(14, 'Bootovací řetěz pochopený', [[TASKS.length, 'úkoly']], 30, () => LABS[14].find(l => l.name === 'Secure Boot a TPM').run(14));
+    if($('#sbfin')) $('#sbfin').onclick = () => labDone(14, 'Bootovací řetěz pochopený', [[TASKS.length - from, 'úkoly']], Math.round(30 * (TASKS.length - from) / TASKS.length), () => LABS[14].find(l => l.name === 'Secure Boot a TPM').run(14));
   }
   function boot(){
     if(busy) return;
@@ -1328,7 +1335,8 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
     };
     setTimeout(step, 500);
   }
-  levelPick(14, 'Secure Boot a TPM', TASKS.map((t, k) => [['Bezpečný start','Bootkit se Secure Bootem','Bootkit bez Secure Bootu','Legacy režim CSM'][k], t.t]), k => { ti = k; run = null; render(); });
+  let from = 0;
+  levelPick(14, 'Secure Boot a TPM', TASKS.map((t, k) => [['Bezpečný start','Bootkit se Secure Bootem','Bootkit bez Secure Bootu','Legacy režim CSM'][k], t.t]), k => { from = k; ti = k; run = null; busy = false; sb = true; csm = false; bl = true; ld = 'wbm'; render(); });
 });
 
 /* ---------- štítek „mimo PDF“ u laboratoří, které nevycházejí z podkladů ---------- */

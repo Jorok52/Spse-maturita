@@ -1,7 +1,7 @@
 /* ================= LABORATOŘ (v2) ================= */
 const LABS = {};
-let LVBACK = null;   // návrat na výběr úrovní právě spuštěné laboratoře
-function lab(n, name, desc, run){ (LABS[n] = LABS[n] || []).push({name, desc, run:(...a) => { LVBACK = null; return run(...a); }}); }
+let LVBACK = null, LABRUN = 0;   // návrat na výběr úrovní; číslo běhu laboratoře (časovače starého běhu se podle něj zastaví)
+function lab(n, name, desc, run){ (LABS[n] = LABS[n] || []).push({name, desc, run:(...a) => { LVBACK = null; LABRUN++; return run(...a); }}); }
 function $(s){ return view.querySelector(s); }
 function $$(s){ return view.querySelectorAll(s); }
 function setKeys(f){ onKey = f; }
@@ -30,8 +30,9 @@ function levelPick(n, name, levels, start, note){
   const done = lvStore(n, name), cnt = levels.filter((_, k) => done[k]).length;
   labShell(n, name, '<p class="muted" style="max-width:66ch">'+(note || 'Vyber úroveň – začít můžeš kdekoli. Po splnění pokračuješ další úrovní.')+'</p>'+
     '<div class="lvpk"><span>splněno '+cnt+' z '+levels.length+'</span><i style="--p:'+(cnt / levels.length * 100)+'%"></i></div>'+
-    '<div class="lvgrid">'+levels.map((l, k) => '<button class="lvcard'+(done[k] ? ' pass' : '')+'" data-k="'+k+'"><span class="lvno">'+(k+1)+'</span><span class="lvtxt"><b>'+esc(l[0])+'</b><span>'+esc(l[1] || '')+'</span></span><span class="lvstars" aria-label="'+(done[k] ? 'splněno' : 'nesplněno')+'"><i class="'+(done[k] ? 'on' : '')+'"></i></span></button>').join('')+'</div>', '');
-  $$('.lvcard').forEach(b => b.onclick = () => { beep('tick'); LVBACK = {n, fn:() => levelPick(n, name, levels, start, note)}; start(+b.dataset.k); window.scrollTo(0, 0); });
+    '<div class="lvgrid">'+levels.map((l, k) => '<button class="lvcard'+(done[k] ? ' pass' : '')+'" data-k="'+k+'"><span class="lvno">'+(k+1)+'</span><span class="lvtxt"><b>'+esc(l[0] || 'Úroveň '+(k+1))+'</b><span>'+esc(l[1] || '')+'</span></span><span class="lvstars" aria-label="'+(done[k] ? 'splněno' : 'nesplněno')+'"><i class="'+(done[k] ? 'on' : '')+'"></i></span></button>').join('')+'</div>', '');
+  // návrat na výběr = nový běh laboratoře s čistým stavem
+  $$('.lvcard').forEach(b => b.onclick = () => { beep('tick'); LVBACK = {n, fn:() => { const l = (LABS[n] || []).find(x => x.name === name); if(l) l.run(n); }}; start(+b.dataset.k); window.scrollTo(0, 0); });
   window.scrollTo(0, 0);
 }
 function flash(el, cls){ if(!el) return; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 450); }
@@ -599,7 +600,7 @@ lab(9, 'Plánování přístupu na disk', 'Klikej na požadavky v pořadí, v ja
       {FCFS:'FCFS: v pořadí příchodu.', SSTF:'SSTF: vždy nejbližší požadavek k hlavičce.', SCAN:'SCAN: jede nahoru až na konec (199), pak zpět dolů.', 'C-SCAN':'C-SCAN: jede jen nahoru, na konci skočí na 0 a pokračuje nahoru.', LOOK:'LOOK: jako SCAN, ale otočí se u posledního požadavku.', 'C-LOOK':'C-LOOK: jako C-SCAN, ale skočí rovnou na nejnižší požadavek.'}[ALG]);
     $$('.pick').forEach(b => b.onclick = () => {
       const r = +b.dataset.r, ok = acceptable();
-      if(ok.includes(r)){ beep('ok'); moveTo(r); order.push(r); pending.splice(pending.indexOf(r),1); if(!pending.length) lvMark(9, 'Plánování přístupu na disk', ALGS.indexOf(ALG)); return labDone(9, ALG+' hotovo', [[total(), 'pohyb hlavičky (stop)'], [mistakes, 'chyby']], Math.max(8, 30 - mistakes*4), () => LABS[9][0].run(9), svg()); render(); }
+      if(ok.includes(r)){ beep('ok'); moveTo(r); order.push(r); pending.splice(pending.indexOf(r),1); if(!pending.length){ lvMark(9, 'Plánování přístupu na disk', ALGS.indexOf(ALG)); return labDone(9, ALG+' hotovo', [[total(), 'pohyb hlavičky (stop)'], [mistakes, 'chyby']], Math.max(8, 30 - mistakes*4), () => LABS[9][0].run(9), svg()); } render(); }
       else { mistakes++; beep('bad'); flash(b,'err'); toast('Podle '+ALG+' teď přijde '+ok.join(' nebo ')); }
     });
   }
@@ -838,12 +839,13 @@ lab(14, 'MBR v hex editoru', 'Jako v DiskEditu: najdi v 512 B sektoru tabulku od
     $$('.hb').forEach(b => b.onclick = () => {
       const o = +b.dataset.o;
       if(TASKS[ti][1].includes(o)){ TASKS[ti][1].forEach(x => found.add(x)); beep('ok'); toast(TASKS[ti][2]); lvMark(14, 'MBR v hex editoru', ti); ti++;
-        if(ti >= TASKS.length) return labDone(14, 'MBR přečtený', [[mistakes, 'chyby'], [(n1/2048).toLocaleString('cs-CZ')+' MiB', 'velikost oddílu 1']], Math.max(8, 36 - mistakes*4), () => LABS[14][0].run(14), '<div class="mbrside" style="margin-top:16px">'+side()+'</div>');
+        if(ti >= TASKS.length) return labDone(14, 'MBR přečtený', [[TASKS.length - from, 'úkolů'], [mistakes, 'chyby'], [(n1/2048).toLocaleString('cs-CZ')+' MiB', 'velikost oddílu 1']], Math.round(Math.max(8, 36 - mistakes*4) * (TASKS.length - from) / TASKS.length), () => LABS[14][0].run(14), '<div class="mbrside" style="margin-top:16px">'+side()+'</div>');
         render(); }
       else { mistakes++; beep('bad'); flash(b,'err'); toast('Tohle je offset 0x'+o.toString(16).toUpperCase()); }
     });
   }
-  levelPick(14, 'MBR v hex editoru', TASKS.map((t, k) => [['Boot signatura','Začátek tabulky oddílů','Aktivní oddíl','Typ 1. oddílu','Typ 2. oddílu','Začátek 1. oddílu (LBA)'][k], t[0]]), k => { ti = k; found.clear(); TASKS.slice(0, k).forEach(t => t[1].forEach(x => found.add(x))); render(); });
+  let from = 0;
+  levelPick(14, 'MBR v hex editoru', TASKS.map((t, k) => [['Boot signatura','Začátek tabulky oddílů','Aktivní oddíl','Typ 1. oddílu','Typ 2. oddílu','Začátek 1. oddílu (LBA)'][k], t[0]]), k => { from = k; ti = k; found.clear(); TASKS.slice(0, k).forEach(t => t[1].forEach(x => found.add(x))); render(); });
 });
 lab(14, 'RAID: kapacita a přežití', 'Spočítej kapacitu pole a rozhodni, jestli přežije výpadek.', calcLab(14, 'RAID', () => {
   const lv = [0,1,5,6,10][ri(0,4)], s = [1,2,4][ri(0,2)];
