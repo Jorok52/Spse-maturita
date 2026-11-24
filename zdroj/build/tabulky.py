@@ -41,6 +41,8 @@ def tables_on_page(text):
             ss = segs(ln)
             # konec tabulky: dlouhý souvislý řádek textu (odstavec) nebo moc úseků
             if (len(ss) == 1 and len(ss[0][2]) > 60) or len(ss) > len(cols) or any(len(x[2]) > 60 for x in ss): break
+            # nový řádek tabulky (po prázdném řádku) má aspoň dvě buňky – samotný úsek je už nadpis nebo text pod tabulkou
+            if cur is None and rows and len(ss) == 1: break
             if cur is None: cur = [''] * len(cols)
             for a, b, t in ss:
                 k = col_of(a, b)
@@ -57,7 +59,7 @@ def tables_on_page(text):
     return out
 
 def norm(s): return re.sub(r'\s+', ' ', s).strip()
-def key(s): return re.sub(r'[^0-9a-záčďéěíňóřšťúůýž]+', '', s.lower())   # volné porovnání: jen písmena a číslice (dělení slov a symboly se v PDF liší)   # volné porovnání: bez mezer a pomlček (dělení slov se v PDF liší)
+def key(s): return re.sub(r'[^0-9a-záčďéěíňóřšťúůýž]+', '', s.lower())   # volné porovnání: jen písmena a číslice (dělení slov a symboly se v PDF liší)
 
 def place(raw_lines, rows):
     """Najde v raw řádcích úsek s buňkami tabulky (řádek po řádku) a vrátí (od, do, řádky tabulky s textem z raw).

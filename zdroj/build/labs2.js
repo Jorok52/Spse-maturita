@@ -1340,8 +1340,204 @@ cre(14, 'Secure Boot a TPM', 'Spusť počítač přes řetěz UEFI → zavaděč
   levelPick(14, 'Secure Boot a TPM', TASKS.map((t, k) => [['Bezpečný start','Bootkit se Secure Bootem','Bootkit bez Secure Bootu','Legacy režim CSM'][k], t.t]), k => { from = k; ti = k; run = null; busy = false; sb = true; csm = false; bl = true; ld = 'wbm'; render(); });
 });
 
+/* ---------- T10: Kryptografie – šifrování a dešifrování (kreativní, mimo PDF) ---------- */
+cre(10, 'Kryptografie: šifruj a dešifruj', 'Otáčej šifrovacím kolem, prolom Caesara frekvenční analýzou, šifruj Vigenèrem, XORuj bity a pošli zprávu přes RSA s veřejným a soukromým klíčem.', n => {
+  const NAME = 'Kryptografie: šifruj a dešifruj', AB = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', STEP = 360 / 26;
+  const rnd = a => a[Math.floor(Math.random() * a.length)], ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const mod = (a, m) => ((a % m) + m) % m, gcd = (a, b) => b ? gcd(b, a % b) : a;
+  const caesar = (s, k) => s.replace(/[A-Z]/g, c => AB[mod(AB.indexOf(c) + k, 26)]);
+  const WORDS = ['SERVER','ROUTER','PAKET','SOCKET','HESLO','PROCES','ADRESA','KABEL','MODEM','SWITCH','PAMET','JADRO','SBERNICE','PROTOKOL'];
+  const PHR = ['TAJNE HESLO','UTOK V POLEDNE','OTEVRI PORT','ZALOHUJ DISK','SPUST SERVER','RESTARTUJ ROUTER','ZAMKNI SERVEROVNU'];
+  const SENT = ['HESLO K ROUTERU JE NAPSANE NA ZADNI STRANE KRABICE','MATURITA Z INFORMATIKY BUDE V KVETNU A NENI TO ZADNA HRUZA','SIFROVANI CHRANI DATA PRED ODPOSLECHEM NA CESTE SITI','KDO ZNA KLIC TEN PRECTE KAZDOU ZPRAVU KTERA PROJDE KABELEM','ADMINISTRATOR ZAPOMNEL ZMENIT VYCHOZI HESLO NA SERVERU'];
+  // přibližná četnost písmen v českém textu bez diakritiky (%) – mimo PDF
+  const CZ = {A:8.4,B:1.8,C:2.9,D:3.7,E:9.8,F:.3,G:.3,H:1.3,I:7.6,J:2.1,K:3.7,L:4,M:3.3,N:6.5,O:8.7,P:3.4,Q:0,R:4.8,S:5.3,T:5.7,U:3.6,V:4.6,W:.1,X:.1,Y:2.8,Z:2.8};
+  const LV = [
+    ['Caesar: zašifruj', 'Otoč šifrovacím kolem o klíč a posuň každé písmeno slova.'],
+    ['Caesar: dešifruj', 'Znáš klíč – vrať zprávu zpátky do čitelné podoby.'],
+    ['Prolom Caesara', 'Klíč neznáš. Zkoušej klíče a porovnávej četnost písmen s češtinou.'],
+    ['Vigenèrova šifra', 'Každé písmeno se posouvá jiným písmenem klíčového slova.'],
+    ['XOR po bitech', 'Symetrická šifra na úrovni bitů: stejný klíč šifruje i dešifruje.'],
+    ['RSA: dva klíče', 'Spočítej veřejný a soukromý klíč a pošli zprávu, kterou přečte jen příjemce.']
+  ];
+  const WHY = [
+    'Caesarova šifra je <b>substituční</b>: každé písmeno se posune o stejný klíč. Klíčů je jen 25, proto se dá snadno prolomit.',
+    'Dešifrování je posun opačným směrem se <b>stejným klíčem</b> – odesílatel i příjemce sdílí jeden tajný klíč, takže jde o <b>symetrickou</b> šifru.',
+    'Stačilo vyzkoušet nejvýš 25 klíčů (<b>útok hrubou silou</b>), nebo porovnat četnosti písmen (<b>frekvenční analýza</b>). Moderní šifry mají klíče s 2<sup>128</sup> a více možnostmi.',
+    'Vigenère posouvá každé písmeno jiným písmenem klíče, takže stejné písmeno zprávy se může zašifrovat pokaždé jinak a prostá frekvenční analýza nestačí.',
+    'XOR se stejným klíčem šifruje i dešifruje: (P ⊕ K) ⊕ K = P. XOR používají i moderní symetrické šifry – třeba AES v každém kole přičítá klíč pomocí XOR.',
+    '<b>Asymetrická kryptografie:</b> veřejným klíčem (e, n) šifruje kdokoli, dešifrovat umí jen držitel soukromého klíče (d, n). Bezpečnost stojí na tom, že rozložit obrovské n na p · q trvá neúnosně dlouho. HTTPS (TLS) tak s cizím serverem bezpečně dohodne symetrický klíč.'
+  ];
+  let lv = 0, from = 0, solved = 0, S = {}, wk = 0;
+
+  function init(k){
+    lv = k; wk = 0; S = {done:false};
+    if(k === 0){ S.src = rnd(WORDS); S.k = ri(3, 9); S.ans = caesar(S.src, S.k); }
+    if(k === 1){ S.ans = rnd(PHR); S.k = ri(3, 12); S.src = caesar(S.ans, S.k); wk = S.k; }
+    if(k === 2){ S.plain = rnd(SENT); S.k = ri(4, 22); S.ct = caesar(S.plain, S.k); S.tries = 0; }
+    if(k === 3){ S.src = rnd(WORDS.filter(w => w.length <= 7)); S.key = rnd(['BIT','LAN','KEY','SIT','NET','IP']); S.ks = S.src.split('').map((_, i) => S.key[i % S.key.length]); S.ans = S.src.split('').map((c, i) => AB[mod(AB.indexOf(c) + AB.indexOf(S.ks[i]), 26)]).join(''); }
+    if(k === 4){ S.ch = rnd(AB.split('')); S.p = S.ch.charCodeAt(0); do { S.key = ri(17, 254); } while((S.p ^ S.key) < 33 || (S.p ^ S.key) === S.p); S.c = 0; }
+    if(k === 5){ const P = rnd([[5,11],[3,11],[5,17],[7,11],[3,17],[5,13]]); S.p = P[0]; S.q = P[1]; S.n = S.p * S.q; S.phi = (S.p - 1) * (S.q - 1); S.step = 0; S.e = 0; S.d = 0; S.m = 0; S.c = null; S.out = null; }
+    render();
+  }
+  const solve = () => {
+    if(S.done) return; S.done = true; solved++; lvMark(n, NAME, lv); addXP(10); beep('ok'); toast('Úroveň splněna!');
+    const x = $('#crxdec'); if(x) x.hidden = false;   // XOR: ukázat i dešifrování zpět
+    const box = $('#crdone'); if(box){ box.hidden = false; box.scrollIntoView({block:'nearest', behavior:'smooth'}); const b = $('#crnext'); if(b) b.focus({preventScroll:true}); }
+  };
+  // šifrovací kolo: vnější kruh = otevřený text, vnitřní (otočný) = šifrový text
+  function wheel(){
+    let o = '<svg viewBox="-150 -150 300 300" class="crwh" role="img" aria-label="Šifrovací kolo, posun '+wk+'"><circle r="147" class="crw0"/><circle r="112" class="crw1"/>';
+    for(let i = 0; i < 26; i++){ const a = (i * STEP - 90) * Math.PI / 180, x = Math.cos(a) * 129, y = Math.sin(a) * 129, a2 = ((i + .5) * STEP - 90) * Math.PI / 180;
+      o += '<line class="crtk" x1="'+(Math.cos(a2) * 112).toFixed(1)+'" y1="'+(Math.sin(a2) * 112).toFixed(1)+'" x2="'+(Math.cos(a2) * 147).toFixed(1)+'" y2="'+(Math.sin(a2) * 147).toFixed(1)+'"/>'+
+        '<text class="cro" data-o="'+i+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" transform="rotate('+(i * STEP).toFixed(2)+' '+x.toFixed(1)+' '+y.toFixed(1)+')">'+AB[i]+'</text>'; }
+    o += '<g class="crin" style="transform:rotate('+(-wk * STEP)+'deg)"><circle r="108" class="crw2"/><circle r="74" class="crw3"/>';
+    for(let j = 0; j < 26; j++){ const a = (j * STEP - 90) * Math.PI / 180, x = Math.cos(a) * 92, y = Math.sin(a) * 92;
+      o += '<text class="cri" data-j="'+j+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" transform="rotate('+(j * STEP).toFixed(2)+' '+x.toFixed(1)+' '+y.toFixed(1)+')">'+AB[j]+'</text>'; }
+    o += '</g><path class="crptr" d="M0,-150 L-7,-160 L7,-160 Z"/><text class="crkl" y="-10">posun</text><text class="crkv" y="26">'+wk+'</text></svg>';
+    return '<div class="crwbox">'+o+'<div class="crwbtn"><button class="pvb" data-w="-1" aria-label="Otočit zpět">⟲</button><span>vnější = text · vnitřní = šifra</span><button class="pvb" data-w="1" aria-label="Otočit dál">⟳</button></div></div>';
+  }
+  function hilite(i){
+    $$('.crwh .hi').forEach(e => e.classList.remove('hi'));
+    if(i == null || i < 0) return;
+    const o = $('.crwh [data-o="'+i+'"]'), j = $('.crwh [data-j="'+mod(i + wk, 26)+'"]');
+    if(o) o.classList.add('hi'); if(j) j.classList.add('hi');
+  }
+  function setWK(v){
+    wk = mod(v, 26); const g = $('.crwh .crin'); if(!g) return;
+    const cur = parseFloat((g.style.transform.match(/-?[\d.]+/) || [0])[0]), want = -wk * STEP;
+    let d = mod(want - cur + 180, 360) - 180; g.style.transform = 'rotate('+(cur + d)+'deg)';   // otáčet kratší cestou
+    $('.crwh .crkv').textContent = wk; $('.crwh').setAttribute('aria-label', 'Šifrovací kolo, posun '+wk);
+    beep('tick'); if(lv === 2) crack(); else hilite(S.hi);
+  }
+  // řádek políček na písmena (šifra/dešifrování): src = co je nahoře, ans = co se má napsat
+  function cells(src, ans, extra){
+    return '<div class="crgrid">'+src.split('').map((c, i) => c === ' ' ? '<span class="crsp"></span>' :
+      '<label class="crcell"><b>'+c+'</b>'+(extra ? extra(i) : '')+'<input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" data-i="'+i+'" aria-label="písmeno '+(i + 1)+'"></label>').join('')+'</div>';
+  }
+  function bindCells(ans, onFocus){
+    const ins = [...$$('.crgrid input')];
+    ins.forEach((inp, k) => {
+      inp.onfocus = () => { inp.select(); if(onFocus) onFocus(+inp.dataset.i); };
+      inp.oninput = () => {
+        const v = inp.value.toUpperCase().replace(/[^A-Z]/g, '').slice(-1); inp.value = v;
+        const ok = v === ans[+inp.dataset.i]; inp.parentNode.classList.toggle('ok', !!v && ok); inp.parentNode.classList.toggle('bad', !!v && !ok);
+        if(v && ok && ins[k + 1]) ins[k + 1].focus();
+        if(v && !ok) beep('bad');
+        if(ins.every(x => x.value === ans[+x.dataset.i])) solve();
+      };
+      inp.onkeydown = e => { if(e.key === 'Backspace' && !inp.value && ins[k - 1]){ ins[k - 1].focus(); e.preventDefault(); } if(e.key === 'ArrowLeft' && ins[k - 1]) ins[k - 1].focus(); if(e.key === 'ArrowRight' && ins[k + 1]) ins[k + 1].focus(); };
+    });
+    if(ins[0] && matchMedia('(pointer:fine)').matches) ins[0].focus({preventScroll:true});
+  }
+  function crack(){
+    const pt = caesar(S.ct, -wk), cnt = {}; let tot = 0;
+    S.ct.replace(/[A-Z]/g, c => { cnt[c] = (cnt[c] || 0) + 1; tot++; });
+    const mx = Math.max(12, ...Object.values(cnt).map(v => v / tot * 100));
+    const W = 26 * 22, Hh = 120;
+    let bars = '<svg viewBox="0 0 '+W+' '+(Hh + 22)+'" class="crhist" role="img" aria-label="Četnost písmen v šifrovém textu a v češtině">';
+    for(let i = 0; i < 26; i++){
+      const c = AB[i], v = (cnt[c] || 0) / tot * 100, ref = CZ[AB[mod(i - wk, 26)]], x = i * 22;
+      bars += '<rect class="crref" x="'+(x + 2)+'" y="'+(Hh - ref / mx * Hh).toFixed(1)+'" width="18" height="'+(ref / mx * Hh).toFixed(1)+'"/>'+
+        '<rect class="crbar" x="'+(x + 6)+'" y="'+(Hh - v / mx * Hh).toFixed(1)+'" width="10" height="'+(v / mx * Hh).toFixed(1)+'"/>'+
+        '<text x="'+(x + 11)+'" y="'+(Hh + 16)+'">'+c+'</text>';
+    }
+    bars += '</svg>';
+    const h = $('#crhist'); if(h) h.innerHTML = bars;
+    const p = $('#crprev'); if(p) p.textContent = pt;
+  }
+  const bits = v => v.toString(2).padStart(8, '0').split('');
+  function xorRow(lbl, v, cls, tog){
+    return '<div class="crxr '+cls+'"><span class="crxl">'+lbl+'</span><div class="crbits">'+bits(v).map((b, i) => tog ? '<button class="crbit'+(b === '1' ? ' on' : '')+'" data-b="'+(7 - i)+'" aria-label="bit '+(7 - i)+'">'+b+'</button>' : '<i class="crbit'+(b === '1' ? ' on' : '')+'">'+b+'</i>').join('')+'</div>'+
+      '<span class="crxv">0x'+v.toString(16).toUpperCase().padStart(2, '0')+' · '+v+(v >= 33 && v < 127 ? ' · „'+esc(String.fromCharCode(v))+'“' : '')+'</span></div>';
+  }
+  const powChips = (b, e, m) => { const out = []; let v = 1; for(let i = 0; i < e; i++){ v = v * b % m; out.push(v); } return out; };
+  function rsaHTML(){
+    const s = S.step, cand = []; for(let e = 2; e <= Math.min(13, S.phi - 1); e++) cand.push(e);
+    const stepBox = (k, title, body) => '<div class="crst'+(s > k ? ' pass' : s === k ? ' cur' : ' lock')+'"><span class="crstn">'+(s > k ? '✓' : k + 1)+'</span><div><b>'+title+'</b>'+(s >= k ? body : '')+'</div></div>';
+    let h = '<div class="crrsa"><div class="crprimes"><span>Bob si tajně zvolil prvočísla</span><b>p = '+S.p+'</b><b>q = '+S.q+'</b></div>';
+    h += stepBox(0, 'Modul n = p · q', s === 0 ? '<div class="crin1"><input id="crn" inputmode="numeric" placeholder="n"><button class="btn" id="crnok">Ověřit</button></div>' : '<p>n = '+S.p+' · '+S.q+' = <b>'+S.n+'</b></p>');
+    h += stepBox(1, 'Eulerova funkce φ(n) = (p − 1) · (q − 1)', s === 1 ? '<div class="crin1"><input id="crphi" inputmode="numeric" placeholder="φ(n)"><button class="btn" id="crphiok">Ověřit</button></div>' : '<p>φ = '+(S.p - 1)+' · '+(S.q - 1)+' = <b>'+S.phi+'</b></p>');
+    h += stepBox(2, 'Veřejný exponent e: nesoudělný s φ (gcd(e, φ) = 1)', s === 2 ? '<div class="crechips">'+cand.map(e => '<button class="crchip" data-e="'+e+'">'+e+'</button>').join('')+'</div><p class="crmsg" id="cremsg"></p>' : '<p>e = <b>'+S.e+'</b> (gcd('+S.e+', '+S.phi+') = 1)</p>');
+    h += stepBox(3, 'Soukromý exponent d: e · d mod φ = 1', s === 3 ? '<div class="crin1"><input id="crd" inputmode="numeric" placeholder="d"><button class="btn" id="crdok">Ověřit</button></div><p class="crmsg" id="crdmsg">Zkoušej d = 1, 2, 3… a hledej, kdy '+S.e+' · d dá po dělení '+S.phi+' zbytek 1.</p>' : '<p>d = <b>'+S.d+'</b> ('+S.e+' · '+S.d+' = '+(S.e * S.d)+' = '+Math.floor(S.e * S.d / S.phi)+' · '+S.phi+' + 1)</p>');
+    if(s >= 4){
+      h += '<div class="crkeys"><div class="crkey pub"><span>🔓 veřejný klíč</span><b>(e, n) = ('+S.e+', '+S.n+')</b><i>zná ho každý</i></div><div class="crkey priv"><span>🔑 soukromý klíč</span><b>(d, n) = ('+S.d+', '+S.n+')</b><i>má jen Bob</i></div></div>';
+      h += '<div class="crflow"><div class="crwho"><b>Alice</b><span>zpráva m = '+S.m+'</span></div>'+
+        (S.c == null ? '<button class="btn" id="crenc">Zašifrovat veřejným klíčem →</button>' : '<div class="crpkt"><span>c = m<sup>e</sup> mod n = '+S.m+'<sup>'+S.e+'</sup> mod '+S.n+'</span><b>'+S.c+'</b><div class="crpow">'+powChips(S.m, S.e, S.n).map(v => '<i>'+v+'</i>').join('→')+'</div></div>')+
+        '<div class="crwho"><b>Bob</b><span>'+(S.out == null ? 'čeká na zprávu' : S.out.ok ? 'přečetl: '+S.out.v : 'zprávu zatím nepřečetl')+'</span></div></div>';
+      if(S.c != null) h += '<div class="crdec"><span>Bob dešifruje klíčem:</span><button class="btn ghost" data-k="pub">🔓 veřejným (e, n)</button><button class="btn" data-k="priv">🔑 soukromým (d, n)</button></div>'+
+        (S.out ? '<div class="crpkt'+(S.out.ok ? ' ok' : ' bad')+'"><span>m = c<sup>'+(S.out.ok ? 'd' : 'e')+'</sup> mod n = '+S.c+'<sup>'+S.out.x+'</sup> mod '+S.n+'</span><b>'+S.out.v+'</b><div class="crpow">'+powChips(S.c, S.out.x, S.n).map(v => '<i>'+v+'</i>').join('→')+'</div>'+
+          '<p>'+(S.out.ok ? 'Výsledek se rovná původní zprávě '+S.m+'. Soukromý klíč zprávu otevřel.' : 'Nesmysl – veřejným klíčem se zpráva otevřít nedá. To je ta pointa: šifrovat může kdokoli, číst jen Bob.')+'</p></div>' : '');
+    }
+    return h + '</div>';
+  }
+  function render(){
+    onKey = null;
+    const tag = '<b>Úroveň '+(lv + 1)+'/'+LV.length+':</b> ';
+    let task = '', body = '';
+    if(lv === 0){ task = 'Zašifruj slovo <code>'+S.src+'</code> Caesarovou šifrou s klíčem <b>'+S.k+'</b>. Otoč kolem na posun '+S.k+' a pod každým písmenem vnějšího kruhu najdeš šifru.'; body = '<div class="crx">'+wheel()+'<div class="crwork"><span class="crlab">otevřený text → šifrový text</span>'+cells(S.src, S.ans)+'</div></div>'; }
+    if(lv === 1){ task = 'Zachytil jsi zprávu <code>'+S.src+'</code>. Víš, že klíč je <b>'+S.k+'</b>. Dešifruj ji – kolo je už otočené, čti z vnitřního kruhu na vnější.'; body = '<div class="crx">'+wheel()+'<div class="crwork"><span class="crlab">šifrový text → otevřený text</span>'+cells(S.src, S.ans)+'</div></div>'; }
+    if(lv === 2){ task = 'Tahle zpráva je zašifrovaná Caesarem, ale klíč neznáš. Otáčej kolem: šedé sloupce ukazují, jak by vypadala četnost písmen v češtině při tomhle klíči. Až sedí na zlaté sloupce (a text dává smysl), máš klíč.'; body = '<div class="crx">'+wheel()+'<div class="crwork"><span class="crlab">šifrový text</span><p class="crct">'+S.ct+'</p><span class="crlab">dešifrováno s posunem na kole</span><p class="crct crpt" id="crprev"></p><div id="crhist" class="crhbox"></div><div class="crleg"><span><i class="crlb"></i>šifrový text</span><span><i class="crlr"></i>čeština (přibližně)</span></div><button class="btn" id="crguess">Tohle je klíč</button> <span class="crmsg" id="crgmsg"></span></div></div>'; }
+    if(lv === 3){ task = 'Zašifruj <code>'+S.src+'</code> Vigenèrovou šifrou s klíčem <code>'+S.key+'</code>. Klíč se opakuje pod textem; každé písmeno posuň o pořadí písmene klíče (A = 0, B = 1, …).'; body = '<div class="crwork wide"><div class="crabc">'+AB.split('').map((c, i) => '<span><b>'+c+'</b>'+i+'</span>').join('')+'</div><span class="crlab">text · klíč · posun → šifra</span>'+cells(S.src, S.ans, i => '<em>'+S.ks[i]+'</em><small>+'+AB.indexOf(S.ks[i])+'</small>')+'</div>'; }
+    if(lv === 4){ task = 'Zašifruj znak <code>'+S.ch+'</code> klíčem <code>0x'+S.key.toString(16).toUpperCase()+'</code> operací XOR: klikáním nastav bity šifry C = P ⊕ K (1 jen tam, kde se bity P a K liší).'; body = '<div class="crxor">'+xorRow('P', S.p, 'p')+xorRow('K', S.key, 'k')+'<div class="crxline">⊕</div>'+xorRow('C', S.c, 'c', true)+
+      '<div class="crxdec" id="crxdec"'+(S.done ? '' : ' hidden')+'><div class="crxline">dešifrování: C ⊕ K</div>'+xorRow('C', S.p ^ S.key, 'c')+xorRow('K', S.key, 'k')+'<div class="crxline">=</div>'+xorRow('P', S.p, 'p')+'</div></div>'; }
+    if(lv === 5){ task = 'Pomoz Bobovi vyrobit klíče RSA a pak pošli Alicinu zprávu tak, aby ji přečetl jen on.'; body = rsaHTML(); }
+    const last = lv === LV.length - 1;
+    labShell(n, NAME, '<p class="dgtask">'+tag+task+'</p>'+body+
+      '<div class="crdone" id="crdone"'+(S.done ? '' : ' hidden')+'><b>✓ Hotovo!</b><p>'+WHY[lv]+'</p><button class="btn" id="crnext">'+(last ? 'Dokončit' : 'Další úroveň →')+'</button></div>',
+      'Fakta o šifrách jsou doplněná mimo PDF. Šifra = algoritmus + klíč; bez klíče má být zpráva nečitelná.');
+    $('#crnext').onclick = () => { if(last) return labDone(n, 'Šifry rozlousknuté', [[solved, 'úrovní']], Math.round(30 * (LV.length - from) / LV.length), () => LABS[n].find(l => l.name === NAME).run(n)); init(lv + 1); window.scrollTo(0, 0); };
+    $$('.crwbtn [data-w]').forEach(b => b.onclick = () => setWK(wk + +b.dataset.w));
+    const wh = $('.crwh');
+    if(wh){   // kolem jde otáčet i tažením / kolečkem myši
+      let drag = null;
+      const ang = e => { const r = wh.getBoundingClientRect(); return Math.atan2(e.clientY - r.top - r.height / 2, e.clientX - r.left - r.width / 2) * 180 / Math.PI; };
+      wh.onpointerdown = e => { drag = {a:ang(e), k:wk}; wh.setPointerCapture(e.pointerId); };
+      wh.onpointermove = e => { if(!drag) return; const d = mod(ang(e) - drag.a + 180, 360) - 180, k = mod(drag.k - Math.round(d / STEP), 26); if(k !== wk) setWK(k); };
+      wh.onpointerup = wh.onpointercancel = () => { drag = null; };
+      wh.onwheel = e => { e.preventDefault(); setWK(wk + (e.deltaY > 0 ? 1 : -1)); };
+    }
+    if(lv === 0) bindCells(S.ans, i => { S.hi = AB.indexOf(S.src[i]); hilite(S.hi); });
+    if(lv === 1) bindCells(S.ans, i => { S.hi = mod(AB.indexOf(S.src[i]) - wk, 26); hilite(S.hi); });
+    if(lv === 3) bindCells(S.ans);
+    if(lv === 2){ crack(); $('#crguess').onclick = () => { if(S.done) return; S.tries++; if(wk === S.k) solve(); else { beep('bad'); $('#crgmsg').textContent = 'Ještě ne – text pořád nedává smysl.'; flash($('#crprev'), 'shake'); } }; }
+    if(lv === 4) $$('.crbits button').forEach(b => b.onclick = () => {
+      if(S.done) return; S.c ^= 1 << +b.dataset.b; beep('tick');
+      if(S.c === (S.p ^ S.key)){ render(); solve(); return; }
+      render();
+    });
+    if(lv === 5) bindRSA();
+  }
+  function bindRSA(){
+    const num = id => parseInt(($(id) || {}).value, 10);
+    const ok = () => { S.step++; beep('ok'); render(); const f = $('.crst.cur input'); if(f) f.focus({preventScroll:true}); };
+    const bad = (el, msg) => { beep('bad'); flash(el, 'shake'); if(msg) toast(msg); };
+    const enter = (id, fn) => { const i = $(id); if(i) i.onkeydown = e => { if(e.key === 'Enter'){ e.preventDefault(); fn(); } }; };
+    const chkN = () => num('#crn') === S.n ? ok() : bad($('#crn'), 'Vynásob p a q.');
+    const chkP = () => num('#crphi') === S.phi ? ok() : bad($('#crphi'), 'Odečti od p i q jedničku a vynásob.');
+    const chkD = () => { const d = num('#crd'), m = $('#crdmsg');
+      if(!(d > 0 && d < S.phi)) return bad($('#crd'), 'd musí být mezi 1 a '+(S.phi - 1)+'.');
+      const r = S.e * d % S.phi;
+      if(r === 1){ S.d = d; ok(); } else { m.textContent = S.e+' · '+d+' = '+(S.e * d)+' → zbytek po dělení '+S.phi+' je '+r+', potřebuješ 1.'; bad($('#crd')); } };
+    if($('#crnok')){ $('#crnok').onclick = chkN; enter('#crn', chkN); }
+    if($('#crphiok')){ $('#crphiok').onclick = chkP; enter('#crphi', chkP); }
+    if($('#crdok')){ $('#crdok').onclick = chkD; enter('#crd', chkD); }
+    $$('.crchip[data-e]').forEach(b => b.onclick = () => { const e = +b.dataset.e, g = gcd(e, S.phi);
+      const no = msg => { b.classList.add('no'); b.disabled = true; $('#cremsg').textContent = msg; beep('bad'); };
+      if(g !== 1) return no('gcd('+e+', '+S.phi+') = '+g+' – e a φ mají společného dělitele '+g+', soukromý klíč by nešel spočítat.');
+      if(e * e % S.phi === 1) return no(e+' · '+e+' mod '+S.phi+' = 1, takže d by vyšlo taky '+e+' – veřejný a soukromý klíč by byly stejné. Zvol jiné e.');
+      // zpráva, která se zašifruje na jiné číslo a veřejným klíčem se zpátky neotevře (u malého n jsou i „pevné body“ m^e mod n = m)
+      const ms = []; for(let m = 2; m < S.n - 1; m++){ const c = powChips(m, e, S.n).pop(); if(c !== m && powChips(c, e, S.n).pop() !== m) ms.push(m); }
+      if(!ms.length) return no('S e = '+e+' je u tak malého n šifra k ničemu: zprávu by buď nezměnila, nebo by ji šlo otevřít i veřejným klíčem. Zvol jiné e.');
+      S.e = e; S.m = rnd(ms); ok(); });
+    if($('#crenc')) $('#crenc').onclick = () => { S.c = powChips(S.m, S.e, S.n).pop(); beep('tick'); render(); };
+    $$('.crdec [data-k]').forEach(b => b.onclick = () => { if(S.done) return; const pr = b.dataset.k === 'priv', x = pr ? S.d : S.e, v = powChips(S.c, x, S.n).pop();
+      S.out = {ok:pr && v === S.m, v, x}; render(); if(S.out.ok) solve(); else beep('bad'); });
+  }
+  levelPick(n, NAME, LV, k => { from = k; solved = 0; init(k); }, 'Šifrování převádí čitelný <b>otevřený text</b> na <b>šifrový text</b> pomocí klíče. Projdi cestu od Caesara až k RSA, které chrání HTTPS. Začít můžeš kdekoli.');
+});
+
 /* ---------- štítek „mimo PDF“ u laboratoří, které nevycházejí z podkladů ---------- */
 (function(){
-  const XL = new Set(['Digitalizuj signál','Diferenciální pár proti rušení','Secure Boot a TPM','Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
+  const XL = new Set(['Kryptografie: šifruj a dešifruj','Digitalizuj signál','Diferenciální pár proti rušení','Secure Boot a TPM','Rozsviť LED přes registry','Zapnutí LED v kódu','Naprogramuj procesor','LED matice 8×8','Cache: hit, nebo miss?','Geometrie a adresace','Postav si PC','Terminál 2: roury a proměnné','Bubble sort krok za krokem','Postup práce se souborem','Formátové specifikátory']);
   Object.keys(LABS).forEach(k => LABS[k].forEach(l => { if(XL.has(l.name) || (T[k] && T[k].x)) l.x = true; }));
 })();

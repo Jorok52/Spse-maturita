@@ -329,14 +329,10 @@ Počet zařízení
 Hodinový signál (CLK)
 Každé zařízení má vlastní CLK → při přenosu se
 synchronizují na základě časování bitů
-Maximální rychlost
-115 200 Bd (baudů) – počet změn na vedení za sekundu
-Maximální vzdálenost
-15 metrů (čím delší kabel, tím nižší rychlost a vyšší šum)
-Použité kódování
-Např. ASCII
-Typ konektoru
-D-Sub (např. DE-9, DB-25)
+| Maximální rychlost | 115 200 Bd (baudů) – počet změn na vedení za sekundu |
+| Maximální vzdálenost | 15 metrů (čím delší kabel, tím nižší rychlost a vyšší šum) |
+| Použité kódování | Např. ASCII |
+| Typ konektoru | D-Sub (např. DE-9, DB-25) |
 4. Přenos dat, rozdělení paměti a organizace
 Řízení přenosu
 Hardwarové řízení (HW):

@@ -460,7 +460,8 @@ Srovnání OSI a TCP/IP modelu
 | 3. Síťová | 2. Internetová | IP adresace, směrování (IP, ICMP) |
 | 2. Linková (spojová) | 1. Síťový přístup (Network Access) | Přenos rámců v rámci sítě (Ethernet, MAC) |
 | 1. Fyzická | ⬇ Součást síťového přístupu | Přenos signálu (kabel, Wi-Fi, elektrický signál) |
-| Hlavní rozdíly: | OSI má 7 vrstev, TCP/IP má jen 4 funkční vrstvy. |  |
+Hlavní rozdíly:
+OSI má 7 vrstev, TCP/IP má jen 4 funkční vrstvy.
 TCP/IP model slučuje aplikační, prezentační a relační vrstvu do jedné.
 OSI je teoretický model, TCP/IP je prakticky používaný v internetu.
 TCP/IP vznikl dříve než OSI a slouží jako základ dnešní komunikace (např. internet).

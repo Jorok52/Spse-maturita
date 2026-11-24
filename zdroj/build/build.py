@@ -132,6 +132,9 @@ if WEB:
     os.makedirs(os.path.join(WEB, 'icons'), exist_ok=True)
     for f in glob.glob(base + '/build/web/icons/*.png'): shutil.copy(f, os.path.join(WEB, 'icons', os.path.basename(f)))
     shutil.copy(base + '/build/web/manifest.webmanifest', os.path.join(WEB, 'manifest.webmanifest'))
+    # PDF.js (Mozilla, Apache 2.0) pro prohlížeč stránek PDF ve čtečce – verze je v cestě, service worker ji uloží jednou
+    PDFJS = os.path.join(WEB, 'pdfjs', '4.10.38'); os.makedirs(PDFJS, exist_ok=True)
+    for f in glob.glob(base + '/build/web/pdfjs/*'): shutil.copy(f, os.path.join(PDFJS, os.path.basename(f)))
     fonts_list = sorted('fonts/' + os.path.basename(f) for f in glob.glob(base + '/fonts/*.woff2'))
     sw = open(base + '/build/web/sw.js', encoding='utf-8').read().replace('/*VERSION*/', VERSION).replace('/*FONTS*/', json.dumps(fonts_list))
     open(os.path.join(WEB, 'sw.js'), 'w', encoding='utf-8').write(sw)

@@ -330,29 +330,10 @@ V druhém příkladu jde o vědomě seskupené větve. Při skutečné kontrole 
 řešit únor a ověřit, že číslo měsíce leží mezi 1 a 12.
 
 Cykly while, do while a for
-Cyklus
-
-Kdy se testuje podmínka
-
-Typické použití
-
-while
-
-Před každou iterací
-
-Neznámý počet opakování
-
-do while
-
-Po vykonání těla
-
-Tělo má proběhnout aspoň jednou
-
-for
-
-Před každou iterací, po inicializaci
-
-Čítač, známý nebo řízený počet průchodů
+| Cyklus | Kdy se testuje podmínka | Typické použití |
+| while | Před každou iterací | Neznámý počet opakování |
+| do while | Po vykonání těla | Tělo má proběhnout aspoň jednou |
+| for | Před každou iterací, po inicializaci | Čítač, známý nebo řízený počet průchodů |
 
 POROVNÁNÍ TŘÍ CYKLŮ
 

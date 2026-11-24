@@ -282,15 +282,9 @@ Doba vykonávání instrukcí
 Některé trvají více cyklů
 Každá instrukce obvykle 1
 cyklus
-Řízení CPU
-Mikroprogramově řízeno
-Obvodově řízeno
-Pipelining (zřetězení instrukcí)
-Náročné na implementaci
-Snadná implementace
-Efektivita spotřeby energie
-Vyšší spotřeba
-Nižší spotřeba
+| Řízení CPU | Mikroprogramově řízeno | Obvodově řízeno |
+| Pipelining (zřetězení instrukcí) | Náročné na implementaci | Snadná implementace |
+| Efektivita spotřeby energie | Vyšší spotřeba | Nižší spotřeba |
 Použití
 PC, servery, kompatibilní s
 historickými programy
