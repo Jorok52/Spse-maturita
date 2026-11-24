@@ -94,7 +94,7 @@ function pdfName(n){ return 'materialy/' + String(n).padStart(2,'0') + '.pdf'; }
 /* ---------- prohlížeč stránek PDF (PDF.js) – podklady v původní grafice ----------
    Text vytažený z PDF se nikdy nepovede úplně (rozsypané tabulky, kód, schémata), proto čtečka umí ukázat i samotné stránky.
    Jen na webu (PDF a knihovna leží vedle index.html); v artefaktu a v souboru otevřeném z disku zůstává textová čtečka. */
-const PDF_OK = MD_WEB && /^https?:/.test(location.protocol) && !IN_ARTIFACT;
+const PDF_OK = MD_WEB && /^https?:/.test(location.protocol) && !IN_ARTIFACT && typeof IntersectionObserver === 'function';
 const PDFJS = 'pdfjs/4.10.38/';
 let pdfLibP = null; const pdfDocs = {}, pdfOrder = [];
 function pvLs(k, v){ try { if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(e){ return null; } }
@@ -144,7 +144,8 @@ function pdfView(box, n, o){
     if(rendered.get(p) === target) return; rendered.set(p, target);
     let page; try { page = await doc.getPage(p); } catch(e){ rendered.delete(p); return; }
     if(!alive() || rendered.get(p) !== target) return;
-    const vp = page.getViewport({scale:target / sizes[p - 1][0]}), cv = document.createElement('canvas');
+    const [w0, h0] = sizes[p - 1], sc = Math.min(target / w0, Math.sqrt(14e6 / (w0 * h0)));   // plocha plátna max ~14 Mpx (limit Safari na iOS)
+    const vp = page.getViewport({scale:sc}), cv = document.createElement('canvas');
     cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
     try { await page.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise; } catch(e){ if(rendered.get(p) === target) rendered.delete(p); return; }
     if(!alive() || rendered.get(p) !== target || !visible.has(p)){ cv.width = cv.height = 0; return; }
@@ -203,7 +204,7 @@ function pdfView(box, n, o){
     if(o.page > 1) goTo(o.page); else upd();
   }).catch(() => {
     if(!alive()) return; stop();
-    pages.innerHTML = '<div class="pvload pverr">Stránky PDF se nepodařilo načíst (jsi offline a toto PDF ještě nemáš uložené?).'+(o.onFail ? ' <button class="btn ghost">Ukázat text</button>' : '')+'</div>';
+    pages.innerHTML = '<div class="pvload pverr">Stránky PDF se nepodařilo načíst – buď jsi offline a toto PDF ještě nemáš uložené, nebo to tenhle prohlížeč neumí (pomůže aktualizace).'+(o.onFail ? ' <button class="btn ghost">Ukázat text</button>' : '')+'</div>';
     const b = pages.querySelector('button'); if(b) b.onclick = o.onFail;
   });
   return {stop, goTo};
@@ -239,7 +240,11 @@ function rawParas(txt){
     const prevCode = last && last.code && last.open2 && !para;
     if(prevCode && (last.depth > 0 || isCodeLine(l))){ last.code.push('  '.repeat(Math.max(0, last.depth - (/^\s*}/.test(l) ? 1 : 0))) + l); last.t += ' ' + l; last.depth += braceDelta(l); return; }
     if(last && last.code) last.open2 = false;
-    if(isCodeLine(l) && (/[;{}]\s*(\/\/.*)?$/.test(l) || /^#|^\s*(case\b|default:)/.test(l))){ flush(); out.push({h:false, code:[l], t:l, pg:L.pg, open2:true, depth:Math.max(0, braceDelta(l))}); return; }
+    const cmt = /^\s*\/\//.test(para);   // komentář nad kódem („// matematika.h“) patří do bloku
+    const midSentence = /^#/.test(l) && para && !cmt && /[a-záčďéěíňóřšťúůýž,]$/.test(para);   // pokračování věty („…makra a / #if podmíněný překlad.“) není kód
+    if(!midSentence && !/\.\s*$/.test(l) && isCodeLine(l) && (/[;{}]\s*(\/\/.*)?$/.test(l) || /^#|^\s*(case\b|default:)/.test(l))){
+      const head = cmt ? [para] : []; if(cmt) para = ''; else flush();
+      out.push({h:false, code:head.concat(l), t:head.concat(l).join(' '), pg:L.pg, open2:true, depth:Math.max(0, braceDelta(l))}); return; }
     const isHead = l.length <= 60 && !/[.,;:)–-]$/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ0-9]/.test(l) && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ|]/.test(next) && !para;
     if(isHead && l.split(' ').length <= 8){ flush(); out.push({h:true, t:l, pg:L.pg}); return; }
     if(para && /^[a-záčďéěíňóřšťúůýž(]/.test(l)) para += ' ' + l;
@@ -291,24 +296,26 @@ function showPdfAnswer(cur, host){
     '<div class="row pdfacts">'+(pgOK ? '<div class="seg ledseg rdseg" role="group" aria-label="Zobrazení"><button data-m="pdf">Stránka PDF</button><button data-m="text">Text</button></div>' : '')+(IN_ARTIFACT || !RAW[n] ? '' : '<a class="btn ghost" href="'+pdfName(n)+(page ? '#page='+page : '')+'" target="_blank" rel="noopener"><span class="pdflong">Otevřít PDF'+(page ? ' na straně '+page : '')+'</span><span class="pdfshort">PDF</span> ↗</a>')+'<button class="btn ghost pdfclose">Zpět ke kvízu<span class="kbd">Esc</span></button></div>'+
     (f ? '<div class="pdfbody"></div>' : '')+'</div>';
   document.body.appendChild(ov);
-  const focusables = () => [...ov.querySelectorAll('a[href], button:not(:disabled), input')];
+  const focusables = () => [...ov.querySelectorAll('a[href], button:not(:disabled), input')].filter(el => el.getClientRects().length);   // skryté (na mobilu „Zpět ke kvízu“) vynechat
   const keys = e => {
     if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(); return; }
     if(e.key === 'Tab'){ const F = focusables(), k = F.indexOf(document.activeElement); e.preventDefault(); (F[(k + (e.shiftKey ? -1 : 1) + F.length) % F.length] || F[0]).focus(); return; }   // fokus zůstane v okně
     if(!ov.contains(e.target) || !/^(Enter| )$/.test(e.key)) e.stopPropagation();   // klávesy neovládají kvíz pod oknem
   };
   const shut = () => close();
-  const close = () => { ov.remove(); view.inert = false; document.removeEventListener('keydown', keys, true); window.removeEventListener('popstate', shut); window.removeEventListener('hashchange', shut);
+  let pvw = null;
+  const close = () => { if(pvw){ pvw.stop(); pvw = null; } ov.remove(); view.inert = false; document.removeEventListener('keydown', keys, true); window.removeEventListener('popstate', shut); window.removeEventListener('hashchange', shut);
     if(host && host.isConnected) onKey = prevKey; };   // klávesy kvízu vrátit, jen když je kvíz pořád na obrazovce
   onKey = null; view.inert = true; document.addEventListener('keydown', keys, true); window.addEventListener('popstate', shut); window.addEventListener('hashchange', shut);
   ov.querySelector('.pdfx').onclick = close; ov.querySelector('.pdfclose').onclick = close; ov.onclick = e => { if(e.target === ov) close(); };
   const body = ov.querySelector('.pdfbody'), seg = ov.querySelector('.rdseg');
   const show = m => {
     if(!body) return;
+    if(pvw){ pvw.stop(); pvw = null; }
     if(seg) seg.querySelectorAll('button').forEach(b => { b.classList.toggle('on', b.dataset.m === m); b.setAttribute('aria-pressed', b.dataset.m === m); });
     body.classList.toggle('pdfpg', m === 'pdf'); body.scrollTop = 0;
     if(m === 'pdf'){   // původní stránka s vyznačeným místem odpovědi
-      pdfView(body, n, {page, scroller:body, hl:{page, text:f.paras.slice(f.para, f.para + f.len).map(p => p.t).join(' ')}, onFail:() => show('text')}); return; }
+      pvw = pdfView(body, n, {page, scroller:body, hl:{page, text:f.paras.slice(f.para, f.para + f.len).map(p => p.t).join(' ')}, onFail:() => { pvLs('md3-ansmode', 'text'); show('text'); }}); return; }
     body.innerHTML = '<div class="dstext">'+parasToHTML(f.paras)+'</div>';
     if(f.para >= 0){ const els = Array.from({length:f.len}, (_, k) => body.querySelector('[data-pi="'+(f.para + k)+'"]')).filter(Boolean);
       els.forEach(el => { el.classList.add('srhit'); markText(el, f.words); });   // zvýraznit slova jen v nalezeném úseku
@@ -316,7 +323,7 @@ function showPdfAnswer(cur, host){
   };
   show(pgOK && pvLs('md3-ansmode') !== 'text' ? 'pdf' : 'text');
   if(seg) seg.onclick = e => { const b = e.target.closest('button'); if(!b || b.classList.contains('on')) return; pvLs('md3-ansmode', b.dataset.m); show(b.dataset.m); };
-  ov.querySelector('.pdfclose').focus({preventScroll:true});
+  const pc = ov.querySelector('.pdfclose'); (pc.getClientRects().length ? pc : ov.querySelector('.pdfx')).focus({preventScroll:true});
 }
 function runReader(n, vid, opt){
   onKey = null; const t = T[n]; opt = opt || {};
@@ -333,10 +340,11 @@ function runReader(n, vid, opt){
   bindGallery(); window.scrollTo(0,0);
   if(vid){ const v = view.querySelector('.vfold'); if(v) v.scrollIntoView({block:'start'}); }
   // podklady: stránky PDF v původní grafice, nebo vytažený text (ten jde prohledávat; z hledání se otevře vždy text)
-  const body = view.querySelector('.rdbody'), seg = view.querySelector('.rdseg');
+  const body = view.querySelector('.rdbody'), seg = view.querySelector('.rdseg'); let pvw = null;
   const show = (m, jump) => {
+    if(pvw){ pvw.stop(); pvw = null; }
     if(seg) seg.querySelectorAll('button').forEach(b => { b.classList.toggle('on', b.dataset.m === m); b.setAttribute('aria-pressed', b.dataset.m === m); });
-    if(m === 'pdf'){ pdfView(body, n, {page:opt.page, onFail:() => show('text')}); if(jump) body.scrollIntoView({block:'start'}); return; }
+    if(m === 'pdf'){ pvw = pdfView(body, n, {page:opt.page, onFail:() => { pvLs('md3-rdmode', 'text'); show('text'); }}); if(jump) body.scrollIntoView({block:'start'}); return; }
     body.innerHTML = '<div class="dstext">'+rawToHTML(RAW[n]||'')+'</div>';
     if(jump) body.scrollIntoView({block:'start'});
     if(opt.q){   // z hledání: zvýraznit hledaná slova a skočit na nalezený odstavec

@@ -1376,7 +1376,7 @@ cre(10, 'Kryptografie: šifruj a dešifruj', 'Otáčej šifrovacím kolem, prolo
     if(k === 2){ S.plain = rnd(SENT); S.k = ri(4, 22); S.ct = caesar(S.plain, S.k); S.tries = 0; }
     if(k === 3){ S.src = rnd(WORDS.filter(w => w.length <= 7)); S.key = rnd(['BIT','LAN','KEY','SIT','NET','IP']); S.ks = S.src.split('').map((_, i) => S.key[i % S.key.length]); S.ans = S.src.split('').map((c, i) => AB[mod(AB.indexOf(c) + AB.indexOf(S.ks[i]), 26)]).join(''); }
     if(k === 4){ S.ch = rnd(AB.split('')); S.p = S.ch.charCodeAt(0); do { S.key = ri(17, 254); } while((S.p ^ S.key) < 33 || (S.p ^ S.key) === S.p); S.c = 0; }
-    if(k === 5){ const P = rnd([[5,11],[3,11],[5,17],[7,11],[3,17],[5,13]]); S.p = P[0]; S.q = P[1]; S.n = S.p * S.q; S.phi = (S.p - 1) * (S.q - 1); S.step = 0; S.e = 0; S.d = 0; S.m = 0; S.c = null; S.out = null; }
+    if(k === 5){ const P = rnd([[5,11],[3,11],[5,17],[7,11],[3,17],[3,23]]); S.p = P[0]; S.q = P[1]; S.n = S.p * S.q; S.phi = (S.p - 1) * (S.q - 1); S.step = 0; S.e = 0; S.d = 0; S.m = 0; S.c = null; S.out = null; }
     render();
   }
   const solve = () => {
@@ -1386,7 +1386,7 @@ cre(10, 'Kryptografie: šifruj a dešifruj', 'Otáčej šifrovacím kolem, prolo
   };
   // šifrovací kolo: vnější kruh = otevřený text, vnitřní (otočný) = šifrový text
   function wheel(){
-    let o = '<svg viewBox="-150 -150 300 300" class="crwh" role="img" aria-label="Šifrovací kolo, posun '+wk+'"><circle r="147" class="crw0"/><circle r="112" class="crw1"/>';
+    let o = '<svg viewBox="-150 -150 300 300" class="crwh" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="25" aria-valuenow="'+wk+'" aria-label="Šifrovací kolo, posun"><circle r="147" class="crw0"/><circle r="112" class="crw1"/>';
     for(let i = 0; i < 26; i++){ const a = (i * STEP - 90) * Math.PI / 180, x = Math.cos(a) * 129, y = Math.sin(a) * 129, a2 = ((i + .5) * STEP - 90) * Math.PI / 180;
       o += '<line class="crtk" x1="'+(Math.cos(a2) * 112).toFixed(1)+'" y1="'+(Math.sin(a2) * 112).toFixed(1)+'" x2="'+(Math.cos(a2) * 147).toFixed(1)+'" y2="'+(Math.sin(a2) * 147).toFixed(1)+'"/>'+
         '<text class="cro" data-o="'+i+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" transform="rotate('+(i * STEP).toFixed(2)+' '+x.toFixed(1)+' '+y.toFixed(1)+')">'+AB[i]+'</text>'; }
@@ -1406,18 +1406,19 @@ cre(10, 'Kryptografie: šifruj a dešifruj', 'Otáčej šifrovacím kolem, prolo
     wk = mod(v, 26); const g = $('.crwh .crin'); if(!g) return;
     const cur = parseFloat((g.style.transform.match(/-?[\d.]+/) || [0])[0]), want = -wk * STEP;
     let d = mod(want - cur + 180, 360) - 180; g.style.transform = 'rotate('+(cur + d)+'deg)';   // otáčet kratší cestou
-    $('.crwh .crkv').textContent = wk; $('.crwh').setAttribute('aria-label', 'Šifrovací kolo, posun '+wk);
+    $('.crwh .crkv').textContent = wk; $('.crwh').setAttribute('aria-valuenow', wk);
     beep('tick'); if(lv === 2) crack(); else hilite(S.hi);
   }
   // řádek políček na písmena (šifra/dešifrování): src = co je nahoře, ans = co se má napsat
   function cells(src, ans, extra){
     return '<div class="crgrid">'+src.split('').map((c, i) => c === ' ' ? '<span class="crsp"></span>' :
-      '<label class="crcell"><b>'+c+'</b>'+(extra ? extra(i) : '')+'<input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" data-i="'+i+'" aria-label="písmeno '+(i + 1)+'"></label>').join('')+'</div>';
+      '<label class="crcell"><b>'+c+'</b>'+(extra ? extra(i) : '')+'<input autocomplete="off" autocapitalize="characters" spellcheck="false" data-i="'+i+'" aria-label="písmeno '+(i + 1)+'"></label>').join('')+'</div>';
   }
   function bindCells(ans, onFocus){
     const ins = [...$$('.crgrid input')];
     ins.forEach((inp, k) => {
       inp.onfocus = () => { inp.select(); if(onFocus) onFocus(+inp.dataset.i); };
+      inp.onpointerup = () => setTimeout(() => inp.select(), 0);   // přepsat písmeno i po dalším ťuknutí
       inp.oninput = () => {
         const v = inp.value.toUpperCase().replace(/[^A-Z]/g, '').slice(-1); inp.value = v;
         const ok = v === ans[+inp.dataset.i]; inp.parentNode.classList.toggle('ok', !!v && ok); inp.parentNode.classList.toggle('bad', !!v && !ok);
@@ -1491,10 +1492,12 @@ cre(10, 'Kryptografie: šifruj a dešifruj', 'Otáčej šifrovacím kolem, prolo
     if(wh){   // kolem jde otáčet i tažením / kolečkem myši
       let drag = null;
       const ang = e => { const r = wh.getBoundingClientRect(); return Math.atan2(e.clientY - r.top - r.height / 2, e.clientX - r.left - r.width / 2) * 180 / Math.PI; };
-      wh.onpointerdown = e => { drag = {a:ang(e), k:wk}; wh.setPointerCapture(e.pointerId); };
+      wh.onpointerdown = e => { drag = {a:ang(e), k:wk}; wh.setPointerCapture(e.pointerId); wh.focus({preventScroll:true}); };
       wh.onpointermove = e => { if(!drag) return; const d = mod(ang(e) - drag.a + 180, 360) - 180, k = mod(drag.k - Math.round(d / STEP), 26); if(k !== wk) setWK(k); };
       wh.onpointerup = wh.onpointercancel = () => { drag = null; };
-      wh.onwheel = e => { e.preventDefault(); setWK(wk + (e.deltaY > 0 ? 1 : -1)); };
+      // kolečko myši otáčí jen kolem, na které se kliklo (jinak normálně roluje stránka)
+      wh.onwheel = e => { if(document.activeElement !== wh) return; e.preventDefault(); setWK(wk + (e.deltaY > 0 ? 1 : -1)); };
+      wh.onkeydown = e => { const d = {ArrowRight:1, ArrowUp:1, ArrowLeft:-1, ArrowDown:-1}[e.key]; if(d){ e.preventDefault(); setWK(wk + d); } };
     }
     if(lv === 0) bindCells(S.ans, i => { S.hi = AB.indexOf(S.src[i]); hilite(S.hi); });
     if(lv === 1) bindCells(S.ans, i => { S.hi = mod(AB.indexOf(S.src[i]) - wk, 26); hilite(S.hi); });

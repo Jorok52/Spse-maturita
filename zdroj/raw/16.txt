@@ -32,23 +32,10 @@ Výrobci zdrojů: Gigabyte, Corsair, SilverStone
 PC zdroj musí zabezpečit napětí v určitém rozsahu,
 nesmí poklesnout pod stanovený limit ani
 při maximální maximálním zatížení zdroje
-AT
-ATX
-Napětí
-+-5V, +-12V
-+-5V, +-12V a 3,3V
-Konektory vedoucí
-do zákl. Desky
-Dva 6 pinové P8 a P9,
-černýma k sobě
-20 pinové main power
-+4 pinový PW +12V
-AUX power
-Zapínání
-HW – přímo 220V
-SW – pomocí PS_ON
-ATX 3.0
-+ 12VHPWR konektor
+|  | AT | ATX | ATX 3.0 |
+| Napětí | +-5V, +-12V | +-5V, +-12V a 3,3V |  |
+| Konektory vedoucí do zákl. Desky | Dva 6 pinové P8 a P9, černýma k sobě | 20 pinové main power +4 pinový PW +12V AUX power | + 12VHPWR konektor |
+| Zapínání | HW – přímo 220V | SW – pomocí PS_ON |  |
 Tolerance výstupních napětí:
 | Výstupní napětí | Tolerance | Minimální napětí [V] | Maximální napětí [V] |
 | +12VDC | +-5% | +11,40V | +12,60V |

@@ -320,15 +320,10 @@ Sběrnice RS-232 – Sériový port (COM)
 Jedna z nejstarších a nejpoužívanějších sériových sběrnic.
 Využívá se k propojení dvou zařízení: vysílač ↔ přijímač.
 Založena na standardu EIA RS-232.
-Parametr
-Popis
-Typ přenosu
-Sériový, asynchronní, full duplex
-Počet zařízení
-2 (bod–bod komunikace)
-Hodinový signál (CLK)
-Každé zařízení má vlastní CLK → při přenosu se
-synchronizují na základě časování bitů
+| Parametr | Popis |
+| Typ přenosu | Sériový, asynchronní, full duplex |
+| Počet zařízení | 2 (bod–bod komunikace) |
+| Hodinový signál (CLK) | Každé zařízení má vlastní CLK → při přenosu se synchronizují na základě časování bitů |
 | Maximální rychlost | 115 200 Bd (baudů) – počet změn na vedení za sekundu |
 | Maximální vzdálenost | 15 metrů (čím delší kabel, tím nižší rychlost a vyšší šum) |
 | Použité kódování | Např. ASCII |
@@ -377,16 +372,11 @@ Vyvinuto jako náhrada sériového portu RS-232 a paralelního portu (LPT).
 Umožňuje:
 Přenos dat mezi dvěma zařízeními (např. PC ↔ mobil, PC ↔ externí disk).
 Napájení připojených zařízení (např. lampičky, větráčky, telefony, powerbanky).
-Parametr
-Popis
-Topologie
-Hvězdicová síť – v centru je HUB
-Počet zařízení
-Až 127 zařízení na jedné sběrnici
-Adresace
-Každé zařízení má jedinečnou adresu
-Plug & Play
-Připojení za chodu bez nutnosti restartu systému
+| Parametr | Popis |
+| Topologie | Hvězdicová síť – v centru je HUB |
+| Počet zařízení | Až 127 zařízení na jedné sběrnici |
+| Adresace | Každé zařízení má jedinečnou adresu |
+| Plug & Play | Připojení za chodu bez nutnosti restartu systému |
 Rozdělení USB podle verzí
 USB 1.0
 Konektor: 4 piny

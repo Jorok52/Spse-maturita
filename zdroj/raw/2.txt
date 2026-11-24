@@ -269,26 +269,14 @@ Moderní Intel procesory využívají RISC-like prvky uvnitř jádra, přestože
 kompatibilitu.
 Příklad: Namísto jedné složité instrukce jako v CISC musí RISC procesor provést několik
 jednoduchých instrukcí, ale každá instrukce se vykonává extrémně rychle.
-Faktor
-CISC
-RISC
-Instrukční sada
-Velká, složitá
-Malá, jednoduchá
-Délka instrukcí
-Proměnlivá
-Stejná délka (např. 32 bitů)
-Doba vykonávání instrukcí
-Některé trvají více cyklů
-Každá instrukce obvykle 1
-cyklus
+| Faktor | CISC | RISC |
+| Instrukční sada | Velká, složitá | Malá, jednoduchá |
+| Délka instrukcí | Proměnlivá | Stejná délka (např. 32 bitů) |
+| Doba vykonávání instrukcí | Některé trvají více cyklů | Každá instrukce obvykle 1 cyklus |
 | Řízení CPU | Mikroprogramově řízeno | Obvodově řízeno |
 | Pipelining (zřetězení instrukcí) | Náročné na implementaci | Snadná implementace |
 | Efektivita spotřeby energie | Vyšší spotřeba | Nižší spotřeba |
-Použití
-PC, servery, kompatibilní s
-historickými programy
-Mobilní zařízení, superpočítače
+| Použití | PC, servery, kompatibilní s historickými programy | Mobilní zařízení, superpočítače |
 2. Mikroprocesor
 Mikropočítač
 1. Řadič (Control Unit) – levá část obrázku

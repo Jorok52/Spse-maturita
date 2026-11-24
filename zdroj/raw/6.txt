@@ -174,18 +174,9 @@ Multitasking – umožňuje běh více úloh současně.
 Deterministické chování – události jsou zpracovány přesně načas.
 Efektivní využití paměti – každý task má vyhrazený paměťový prostor.
 Shrnutí RTOS vs. běžné OS
-Vlastnost
-RTOS
-Běžný OS (Windows,
-Linux, macOS)
-Hlavní cíl
-Přesně načasované reakce
-Maximální výkon a
-multitasking
-Zaručený čas provedení
-úlohy
-Ano
-Ne
+| Vlastnost | RTOS | Běžný OS (Windows, Linux, macOS) |
+| Hlavní cíl | Přesně načasované reakce | Maximální výkon a multitasking |
+| Zaručený čas provedení úlohy | Ano | Ne |
 | Deterministické chování | Ano | Ne |
 | Použití | Průmysl, embedded systémy, zdravotnictví, robotika | Počítače, servery, mobilní zařízení |
 | Efektivní plánování úloh | Ano | Ano, ale bez garance načasování |
